@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMUS | Criar Conta</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="js/state.js"></script>
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <div class="login-header">
+            <div class="brand-logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <h1>DOMUS</h1>
+            </div>
+            <h2>Criar sua conta</h2>
+            <p class="brand-tagline">Configure sua experiência inteligente.</p>
+        </div>
+
+        <form id="registerForm" onsubmit="realizarCadastro(event)" class="login-form">
+            <div class="input-group">
+                <label for="reg-nome">Nome Completo</label>
+                <input type="text" id="reg-nome" placeholder="Digite seu nome" required>
+            </div>
+
+            <div class="input-group">
+                <label for="reg-usuario">Usuário</label>
+                <input type="text" id="reg-usuario" placeholder="Crie seu nome de usuário" required autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="reg-email">E-mail</label>
+                <input type="email" id="reg-email" placeholder="Digite seu e-mail" required>
+            </div>
+
+            <div class="input-group">
+                <label for="reg-senha">Senha</label>
+                <input type="password" id="reg-senha" placeholder="Crie uma senha" required>
+            </div>
+
+            <div class="input-group">
+                <label for="reg-confirmar-senha">Confirmar Senha</label>
+                <input type="password" id="reg-confirmar-senha" placeholder="Digite novamente sua senha" required>
+            </div>
+
+            <div class="input-group">
+                <label for="reg-residencia">Nome da Residência</label>
+                <input type="text" id="reg-residencia" placeholder="Ex: Casa Azul" required>
+            </div>
+
+            <div id="registerError" style="display: none; color: #ef4444; margin-bottom: 15px; text-align: center; font-size: 0.9rem;"></div>
+
+            <button type="submit" class="login-button">Criar Conta</button>
+
+            <p class="auth-toggle" style="margin-top: 20px; text-align: center; color: #94a3b8; font-size: 0.9rem;">
+                Já possui uma conta? <a href="index.html" style="color: #0ea5e9; text-decoration: none; font-weight: 600;">Fazer login</a>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        function realizarCadastro(event) {
+            event.preventDefault();
+            const nome = document.getElementById("reg-nome").value;
+            const usuario = document.getElementById("reg-usuario").value;
+            const email = document.getElementById("reg-email").value;
+            const senha = document.getElementById("reg-senha").value;
+            const confirmarSenha = document.getElementById("reg-confirmar-senha").value;
+            const residencia = document.getElementById("reg-residencia").value;
+            const errorDiv = document.getElementById("registerError");
+
+            if (senha !== confirmarSenha) {
+                errorDiv.textContent = "As senhas não coincidem.";
+                errorDiv.style.display = "block";
+                return;
+            }
+
+            const resultado = AppState.register(nome, usuario, email, senha, residencia);
+            if (resultado.success) {
+                window.location.href = "pages/dashboard.html";
+            } else {
+                errorDiv.textContent = resultado.message;
+                errorDiv.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

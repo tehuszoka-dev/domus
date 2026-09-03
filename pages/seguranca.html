@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DOMUS | Segurança</title>
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <h1>DOMUS</h1>
+            <span>SMART HOME</span>
+        </div>
+
+      <nav>
+
+    <a href="../index.html" class="menu-item">
+        <span>▦</span>
+        Dashboard
+    </a>
+
+    <a href="iluminacao.html" class="menu-item">
+        <span>💡</span>
+        Iluminação
+    </a>
+
+    <a href="energia.html" class="menu-item">
+        <span>⚡</span>
+        Energia
+    </a>
+
+    <a href="seguranca.html" class="menu-item">
+        <span>🛡</span>
+        Segurança
+    </a>
+
+    <a href="ambientes.html" class="menu-item">
+        <span>⌂</span>
+        Ambientes
+    </a>
+
+</nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="#" class="menu-item">
+                <span>⚙</span>
+                Configurações
+            </a>
+
+            <div class="system-status">
+
+                <div class="status-dot"></div>
+
+                <div>
+                    <strong>Sistema online</strong>
+                    <small>Todos os dispositivos</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <div>
+
+                <p class="welcome">
+                    MONITORAMENTO RESIDENCIAL
+                </p>
+
+                <h2>
+                    Segurança
+                </h2>
+
+            </div>
+
+            <div class="topbar-actions">
+
+                <button class="notification-button">
+                    🔔
+                    <span class="notification-dot"></span>
+                </button>
+
+                <div class="user">
+
+                    <div class="user-avatar">
+                        D
+                    </div>
+
+                    <div>
+                        <strong>Administrador</strong>
+                        <small>Residência</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <section>
+
+            <div class="dashboard-header">
+
+                <div>
+
+                    <p class="section-label">
+                        CENTRAL DE SEGURANÇA
+                    </p>
+
+                    <h3>
+                        Monitoramento da residência
+                    </h3>
+
+                </div>
+
+                <div class="connection">
+                    <span></span>
+                    Sistema protegido
+                </div>
+
+            </div>
+
+
+            <!-- STATUS PRINCIPAL -->
+
+            <div class="security-main">
+
+               <div class="security-status-card">
+    <div class="security-shield">🛡</div>
+    <div>
+        <p>STATUS DA RESIDÊNCIA</p>
+        <h3 id="status-alarme-texto">SISTEMA ATIVO</h3>
+        <span id="status-alarme-desc">Residência totalmente protegida</span>
+        
+        <div>
+            <button id="btn-alarme-geral" class="btn-alarm-toggle" onclick="alternarAlarmeGeral()">
+                Desarmar Sistema
+            </button>
+        </div>
+    </div>
+</div>
+
+                </div>
+
+
+                <button
+
+                    onclick="alternarSeguranca()"
+                    id="securityButton">
+
+                    
+
+                </button>
+
+            </div>
+
+
+            <!-- SENSORES -->
+
+            <div class="section-title">
+
+                <div>
+
+                    <p class="section-label">
+                        MONITORAMENTO
+                    </p>
+
+                    <h3>
+                        Sensores
+                    </h3>
+
+                </div>
+
+                <span class="devices-count">
+                    4 sensores conectados
+                </span>
+
+            </div>
+
+
+            <div class="sensors-grid">
+
+                
+
+                <!-- MOVIMENTO -->
+
+                <div class="sensor-card">
+
+                    <div class="sensor-header">
+
+                        <div class="sensor-icon">
+                            ◉
+                        </div>
+
+                        <span
+                            class="sensor-online"
+                            id="movimento-status">
+
+                            ● Online
+
+                        </span>
+
+                    </div>
+
+                    <h4>
+                        Sensor de movimento
+                    </h4>
+
+                    <p>
+                        Sala
+                    </p>
+
+                    <div class="sensor-reading">
+
+                        <strong id="movimento">
+                            Nenhum movimento
+                        </strong>
+
+                        <button onclick="simularMovimento()">Simular movimento</button>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- PORTA -->
+
+                <div class="sensor-card">
+
+                    <div class="sensor-header">
+
+                        <div class="sensor-icon">
+                            🚪
+                        </div>
+
+                        <span class="sensor-online">
+                            ● Online
+                        </span>
+
+                    </div>
+
+                    <h4>
+                        Sensor da porta
+                    </h4>
+
+                    <p>
+                        Entrada principal
+                    </p>
+
+                    <div class="sensor-reading">
+
+                        <strong id="porta">
+                            Porta fechada
+                        </strong>
+
+                        <button
+                            onclick="simularPorta()">
+
+                            Simular abertura
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- JANELA -->
+
+                <div class="sensor-card">
+
+                    <div class="sensor-header">
+
+                        <div class="sensor-icon">
+                            ▣
+                        </div>
+
+                        <span class="sensor-online">
+                            ● Online
+                        </span>
+
+                    </div>
+
+                    <h4>
+                        Sensor da janela
+                    </h4>
+
+                    <p>
+                        Sala
+                    </p>
+
+                    <div class="sensor-reading">
+
+                        <strong id="janela">
+                            Janela fechada
+                        </strong>
+
+                        <button
+                            onclick="simularJanela()">
+
+                            Simular abertura
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TEMPERATURA -->
+
+                <div class="sensor-card">
+
+                    <div class="sensor-header">
+
+                        <div class="sensor-icon">
+                            🌡
+                        </div>
+
+                        <span class="sensor-online">
+                            ● Online
+                        </span>
+
+                    </div>
+
+                    <h4>
+                        Sensor ambiental
+                    </h4>
+
+                    <p>
+                        Temperatura
+                    </p>
+
+                    <div class="sensor-reading">
+
+                        <strong id="temperaturaSensor">
+                            24 °C
+                        </strong>
+
+                        <button
+                            onclick="simularTemperatura()">
+
+                            Atualizar leitura
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- SEÇÃO DE CÂMERAS -->
+<div class="section-title" style="margin-top: 40px;">
+    <div>
+        <p class="section-label">MONITORAMENTO EM TEMPO REAL</p>
+        <h3>Câmeras de Segurança</h3>
+    </div>
+    <span class="devices-count">2 câmeras ativas</span>
+</div>
+
+<div class="cameras-grid">
+    <!-- Câmera 1 -->
+    <div class="camera-card">
+        <div class="camera-header">
+            <span>📹 Entrada Principal</span>
+            <span class="sensor-online">• REC</span>
+        </div>
+        <div class="camera-feed">
+            <div class="camera-placeholder">
+                <span class="cam-icon">📹</span>
+                <p>Transmissão ao vivo</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Câmera 2 -->
+    <div class="camera-card">
+        <div class="camera-header">
+            <span>📹 Garagem / Quintal</span>
+            <span class="sensor-online">• REC</span>
+        </div>
+        <div class="camera-feed">
+            <div class="camera-placeholder">
+                <span class="cam-icon">📹</span>
+                <p>Transmissão ao vivo</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+           <!-- HISTÓRICO -->
+<div class="section-title" style="margin-top: 40px;">
+    <div>
+        <p class="section-label">REGISTROS</p>
+        <h3>Eventos recentes</h3>
+    </div>
+</div>
+
+
+            <div class="security-history" id="historico-seguranca">
+
+                <div class="security-event">
+
+                    <div class="event-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Sistema de segurança ativado
+                        </strong>
+
+                        <small>
+                            Monitoramento normal
+                        </small>
+
+                    </div>
+
+                    <time>
+                        Agora
+                    </time>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="../script.js"></script>
+
+</body>
+
+</html>
