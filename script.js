@@ -25,18 +25,18 @@ function verificarAutenticacao() {
     const paginaAtual = window.location.pathname;
 
     // Se não estiver logado e não estiver na tela de login, redireciona
-    // if (!estaLogado && !paginaAtual.includes("login.html")) {
-    //     // Ajusta o caminho se estiver dentro da pasta pages/
-    //     if (paginaAtual.includes("/pages/")) {
-    //         window.location.href = "../login.html";
-    //     } else {
-    //         window.location.href = "login.html";
-    //     }
-    // }
+    if (!estaLogado && !paginaAtual.includes("login.html")) {
+        // Ajusta o caminho se estiver dentro da pasta pages/
+        if (paginaAtual.includes("/pages/")) {
+            window.location.href = "../login.html";
+        } else {
+            window.location.href = "login.html";
+        }
+    }
 }
 
-// // Executa a verificação ao carregar qualquer página
-// verificarAutenticacao();
+// Executa a verificação ao carregar qualquer página
+verificarAutenticacao();
 
 // ========================================
 // LOGOUT / ENCERRAR SESSÃO
