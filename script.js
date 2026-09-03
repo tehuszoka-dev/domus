@@ -35,8 +35,8 @@ function verificarAutenticacao() {
     // }
 }
 
-// Executa a verificação ao carregar qualquer página
-verificarAutenticacao();
+// // Executa a verificação ao carregar qualquer página
+// verificarAutenticacao();
 
 // ========================================
 // LOGOUT / ENCERRAR SESSÃO
