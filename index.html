@@ -1,79 +1,2555 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOMUS | Login</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="js/state.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOMUS - Smart Home</title>
+  <meta name="description" content="Painel inteligente DOMUS para controle de iluminação, climatização, segurança e monitoramento de tempo e consumo de energia.">
+  <meta property="og:title" content="DOMUS - Smart Home">
+  <meta property="og:description" content="Painel inteligente DOMUS para controle de iluminação, climatização, segurança e monitoramento de tempo e consumo de energia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="login-body">
-    <div class="login-container">
-        <div class="login-header">
-            <div class="brand-logo">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                <h1>DOMUS</h1>
-            </div>
-            <span>SMART HOME CONTROL</span>
-            <p class="brand-tagline">Tecnologia que entende o seu jeito de viver.</p>
-        </div>
+<body>
 
-        <form id="loginForm" onsubmit="realizarLogin(event)" class="login-form">
-            <div class="input-group">
-                <label for="usuario">Usuário</label>
-                <input type="text" id="usuario" placeholder="Digite seu usuário" required autocomplete="off">
-            </div>
+  <!-- CONTAINER DE NOTIFICAÇÕES FLUTUANTES (CANTO INFERIOR DIREITO) -->
+  <div id="toast-container"></div>
 
-            <div class="input-group">
-                <label for="senha">Senha</label>
-                <input type="password" id="senha" placeholder="Digite sua senha" required>
-            </div>
-
-            <div id="loginError" class="login-error" style="display: none; color: #ef4444; margin-bottom: 15px; text-align: center; font-size: 0.9rem;">
-                Usuário ou senha incorretos.
-            </div>
-
-            <button type="submit" class="login-button">Entrar no Sistema</button>
-
-            <div class="oauth-divider">
-                <span>ou continue com</span>
-            </div>
-
-            <div class="oauth-buttons">
-                <button type="button" class="btn-oauth" onclick="alert('Integração com Google em breve!')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 15.9 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
-                    Google
-                </button>
-                <button type="button" class="btn-oauth" onclick="alert('Integração com Apple em breve!')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.85c.66-.8 1.11-1.92.99-3.04-.96.04-2.12.64-2.8 1.44-.61.71-1.15 1.86-.99 2.96 1.07.08 2.14-.56 2.8-1.36z"/></svg>
-                    Apple
-                </button>
-                <button type="button" class="btn-oauth" onclick="alert('Integração com Microsoft em breve!')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.4 24H0V12.6h11.4V24zM24 24H12.6V12.6H24V24zM11.4 11.4H0V0h11.4v11.4zm12.6 0H12.6V0H24v11.4z"/></svg>
-                    Microsoft
-                </button>
-            </div>
-
-            <p class="auth-toggle" style="margin-top: 20px; text-align: center; color: #94a3b8; font-size: 0.9rem;">
-                Não possui uma conta? <a href="cadastro.html" style="color: #0ea5e9; text-decoration: none; font-weight: 600;">Cadastre-se</a>
-            </p>
-        </form>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <h2>DOMUS</h2>
+      <span>SMART HOME SYSTEM</span>
     </div>
 
-    <script src="script.js"></script>
-    <script>
-        function realizarLogin(event) {
-            event.preventDefault();
-            const u = document.getElementById("usuario").value;
-            const s = document.getElementById("senha").value;
-            const errorDiv = document.getElementById("loginError");
+    <ul class="nav-list">
+      <li class="nav-item active" data-tab="tab-inicio"><i class="fa-solid fa-house"></i> Início</li>
+      <li class="nav-item" data-tab="tab-iluminacao"><i class="fa-solid fa-lightbulb"></i> Iluminação</li>
+      <li class="nav-item" data-tab="tab-climatizacao"><i class="fa-solid fa-snowflake"></i> Climatização</li>
+      <li class="nav-item" data-tab="tab-seguranca"><i class="fa-solid fa-shield-halved"></i> Segurança</li>
+      <li class="nav-item" data-tab="tab-energia"><i class="fa-solid fa-bolt"></i> Consumo de Energia</li>
+      <li class="nav-item" data-tab="tab-inteligencia"><i class="fa-solid fa-brain"></i> Inteligência Adaptativa</li>
+      <li class="nav-item" data-tab="tab-automacoes"><i class="fa-solid fa-robot"></i> Automações</li>
+      <li class="nav-item" data-tab="tab-perfil"><i class="fa-solid fa-user"></i> Perfil</li>
+    </ul>
 
-            if (AppState.login(u, s)) {
-                window.location.href = "pages/dashboard.html";
-            } else {
-                errorDiv.style.display = "block";
-            }
+    <button type="button" class="btn-primary" style="margin-top: auto;" onclick="alert('Sessão encerrada com sucesso.')"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+  </aside>
+
+  <!-- ÁREA PRINCIPAL DO DASHBOARD -->
+  <main class="main-content">
+
+    <!-- ABA 1: Início -->
+    <div id="tab-inicio" class="tab-content active">
+      <!-- HEADER BANNER COM SAUDAÇÃO E PESQUISA GLOBAL -->
+      <header class="header-banner">
+        <div class="header-banner-main">
+          <div class="header-greeting-col">
+            <h1>Olá, D'lucca!</h1>
+            <p>Sua residência está segura e operando normalmente.</p>
+          </div>
+          <div class="status-badge status-ativo">
+            <i class="fa-solid fa-check"></i> Sistema Online
+          </div>
+        </div>
+
+        <!-- 1. BARRA DE PESQUISA GLOBAL -->
+        <div class="global-search-container" id="global-search-container">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input 
+              type="text" 
+              id="global-search-input" 
+              class="global-search-input" 
+              placeholder="Pesquisar no DOMUS..." 
+              autocomplete="off"
+              spellcheck="false"
+              aria-label="Pesquisar no DOMUS"
+            >
+            <div class="search-shortcut-badge" title="Pressione Ctrl + K para focar na pesquisa">
+              <kbd>Ctrl</kbd> + <kbd>K</kbd>
+            </div>
+            <button type="button" class="search-clear-btn" id="search-clear-btn" style="display:none;" title="Limpar pesquisa">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <!-- 2. RESULTADOS DA PESQUISA -->
+          <div class="search-results-dropdown" id="search-results-dropdown" style="display: none;"></div>
+        </div>
+      </header>
+
+      <!-- 3 COLUNAS PRINCIPAIS: STATUS GERAL, CLIMATIZAÇÃO, HISTÓRICO RECENTE -->
+      <div class="dashboard-grid dashboard-top-grid">
+        <!-- 5. STATUS GERAL -->
+        <div class="card status-card">
+          <div class="card-title">
+            <span>Status Geral</span>
+            <div class="icon-box active-glow-blue"><i class="fa-solid fa-house-signal"></i></div>
+          </div>
+          <h3>Todos os sistemas normais</h3>
+          <p class="status-subtext">
+            <span id="lights-count-status">0 luzes acesas</span> &bull; Alarme ativo
+          </p>
+          <div class="status-indicators-mini">
+            <div class="status-indicator-pill">
+              <span class="indicator-dot dot-green"></span>
+              <span class="indicator-name">Segurança</span>
+              <span class="indicator-val">Normal</span>
+            </div>
+            <div class="status-indicator-pill">
+              <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright); font-size: 0.75rem;"></i>
+              <span class="indicator-name">Iluminação</span>
+              <span class="indicator-val" id="dash-indicator-lights">0 ligadas</span>
+            </div>
+            <div class="status-indicator-pill">
+              <i class="fa-solid fa-snowflake" style="color: var(--blue-accent); font-size: 0.75rem;"></i>
+              <span class="indicator-name">Climatização</span>
+              <span class="indicator-val" id="dash-indicator-ac">Normal</span>
+            </div>
+            <div class="status-indicator-pill">
+              <i class="fa-solid fa-bolt" style="color: #f1c40f; font-size: 0.75rem;"></i>
+              <span class="indicator-name">Energia</span>
+              <span class="indicator-val">Normal</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. CLIMATIZAÇÃO -->
+        <div class="card status-card">
+          <div class="card-title">
+            <span>Climatização</span>
+            <div class="icon-box active-glow"><i class="fa-solid fa-temperature-half"></i></div>
+          </div>
+          <h3 id="ac-count-status">0 aparelhos ligados</h3>
+          <p class="status-subtext">Temperatura media de conforto: 22°C</p>
+          <div class="comfort-status-box" id="climate-comfort-box">
+            <i class="fa-solid fa-leaf" style="color: #2ecc71;"></i>
+            <span id="climate-comfort-text">Conforto termico normal</span>
+          </div>
+        </div>
+
+        <!-- 7. HISTÓRICO RECENTE -->
+        <div class="card history-summary-card">
+          <div class="card-title">
+            <span>Histórico Recente</span>
+            <i class="fa-solid fa-clock-rotate-left"></i>
+          </div>
+
+          <ul class="activity-list activity-list-compact" id="activity-log">
+            <!-- Eventos recentes inseridos dinamicamente -->
+          </ul>
+
+          <div class="history-card-footer">
+            <button type="button" class="btn-history-link" onclick="openFullHistoryModal()">
+              Ver histórico <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. AÇÕES RÁPIDAS NO DASHBOARD -->
+      <div class="card quick-actions-card">
+        <div class="quick-actions-bar-header">
+          <div class="quick-title-group">
+            <i class="fa-solid fa-bolt" style="color: var(--orange-bright);"></i>
+            <span>Ações rápidas</span>
+          </div>
+          <span class="quick-subtitle">Acesso direto aos controles principais</span>
+        </div>
+        <div class="quick-action-grid">
+          <button type="button" class="btn-dash-action" onclick="switchTab('tab-iluminacao')">
+            <span class="dash-action-icon" style="color: var(--orange-bright); background: rgba(255, 122, 0, 0.12);">
+              <i class="fa-solid fa-lightbulb"></i>
+            </span>
+            <span class="dash-action-text">
+              <strong>Iluminação</strong>
+              <span>Lâmpadas e cenas</span>
+            </span>
+          </button>
+
+          <button type="button" class="btn-dash-action" onclick="switchTab('tab-climatizacao')">
+            <span class="dash-action-icon" style="color: var(--blue-accent); background: rgba(0, 210, 255, 0.12);">
+              <i class="fa-solid fa-snowflake"></i>
+            </span>
+            <span class="dash-action-text">
+              <strong>Climatização</strong>
+              <span>Temperatura e AC</span>
+            </span>
+          </button>
+
+          <button type="button" class="btn-dash-action" onclick="switchTab('tab-seguranca')">
+            <span class="dash-action-icon" style="color: #2ecc71; background: rgba(46, 204, 113, 0.12);">
+              <i class="fa-solid fa-shield-halved"></i>
+            </span>
+            <span class="dash-action-text">
+              <strong>Segurança</strong>
+              <span>Alarme e sensores</span>
+            </span>
+          </button>
+
+          <button type="button" class="btn-dash-action" onclick="switchTab('tab-automacoes')">
+            <span class="dash-action-icon" style="color: #e056fd; background: rgba(224, 86, 253, 0.12);">
+              <i class="fa-solid fa-robot"></i>
+            </span>
+            <span class="dash-action-text">
+              <strong>Automações</strong>
+              <span>Rotinas inteligentes</span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 8. RESUMO DE ENERGIA & 9. INTELIGÊNCIA ADAPTATIVA (2 COLUNAS) -->
+      <div class="dashboard-split-row">
+        <!-- 8. RESUMO DE ENERGIA -->
+        <div class="card energy-summary-card" onclick="switchTab('tab-energia')">
+          <div class="card-title">
+            <span>Consumo de Energia</span>
+            <div class="icon-box active-glow" style="color: #f1c40f !important; background: rgba(241, 196, 15, 0.15) !important;">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+          </div>
+          <div class="energy-summary-content">
+            <div class="energy-kwh-display">
+              <span class="energy-number" id="dash-energy-kwh">128</span>
+              <span class="energy-unit">kWh</span>
+            </div>
+            <p class="energy-period-label">Consumo neste mês</p>
+            <div class="energy-trend-badge trend-down">
+              <i class="fa-solid fa-arrow-trend-down"></i>
+              <span>↓ 8% em relação ao período anterior</span>
+            </div>
+          </div>
+          <div class="card-inline-action">
+            <span>Ver consumo detalhado <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+        </div>
+
+        <!-- 9. INTELIGÊNCIA ADAPTATIVA -->
+        <div class="card adaptive-summary-card" id="dash-adaptive-card">
+          <div class="card-title">
+            <span>Inteligência Adaptativa</span>
+            <div class="icon-box active-glow-blue"><i class="fa-solid fa-brain"></i></div>
+          </div>
+          <div id="dash-adaptive-body">
+            <div class="adaptive-status-empty" id="dash-adaptive-empty">
+              <div class="adaptive-empty-icon">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div class="adaptive-empty-text">
+                <strong>Nenhuma ação necessária no momento.</strong>
+                <p>O DOMUS está operando com eficiência máxima.</p>
+              </div>
+            </div>
+            <div class="adaptive-status-active" id="dash-adaptive-active" style="display: none;">
+              <div class="adaptive-active-alert">
+                <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright); font-size: 1.1rem;"></i>
+                <span id="dash-adaptive-msg">A luz da sala está ligada há 12 minutos sem movimento detectado.</span>
+              </div>
+              <button type="button" class="btn-ai-action btn-ai-primary" onclick="switchTab('tab-inteligencia')">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Ver sugestão
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 2: ILUMINAÇÃO -->
+    <div id="tab-iluminacao" class="tab-content">
+      <div class="dashboard-grid">
+        <div class="card" style="grid-column: span 2;">
+          <div class="card-title">
+            <span>Lâmpadas da Casa</span>
+            <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i>
+          </div>
+
+          <div class="device-item">
+            <div class="device-info">
+              <div id="bulb-icon-1" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+              <div><strong>Sala de Estar</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Lâmpada Principal</div></div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" class="light-switch" data-name="Luz da Sala" data-icon="bulb-icon-1" data-power="12" data-energy-id="energy-sala">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="device-item">
+            <div class="device-info">
+              <div id="bulb-icon-2" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+              <div><strong>Cozinha</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Luzes de LED</div></div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" class="light-switch" data-name="Luz da Cozinha" data-icon="bulb-icon-2" data-power="15" data-energy-id="energy-cozinha">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="device-item">
+            <div class="device-info">
+              <div id="bulb-icon-3" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+              <div><strong>Quarto Principal</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Lâmpada Inteligente</div></div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" class="light-switch" data-name="Luz do Quarto Principal" data-icon="bulb-icon-3" data-power="9" data-energy-id="energy-quarto-p">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="device-item">
+            <div class="device-info">
+              <div id="bulb-icon-4" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+              <div><strong>Quarto 2</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Lâmpada Inteligente</div></div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" class="light-switch" data-name="Luz do Quarto 2" data-icon="bulb-icon-4" data-power="9" data-energy-id="energy-quarto-2">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="device-item">
+            <div class="device-info">
+              <div id="bulb-icon-5" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+              <div><strong>Banheiro</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Luz Neutra</div></div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" class="light-switch" data-name="Luz do Banheiro" data-icon="bulb-icon-5" data-power="10" data-energy-id="energy-banheiro">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="device-item">
+            <div class="device-info">
+              <div id="bulb-icon-6" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+              <div><strong>Garagem</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Lâmpada Tubular LED</div></div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" class="light-switch" data-name="Luz da Garagem" data-icon="bulb-icon-6" data-power="18" data-energy-id="energy-garagem">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="device-item">
+            <div class="device-info">
+              <div id="bulb-icon-7" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+              <div><strong>Refletor do Quintal</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Refletor de Alta PotÃªncia</div></div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" class="light-switch" data-name="Refletor do Quintal" data-icon="bulb-icon-7" data-power="50" data-energy-id="energy-quintal">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 3: CLIMATIZAÇÃO -->
+    <div id="tab-climatizacao" class="tab-content">
+      <div class="dashboard-grid">
+        <div class="card" style="grid-column: span 2;">
+          <div class="card-title">
+            <span>Ares-Condicionados</span>
+            <i class="fa-solid fa-snowflake" style="color: var(--blue-accent);"></i>
+          </div>
+
+          <div class="device-item ac-card">
+            <div class="device-info">
+              <div id="ac-icon-1" class="icon-box"><i class="fa-solid fa-snowflake"></i></div>
+              <div><strong>Sala de Estar</strong><div style="font-size: 0.75rem; color: var(--text-muted);">12.000 BTU - Inverter</div></div>
+            </div>
+            <div class="ac-controls">
+              <div class="temp-control">
+                <button type="button" class="btn-temp" onclick="adjustTemp('temp-sala', -1)">-</button>
+                <span id="temp-sala">22°C</span>
+                <button type="button" class="btn-temp" onclick="adjustTemp('temp-sala', 1)">+</button>
+              </div>
+              <label class="switch">
+                <input type="checkbox" class="ac-switch" data-name="Ar-condicionado da Sala" data-icon="ac-icon-1" data-power="1080" data-energy-id="energy-ac-sala">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="device-item ac-card">
+            <div class="device-info">
+              <div id="ac-icon-2" class="icon-box"><i class="fa-solid fa-snowflake"></i></div>
+              <div><strong>Quarto</strong><div style="font-size: 0.75rem; color: var(--text-muted);">9.000 BTU</div></div>
+            </div>
+            <div class="ac-controls">
+              <div class="temp-control">
+                <button type="button" class="btn-temp" onclick="adjustTemp('temp-quarto', -1)">-</button>
+                <span id="temp-quarto">24°C</span>
+                <button type="button" class="btn-temp" onclick="adjustTemp('temp-quarto', 1)">+</button>
+              </div>
+              <label class="switch">
+                <input type="checkbox" class="ac-switch" data-name="Ar-condicionado do Quarto" data-icon="ac-icon-2" data-power="810" data-energy-id="energy-ac-quarto">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="device-item ac-card">
+            <div class="device-info">
+              <div id="ac-icon-3" class="icon-box"><i class="fa-solid fa-snowflake"></i></div>
+              <div><strong>Quarto Principal</strong><div style="font-size: 0.75rem; color: var(--text-muted);">12.000 BTU - Inverter</div></div>
+            </div>
+            <div class="ac-controls">
+              <div class="temp-control">
+                <button type="button" class="btn-temp" onclick="adjustTemp('temp-quarto-p', -1)">-</button>
+                <span id="temp-quarto-p">20°C</span>
+                <button type="button" class="btn-temp" onclick="adjustTemp('temp-quarto-p', 1)">+</button>
+              </div>
+              <label class="switch">
+                <input type="checkbox" class="ac-switch" data-name="Ar-condicionado do Quarto Principal" data-icon="ac-icon-3" data-power="1080" data-energy-id="energy-ac-quarto-p">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 4: SEGURANÇA -->
+    <div id="tab-seguranca" class="tab-content">
+      <div class="dashboard-grid">
+        <div class="card">
+          <div class="card-title">
+            <span>Monitoramento de Câmeras</span>
+            <span class="status-badge status-ativo">Ativo</span>
+          </div>
+
+          <div class="camera-grid">
+            <div class="camera-screen">
+              <span class="rec-badge"><i class="fa-solid fa-circle"></i> REC</span>
+              <i class="fa-solid fa-video fa-2x"></i>
+              <span style="font-size: 0.75rem;">Garagem</span>
+            </div>
+            <div class="camera-screen">
+              <span class="rec-badge"><i class="fa-solid fa-circle"></i> REC</span>
+              <i class="fa-solid fa-video fa-2x"></i>
+              <span style="font-size: 0.75rem;">Entrada</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Sensores de Segurança</span>
+            <i class="fa-solid fa-shield-halved" style="color: var(--blue-accent);"></i>
+          </div>
+
+          <div class="device-item">
+            <div class="device-info">
+              <div id="sensor-icon-1" class="icon-box"><i class="fa-solid fa-door-closed"></i></div>
+              <div><strong>Portão Principal</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Sensor de Abertura</div></div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" class="sensor-switch" data-name="Portão Principal" data-icon="sensor-icon-1" data-type="door">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="device-item">
+            <div class="device-info">
+              <div id="sensor-icon-2" class="icon-box"><i class="fa-solid fa-person-walking"></i></div>
+              <div><strong>Sensor Garagem</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Detecção de Movimento</div></div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" class="sensor-switch" data-name="Sensor de Movimento da Garagem" data-icon="sensor-icon-2" data-type="motion">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="device-item">
+            <div class="device-info">
+              <div id="sensor-icon-3" class="icon-box"><i class="fa-solid fa-window-maximize"></i></div>
+              <div><strong>Janela da Sala</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Sensor Magnético</div></div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" class="sensor-switch" data-name="Janela da Sala" data-icon="sensor-icon-3" data-type="door">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 5: CONSUMO DE ENERGIA -->
+    <div id="tab-energia" class="tab-content">
+      <div class="dashboard-grid">
+        <div class="card" style="grid-column: span 2;">
+          <div class="card-title">
+            <span>Métricas Globais de Energia &amp; Tempo</span>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button type="button" class="btn-reset-all-timers" onclick="resetAllDeviceTimers()" title="Reiniciar contadores de tempo">
+                <i class="fa-solid fa-rotate-left"></i> Zerar Contadores
+              </button>
+              <i class="fa-solid fa-bolt" style="color: var(--blue-accent);"></i>
+            </div>
+          </div>
+
+          <div class="energy-metrics">
+            <div class="metric-box"><h4>Hoje</h4><span>4.2 kWh</span></div>
+            <div class="metric-box"><h4>Mês</h4><span>128 kWh</span></div>
+            <div class="metric-box"><h4>Estimativa</h4><span>R$ 115</span></div>
+            <div class="metric-box">
+              <h4>Tempo Ativo Total</h4>
+              <span id="total-time-all-devices" style="color: var(--blue-accent);">00h 00m 00s</span>
+            </div>
+          </div>
+
+          <div class="chart-placeholder">
+            <div class="bar" style="height: 40%;"></div>
+            <div class="bar" style="height: 60%;"></div>
+            <div class="bar" style="height: 80%;"></div>
+            <div class="bar" style="height: 50%;"></div>
+            <div class="bar" style="height: 90%;"></div>
+            <div class="bar" style="height: 70%;"></div>
+            <div class="bar" style="height: 100%;"></div>
+          </div>
+        </div>
+
+        <!-- Climatização com Contabilização de Tempo -->
+        <div class="card">
+          <div class="card-title">
+            <span>Consumo da Climatização</span>
+            <i class="fa-solid fa-snowflake" style="color: var(--blue-accent);"></i>
+          </div>
+
+          <div class="device-item energy-item">
+            <div class="device-info">
+              <i class="fa-solid fa-snowflake" style="color: var(--blue-accent);"></i>
+              <div class="energy-device-details">
+                <strong>Sala de Estar</strong> (1080W)
+                <div class="device-timer-tag" id="timer-tag-energy-ac-sala">
+                  <i class="fa-regular fa-clock"></i> Tempo: <span id="timer-text-energy-ac-sala">00h 00m 00s</span>
+                </div>
+              </div>
+            </div>
+            <div class="energy-values">
+              <span id="energy-ac-sala" class="energy-kwh-value">0.00 kWh/dia</span>
+              <span class="energy-status-label" id="status-label-energy-ac-sala">Desligado</span>
+            </div>
+          </div>
+
+          <div class="device-item energy-item">
+            <div class="device-info">
+              <i class="fa-solid fa-snowflake" style="color: var(--blue-accent);"></i>
+              <div class="energy-device-details">
+                <strong>Quarto</strong> (810W)
+                <div class="device-timer-tag" id="timer-tag-energy-ac-quarto">
+                  <i class="fa-regular fa-clock"></i> Tempo: <span id="timer-text-energy-ac-quarto">00h 00m 00s</span>
+                </div>
+              </div>
+            </div>
+            <div class="energy-values">
+              <span id="energy-ac-quarto" class="energy-kwh-value">0.00 kWh/dia</span>
+              <span class="energy-status-label" id="status-label-energy-ac-quarto">Desligado</span>
+            </div>
+          </div>
+
+          <div class="device-item energy-item">
+            <div class="device-info">
+              <i class="fa-solid fa-snowflake" style="color: var(--blue-accent);"></i>
+              <div class="energy-device-details">
+                <strong>Quarto Principal</strong> (1080W)
+                <div class="device-timer-tag" id="timer-tag-energy-ac-quarto-p">
+                  <i class="fa-regular fa-clock"></i> Tempo: <span id="timer-text-energy-ac-quarto-p">00h 00m 00s</span>
+                </div>
+              </div>
+            </div>
+            <div class="energy-values">
+              <span id="energy-ac-quarto-p" class="energy-kwh-value">0.00 kWh/dia</span>
+              <span class="energy-status-label" id="status-label-energy-ac-quarto-p">Desligado</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Iluminação com Contabilização de Tempo -->
+        <div class="card">
+          <div class="card-title">
+            <span>Consumo da Iluminação</span>
+            <i class="fa-solid fa-plug" style="color: var(--orange-bright);"></i>
+          </div>
+
+          <div class="device-item energy-item">
+            <div class="device-info">
+              <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i>
+              <div class="energy-device-details">
+                <strong>Sala de Estar</strong> (12W)
+                <div class="device-timer-tag" id="timer-tag-energy-sala">
+                  <i class="fa-regular fa-clock"></i> Tempo: <span id="timer-text-energy-sala">00h 00m 00s</span>
+                </div>
+              </div>
+            </div>
+            <div class="energy-values">
+              <span id="energy-sala" class="energy-kwh-value">0.00 kWh/dia</span>
+              <span class="energy-status-label" id="status-label-energy-sala">Desligado</span>
+            </div>
+          </div>
+
+          <div class="device-item energy-item">
+            <div class="device-info">
+              <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i>
+              <div class="energy-device-details">
+                <strong>Cozinha</strong> (15W)
+                <div class="device-timer-tag" id="timer-tag-energy-cozinha">
+                  <i class="fa-regular fa-clock"></i> Tempo: <span id="timer-text-energy-cozinha">00h 00m 00s</span>
+                </div>
+              </div>
+            </div>
+            <div class="energy-values">
+              <span id="energy-cozinha" class="energy-kwh-value">0.00 kWh/dia</span>
+              <span class="energy-status-label" id="status-label-energy-cozinha">Desligado</span>
+            </div>
+          </div>
+
+          <div class="device-item energy-item">
+            <div class="device-info">
+              <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i>
+              <div class="energy-device-details">
+                <strong>Quarto Principal</strong> (9W)
+                <div class="device-timer-tag" id="timer-tag-energy-quarto-p">
+                  <i class="fa-regular fa-clock"></i> Tempo: <span id="timer-text-energy-quarto-p">00h 00m 00s</span>
+                </div>
+              </div>
+            </div>
+            <div class="energy-values">
+              <span id="energy-quarto-p" class="energy-kwh-value">0.00 kWh/dia</span>
+              <span class="energy-status-label" id="status-label-energy-quarto-p">Desligado</span>
+            </div>
+          </div>
+
+          <div class="device-item energy-item">
+            <div class="device-info">
+              <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i>
+              <div class="energy-device-details">
+                <strong>Quarto 2</strong> (9W)
+                <div class="device-timer-tag" id="timer-tag-energy-quarto-2">
+                  <i class="fa-regular fa-clock"></i> Tempo: <span id="timer-text-energy-quarto-2">00h 00m 00s</span>
+                </div>
+              </div>
+            </div>
+            <div class="energy-values">
+              <span id="energy-quarto-2" class="energy-kwh-value">0.00 kWh/dia</span>
+              <span class="energy-status-label" id="status-label-energy-quarto-2">Desligado</span>
+            </div>
+          </div>
+
+          <div class="device-item energy-item">
+            <div class="device-info">
+              <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i>
+              <div class="energy-device-details">
+                <strong>Banheiro</strong> (10W)
+                <div class="device-timer-tag" id="timer-tag-energy-banheiro">
+                  <i class="fa-regular fa-clock"></i> Tempo: <span id="timer-text-energy-banheiro">00h 00m 00s</span>
+                </div>
+              </div>
+            </div>
+            <div class="energy-values">
+              <span id="energy-banheiro" class="energy-kwh-value">0.00 kWh/dia</span>
+              <span class="energy-status-label" id="status-label-energy-banheiro">Desligado</span>
+            </div>
+          </div>
+
+          <div class="device-item energy-item">
+            <div class="device-info">
+              <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i>
+              <div class="energy-device-details">
+                <strong>Garagem</strong> (18W)
+                <div class="device-timer-tag" id="timer-tag-energy-garagem">
+                  <i class="fa-regular fa-clock"></i> Tempo: <span id="timer-text-energy-garagem">00h 00m 00s</span>
+                </div>
+              </div>
+            </div>
+            <div class="energy-values">
+              <span id="energy-garagem" class="energy-kwh-value">0.00 kWh/dia</span>
+              <span class="energy-status-label" id="status-label-energy-garagem">Desligado</span>
+            </div>
+          </div>
+
+          <div class="device-item energy-item">
+            <div class="device-info">
+              <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i>
+              <div class="energy-device-details">
+                <strong>Refletor do Quintal</strong> (50W)
+                <div class="device-timer-tag" id="timer-tag-energy-quintal">
+                  <i class="fa-regular fa-clock"></i> Tempo: <span id="timer-text-energy-quintal">00h 00m 00s</span>
+                </div>
+              </div>
+            </div>
+            <div class="energy-values">
+              <span id="energy-quintal" class="energy-kwh-value">0.00 kWh/dia</span>
+              <span class="energy-status-label" id="status-label-energy-quintal">Desligado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 6: INTELIGÊNCIA ADAPTATIVA -->
+    <div id="tab-inteligencia" class="tab-content">
+      <div class="ai-banner">
+        <div class="ai-header-info">
+          <i class="fa-solid fa-wand-magic-sparkles fa-2x" style="color: var(--orange-bright);"></i>
+          <div>
+            <h2>Núcleo de Inteligência Adaptativa</h2>
+            <p>O DOMUS monitora e analisa o comportamento da residência em tempo real, sugerindo automações eficientes.</p>
+          </div>
+        </div>
+        <span class="status-badge status-ativo"><i class="fa-solid fa-microchip"></i> Análise Ativa</span>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="card" style="grid-column: span 2;">
+          <div class="card-title">
+            <span>🧠  Sugestões Identificadas</span>
+            <i class="fa-solid fa-brain" style="color: var(--orange-bright);"></i>
+          </div>
+
+          <div id="adaptive-suggestions-container">
+            <!-- Sugestões da Inteligência Adaptativa geradas via JS -->
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Padrões de Comportamento</span>
+            <i class="fa-solid fa-chart-line" style="color: var(--blue-accent);"></i>
+          </div>
+
+          <ul class="pattern-list">
+            <li class="pattern-item">
+              <i class="fa-solid fa-clock pattern-icon"></i>
+              <div>
+                <strong>Uso Frequente Noturno</strong>
+                <p>A iluminação da sala é utilizada prioritariamente entre 19:00h e 23:00h.</p>
+              </div>
+            </li>
+            <li class="pattern-item">
+              <i class="fa-solid fa-leaf pattern-icon" style="color: #2ecc71;"></i>
+              <div>
+                <strong>Potencial de Economia</strong>
+                <p>Desligar dispositivos ociosos pode reduzir até 18% no consumo mensal.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 7: AUTOMAÇÕES -->
+    <div id="tab-automacoes" class="tab-content">
+      <div class="header-banner">
+        <div>
+          <h1>Automações da Residência</h1>
+          <p>Gerencie regras automáticas e rotinas inteligentes do seu DOMUS.</p>
+        </div>
+        <button type="button" class="btn-primary" style="width: auto; padding: 10px 20px;" onclick="openAutomationModal()"><i class="fa-solid fa-plus"></i> Criar Automação</button>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="card" style="grid-column: span 2;">
+          <div class="card-title">
+            <span>Automações Ativas</span>
+            <i class="fa-solid fa-robot" style="color: var(--blue-accent);"></i>
+          </div>
+
+          <div id="automations-cards-container" class="automations-grid">
+            <!-- Cards de Automações inseridos dinamicamente -->
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Resumo de Automações</span>
+            <i class="fa-solid fa-sliders" style="color: var(--orange-bright);"></i>
+          </div>
+
+          <div class="device-item">
+            <div>
+              <strong>Total Configurado</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Regras criadas no sistema</div>
+            </div>
+            <strong id="automations-stat-total" style="font-size: 1.2rem; color: var(--orange-bright);">3</strong>
+          </div>
+
+          <div class="device-item">
+            <div>
+              <strong>Execuções este mês</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Acionamentos automáticos</div>
+            </div>
+            <strong style="font-size: 1.2rem; color: var(--blue-accent);">148</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 8: PERFIL -->
+    <div id="tab-perfil" class="tab-content">
+      
+      <!-- 1. TOPO DO PERFIL (MINIMALISTA) -->
+      <div class="profile-header-card">
+        <div class="profile-main-info">
+          <div class="profile-avatar-container">
+            <div class="icon-box active-glow profile-avatar" id="profile-avatar-icon">
+              <i class="fa-solid fa-user-astronaut fa-2x"></i>
+            </div>
+            <span class="online-indicator" title="Usuário Ativo"></span>
+          </div>
+          <div class="profile-text-details">
+            <div class="profile-name-row">
+              <h2 id="profile-display-name">Matheus D. Lucca</h2>
+              <span class="profile-username" id="profile-display-handle">@01_Lucca</span>
+            </div>
+            <div class="profile-badges">
+              <span class="badge badge-admin"><i class="fa-solid fa-shield-halved"></i> Administrador do Sistema</span>
+              <span class="badge badge-tech"><i class="fa-solid fa-microchip"></i> DOMUS Pro Connect</span>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn-ai-action btn-ai-secondary btn-edit-profile-top" onclick="openEditProfileModal()">
+          <i class="fa-solid fa-pen-to-square"></i> Editar perfil
+        </button>
+      </div>
+
+      <!-- 2. AÇÕES RÁPIDAS -->
+      <div class="profile-quick-actions-bar">
+        <div class="quick-actions-header">
+          <i class="fa-solid fa-bolt" style="color: var(--orange-bright);"></i>
+          <span>Ações rápidas</span>
+        </div>
+        <div class="quick-actions-buttons">
+          <button type="button" class="btn-quick-action" onclick="openEditProfileModal()">
+            <i class="fa-solid fa-pen-to-square"></i> Editar perfil
+          </button>
+          <button type="button" class="btn-quick-action" onclick="openAddResidentModal()">
+            <i class="fa-solid fa-user-plus"></i> Gerenciar moradores
+          </button>
+          <button type="button" class="btn-quick-action" onclick="openChangePasswordAlert()">
+            <i class="fa-solid fa-key"></i> Alterar senha
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. RESIDÊNCIA + MORADORES (LADO A LADO) -->
+      <div class="profile-two-columns">
+        <!-- RESUMO DA RESIDÊNCIA COMPACTO -->
+        <div class="card profile-compact-card">
+          <div class="card-title">
+            <span>Resumo da Residência</span>
+            <i class="fa-solid fa-house-chimney" style="color: var(--blue-accent);"></i>
+          </div>
+          <div class="residence-clean-box">
+            <div class="residence-title-row">
+              <h4>Residência Lucca</h4>
+              <span class="residence-unit-text"><i class="fa-solid fa-location-dot"></i> Bloco A &middot; Unidade 402</span>
+            </div>
+            <div class="residence-inline-stats">
+              <span><strong>6</strong> Cômodos</span>
+              <span class="inline-bullet">&middot;</span>
+              <span><strong id="profile-total-devices">13</strong> Dispositivos</span>
+              <span class="inline-bullet">&middot;</span>
+              <span><strong id="profile-automations-count">3</strong> Automações</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MORADORES CADASTRADOS COMPACTO -->
+        <div class="card profile-compact-card">
+          <div class="card-title">
+            <span>Moradores &mdash; <span id="residents-count-badge">2</span></span>
+            <button type="button" class="btn-mini-add" onclick="openAddResidentModal()">
+              <i class="fa-solid fa-plus"></i> Adicionar morador
+            </button>
+          </div>
+          <div class="residents-list" id="residents-list-container"></div>
+        </div>
+      </div>
+
+      <!-- 4. ESTATÍSTICAS DE USO DO DOMUS (HORIZONTAL & COMPACTO) -->
+      <div class="card profile-stats-card">
+        <div class="card-title">
+          <span>Estatísticas de Uso do DOMUS</span>
+          <i class="fa-solid fa-chart-line" style="color: var(--orange-bright);"></i>
+        </div>
+        <div class="stats-horizontal-strip">
+          <div class="stat-strip-box">
+            <i class="fa-solid fa-lightbulb stat-strip-icon" style="color: var(--orange-bright);"></i>
+            <div class="stat-strip-content">
+              <strong id="usage-light-activations">142</strong>
+              <span>Acionamentos de Luzes</span>
+            </div>
+          </div>
+          <div class="stat-strip-sep"></div>
+          <div class="stat-strip-box">
+            <i class="fa-solid fa-wand-magic-sparkles stat-strip-icon" style="color: var(--blue-accent);"></i>
+            <div class="stat-strip-content">
+              <strong>89%</strong>
+              <span>Aproveitamento de Automações</span>
+            </div>
+          </div>
+          <div class="stat-strip-sep"></div>
+          <div class="stat-strip-box">
+            <i class="fa-solid fa-leaf stat-strip-icon" style="color: #2ecc71;"></i>
+            <div class="stat-strip-content">
+              <strong>~18%</strong>
+              <span>Economia Estimada pela IA</span>
+            </div>
+          </div>
+          <div class="stat-strip-sep"></div>
+          <div class="stat-strip-box">
+            <i class="fa-solid fa-bolt stat-strip-icon" style="color: #f1c40f;"></i>
+            <div class="stat-strip-content">
+              <strong>128 kWh</strong>
+              <span>Consumo Total no Mês</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. PREFERêNCIAS & 6. APARENCIA E ACESSIBILIDADE (LADO A LADO) -->
+      <div class="profile-two-columns">
+        <!-- 5. PREFERÊNCIAS DO DOMUS -->
+        <div class="card profile-compact-card">
+          <div class="card-title">
+            <span>Preferências do DOMUS</span>
+            <i class="fa-solid fa-sliders" style="color: var(--blue-accent);"></i>
+          </div>
+
+          <div class="minimal-list">
+            <div class="minimal-item">
+              <div class="minimal-item-info">
+                <i class="fa-solid fa-bell minimal-icon" style="color: var(--blue-accent);"></i>
+                <div>
+                  <strong>Notificações em Tempo Real</strong>
+                  <p>Alertas no painel e flutuantes</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="notifications-toggle" checked onchange="toggleNotificationsState(this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="minimal-item">
+              <div class="minimal-item-info">
+                <i class="fa-solid fa-brain minimal-icon" style="color: var(--orange-bright);"></i>
+                <div>
+                  <strong>Inteligência Adaptativa</strong>
+                  <p>Ajustes e aprendizado automático</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" checked onchange="logActivity('Inteligência Adaptativa ' + (this.checked ? 'ativada' : 'pausada'), 'fa-solid fa-brain', 'var(--blue-accent)')">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="minimal-item">
+              <div class="minimal-item-info">
+                <i class="fa-solid fa-bolt minimal-icon" style="color: #f1c40f;"></i>
+                <div>
+                  <strong>Alertas de Uso Prolongado</strong>
+                  <p>Avisos de economia de energia</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" checked onchange="logActivity('Alertas de uso prolongado ' + (this.checked ? 'ativados' : 'desativados'), 'fa-solid fa-bolt', 'var(--orange-bright)')">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. APARÊNCIA E ACESSIBILIDADE -->
+        <div class="card profile-compact-card">
+          <div class="card-title">
+            <span>Aparência e Acessibilidade</span>
+            <i class="fa-solid fa-universal-access" style="color: var(--orange-bright);"></i>
+          </div>
+
+          <div class="minimal-list">
+            <div class="minimal-item">
+              <div class="minimal-item-info">
+                <i class="fa-solid fa-moon minimal-icon" style="color: var(--blue-accent);"></i>
+                <div>
+                  <strong>Modo Claro / Escuro</strong>
+                  <p>Alterar tema do painel</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="profile-theme-toggle">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="minimal-item">
+              <div class="minimal-item-info">
+                <i class="fa-solid fa-volume-high minimal-icon" style="color: var(--orange-bright);"></i>
+                <div>
+                  <strong>Comando de Voz Elevado</strong>
+                  <p>Feedback por áudio no painel</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" checked onchange="logActivity('Comando de voz elevado ' + (this.checked ? 'ativado' : 'desativado'), 'fa-solid fa-volume-high', 'var(--blue-accent)')">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="minimal-item">
+              <div class="minimal-item-info">
+                <i class="fa-solid fa-font minimal-icon" style="color: #2ecc71;"></i>
+                <div>
+                  <strong>Fonte Ampliada</strong>
+                  <p>Aumentar tamanho do texto</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="large-font-toggle">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. SEGURANÇA DA CONTA -->
+      <div class="card profile-security-card">
+        <div class="card-title">
+          <span>Segurança da Conta</span>
+          <i class="fa-solid fa-lock" style="color: var(--blue-accent);"></i>
+        </div>
+
+        <div class="security-minimal-grid">
+          <div class="security-minimal-item">
+            <div class="security-item-left">
+              <i class="fa-solid fa-shield-halved security-item-icon" style="color: var(--blue-accent);"></i>
+              <div>
+                <strong>Autenticação em Duas Etapas (2FA)</strong>
+                <p>Proteção reforçada via aplicativo autenticador</p>
+              </div>
+            </div>
+            <span class="status-badge status-ativo"><i class="fa-solid fa-check"></i> Ativo</span>
+          </div>
+
+          <div class="security-minimal-item">
+            <div class="security-item-left">
+              <i class="fa-solid fa-key security-item-icon" style="color: var(--orange-bright);"></i>
+              <div>
+                <strong>Senha do Painel DOMUS</strong>
+                <p>Última alteração há 30 dias</p>
+              </div>
+            </div>
+            <button type="button" class="btn-ai-action btn-ai-secondary" onclick="openChangePasswordAlert()">
+              <i class="fa-solid fa-key"></i> Alterar senha
+            </button>
+          </div>
+
+          <div class="security-minimal-item">
+            <div class="security-item-left">
+              <i class="fa-solid fa-mobile-screen-button security-item-icon" style="color: var(--blue-accent);"></i>
+              <div>
+                <strong>Dispositivos Conectados</strong>
+                <p>2 dispositivos com acesso ativo</p>
+              </div>
+            </div>
+            <button type="button" class="btn-ai-action btn-ai-secondary" onclick="openDevicesModal()">
+              <i class="fa-solid fa-eye"></i> Ver dispositivos
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. CONFIGURAÇÕES AVANÇADAS (RECOLHÍVEL) -->
+      <details class="card advanced-settings-card">
+        <summary class="advanced-settings-summary">
+          <span class="advanced-summary-left">
+            <i class="fa-solid fa-gear" style="color: var(--orange-bright);"></i>
+            <span>Configurações avançadas</span>
+          </span>
+          <i class="fa-solid fa-chevron-down advanced-arrow"></i>
+        </summary>
+        <div class="advanced-settings-content">
+          <div class="advanced-subitem">
+            <div>
+              <strong>Limpar Histórico de Atividades</strong>
+              <p>Remove os logs de acionamentos recentes da memória local da sessão.</p>
+            </div>
+            <button type="button" class="btn-ai-action btn-ai-secondary" onclick="clearActivityHistory()">
+              <i class="fa-solid fa-trash-can"></i> Limpar histórico
+            </button>
+          </div>
+          <div class="advanced-subitem">
+            <div>
+              <strong>Diagnóstico de Rede Matter / Zigbee</strong>
+              <p>Testa latência e integridade de resposta dos sensores e atuadores.</p>
+            </div>
+            <button type="button" class="btn-ai-action btn-ai-secondary" onclick="runNetworkDiagnostics()">
+              <i class="fa-solid fa-network-wired"></i> Executar teste
+            </button>
+          </div>
+          <div class="advanced-subitem">
+            <div>
+              <strong>Exportar Relatório Mensal</strong>
+              <p>Gera arquivo com métricas de consumo e eficiência energética.</p>
+            </div>
+            <button type="button" class="btn-ai-action btn-ai-secondary" onclick="exportMonthlyReport()">
+              <i class="fa-solid fa-download"></i> Exportar (.CSV)
+            </button>
+          </div>
+        </div>
+      </details>
+
+    </div>
+
+    <!-- RODAPÉ (FOOTER) -->
+    <footer class="domus-footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="footer-logo">DOMUS</span>
+          <p class="footer-copy">&copy; 2026 DOMUS &mdash; Sistema Inteligente de Automação Residencial &mdash; Direitos Autorais Reservados</p>
+        </div>
+        <p class="footer-quote">&ldquo;Integrando a tecnologia ao seu modo de viver.&rdquo;</p>
+        <div class="footer-credits">
+          <span>Desenvolvido por <strong>Matheus D'Lucca &amp; Arthur Carvalho</strong></span>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- MODAL DE EDITAR PERFIL -->
+  <div id="modal-edit-profile" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-pen" style="color: var(--orange-bright);"></i> Editar Perfil do Usuário</h3>
+        <button type="button" class="btn-close-modal" onclick="closeEditProfileModal()">&times;</button>
+      </div>
+      <form id="form-edit-profile" onsubmit="handleSaveProfile(event)">
+        <div class="form-group">
+          <label>Nome Completo</label>
+          <input type="text" id="edit-profile-name" value="Matheus D. Lucca" required>
+        </div>
+        <div class="form-group">
+          <label>Identificador (@usuário)</label>
+          <input type="text" id="edit-profile-handle" value="@01_Lucca" required>
+        </div>
+        <div class="form-group">
+          <label>Ícone / Avatar</label>
+          <select id="edit-profile-avatar-select" class="custom-select">
+            <option value="fa-user-astronaut" selected>Astronauta (Atual)</option>
+            <option value="fa-user-tie">Executivo</option>
+            <option value="fa-user-gear">Engenheiro / Técnico</option>
+            <option value="fa-user-ninja">Ninja</option>
+            <option value="fa-user-graduate">Acadêmico</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-ai-action btn-ai-secondary" onclick="closeEditProfileModal()">Cancelar</button>
+          <button type="submit" class="btn-ai-action btn-ai-primary"><i class="fa-solid fa-check"></i> Salvar Perfil</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE ADICIONAR MORADOR -->
+  <div id="modal-add-resident" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-plus" style="color: var(--orange-bright);"></i> Cadastrar Novo Morador</h3>
+        <button type="button" class="btn-close-modal" onclick="closeAddResidentModal()">&times;</button>
+      </div>
+      <form id="form-add-resident" onsubmit="handleAddResident(event)">
+        <div class="form-group">
+          <label>Nome / Apelido</label>
+          <input type="text" id="resident-name" placeholder="Ex: Nome/Apelido" required>
+        </div>
+        <div class="form-group">
+          <label>Nível de Permissão</label>
+          <select id="resident-role" class="custom-select" required>
+            <option value="Administrador">Administrador (Acesso Total)</option>
+            <option value="Morador" selected>Morador (Acesso Padrão)</option>
+            <option value="Visitante">Visitante (Acesso Restrito)</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-ai-action btn-ai-secondary" onclick="closeAddResidentModal()">Cancelar</button>
+          <button type="submit" class="btn-ai-action btn-ai-primary"><i class="fa-solid fa-check"></i> Salvar Morador</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE CRIAR AUTOMAÇÃo -->
+  <div id="modal-add-automation" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-robot" style="color: var(--orange-bright);"></i> Criar Nova Automação</h3>
+        <button type="button" class="btn-close-modal" onclick="closeAutomationModal()">&times;</button>
+      </div>
+      <form id="form-add-automation" onsubmit="handleSaveAutomation(event)">
+        <div class="form-group">
+          <label>Nome da Automação</label>
+          <input type="text" id="auto-title" placeholder="Ex: Apagar luzes da sala sem movimento" required>
+        </div>
+
+        <div class="form-group">
+          <label>QUANDO (Gatilho)</label>
+          <select id="auto-trigger" required>
+            <option value="Sem Movimento (5min)">5 minutos sem movimento na Sala</option>
+            <option value="Horário (22:30h)">Horário atingir 22:30h</option>
+            <option value="Porta/Janela Aberta">Porta/Janela aberta por mais de 10min</option>
+            <option value="Consumo Elevado">Consumo ultrapassar 3.5 kWh</option>
+            <option value="Temperatura Altura">Temperatura ambiente subir acima de 26°C</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>ENTÃO (Ação Executada)</label>
+          <select id="auto-action" required>
+            <option value="Apagar Iluminação">Apagar lâmpadas do cômodo</option>
+            <option value="Ativar Modo Noturno">Ativar Modo Noturno e Travar Portão</option>
+            <option value="Ajustar Climatização">Ajustar Ar-Condicionado para 23°C</option>
+            <option value="Enviar Notificação">Enviar alerta de segurança ao usuário</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-ai-action btn-ai-secondary" onclick="closeAutomationModal()">Cancelar</button>
+          <button type="submit" class="btn-ai-action btn-ai-primary"><i class="fa-solid fa-check"></i> Salvar Automação</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE HISTÓRICO COMPLETO -->
+  <div id="modal-full-history" class="modal-overlay">
+    <div class="modal-content modal-history-content">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-clock-rotate-left" style="color: var(--blue-accent);"></i> Histórico de Eventos do DOMUS</h3>
+        <button type="button" class="btn-close-modal" onclick="closeFullHistoryModal()">&times;</button>
+      </div>
+      <p class="modal-subtitle" style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Registro completo de eventos e acionamentos na sessão atual.</p>
+      
+      <div class="history-filter-row">
+        <div class="history-filter-pills">
+          <button type="button" class="history-pill active" onclick="filterHistoryLogs('all', this)">Todos</button>
+          <button type="button" class="history-pill" onclick="filterHistoryLogs('luz', this)">💡 Iluminação</button>
+          <button type="button" class="history-pill" onclick="filterHistoryLogs('clima', this)">/weather Clima</button>
+          <button type="button" class="history-pill" onclick="filterHistoryLogs('seguranca', this)">🛡️ Segurança</button>
+        </div>
+        <button type="button" class="btn-ai-action btn-ai-secondary" style="font-size: 0.75rem; padding: 5px 12px;" onclick="clearActivityHistory()">
+          <i class="fa-solid fa-trash-can"></i> Limpar logs
+        </button>
+      </div>
+
+      <ul class="activity-list full-history-scroll" id="full-history-log">
+        <!-- Itens inseridos dinamicamente -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT INTEGRADO -->
+  <script>
+    // @ts-nocheck
+    // ESTADO E LOCALSTORAGE
+    let isNotificationsEnabled = localStorage.getItem('domus_notif_enabled') !== 'false';
+    let handledSituations = JSON.parse(localStorage.getItem('domus_handled_situations') || '{}');
+
+    // CONTABILIZAÃ‡ÃƒO DE TEMPO DOS DISPOSITIVOS
+    // Armazena segundos acumulados por dispositivo: { [energyId]: number (segundos) }
+    let deviceRunTimes = JSON.parse(localStorage.getItem('domus_device_times') || '{}');
+
+    // Mapeamento de cronometros reais individuais por lâmpada (Key: iconId)
+    const lightTimers = {};
+    const FIVE_MINUTES_MS = 300000; // 5 minutos em milissegundos (300.000 ms)
+
+    let automationsData = JSON.parse(localStorage.getItem('domus_automations') || 'null') || [
+      {
+        id: 'auto_1',
+        title: 'Modo Boa Noite',
+        trigger: '22:30h',
+        action: 'Apagar luzes & ativar alarme',
+        active: true,
+        icon: 'fa-moon'
+      },
+      {
+        id: 'auto_2',
+        title: 'Luz AutomÃ¡tica da Sala',
+        trigger: 'Movimento detectado',
+        action: 'Ligar iluminaÃ§Ã£o em 70%',
+        active: true,
+        icon: 'fa-lightbulb'
+      },
+      {
+        id: 'auto_3',
+        title: 'Economia Inteligente',
+        trigger: '5min sem movimento',
+        action: 'Apagar lÃ¢mpada da sala',
+        active: true,
+        icon: 'fa-leaf'
+      }
+    ];
+
+    function saveAutomationsToStorage() {
+      localStorage.setItem('domus_automations', JSON.stringify(automationsData));
+      updateAutomationsUI();
+    }
+
+    function toggleNotificationsState(enabled) {
+      isNotificationsEnabled = enabled;
+      localStorage.setItem('domus_notif_enabled', enabled ? 'true' : 'false');
+      const statusText = enabled ? 'ativadas' : 'desativadas';
+      logActivity(`NotificaÃ§Ãµes em tempo real ${statusText}`, 'fa-solid fa-bell', enabled ? 'var(--blue-accent)' : 'var(--orange-bright)');
+
+      if (!enabled) {
+        const container = document.getElementById('toast-container');
+        if (container) container.innerHTML = '';
+      }
+    }
+
+    // NAVEGAÇÃO DE ABAS CENTRALIZADA & FLUIDA
+    const navItems = document.querySelectorAll('.nav-item');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    function switchTab(tabId, targetSelector) {
+      navItems.forEach(i => i.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+
+      const targetNav = document.querySelector(`.nav-item[data-tab="${tabId}"]`);
+      if (targetNav) targetNav.classList.add('active');
+
+      const targetTab = document.getElementById(tabId);
+      if (targetTab) {
+        targetTab.classList.add('active');
+        if (targetSelector) {
+          setTimeout(() => {
+            const targetEl = document.querySelector(targetSelector);
+            if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 80);
+        } else {
+          const mainArea = document.querySelector('.main-content');
+          if (mainArea) mainArea.scrollTo({ top: 0, behavior: 'smooth' });
         }
-    </script>
+      }
+    }
+
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const targetTab = item.getAttribute('data-tab');
+        switchTab(targetTab);
+      });
+    });
+
+    // HISTÓRICO DE ATIVIDADES (COMPACTO NO DASHBOARD + COMPLETO NO MODAL)
+    const activityLog = document.getElementById('activity-log');
+    const fullHistoryLog = document.getElementById('full-history-log');
+
+    function logActivity(message, iconClass, iconColor) {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      // Classificar categoria para filtro
+      let cat = 'outros';
+      const msgLow = message.toLowerCase();
+      if (msgLow.includes('luz') || msgLow.includes('lâmpada')) cat = 'luz';
+      else if (msgLow.includes('ar-condicionado') || msgLow.includes('clima') || msgLow.includes('temperatura')) cat = 'clima';
+      else if (msgLow.includes('alarme') || msgLow.includes('sensor') || msgLow.includes('segurança')) cat = 'seguranca';
+
+      // Item para o card do dashboard
+      if (activityLog) {
+        const li = document.createElement('li');
+        li.className = 'activity-item';
+        li.innerHTML = `
+          <span><i class="${iconClass}" style="color: ${iconColor};"></i> ${message}</span>
+          <span style="color: var(--text-muted);">${timeStr}</span>
+        `;
+        activityLog.prepend(li);
+
+        // Manter o card de histórico do dashboard compacto (máximo 4 eventos mais recentes)
+        while (activityLog.children.length > 4) {
+          activityLog.removeChild(activityLog.lastElementChild);
+        }
+      }
+
+      // Item para o modal de histórico completo
+      if (fullHistoryLog) {
+        const fullLi = document.createElement('li');
+        fullLi.className = 'activity-item';
+        fullLi.setAttribute('data-category', cat);
+        fullLi.innerHTML = `
+          <span><i class="${iconClass}" style="color: ${iconColor};"></i> ${message}</span>
+          <span style="color: var(--text-muted);">${timeStr}</span>
+        `;
+        fullHistoryLog.prepend(fullLi);
+      }
+    }
+
+    function openFullHistoryModal() {
+      const modal = document.getElementById('modal-full-history');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeFullHistoryModal() {
+      const modal = document.getElementById('modal-full-history');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function filterHistoryLogs(category, btn) {
+      document.querySelectorAll('.history-pill').forEach(p => p.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const items = document.querySelectorAll('#full-history-log .activity-item');
+      items.forEach(item => {
+        const cat = item.getAttribute('data-category');
+        if (category === 'all' || cat === category) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    logActivity('Alarme Armado', 'fa-solid fa-shield-halved', 'var(--blue-accent)');
+
+    // FUNÇÕES DE FORMATO E GERENCIAMENTO DE TEMPO
+    function formatTime(totalSeconds) {
+      const hrs = Math.floor(totalSeconds / 3600);
+      const mins = Math.floor((totalSeconds % 3600) / 60);
+      const secs = totalSeconds % 60;
+      const pad = (n) => String(n).padStart(2, '0');
+      return `${pad(hrs)}h ${pad(mins)}m ${pad(secs)}s`;
+    }
+
+    function updateSingleDeviceTimerDisplay(energyId, isRunning, deviceType) {
+      const textSpan = document.getElementById(`timer-text-${energyId}`);
+      const tagDiv = document.getElementById(`timer-tag-${energyId}`);
+      const statusLabel = document.getElementById(`status-label-${energyId}`);
+
+      const seconds = deviceRunTimes[energyId] || 0;
+
+      if (textSpan) {
+        textSpan.innerText = formatTime(seconds);
+      }
+
+      if (tagDiv) {
+        const runningClass = deviceType === 'ac' ? 'timer-running-blue' : 'timer-running-orange';
+        if (isRunning) {
+          tagDiv.classList.add(runningClass);
+        } else {
+          tagDiv.classList.remove(runningClass);
+        }
+      }
+
+      if (statusLabel) {
+        if (isRunning) {
+          statusLabel.innerText = 'Ligado';
+          statusLabel.className = `energy-status-label ${deviceType === 'ac' ? 'status-on-blue' : 'status-on-orange'}`;
+        } else {
+          statusLabel.innerText = 'Desligado';
+          statusLabel.className = 'energy-status-label';
+        }
+      }
+    }
+
+    function updateGlobalTotalActiveTime() {
+      let totalSeconds = 0;
+      Object.values(deviceRunTimes).forEach(sec => {
+        totalSeconds += (sec || 0);
+      });
+
+      const totalDisplay = document.getElementById('total-time-all-devices');
+      if (totalDisplay) {
+        totalDisplay.innerText = formatTime(totalSeconds);
+      }
+    }
+
+    function resetAllDeviceTimers() {
+      if (confirm('Deseja zerar a contabilização de tempo de todos os dispositivos?')) {
+        deviceRunTimes = {};
+        localStorage.removeItem('domus_device_times');
+
+        // Atualiza a visualização de todos
+        document.querySelectorAll('.light-switch').forEach(sw => {
+          const energyId = sw.getAttribute('data-energy-id');
+          updateSingleDeviceTimerDisplay(energyId, sw.checked, 'light');
+        });
+        document.querySelectorAll('.ac-switch').forEach(sw => {
+          const energyId = sw.getAttribute('data-energy-id');
+          updateSingleDeviceTimerDisplay(energyId, sw.checked, 'ac');
+        });
+
+        updateGlobalTotalActiveTime();
+        logActivity('Contabilizadores de tempo reiniciados', 'fa-solid fa-rotate-left', 'var(--blue-accent)');
+      }
+    }
+
+    // CICLO DE CONTABILIZAÇÃO DE TEMPO (A CADA 1 SEGUNDO)
+    setInterval(() => {
+      let hasRunningDevice = false;
+
+      // Incrementa tempo para lâmpadas ligadas
+      document.querySelectorAll('.light-switch:checked').forEach(sw => {
+        const energyId = sw.getAttribute('data-energy-id');
+        deviceRunTimes[energyId] = (deviceRunTimes[energyId] || 0) + 1;
+        updateSingleDeviceTimerDisplay(energyId, true, 'light');
+        hasRunningDevice = true;
+      });
+
+      // Incrementa tempo para ares-condicionados ligados
+      document.querySelectorAll('.ac-switch:checked').forEach(sw => {
+        const energyId = sw.getAttribute('data-energy-id');
+        deviceRunTimes[energyId] = (deviceRunTimes[energyId] || 0) + 1;
+        updateSingleDeviceTimerDisplay(energyId, true, 'ac');
+        hasRunningDevice = true;
+      });
+
+      if (hasRunningDevice) {
+        updateGlobalTotalActiveTime();
+        localStorage.setItem('domus_device_times', JSON.stringify(deviceRunTimes));
+      }
+    }, 1000);
+
+    // SISTEMA DE NOTIFICAÇÕES FLUTUANTES (TOASTS)
+    function showToastNotification(options) {
+      if (!isNotificationsEnabled) return;
+
+      const { id, type, title, icon, message, badgeText, primaryBtn, secondaryBtn } = options;
+
+      if (id && handledSituations[id]) return;
+      if (id && document.getElementById(`toast-${id}`)) return;
+
+      const container = document.getElementById('toast-container');
+
+      const typeClasses = {
+        info: { border: 'toast-type-info', badge: 'badge-blue', defaultIcon: 'fa-solid fa-circle-info' },
+        suggestion: { border: 'toast-type-suggestion', badge: 'badge-orange', defaultIcon: 'fa-solid fa-lightbulb' },
+        warning: { border: 'toast-type-warning', badge: 'badge-orange', defaultIcon: 'fa-solid fa-triangle-exclamation' },
+        security: { border: 'toast-type-security', badge: 'badge-red', defaultIcon: 'fa-solid fa-shield-cat' }
+      };
+
+      const visual = typeClasses[type] || typeClasses.suggestion;
+
+      const toast = document.createElement('div');
+      toast.className = `toast-card ${visual.border}`;
+      if (id) toast.id = `toast-${id}`;
+
+      let primaryBtnHtml = primaryBtn ? `
+        <button type="button" class="btn-ai-action btn-ai-primary" onclick="${primaryBtn.action}">
+          <i class="${primaryBtn.icon || 'fa-solid fa-check'}"></i> ${primaryBtn.label}
+        </button>` : '';
+
+      let secondaryBtnHtml = secondaryBtn ? `
+        <button type="button" class="btn-ai-action btn-ai-secondary" onclick="${secondaryBtn.action}">
+          ${secondaryBtn.label}
+        </button>` : '';
+
+      const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      toast.innerHTML = `
+        <div class="toast-header">
+          <div class="toast-title-group">
+            <i class="${icon || visual.defaultIcon}"></i>
+            <span class="toast-title">${title}</span>
+          </div>
+          <span style="font-size: 0.7rem; color: var(--text-muted);">${timeNow}</span>
+          <button type="button" class="toast-close" onclick="dismissSituation('${id}')">&times;</button>
+        </div>
+        ${badgeText ? `<span class="toast-badge ${visual.badge}">${badgeText}</span>` : ''}
+        <div class="toast-body">${message}</div>
+        <div class="toast-actions">
+          ${primaryBtnHtml}
+          ${secondaryBtnHtml}
+        </div>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => { toast.classList.add('show'); }, 50);
+    }
+
+    function closeToastById(id) {
+      const toast = document.getElementById(`toast-${id}`);
+      if (toast) {
+        toast.classList.remove('show');
+        toast.classList.add('hide');
+        toast.addEventListener('animationend', () => { toast.remove(); });
+      }
+    }
+
+    function dismissSituation(situationId) {
+      if (situationId) {
+        handledSituations[situationId] = true;
+        localStorage.setItem('domus_handled_situations', JSON.stringify(handledSituations));
+        closeToastById(situationId);
+        removeAdaptiveSuggestionCard(situationId);
+      }
+    }
+
+    // REGISTRO E RENDERIZAÇÃO DE SUGESTÕES DINÂMICAS NA ABA DE INTELIGÊNCIA
+    function registerAdaptiveSuggestionInUI(sug) {
+      const container = document.getElementById('adaptive-suggestions-container');
+      if (!container) return;
+
+      const existingCard = document.getElementById(`adapt-card-${sug.id}`);
+      if (existingCard) return;
+
+      const emptyMsg = container.querySelector('div');
+      if (emptyMsg && emptyMsg.innerText.includes('Nenhuma nova sugestÃ£o')) {
+        emptyMsg.remove();
+      }
+
+      const card = document.createElement('div');
+      card.className = 'ai-card';
+      card.id = `adapt-card-${sug.id}`;
+      card.innerHTML = `
+        <div class="ai-card-header">
+          <span class="ai-tag tag-energy"><i class="${sug.icon}"></i> ${sug.badgeText}</span>
+          <span class="ai-time">AnÃ¡lise Recente</span>
+        </div>
+        <h4>${sug.title}</h4>
+        <p>${sug.adaptMsg}</p>
+        <div class="ai-actions">
+          <button type="button" class="btn-ai-action btn-ai-primary" onclick="convertDynamicSuggestionToAutomation('${sug.autoTitle}', '${sug.autoTrigger}', '${sug.autoAction}', '${sug.id}')">
+            <i class="fa-solid fa-robot"></i> Criar Automação
+          </button>
+          <button type="button" class="btn-ai-action btn-ai-secondary" onclick="dismissSituation('${sug.id}')">Ignorar SugestÃ£o</button>
+        </div>
+      `;
+      container.prepend(card);
+      updateDashboardAdaptiveUI(sug);
+    }
+
+    function removeAdaptiveSuggestionCard(situationId) {
+      const card = document.getElementById(`adapt-card-${situationId}`);
+      if (card) card.remove();
+      
+      const container = document.getElementById('adaptive-suggestions-container');
+      if (container && container.children.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 25px; color: var(--text-muted); font-size: 0.85rem;">
+            <i class="fa-solid fa-circle-check fa-2x" style="color: var(--blue-accent); margin-bottom: 8px; display: block;"></i>
+            Nenhuma nova sugestÃ£o pendente. Seu DOMUS estÃ¡ totalmente otimizado!
+          </div>`;
+      }
+      updateDashboardAdaptiveUI();
+    }
+
+    function updateDashboardAdaptiveUI(activeSug) {
+      const emptyBox = document.getElementById('dash-adaptive-empty');
+      const activeBox = document.getElementById('dash-adaptive-active');
+      const msgEl = document.getElementById('dash-adaptive-msg');
+
+      if (!emptyBox || !activeBox) return;
+
+      if (activeSug) {
+        if (msgEl) msgEl.innerText = activeSug.adaptMsg || activeSug.title || activeSug.toastMsg;
+        emptyBox.style.display = 'none';
+        activeBox.style.display = 'flex';
+      } else {
+        const container = document.getElementById('adaptive-suggestions-container');
+        const firstCard = container ? container.querySelector('.ai-card') : null;
+        if (firstCard) {
+          const title = firstCard.querySelector('h4')?.innerText || 'SugestÃ£o do DOMUS pendente';
+          const p = firstCard.querySelector('p')?.innerText || '';
+          if (msgEl) msgEl.innerText = p || title;
+          emptyBox.style.display = 'none';
+          activeBox.style.display = 'flex';
+        } else {
+          emptyBox.style.display = 'flex';
+          activeBox.style.display = 'none';
+        }
+      }
+    }
+
+    function resolveSituation(situationId) {
+      handledSituations[situationId] = true;
+      localStorage.setItem('domus_handled_situations', JSON.stringify(handledSituations));
+      closeToastById(situationId);
+      removeAdaptiveSuggestionCard(situationId);
+    }
+
+    function convertDynamicSuggestionToAutomation(autoTitle, autoTrigger, autoAction, situationId) {
+      openAutomationModalWithData(autoTitle, autoTrigger, autoAction);
+      resolveSituation(situationId);
+    }
+
+    // DISPARADOR INDIVIDUAL DE NOTIFICAÇÃO DE ILUMINAÇÃO (SUPORTA MÚLTIPLAS LÂMPADAS)
+    function triggerFiveMinuteLightAlert(deviceName, iconId) {
+      const situationId = `sit_light_${iconId}`;
+
+      if (handledSituations[situationId]) {
+        delete handledSituations[situationId];
+      }
+
+      const sug = {
+        id: situationId,
+        type: 'suggestion',
+        icon: 'fa-solid fa-lightbulb',
+        title: `💡 Desperdício: ${deviceName}`,
+        badgeText: 'Sugestão do DOMUS',
+        toastMsg: `A <strong>${deviceName}</strong> permaneceu acesa por mais de 5 minutos continuos sem movimento no ambiente.`,
+        adaptMsg: `O DOMUS identificou que a ${deviceName} permaneceu acesa por mais de 5 minutos seguidos.`,
+        actionLabel: 'Desligar lampada',
+        actionCode: `turnOffSpecificDevice('${iconId}'); resolveSituation('${situationId}');`,
+        autoTitle: `Desligar ${deviceName} Sem Movimento`,
+        autoTrigger: 'Sem Movimento (5min)',
+        autoAction: 'Apagar Iluminação'
+      };
+
+      showToastNotification({
+        id: sug.id,
+        type: sug.type,
+        title: sug.title,
+        icon: sug.icon,
+        badgeText: sug.badgeText,
+        message: sug.toastMsg,
+        primaryBtn: { label: sug.actionLabel, icon: 'fa-solid fa-power-off', action: sug.actionCode },
+        secondaryBtn: { label: 'Ignorar', action: `dismissSituation('${sug.id}')` }
+      });
+
+      registerAdaptiveSuggestionInUI(sug);
+    }
+
+    function turnOffSpecificDevice(iconId) {
+      const switchInput = document.querySelector(`input[data-icon="${iconId}"]`);
+      if (switchInput) {
+        switchInput.checked = false;
+        switchInput.dispatchEvent(new Event('change'));
+      }
+    }
+
+    // AUTOMAÇÕES
+    function updateAutomationsUI() {
+      const container = document.getElementById('automations-cards-container');
+      if (!container) return;
+
+      container.innerHTML = '';
+      automationsData.forEach((auto, idx) => {
+        const card = document.createElement('div');
+        card.className = 'automation-card';
+        card.innerHTML = `
+          <div class="automation-header">
+            <div class="automation-title-box">
+              <i class="fa-solid ${auto.icon || 'fa-robot'} auto-icon"></i>
+              <div>
+                <strong>${auto.title}</strong>
+                <span class="auto-badge">${auto.active ? 'Ativa' : 'Pausada'}</span>
+              </div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" ${auto.active ? 'checked' : ''} onchange="toggleAutomationActive(${idx}, this.checked)">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="automation-details">
+            <div><span class="auto-label">QUANDO:</span> ${auto.trigger}</div>
+            <div><span class="auto-label">ENTÃO:</span> ${auto.action}</div>
+          </div>
+          <div class="automation-actions">
+            <button type="button" class="btn-remove-resident" onclick="deleteAutomation(${idx})" title="Excluir Automação"><i class="fa-solid fa-trash-can"></i> Excluir</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      const totalStat = document.getElementById('automations-stat-total');
+      const profileStat = document.getElementById('profile-automations-count');
+      if (totalStat) totalStat.innerText = automationsData.length;
+      if (profileStat) profileStat.innerText = automationsData.length;
+    }
+
+    function toggleAutomationActive(index, isActive) {
+      automationsData[index].active = isActive;
+      saveAutomationsToStorage();
+      logActivity(`Automação "${automationsData[index].title}" ${isActive ? 'ativada' : 'pausada'}`, 'fa-solid fa-robot', 'var(--blue-accent)');
+    }
+
+    function deleteAutomation(index) {
+      if (confirm(`Deseja remover a automação "${automationsData[index].title}"?`)) {
+        const removed = automationsData.splice(index, 1);
+        saveAutomationsToStorage();
+        logActivity(`Automação "${removed[0].title}" removida`, 'fa-solid fa-trash-can', 'var(--orange-bright)');
+      }
+    }
+
+    function openAutomationModal() {
+      document.getElementById('modal-add-automation').classList.add('active');
+    }
+
+    function openAutomationModalWithData(title, trigger, action) {
+      openAutomationModal();
+      document.getElementById('auto-title').value = title;
+      if (trigger) document.getElementById('auto-trigger').value = trigger;
+      if (action) document.getElementById('auto-action').value = action;
+    }
+
+    function closeAutomationModal() {
+      document.getElementById('modal-add-automation').classList.remove('active');
+      document.getElementById('form-add-automation').reset();
+    }
+
+    function handleSaveAutomation(event) {
+      event.preventDefault();
+      const title = document.getElementById('auto-title').value;
+      const trigger = document.getElementById('auto-trigger').value;
+      const action = document.getElementById('auto-action').value;
+
+      const newAuto = {
+        id: `auto_${Date.now()}`,
+        title: title,
+        trigger: trigger,
+        action: action,
+        active: true,
+        icon: 'fa-wand-magic-sparkles'
+      };
+
+      automationsData.push(newAuto);
+      saveAutomationsToStorage();
+      closeAutomationModal();
+      logActivity(`Nova Automação Criada: ${title}`, 'fa-solid fa-plus', 'var(--blue-accent)');
+
+      document.querySelector('[data-tab="tab-automacoes"]').click();
+    }
+
+    // CONTROLE DE ILUMINAÇÃO & TEMPO
+    const lightSwitches = document.querySelectorAll('.light-switch');
+    const lightsStatusText = document.getElementById('lights-count-status');
+
+    function updateLightingSystem(event) {
+      let activeCount = 0;
+      lightSwitches.forEach(sw => {
+        const iconId = sw.getAttribute('data-icon');
+        const deviceName = sw.getAttribute('data-name');
+        const energyId = sw.getAttribute('data-energy-id');
+        const iconBox = document.getElementById(iconId);
+        const energyLabel = document.getElementById(energyId);
+
+        if (sw.checked) {
+          activeCount++;
+          if (iconBox) iconBox.classList.add('active-glow');
+          const dailyKwh = ((parseFloat(sw.getAttribute('data-power')) * 8) / 1000).toFixed(3);
+          if (energyLabel) {
+            energyLabel.innerText = `${dailyKwh} kWh/dia`;
+            energyLabel.style.color = "var(--orange-bright)";
+          }
+
+          // Atualiza o estado da aba de energia
+          updateSingleDeviceTimerDisplay(energyId, true, 'light');
+
+          // Inicia o cronômetro individual de 5 minutos para esta lâmpada
+          if (!lightTimers[iconId]) {
+            lightTimers[iconId] = setTimeout(() => {
+              triggerFiveMinuteLightAlert(deviceName, iconId);
+            }, FIVE_MINUTES_MS);
+          }
+        } else {
+          if (iconBox) iconBox.classList.remove('active-glow');
+          if (energyLabel) {
+            energyLabel.innerText = "0.00 kWh/dia";
+            energyLabel.style.color = "var(--text-muted)";
+          }
+
+          // Atualiza o estado da aba de energia
+          updateSingleDeviceTimerDisplay(energyId, false, 'light');
+
+          // Cancela o cronômetro individual desta lâmpada ao desligá-la
+          if (lightTimers[iconId]) {
+            clearTimeout(lightTimers[iconId]);
+            delete lightTimers[iconId];
+          }
+
+          // Limpa a situação pendente
+          const sitId = `sit_light_${iconId}`;
+          if (handledSituations[sitId]) {
+            delete handledSituations[sitId];
+            localStorage.setItem('domus_handled_situations', JSON.stringify(handledSituations));
+          }
+          closeToastById(sitId);
+          removeAdaptiveSuggestionCard(sitId);
+        }
+      });
+
+      if (lightsStatusText) lightsStatusText.innerText = `${activeCount} ${activeCount === 1 ? 'luz acesa' : 'luzes acesas'}`;
+      const dashIndLights = document.getElementById('dash-indicator-lights');
+      if (dashIndLights) dashIndLights.innerText = `${activeCount} ${activeCount === 1 ? 'ligada' : 'ligadas'}`;
+
+      if (event) {
+        const name = event.target.getAttribute('data-name');
+        const state = event.target.checked ? 'Ligada' : 'Desligada';
+        logActivity(`${name} ${state}`, 'fa-solid fa-lightbulb', 'var(--orange-bright)');
+      }
+    }
+
+    lightSwitches.forEach(sw => sw.addEventListener('change', updateLightingSystem));
+
+    // CLIMATIZAÇÃO & TEMPO
+    const acSwitches = document.querySelectorAll('.ac-switch');
+    const acStatusText = document.getElementById('ac-count-status');
+
+    function updateACSystem(event) {
+      let activeCount = 0;
+      acSwitches.forEach(sw => {
+        const iconId = sw.getAttribute('data-icon');
+        const energyId = sw.getAttribute('data-energy-id');
+        const iconBox = document.getElementById(iconId);
+        const energyLabel = document.getElementById(energyId);
+
+        if (sw.checked) {
+          activeCount++;
+          if (iconBox) iconBox.classList.add('active-glow-blue');
+          const dailyKwh = ((parseFloat(sw.getAttribute('data-power')) * 8) / 1000).toFixed(2);
+          if (energyLabel) {
+            energyLabel.innerText = `${dailyKwh} kWh/dia`;
+            energyLabel.style.color = "var(--blue-accent)";
+          }
+          updateSingleDeviceTimerDisplay(energyId, true, 'ac');
+        } else {
+          if (iconBox) iconBox.classList.remove('active-glow-blue');
+          if (energyLabel) {
+            energyLabel.innerText = "0.00 kWh/dia";
+            energyLabel.style.color = "var(--text-muted)";
+          }
+          updateSingleDeviceTimerDisplay(energyId, false, 'ac');
+        }
+      });
+
+      if (acStatusText) acStatusText.innerText = `${activeCount} ${activeCount === 1 ? 'aparelho ligado' : 'aparelhos ligados'}`;
+      const dashIndAc = document.getElementById('dash-indicator-ac');
+      if (dashIndAc) dashIndAc.innerText = activeCount > 0 ? `${activeCount} ligado${activeCount > 1 ? 's' : ''}` : 'Normal';
+      const comfortText = document.getElementById('climate-comfort-text');
+      if (comfortText) {
+        comfortText.innerText = activeCount > 0 ? `Climatização ativa (${activeCount} ligado${activeCount > 1 ? 's' : ''})` : 'Conforto térmico normal';
+      }
+
+      if (event) {
+        const name = event.target.getAttribute('data-name');
+        const state = event.target.checked ? 'Ligado' : 'Desligado';
+        logActivity(`${name} ${state}`, 'fa-solid fa-snowflake', 'var(--blue-accent)');
+      }
+    }
+
+    acSwitches.forEach(sw => sw.addEventListener('change', updateACSystem));
+
+    function adjustTemp(elementId, change) {
+      const tempElement = document.getElementById(elementId);
+      if (!tempElement) return;
+      let currentTemp = parseInt(tempElement.innerText);
+      currentTemp += change;
+      if (currentTemp >= 16 && currentTemp <= 30) {
+        tempElement.innerText = `${currentTemp}Â°C`;
+      }
+    }
+
+    // SENSORES
+    const sensorSwitches = document.querySelectorAll('.sensor-switch');
+    sensorSwitches.forEach(sw => {
+      sw.addEventListener('change', (e) => {
+        const name = e.target.getAttribute('data-name');
+        const iconBox = document.getElementById(e.target.getAttribute('data-icon'));
+
+        if (e.target.checked) {
+          if (iconBox) iconBox.classList.add('active-glow-blue');
+          logActivity(`Alerta: ${name} Aberto/Detectado`, 'fa-solid fa-shield-cat', 'var(--blue-accent)');
+        } else {
+          if (iconBox) iconBox.classList.remove('active-glow-blue');
+          logActivity(`${name} Normalizado`, 'fa-solid fa-shield-halved', 'var(--text-muted)');
+        }
+      });
+    });
+
+    // TEMAS E FONTE AMPLIADA
+    const profileThemeToggle = document.getElementById('profile-theme-toggle');
+    const largeFontToggle = document.getElementById('large-font-toggle');
+
+    function syncTheme(isLight) {
+      document.body.classList.toggle('light-mode', isLight);
+      localStorage.setItem('domus_theme', isLight ? 'light' : 'dark');
+      if (profileThemeToggle) profileThemeToggle.checked = isLight;
+    }
+
+    function toggleLargeFont(isLarge) {
+      document.documentElement.classList.toggle('large-font', isLarge);
+      localStorage.setItem('domus_large_font', isLarge ? 'true' : 'false');
+      if (largeFontToggle) largeFontToggle.checked = isLarge;
+      logActivity(`Fonte Ampliada ${isLarge ? 'ativada' : 'desativada'}`, 'fa-solid fa-font', 'var(--blue-accent)');
+    }
+
+    const savedTheme = localStorage.getItem('domus_theme');
+    if (savedTheme === 'light') syncTheme(true);
+
+    const savedLargeFont = localStorage.getItem('domus_large_font') === 'true';
+    if (savedLargeFont) toggleLargeFont(true);
+
+    if (profileThemeToggle) profileThemeToggle.addEventListener('change', (e) => syncTheme(e.target.checked));
+    if (largeFontToggle) largeFontToggle.addEventListener('change', (e) => toggleLargeFont(e.target.checked));
+
+    // MORADORES
+    let residentsData = [
+      { id: 1, name: 'Matheus D. Lucca', role: 'Administrador', icon: 'fa-user-astronaut', isOwner: true },
+      { id: 2, name: 'Arthur Carvalho', role: 'Morador', icon: 'fa-user', isOwner: false }
+    ];
+
+    function renderResidents() {
+      const container = document.getElementById('residents-list-container');
+      const badge = document.getElementById('residents-count-badge');
+      if (badge) badge.innerText = residentsData.length;
+      if (!container) return;
+
+      container.innerHTML = '';
+      residentsData.forEach(res => {
+        const item = document.createElement('div');
+        item.className = 'resident-item';
+        item.innerHTML = `
+          <div class="resident-info">
+            <div class="resident-avatar-mini"><i class="fa-solid ${res.icon}"></i></div>
+            <div>
+              <strong>${res.name}</strong>
+              <p class="resident-role-text">${res.role}${res.isOwner ? ' &middot; Principal' : ''}</p>
+            </div>
+          </div>
+          <div class="resident-actions">
+            ${!res.isOwner ? `<button type="button" class="btn-remove-resident" onclick="removeResident(${res.id})" title="Remover Morador"><i class="fa-solid fa-trash-can"></i></button>` : `<span class="badge-owner">Principal</span>`}
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // FUNÇÕES DO PERFIL E AÇÕES RÁPIDAS
+    function openEditProfileModal() {
+      const modal = document.getElementById('modal-edit-profile');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeEditProfileModal() {
+      const modal = document.getElementById('modal-edit-profile');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function handleSaveProfile(event) {
+      event.preventDefault();
+      const newName = document.getElementById('edit-profile-name').value;
+      const newHandle = document.getElementById('edit-profile-handle').value;
+      const newAvatar = document.getElementById('edit-profile-avatar-select').value;
+
+      const nameEl = document.getElementById('profile-display-name');
+      const handleEl = document.getElementById('profile-display-handle');
+      const avatarBox = document.getElementById('profile-avatar-icon');
+
+      if (nameEl) nameEl.innerText = newName;
+      if (handleEl) handleEl.innerText = newHandle;
+      if (avatarBox) avatarBox.innerHTML = `<i class="fa-solid ${newAvatar} fa-2x"></i>`;
+
+      closeEditProfileModal();
+      logActivity(`Perfil atualizado: ${newName}`, 'fa-solid fa-user-check', 'var(--blue-accent)');
+    }
+
+    function openChangePasswordAlert() {
+      alert('Segurança DOMUS:\nUm link protegido para redefinição da sua senha de acesso foi enviado com sucesso para o seu e-mail cadastrado.');
+      logActivity('Solicitação de troca de senha realizada', 'fa-solid fa-key', 'var(--orange-bright)');
+    }
+
+    function openDevicesModal() {
+      alert('Dispositivos com Acesso Ativo ao DOMUS:\n1. Google Chrome / Windows 11 (Painel Web - Sessão Atual)\n2. DOMUS Mobile App / iPhone 15 Pro (iOS 18) - São Paulo, BR');
+      logActivity('Dispositivos conectados inspecionados', 'fa-solid fa-mobile-screen-button', 'var(--blue-accent)');
+    }
+
+    function clearActivityHistory() {
+      if (confirm('Deseja limpar todo o histórico recente de atividades da sessão?')) {
+        const log = document.getElementById('activity-log');
+        if (log) log.innerHTML = '';
+        const fullLog = document.getElementById('full-history-log');
+        if (fullLog) fullLog.innerHTML = '';
+        logActivity('Histórico de atividades limpo', 'fa-solid fa-broom', 'var(--blue-accent)');
+      }
+    }
+
+    function runNetworkDiagnostics() {
+      alert('Relatório de Diagnóstico DOMUS Mesh:\n• Gateway Zigbee/Matter: Online (100% de estabilidade)\n• Sensores de Presença/Abertura: 3/3 operando (Latência: 14ms)\n• Câmeras de Monitoramento: 2/2 transmitindo em tempo real (1080p)');
+      logActivity('Diagnóstico de rede Matter/Zigbee concluído', 'fa-solid fa-network-wired', 'var(--blue-accent)');
+    }
+
+    function exportMonthlyReport() {
+      alert('Relatório mensal de eficiência energética e automações gerado!\nO download do arquivo "DOMUS-Relatorio-Mensal.csv" foi iniciado.');
+      logActivity('Relatório mensal de energia exportado', 'fa-solid fa-file-arrow-down', 'var(--orange-bright)');
+    }
+
+    function openAddResidentModal() {
+      document.getElementById('modal-add-resident').classList.add('active');
+    }
+
+    function closeAddResidentModal() {
+      document.getElementById('modal-add-resident').classList.remove('active');
+      document.getElementById('form-add-resident').reset();
+    }
+
+    function handleAddResident(event) {
+      event.preventDefault();
+      const name = document.getElementById('resident-name').value;
+      const role = document.getElementById('resident-role').value;
+
+      const newResident = {
+        id: Date.now(),
+        name: name,
+        role: role,
+        icon: role === 'Administrador' ? 'fa-user-shield' : 'fa-user',
+        isOwner: false
+      };
+
+      residentsData.push(newResident);
+      renderResidents();
+      closeAddResidentModal();
+      logActivity(`Morador adicionado: ${name} (${role})`, 'fa-solid fa-user-plus', 'var(--blue-accent)');
+    }
+
+    function removeResident(id) {
+      const resident = residentsData.find(r => r.id === id);
+      if (confirm(`Tem certeza que deseja remover ${resident ? resident.name : 'este morador'}?`)) {
+        residentsData = residentsData.filter(r => r.id !== id);
+        renderResidents();
+        if (resident) logActivity(`Morador removido: ${resident.name}`, 'fa-solid fa-user-minus', 'var(--orange-bright)');
+      }
+    }
+
+    // ========================================================
+    // 1. BARRA DE PESQUISA GLOBAL (DOMUS SEARCH ENGINE)
+    // ========================================================
+    function normalizeSearchStr(str) {
+      return (str || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
+    }
+
+    const searchIndex = [
+      // PÁGINAS
+      {
+        title: 'Início',
+        subtitle: 'Visão geral e painel principal',
+        category: 'Páginas',
+        icon: 'fa-solid fa-house',
+        keywords: ['inicio', 'home', 'painel', 'dashboard', 'geral', 'status', 'resumo'],
+        action: () => switchTab('tab-inicio')
+      },
+      {
+        title: 'Iluminação',
+        subtitle: 'Acessar controle das luzes',
+        category: 'Páginas',
+        icon: 'fa-solid fa-lightbulb',
+        keywords: ['iluminacao', 'luz', 'luzes', 'lampadas', 'sala', 'quarto', 'cozinha', 'led', 'iluminacao ativa'],
+        action: () => switchTab('tab-iluminacao')
+      },
+      {
+        title: 'Climatização',
+        subtitle: 'Controle de temperatura e ar-condicionado',
+        category: 'Páginas',
+        icon: 'fa-solid fa-snowflake',
+        keywords: ['climatizacao', 'ar', 'ar-condicionado', 'temperatura', 'clima', 'frio', 'calor', 'graus', 'conforto'],
+        action: () => switchTab('tab-climatizacao')
+      },
+      {
+        title: 'Segurança',
+        subtitle: 'Acessar sistema de segurança',
+        category: 'Páginas',
+        icon: 'fa-solid fa-shield-halved',
+        keywords: ['seguranca', 'alarme', 'sensores', 'portas', 'janelas', 'cameras', 'presenca', 'protecao'],
+        action: () => switchTab('tab-seguranca')
+      },
+      {
+        title: 'Consumo de Energia',
+        subtitle: 'Ver consumo, histórico e estatísticas',
+        category: 'Páginas',
+        icon: 'fa-solid fa-bolt',
+        keywords: ['energia', 'consumo', 'kwh', 'gasto', 'conta', 'potencia', 'tempo', 'estatisticas'],
+        action: () => switchTab('tab-energia')
+      },
+      {
+        title: 'Inteligência Adaptativa',
+        subtitle: 'Configurar inteligência e sugestões',
+        category: 'Páginas',
+        icon: 'fa-solid fa-brain',
+        keywords: ['inteligencia', 'inteligencia adaptativa', 'ia', 'adaptativa', 'sugestoes', 'aprendizado', 'otimizacao'],
+        action: () => switchTab('tab-inteligencia')
+      },
+      {
+        title: 'Automações',
+        subtitle: 'Gerenciar automações e rotinas',
+        category: 'Páginas',
+        icon: 'fa-solid fa-robot',
+        keywords: ['automacoes', 'rotinas', 'cenas', 'regras', 'agendamento', 'criar automacao'],
+        action: () => switchTab('tab-automacoes')
+      },
+      {
+        title: 'Perfil',
+        subtitle: 'Gerenciar conta, avatar e residência',
+        category: 'Páginas',
+        icon: 'fa-solid fa-user',
+        keywords: ['perfil', 'conta', 'usuario', 'residencia', 'matheus', 'admin'],
+        action: () => switchTab('tab-perfil')
+      },
+
+      // SEÇÕES
+      {
+        title: 'Luzes acesas',
+        subtitle: 'Ver iluminação ativa no momento',
+        category: 'Seções',
+        icon: 'fa-solid fa-lightbulb',
+        keywords: ['luz', 'luzes acesas', 'lampadas ligadas', 'iluminacao ativa', 'luzes'],
+        action: () => switchTab('tab-iluminacao')
+      },
+      {
+        title: 'Moradores cadastrados',
+        subtitle: 'Gerenciar moradores da residência',
+        category: 'Seções',
+        icon: 'fa-solid fa-users',
+        keywords: ['moradores', 'moradores cadastrados', 'familia', 'pessoas', 'residentes', 'usuarios'],
+        action: () => switchTab('tab-perfil', '#residents-list-container')
+      },
+      {
+        title: 'Estatísticas',
+        subtitle: 'Métricas de uso e economia do DOMUS',
+        category: 'Seções',
+        icon: 'fa-solid fa-chart-line',
+        keywords: ['estatisticas', 'metricas', 'graficos', 'relatorio', 'uso', 'kwh', 'economia'],
+        action: () => switchTab('tab-perfil', '.profile-stats-card')
+      },
+      {
+        title: 'Preferências',
+        subtitle: 'Preferências do DOMUS e notificações',
+        category: 'Seções',
+        icon: 'fa-solid fa-sliders',
+        keywords: ['preferencias', 'ajustes', 'opcoes', 'sistema', 'configuracoes'],
+        action: () => switchTab('tab-perfil', '#notifications-toggle')
+      },
+      {
+        title: 'Aparência e Acessibilidade',
+        subtitle: 'Tema claro/escuro e fonte ampliada',
+        category: 'Seções',
+        icon: 'fa-solid fa-universal-access',
+        keywords: ['aparencia', 'aparencia e acessibilidade', 'acessibilidade', 'tema', 'fonte', 'tamanho de texto'],
+        action: () => switchTab('tab-perfil', '#profile-theme-toggle')
+      },
+      {
+        title: 'Segurança da Conta',
+        subtitle: 'Gerenciar proteção da conta',
+        category: 'Seções',
+        icon: 'fa-solid fa-lock',
+        keywords: ['seguranca', 'seguranca da conta', 'senha', '2fa', 'autenticacao', 'login', 'protecao'],
+        action: () => switchTab('tab-perfil', '.profile-security-card')
+      },
+      {
+        title: 'Dispositivos Conectados',
+        subtitle: 'Aparelhos ativos com acesso ao DOMUS',
+        category: 'Seções',
+        icon: 'fa-solid fa-mobile-screen-button',
+        keywords: ['dispositivos', 'dispositivos conectados', 'aparelhos', 'celular', 'sessoes', 'login ativo', 'chrome'],
+        action: () => openDevicesModal()
+      },
+      {
+        title: 'Histórico',
+        subtitle: 'Consultar registro completo de atividades',
+        category: 'Seções',
+        icon: 'fa-solid fa-clock-rotate-left',
+        keywords: ['historico', 'logs', 'eventos', 'atividades', 'registro', 'atividades recentes'],
+        action: () => openFullHistoryModal()
+      },
+
+      // CONFIGURAÇÕES E AÇÕES
+      {
+        title: 'Modo Claro / Escuro',
+        subtitle: 'Alternar entre tema escuro e claro',
+        category: 'Configurações',
+        icon: 'fa-solid fa-circle-half-stroke',
+        keywords: ['modo claro', 'modo escuro', 'tema', 'light', 'dark', 'cor', 'tema claro', 'tema escuro', 'fundo'],
+        action: () => {
+          const isCurrentlyLight = document.body.classList.contains('light-mode');
+          syncTheme(!isCurrentlyLight);
+          logActivity(`Tema alterado para Modo ${!isCurrentlyLight ? 'Claro' : 'Escuro'} via pesquisa`, 'fa-solid fa-circle-half-stroke', 'var(--blue-accent)');
+        }
+      },
+      {
+        title: 'Notificações',
+        subtitle: 'Ativar ou pausar alertas em tempo real',
+        category: 'Configurações',
+        icon: 'fa-solid fa-bell',
+        keywords: ['notificacoes', 'alertas', 'avisos', 'popups', 'toasts', 'sons'],
+        action: () => {
+          const toggle = document.getElementById('notifications-toggle');
+          if (toggle) {
+            toggle.checked = !toggle.checked;
+            toggleNotificationsState(toggle.checked);
+          }
+        }
+      },
+      {
+        title: 'Alertas de Uso Prolongado',
+        subtitle: 'Avisos de equipamentos esquecidos ligados',
+        category: 'Configurações',
+        icon: 'fa-solid fa-bolt',
+        keywords: ['alertas de uso prolongado', 'alertas', 'uso prolongado', 'desperdicio', 'economia'],
+        action: () => switchTab('tab-perfil', '#notifications-toggle')
+      },
+      {
+        title: 'Autenticação em Duas Etapas (2FA)',
+        subtitle: 'Proteção reforçada de acesso à conta',
+        category: 'Configurações',
+        icon: 'fa-solid fa-shield-halved',
+        keywords: ['2fa', 'autenticacao', 'duas etapas', 'codigo', 'token', 'seguranca'],
+        action: () => switchTab('tab-perfil', '.profile-security-card')
+      },
+      {
+        title: 'Alterar senha',
+        subtitle: 'Abrir configuração de senha do painel',
+        category: 'Configurações',
+        icon: 'fa-solid fa-key',
+        keywords: ['senha', 'alterar senha', 'mudar senha', 'password', 'redefinir senha', 'trocar senha'],
+        action: () => openChangePasswordAlert()
+      },
+      {
+        title: 'Avatar e Perfil',
+        subtitle: 'Editar nome, identificador e avatar',
+        category: 'Configurações',
+        icon: 'fa-solid fa-user-pen',
+        keywords: ['avatar', 'foto', 'icone', 'editar perfil', 'nome', 'usuario', 'handle'],
+        action: () => openEditProfileModal()
+      },
+      {
+        title: 'Adicionar morador',
+        subtitle: 'Cadastrar novo residente no DOMUS',
+        category: 'Configurações',
+        icon: 'fa-solid fa-user-plus',
+        keywords: ['moradores', 'adicionar morador', 'novo morador', 'cadastrar morador', 'residente'],
+        action: () => openAddResidentModal()
+      }
+    ];
+
+    const searchInput = document.getElementById('global-search-input');
+    const searchDropdown = document.getElementById('search-results-dropdown');
+    const searchClearBtn = document.getElementById('search-clear-btn');
+    const searchContainer = document.getElementById('global-search-container');
+
+    let currentSearchResults = [];
+    let selectedSearchIndex = -1;
+
+    function renderSearchResults(query) {
+      if (!searchDropdown) return;
+
+      const normQ = normalizeSearchStr(query);
+      if (!normQ) {
+        searchDropdown.style.display = 'none';
+        searchDropdown.innerHTML = '';
+        currentSearchResults = [];
+        selectedSearchIndex = -1;
+        if (searchClearBtn) searchClearBtn.style.display = 'none';
+        return;
+      }
+
+      if (searchClearBtn) searchClearBtn.style.display = 'flex';
+
+      // Filtra e classifica relevância
+      const matches = searchIndex.filter(item => {
+        const titleNorm = normalizeSearchStr(item.title);
+        const subNorm = normalizeSearchStr(item.subtitle);
+        const catNorm = normalizeSearchStr(item.category);
+        const inKeywords = item.keywords.some(k => normalizeSearchStr(k).includes(normQ));
+        return titleNorm.includes(normQ) || subNorm.includes(normQ) || catNorm.includes(normQ) || inKeywords;
+      });
+
+      // Ordena: títulos que começam com a busca primeiro, depois títulos que contêm, depois outros
+      matches.sort((a, b) => {
+        const aTitle = normalizeSearchStr(a.title);
+        const bTitle = normalizeSearchStr(b.title);
+        const aStarts = aTitle.startsWith(normQ);
+        const bStarts = bTitle.startsWith(normQ);
+        if (aStarts && !bStarts) return -1;
+        if (!aStarts && bStarts) return 1;
+        return 0;
+      });
+
+      currentSearchResults = matches;
+      selectedSearchIndex = matches.length > 0 ? 0 : -1;
+
+      if (matches.length === 0) {
+        searchDropdown.innerHTML = `
+          <div class="search-empty-state">
+            <i class="fa-solid fa-magnifying-glass search-empty-icon"></i>
+            <div class="search-empty-title">Nenhum resultado encontrado.</div>
+            <p class="search-empty-hint">Tente pesquisar por <em>iluminação</em>, <em>segurança</em>, <em>energia</em>, <em>senha</em>...</p>
+          </div>
+        `;
+        searchDropdown.style.display = 'block';
+        return;
+      }
+
+      // Renderiza itens
+      let html = '<div class="search-results-list">';
+      matches.forEach((item, idx) => {
+        const isSelected = idx === 0 ? 'selected' : '';
+        html += `
+          <div class="search-result-item ${isSelected}" data-index="${idx}" onclick="executeSearchResult(${idx})">
+            <div class="search-result-icon">
+              <i class="${item.icon}"></i>
+            </div>
+            <div class="search-result-info">
+              <div class="search-result-title">${highlightSearchMatch(item.title, query)}</div>
+              <div class="search-result-subtitle">${item.subtitle}</div>
+            </div>
+            <span class="search-result-badge badge-${item.category.toLowerCase().replace(/[^a-z]/g, '')}">${item.category}</span>
+          </div>
+        `;
+      });
+      html += '</div>';
+
+      searchDropdown.innerHTML = html;
+      searchDropdown.style.display = 'block';
+    }
+
+    function highlightSearchMatch(text, query) {
+      if (!text || !query) return text || '';
+      const cleanQ = query.trim();
+      if (!cleanQ) return text;
+      try {
+        const escaped = cleanQ.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const pattern = escaped
+          .replace(/[aÃ¡Ã Ã£Ã¢Ã¤]/gi, '[aÃ¡Ã Ã£Ã¢Ã¤]')
+          .replace(/[eÃ©Ã¨ÃªÃ«]/gi, '[eÃ©Ã¨ÃªÃ«]')
+          .replace(/[iÃ­Ã¬Ã®Ã¯]/gi, '[iÃ­Ã¬Ã®Ã¯]')
+          .replace(/[oÃ³Ã²ÃµÃ´Ã¶]/gi, '[oÃ³Ã²ÃµÃ´Ã¶]')
+          .replace(/[uÃºÃ¹Ã»Ã¼]/gi, '[uÃºÃ¹Ã»Ã¼]')
+          .replace(/[cÃ§]/gi, '[cÃ§]');
+        const regex = new RegExp(`(${pattern})`, 'gi');
+        return text.replace(regex, '<mark>$1</mark>');
+      } catch (err) {
+        return text;
+      }
+    }
+
+    function executeSearchResult(index) {
+      const item = currentSearchResults[index];
+      if (item && typeof item.action === 'function') {
+        item.action();
+        closeSearchDropdown();
+        if (searchInput) searchInput.value = '';
+        if (searchClearBtn) searchClearBtn.style.display = 'none';
+      }
+    }
+
+    function closeSearchDropdown() {
+      if (searchDropdown) {
+        searchDropdown.style.display = 'none';
+        searchDropdown.innerHTML = '';
+      }
+      currentSearchResults = [];
+      selectedSearchIndex = -1;
+    }
+
+    function updateActiveSearchSelection() {
+      const items = searchDropdown.querySelectorAll('.search-result-item');
+      items.forEach((el, idx) => {
+        if (idx === selectedSearchIndex) {
+          el.classList.add('selected');
+          el.scrollIntoView({ block: 'nearest' });
+        } else {
+          el.classList.remove('selected');
+        }
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        renderSearchResults(e.target.value);
+      });
+
+      searchInput.addEventListener('focus', (e) => {
+        if (e.target.value.trim().length > 0) {
+          renderSearchResults(e.target.value);
+        }
+      });
+
+      searchInput.addEventListener('keydown', (e) => {
+        if (searchDropdown.style.display !== 'block' || currentSearchResults.length === 0) {
+          if (e.key === 'Escape') {
+            searchInput.blur();
+          }
+          return;
+        }
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          selectedSearchIndex = (selectedSearchIndex + 1) % currentSearchResults.length;
+          updateActiveSearchSelection();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          selectedSearchIndex = (selectedSearchIndex - 1 + currentSearchResults.length) % currentSearchResults.length;
+          updateActiveSearchSelection();
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          const targetIndex = selectedSearchIndex >= 0 ? selectedSearchIndex : 0;
+          executeSearchResult(targetIndex);
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          closeSearchDropdown();
+          searchInput.blur();
+        }
+      });
+    }
+
+    if (searchClearBtn) {
+      searchClearBtn.addEventListener('click', () => {
+        if (searchInput) {
+          searchInput.value = '';
+          searchInput.focus();
+        }
+        closeSearchDropdown();
+        searchClearBtn.style.display = 'none';
+      });
+    }
+
+    // ATALHO GLOBAL: Ctrl + K ou Cmd + K
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        // Garante que está na aba Ini­cio ou foca diretamente a busca
+        if (!document.getElementById('tab-inicio').classList.contains('active')) {
+          switchTab('tab-inicio');
+        }
+        setTimeout(() => {
+          if (searchInput) {
+            searchInput.focus();
+            searchInput.select();
+            if (searchInput.value.trim().length > 0) {
+              renderSearchResults(searchInput.value);
+            }
+          }
+        }, 50);
+      }
+    });
+
+    // FECHAR AO CLICAR FORA
+    document.addEventListener('click', (e) => {
+      if (searchContainer && !searchContainer.contains(e.target)) {
+        closeSearchDropdown();
+      }
+    });
+
+    // INICIALIZAÃ‡ÃƒO
+    const notifToggleElem = document.getElementById('notifications-toggle');
+    if (notifToggleElem) notifToggleElem.checked = isNotificationsEnabled;
+
+    updateLightingSystem();
+    updateACSystem();
+    renderResidents();
+    updateAutomationsUI();
+    updateGlobalTotalActiveTime();
+  </script>
+
 </body>
 </html>
