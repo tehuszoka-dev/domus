@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -12,10 +13,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
-</head>
+<script src="/_aistudio-iframe.js?v=2c34bde1"></script></head>
 <body>
 
-  
   <!-- CONTAINER DE NOTIFICAÇÕES FLUTUANTES (CANTO INFERIOR DIREITO) -->
   <div id="toast-container"></div>
 
@@ -43,13 +43,13 @@
   <!-- ÁREA PRINCIPAL DO DASHBOARD -->
   <main class="main-content">
 
-    <!-- ABA 1: Início -->
+    <!-- ABA 1: INÍCIO -->
     <div id="tab-inicio" class="tab-content active">
       <!-- HEADER BANNER COM SAUDAÇÃO E PESQUISA GLOBAL -->
       <header class="header-banner">
         <div class="header-banner-main">
           <div class="header-greeting-col">
-            <h1>Olá, D'lucca!</h1>
+            <h1>Olá, matheusdlucca!</h1>
             <p>Sua residência está segura e operando normalmente.</p>
           </div>
           <div class="status-badge status-ativo">
@@ -125,10 +125,10 @@
             <div class="icon-box active-glow"><i class="fa-solid fa-temperature-half"></i></div>
           </div>
           <h3 id="ac-count-status">0 aparelhos ligados</h3>
-          <p class="status-subtext">Temperatura media de conforto: 22°C</p>
+          <p class="status-subtext">Temperatura média de conforto: 22°C</p>
           <div class="comfort-status-box" id="climate-comfort-box">
             <i class="fa-solid fa-leaf" style="color: #2ecc71;"></i>
-            <span id="climate-comfort-text">Conforto termico normal</span>
+            <span id="climate-comfort-text">Conforto térmico normal</span>
           </div>
         </div>
 
@@ -260,89 +260,549 @@
     </div>
 
     <!-- ABA 2: ILUMINAÇÃO -->
+        <!-- ABA 2: ILUMINAÇÃO INTELIGENTE REFORMULADA -->
     <div id="tab-iluminacao" class="tab-content">
-      <div class="dashboard-grid">
-        <div class="card" style="grid-column: span 2;">
-          <div class="card-title">
-            <span>Lâmpadas da Casa</span>
-            <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i>
+      <!-- 1. CABEÇALHO -->
+      <div class="lighting-hero-banner">
+        <div class="lighting-hero-left">
+          <div class="lighting-title-badge-row">
+            <h1><i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i> Iluminação</h1>
+            <div class="system-online-badge">
+              <span class="online-indicator-dot"></span> Sistema de iluminação online
+            </div>
+          </div>
+          <p class="lighting-hero-desc">Controle inteligente da iluminação da sua residência</p>
+          <div class="lighting-pill-counter" id="lighting-header-stats">
+            7 ambientes · 2 lâmpadas ligadas · 5 desligadas
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. CARDS DE RESUMO (KPI CARDS) -->
+      <div class="lighting-kpi-grid">
+        <div class="card lighting-kpi-card">
+          <div class="kpi-icon-wrap" style="color: var(--orange-bright); background: rgba(255, 122, 0, 0.15);">
+            <i class="fa-solid fa-lightbulb"></i>
+          </div>
+          <div class="kpi-data">
+            <span class="kpi-label">Lâmpadas ligadas</span>
+            <div class="kpi-value-row">
+              <strong id="lighting-kpi-active" class="kpi-value">2 / 7</strong>
+            </div>
+            <span class="kpi-sub">ativas agora</span>
+          </div>
+        </div>
+
+        <div class="card lighting-kpi-card">
+          <div class="kpi-icon-wrap" style="color: #f59e0b; background: rgba(245, 158, 11, 0.15);">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+          <div class="kpi-data">
+            <span class="kpi-label">Brilho médio</span>
+            <div class="kpi-value-row">
+              <strong id="lighting-kpi-brightness" class="kpi-value">68%</strong>
+            </div>
+            <span class="kpi-sub">da iluminação ativa</span>
+          </div>
+        </div>
+
+        <div class="card lighting-kpi-card">
+          <div class="kpi-icon-wrap" style="color: var(--blue-accent); background: rgba(0, 210, 255, 0.15);">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+          <div class="kpi-data">
+            <span class="kpi-label">Consumo atual</span>
+            <div class="kpi-value-row">
+              <strong id="lighting-kpi-watts" class="kpi-value">42 W</strong>
+            </div>
+            <span class="kpi-sub">iluminação</span>
+          </div>
+        </div>
+
+        <div class="card lighting-kpi-card">
+          <div class="kpi-icon-wrap" style="color: #a855f7; background: rgba(168, 85, 247, 0.15);">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+          <div class="kpi-data">
+            <span class="kpi-label">Tempo de funcionamento</span>
+            <div class="kpi-value-row">
+              <strong id="lighting-kpi-runtime" class="kpi-value">3h 24min</strong>
+            </div>
+            <span class="kpi-sub">hoje</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. CONTROLE GERAL -->
+      <div class="card lighting-master-card">
+        <div class="master-card-header">
+          <div>
+            <div class="master-card-title">Controle geral</div>
+            <div class="master-card-subtitle">Todas as lâmpadas</div>
+          </div>
+          <div class="lighting-master-actions">
+            <button type="button" class="btn-domus-primary" id="btn-turn-on-all" onclick="turnOnAllLights()">
+              <i class="fa-solid fa-power-off"></i> Ligar todas
+            </button>
+            <button type="button" class="btn-domus-secondary" id="btn-turn-off-all" onclick="turnOffAllLights()">
+              <i class="fa-regular fa-lightbulb"></i> Desligar todas
+            </button>
+          </div>
+        </div>
+        <div class="master-slider-row">
+          <div class="master-slider-label">
+            <i class="fa-solid fa-sliders"></i>
+            <span>Brilho geral</span>
+            <strong id="master-brightness-val">75%</strong>
+          </div>
+          <div class="master-slider-control">
+            <input type="range" id="master-brightness-slider" min="0" max="100" value="75" oninput="setMasterBrightness(this.value)">
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. CENAS RÁPIDAS -->
+      <div class="lighting-section-wrap">
+        <div class="lighting-section-title">
+          <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--orange-bright);"></i> Cenas rápidas
+        </div>
+        <div class="lighting-scenes-grid">
+          <div class="card scene-card" onclick="applyLightingScene('dia')" role="button" tabindex="0">
+            <div class="scene-card-icon" style="color: #f59e0b; background: rgba(245, 158, 11, 0.15);">
+              <i class="fa-solid fa-sun"></i>
+            </div>
+            <div class="scene-card-title">☀️ Dia</div>
+            <p class="scene-card-desc">Iluminação geral em intensidade alta.</p>
           </div>
 
-          <div class="device-item">
-            <div class="device-info">
-              <div id="bulb-icon-1" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
-              <div><strong>Sala de Estar</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Lâmpada Principal</div></div>
+          <div class="card scene-card" onclick="applyLightingScene('noite')" role="button" tabindex="0">
+            <div class="scene-card-icon" style="color: #6366f1; background: rgba(99, 102, 241, 0.15);">
+              <i class="fa-solid fa-moon"></i>
             </div>
-            <label class="switch">
-              <input type="checkbox" class="light-switch" data-name="Luz da Sala" data-icon="bulb-icon-1" data-power="12" data-energy-id="energy-sala">
-              <span class="slider"></span>
-            </label>
+            <div class="scene-card-title">🌙 Noite</div>
+            <p class="scene-card-desc">Reduz iluminação e desliga ambientes desnecessários.</p>
           </div>
 
-          <div class="device-item">
-            <div class="device-info">
-              <div id="bulb-icon-2" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
-              <div><strong>Cozinha</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Luzes de LED</div></div>
+          <div class="card scene-card" onclick="applyLightingScene('cinema')" role="button" tabindex="0">
+            <div class="scene-card-icon" style="color: #ec4899; background: rgba(236, 72, 153, 0.15);">
+              <i class="fa-solid fa-film"></i>
             </div>
-            <label class="switch">
-              <input type="checkbox" class="light-switch" data-name="Luz da Cozinha" data-icon="bulb-icon-2" data-power="15" data-energy-id="energy-cozinha">
-              <span class="slider"></span>
-            </label>
+            <div class="scene-card-title">🎬 Cinema</div>
+            <p class="scene-card-desc">Sala com iluminação baixa e quente.</p>
           </div>
 
-          <div class="device-item">
-            <div class="device-info">
-              <div id="bulb-icon-3" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
-              <div><strong>Quarto Principal</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Lâmpada Inteligente</div></div>
+          <div class="card scene-card" onclick="applyLightingScene('estudo')" role="button" tabindex="0">
+            <div class="scene-card-icon" style="color: #00d2ff; background: rgba(0, 210, 255, 0.15);">
+              <i class="fa-solid fa-book-open"></i>
             </div>
-            <label class="switch">
-              <input type="checkbox" class="light-switch" data-name="Luz do Quarto Principal" data-icon="bulb-icon-3" data-power="9" data-energy-id="energy-quarto-p">
-              <span class="slider"></span>
-            </label>
+            <div class="scene-card-title">📚 Estudo</div>
+            <p class="scene-card-desc">Iluminação forte e mais neutra/fria.</p>
           </div>
 
-          <div class="device-item">
-            <div class="device-info">
-              <div id="bulb-icon-4" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
-              <div><strong>Quarto 2</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Lâmpada Inteligente</div></div>
+          <div class="card scene-card" onclick="applyLightingScene('cheguei')" role="button" tabindex="0">
+            <div class="scene-card-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.15);">
+              <i class="fa-solid fa-house-user"></i>
             </div>
-            <label class="switch">
-              <input type="checkbox" class="light-switch" data-name="Luz do Quarto 2" data-icon="bulb-icon-4" data-power="9" data-energy-id="energy-quarto-2">
-              <span class="slider"></span>
-            </label>
+            <div class="scene-card-title">🏠 Cheguei</div>
+            <p class="scene-card-desc">Ativa iluminação de boas-vindas.</p>
           </div>
 
-          <div class="device-item">
-            <div class="device-info">
-              <div id="bulb-icon-5" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
-              <div><strong>Banheiro</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Luz Neutra</div></div>
+          <div class="card scene-card" onclick="applyLightingScene('festa')" role="button" tabindex="0">
+            <div class="scene-card-icon" style="color: #a855f7; background: rgba(168, 85, 247, 0.15);">
+              <i class="fa-solid fa-champagne-glasses"></i>
             </div>
-            <label class="switch">
-              <input type="checkbox" class="light-switch" data-name="Luz do Banheiro" data-icon="bulb-icon-5" data-power="10" data-energy-id="energy-banheiro">
-              <span class="slider"></span>
-            </label>
+            <div class="scene-card-title">🎉 Festa</div>
+            <p class="scene-card-desc">Ativa iluminação configurada para festa.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. AMBIENTES -->
+      <div class="lighting-section-wrap">
+        <div class="lighting-section-title">
+          <i class="fa-solid fa-house-laptop" style="color: var(--blue-accent);"></i> Ambientes
+        </div>
+        <div class="lighting-rooms-grid">
+
+          <!-- 1. Sala de Estar -->
+          <div class="card room-glass-card" id="room-card-bulb-icon-1">
+            <div class="room-card-header">
+              <div class="room-title-area">
+                <i class="fa-solid fa-couch" style="color: var(--blue-accent);"></i>
+                <strong>Sala de Estar</strong>
+              </div>
+              <span class="room-status-badge" id="badge-bulb-icon-1">⚪ 0/1 ligada</span>
+            </div>
+            <div class="device-item room-device-inner">
+              <div class="device-info">
+                <div id="bulb-icon-1" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+                <div>
+                  <strong>Lâmpada Principal</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Lâmpada inteligente</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" class="light-switch" data-name="Luz da Sala" data-icon="bulb-icon-1" data-power="12" data-energy-id="energy-sala">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="room-card-footer">
+              <span class="light-meta-spec" id="spec-bulb-icon-1">72% · 3000K</span>
+              <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-1')">
+                <i class="fa-solid fa-sliders"></i> Ajustes
+              </button>
+            </div>
           </div>
 
-          <div class="device-item">
-            <div class="device-info">
-              <div id="bulb-icon-6" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
-              <div><strong>Garagem</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Lâmpada Tubular LED</div></div>
+          <!-- 2. Cozinha -->
+          <div class="card room-glass-card" id="room-card-bulb-icon-2">
+            <div class="room-card-header">
+              <div class="room-title-area">
+                <i class="fa-solid fa-utensils" style="color: var(--orange-bright);"></i>
+                <strong>Cozinha</strong>
+              </div>
+              <span class="room-status-badge" id="badge-bulb-icon-2">⚪ 0/1 ligada</span>
             </div>
-            <label class="switch">
-              <input type="checkbox" class="light-switch" data-name="Luz da Garagem" data-icon="bulb-icon-6" data-power="18" data-energy-id="energy-garagem">
-              <span class="slider"></span>
-            </label>
+            <div class="device-item room-device-inner">
+              <div class="device-info">
+                <div id="bulb-icon-2" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+                <div>
+                  <strong>Luzes LED</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Fita LED inteligente</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" class="light-switch" data-name="Luz da Cozinha" data-icon="bulb-icon-2" data-power="15" data-energy-id="energy-cozinha">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="room-card-footer">
+              <span class="light-meta-spec" id="spec-bulb-icon-2">80% · 4000K</span>
+              <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-2')">
+                <i class="fa-solid fa-sliders"></i> Ajustes
+              </button>
+            </div>
           </div>
 
-          <div class="device-item">
-            <div class="device-info">
-              <div id="bulb-icon-7" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
-              <div><strong>Refletor do Quintal</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Refletor de Alta PotÃªncia</div></div>
+          <!-- 3. Quarto Principal -->
+          <div class="card room-glass-card" id="room-card-bulb-icon-3">
+            <div class="room-card-header">
+              <div class="room-title-area">
+                <i class="fa-solid fa-bed" style="color: #a855f7;"></i>
+                <strong>Quarto Principal</strong>
+              </div>
+              <span class="room-status-badge" id="badge-bulb-icon-3">⚪ 0/1 ligada</span>
             </div>
-            <label class="switch">
-              <input type="checkbox" class="light-switch" data-name="Refletor do Quintal" data-icon="bulb-icon-7" data-power="50" data-energy-id="energy-quintal">
-              <span class="slider"></span>
-            </label>
+            <div class="device-item room-device-inner">
+              <div class="device-info">
+                <div id="bulb-icon-3" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+                <div>
+                  <strong>Lâmpada Inteligente</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">RGB &amp; CCT inteligente</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" class="light-switch" data-name="Luz do Quarto Principal" data-icon="bulb-icon-3" data-power="9" data-energy-id="energy-quarto-p">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="room-card-footer">
+              <span class="light-meta-spec" id="spec-bulb-icon-3">60% · 2700K</span>
+              <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-3')">
+                <i class="fa-solid fa-sliders"></i> Ajustes
+              </button>
+            </div>
+          </div>
+
+          <!-- 4. Quarto 2 -->
+          <div class="card room-glass-card" id="room-card-bulb-icon-4">
+            <div class="room-card-header">
+              <div class="room-title-area">
+                <i class="fa-solid fa-child-reaching" style="color: #00d2ff;"></i>
+                <strong>Quarto 2</strong>
+              </div>
+              <span class="room-status-badge" id="badge-bulb-icon-4">⚪ 0/1 ligada</span>
+            </div>
+            <div class="device-item room-device-inner">
+              <div class="device-info">
+                <div id="bulb-icon-4" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+                <div>
+                  <strong>Lâmpada Inteligente</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">RGB inteligente</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" class="light-switch" data-name="Luz do Quarto 2" data-icon="bulb-icon-4" data-power="9" data-energy-id="energy-quarto-2" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="room-card-footer">
+              <span class="light-meta-spec" id="spec-bulb-icon-4">50% · 3500K</span>
+              <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-4')">
+                <i class="fa-solid fa-sliders"></i> Ajustes
+              </button>
+            </div>
+          </div>
+
+          <!-- 5. Banheiro -->
+          <div class="card room-glass-card" id="room-card-bulb-icon-5">
+            <div class="room-card-header">
+              <div class="room-title-area">
+                <i class="fa-solid fa-bath" style="color: #06b6d4;"></i>
+                <strong>Banheiro</strong>
+              </div>
+              <span class="room-status-badge" id="badge-bulb-icon-5">⚪ 0/1 ligada</span>
+            </div>
+            <div class="device-item room-device-inner">
+              <div class="device-info">
+                <div id="bulb-icon-5" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+                <div>
+                  <strong>Luz Neutra</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">LED embutido</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" class="light-switch" data-name="Luz do Banheiro" data-icon="bulb-icon-5" data-power="10" data-energy-id="energy-banheiro" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="room-card-footer">
+              <span class="light-meta-spec" id="spec-bulb-icon-5">100% · 4000K</span>
+              <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-5')">
+                <i class="fa-solid fa-sliders"></i> Ajustes
+              </button>
+            </div>
+          </div>
+
+          <!-- 6. Garagem -->
+          <div class="card room-glass-card" id="room-card-bulb-icon-6">
+            <div class="room-card-header">
+              <div class="room-title-area">
+                <i class="fa-solid fa-warehouse" style="color: #f59e0b;"></i>
+                <strong>Garagem</strong>
+              </div>
+              <span class="room-status-badge" id="badge-bulb-icon-6">⚪ 0/1 ligada</span>
+            </div>
+            <div class="device-item room-device-inner">
+              <div class="device-info">
+                <div id="bulb-icon-6" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+                <div>
+                  <strong>Lâmpada Tubular LED</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Alta luminosidade</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" class="light-switch" data-name="Luz da Garagem" data-icon="bulb-icon-6" data-power="18" data-energy-id="energy-garagem">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="room-card-footer">
+              <span class="light-meta-spec" id="spec-bulb-icon-6">100% · 6500K</span>
+              <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-6')">
+                <i class="fa-solid fa-sliders"></i> Ajustes
+              </button>
+            </div>
+          </div>
+
+          <!-- 7. Refletor do Quintal -->
+          <div class="card room-glass-card" id="room-card-bulb-icon-7">
+            <div class="room-card-header">
+              <div class="room-title-area">
+                <i class="fa-solid fa-tree" style="color: #10b981;"></i>
+                <strong>Refletor do Quintal</strong>
+              </div>
+              <span class="room-status-badge" id="badge-bulb-icon-7">⚪ 0/1 ligada</span>
+            </div>
+            <div class="device-item room-device-inner">
+              <div class="device-info">
+                <div id="bulb-icon-7" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+                <div>
+                  <strong>Refletor de Alta Potência</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Iluminação externa</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" class="light-switch" data-name="Refletor do Quintal" data-icon="bulb-icon-7" data-power="50" data-energy-id="energy-quintal">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="room-card-footer">
+              <span class="light-meta-spec" id="spec-bulb-icon-7">100% · Externa</span>
+              <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-7')">
+                <i class="fa-solid fa-sliders"></i> Ajustes
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SEÇÕES COMPLEMENTARES: INTELIGÊNCIA ADAPTATIVA, AUTOMAÇÕES & GRÁFICO DE CONSUMO -->
+      <div class="dashboard-split-row" style="margin-top: 25px;">
+        <!-- Coluna Esquerda: Inteligência Adaptativa & Automações -->
+        <div class="lighting-left-col">
+          <!-- 12. INTELIGÊNCIA ADAPTATIVA NA ILUMINAÇÃO -->
+          <div class="card lighting-adaptive-card">
+            <div class="card-title">
+              <span>Inteligência Adaptativa</span>
+              <div class="icon-box active-glow-blue"><i class="fa-solid fa-brain"></i></div>
+            </div>
+            <div id="lighting-adaptive-container">
+              <div class="adaptive-status-empty" id="lighting-adaptive-empty">
+                <div class="adaptive-empty-icon"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="adaptive-empty-text">
+                  <strong>Nenhuma ação necessária no momento.</strong>
+                  <p>Iluminação operando nos níveis ideais de consumo.</p>
+                </div>
+              </div>
+              <div class="adaptive-status-active" id="lighting-adaptive-alert" style="display: none;">
+                <div class="adaptive-active-alert">
+                  <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i>
+                  <span id="lighting-adaptive-msg">A iluminação da Garagem está ligada há 5h18min e não foi detectado movimento recentemente.</span>
+                </div>
+                <div class="adaptive-actions-row" style="display: flex; gap: 10px; margin-top: 12px;">
+                  <button type="button" class="btn-ai-action btn-ai-primary" onclick="turnOffSpecificDevice('bulb-icon-6')">
+                    Desligar
+                  </button>
+                  <button type="button" class="btn-ai-action btn-ai-secondary" onclick="dismissLightingAdaptiveAlert()">
+                    Ignorar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 13. AUTOMAÇÕES INTELIGENTES -->
+          <div class="card lighting-automations-card">
+            <div class="card-title">
+              <span>Automações Inteligentes</span>
+              <i class="fa-solid fa-bolt" style="color: var(--blue-accent);"></i>
+            </div>
+            <div class="lighting-automations-list">
+              <div class="lighting-auto-item">
+                <div class="auto-item-info">
+                  <strong>🌇 Ao anoitecer</strong>
+                  <span>Ligar iluminação externa (Refletor do Quintal)</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" checked onchange="toggleLightingAutomation('auto_anoitecer', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="lighting-auto-item">
+                <div class="auto-item-info">
+                  <strong>🚶 Ao detectar movimento</strong>
+                  <span>Ligar iluminação da garagem</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" checked onchange="toggleLightingAutomation('auto_movimento', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="lighting-auto-item">
+                <div class="auto-item-info">
+                  <strong>🏠 Ao chegar</strong>
+                  <span>Ativar iluminação de boas-vindas</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" checked onchange="toggleLightingAutomation('auto_chegar', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="lighting-auto-item">
+                <div class="auto-item-info">
+                  <strong>🌙 Horário de dormir</strong>
+                  <span>Reduzir iluminação geral da casa às 23h30</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" onchange="toggleLightingAutomation('auto_dormir', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="lighting-auto-item">
+                <div class="auto-item-info">
+                  <strong>⏰ Horário programado</strong>
+                  <span>Ligar/desligar dispositivos em horários definidos</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" checked onchange="toggleLightingAutomation('auto_programado', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna Direita: 15. GRÁFICO DE CONSUMO DA ILUMINAÇÃO -->
+        <div class="card lighting-chart-card">
+          <div class="chart-header-row">
+            <div>
+              <div class="card-title" style="margin-bottom: 2px;">
+                <span>Consumo da iluminação</span>
+                <i class="fa-solid fa-chart-line" style="color: var(--orange-bright);"></i>
+              </div>
+              <span class="chart-sub-label">Evolução do consumo energético das lâmpadas</span>
+            </div>
+            <div class="chart-filter-pills">
+              <button type="button" class="chart-filter-btn active" onclick="setLightingChartPeriod('hoje', this)">Hoje</button>
+              <button type="button" class="chart-filter-btn" onclick="setLightingChartPeriod('semana', this)">Semana</button>
+              <button type="button" class="chart-filter-btn" onclick="setLightingChartPeriod('mes', this)">Mês</button>
+            </div>
+          </div>
+
+          <div class="chart-kpi-strip">
+            <div class="chart-kpi-item">
+              <span>Consumo Total</span>
+              <strong id="chart-total-energy">0,74 kWh</strong>
+            </div>
+            <div class="chart-kpi-item">
+              <span>Horário de Pico</span>
+              <strong id="chart-peak-time">20:00</strong>
+            </div>
+            <div class="chart-kpi-item">
+              <span>Economia Estimada</span>
+              <strong style="color: #10b981;">-14%</strong>
+            </div>
+          </div>
+
+          <!-- Gráfico SVG interativo e futurista -->
+          <div class="lighting-chart-container" id="lighting-svg-container">
+            <svg viewBox="0 0 500 180" class="lighting-svg-chart">
+              <defs>
+                <linearGradient id="chartGradientOrange" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#ff7a00" stop-opacity="0.45"/>
+                  <stop offset="100%" stop-color="#ff7a00" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+              <line x1="40" y1="30" x2="480" y2="30" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3 3"/>
+              <line x1="40" y1="75" x2="480" y2="75" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3 3"/>
+              <line x1="40" y1="120" x2="480" y2="120" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3 3"/>
+              <line x1="40" y1="155" x2="480" y2="155" stroke="rgba(255,255,255,0.12)"/>
+              
+              <text x="32" y="34" fill="var(--text-muted)" font-size="10" text-anchor="end">120W</text>
+              <text x="32" y="79" fill="var(--text-muted)" font-size="10" text-anchor="end">80W</text>
+              <text x="32" y="124" fill="var(--text-muted)" font-size="10" text-anchor="end">40W</text>
+              <text x="32" y="159" fill="var(--text-muted)" font-size="10" text-anchor="end">0W</text>
+
+              <path id="chart-area-path" d="M 60,155 L 60,145 Q 110,140 160,130 T 260,110 T 360,65 T 460,105 L 460,155 Z" fill="url(#chartGradientOrange)"/>
+              <path id="chart-line-path" d="M 60,145 Q 110,140 160,130 T 260,110 T 360,65 T 460,105" fill="none" stroke="#ff7a00" stroke-width="3" stroke-linecap="round"/>
+
+              <circle cx="60" cy="145" r="4" fill="#0d1117" stroke="#ff7a00" stroke-width="2"/>
+              <circle cx="160" cy="130" r="4" fill="#0d1117" stroke="#ff7a00" stroke-width="2"/>
+              <circle cx="260" cy="110" r="4" fill="#0d1117" stroke="#ff7a00" stroke-width="2"/>
+              <circle cx="360" cy="65" r="5" fill="#ff7a00" stroke="#fff" stroke-width="2"/>
+              <circle cx="460" cy="105" r="4" fill="#0d1117" stroke="#ff7a00" stroke-width="2"/>
+
+              <text x="60" y="172" fill="var(--text-muted)" font-size="10" text-anchor="middle" id="chart-lbl-1">00:00</text>
+              <text x="160" y="172" fill="var(--text-muted)" font-size="10" text-anchor="middle" id="chart-lbl-2">06:00</text>
+              <text x="260" y="172" fill="var(--text-muted)" font-size="10" text-anchor="middle" id="chart-lbl-3">12:00</text>
+              <text x="360" y="172" fill="var(--text-muted)" font-size="10" text-anchor="middle" id="chart-lbl-4">18:00</text>
+              <text x="460" y="172" fill="var(--text-muted)" font-size="10" text-anchor="middle" id="chart-lbl-5">23:59</text>
+            </svg>
           </div>
         </div>
       </div>
@@ -708,7 +1168,7 @@
       <div class="dashboard-grid">
         <div class="card" style="grid-column: span 2;">
           <div class="card-title">
-            <span>🧠  Sugestões Identificadas</span>
+            <span>🧠 Sugestões Identificadas</span>
             <i class="fa-solid fa-brain" style="color: var(--orange-bright);"></i>
           </div>
 
@@ -913,7 +1373,7 @@
         </div>
       </div>
 
-      <!-- 5. PREFERêNCIAS & 6. APARENCIA E ACESSIBILIDADE (LADO A LADO) -->
+      <!-- 5. PREFERÊNCIAS & 6. APARÊNCIA E ACESSIBILIDADE (LADO A LADO) -->
       <div class="profile-two-columns">
         <!-- 5. PREFERÊNCIAS DO DOMUS -->
         <div class="card profile-compact-card">
@@ -1114,11 +1574,11 @@
       <div class="footer-content">
         <div class="footer-brand">
           <span class="footer-logo">DOMUS</span>
-          <p class="footer-copy">&copy; 2026 DOMUS &mdash; Sistema Inteligente de Automação Residencial &mdash; Direitos Autorais Reservados</p>
+          <p class="footer-copy">&copy; 2026 DOMUS &mdash; Sistema Inteligente de Automação Residencial</p>
         </div>
         <p class="footer-quote">&ldquo;Integrando a tecnologia ao seu modo de viver.&rdquo;</p>
         <div class="footer-credits">
-          <span>Desenvolvido por <strong>Matheus D'Lucca &amp; Arthur Carvalho</strong></span>
+          <span>Desenvolvido por <strong>Matheus &amp; Arthur</strong></span>
         </div>
       </div>
     </footer>
@@ -1187,7 +1647,7 @@
     </div>
   </div>
 
-  <!-- MODAL DE CRIAR AUTOMAÇÃo -->
+  <!-- MODAL DE CRIAR AUTOMAÇÃO -->
   <div id="modal-add-automation" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
@@ -1242,7 +1702,7 @@
         <div class="history-filter-pills">
           <button type="button" class="history-pill active" onclick="filterHistoryLogs('all', this)">Todos</button>
           <button type="button" class="history-pill" onclick="filterHistoryLogs('luz', this)">💡 Iluminação</button>
-          <button type="button" class="history-pill" onclick="filterHistoryLogs('clima', this)">/weather Clima</button>
+          <button type="button" class="history-pill" onclick="filterHistoryLogs('clima', this)">❄️ Clima</button>
           <button type="button" class="history-pill" onclick="filterHistoryLogs('seguranca', this)">🛡️ Segurança</button>
         </div>
         <button type="button" class="btn-ai-action btn-ai-secondary" style="font-size: 0.75rem; padding: 5px 12px;" onclick="clearActivityHistory()">
@@ -1256,6 +1716,210 @@
     </div>
   </div>
 
+  <!-- MODAL DE CONTROLE AVANÇADO DA ILUMINAÇÃO -->
+  <div id="modal-light-advanced" class="modal-overlay">
+    <div class="modal-content modal-light-content">
+      <div class="modal-header">
+        <div class="modal-title-with-icon">
+          <div id="modal-light-icon-box" class="icon-box active-glow"><i class="fa-solid fa-lightbulb"></i></div>
+          <div>
+            <h3 id="modal-light-room-name">Sala de Estar</h3>
+            <span id="modal-light-lamp-name" class="modal-lamp-subtitle">Lâmpada Principal</span>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" onclick="closeLightDetailModal()">&times;</button>
+      </div>
+
+      <!-- Estado: Ligada / Desligada -->
+      <div class="modal-state-row">
+        <div class="modal-state-label">
+          <span class="state-dot" id="modal-state-dot"></span>
+          <strong id="modal-state-text">Ligada</strong>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="modal-light-toggle-state" onchange="toggleLightFromModal()">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Abas de navegação do modal -->
+      <div class="modal-tab-nav">
+        <button type="button" class="modal-tab-btn active" onclick="switchModalLightTab('controle', this)">Controle</button>
+        <button type="button" class="modal-tab-btn" onclick="switchModalLightTab('estatisticas', this)">Estatísticas</button>
+        <button type="button" class="modal-tab-btn" onclick="switchModalLightTab('agendamento', this)">Agendamento</button>
+      </div>
+
+      <!-- ABA 1: CONTROLE (Brilho, Temperatura, Cor RGB, Sensor) -->
+      <div id="modal-tab-controle" class="modal-tab-panel active">
+        <!-- Brilho -->
+        <div class="modal-control-block">
+          <div class="control-header-row">
+            <span><i class="fa-solid fa-sun"></i> Brilho</span>
+            <strong id="modal-brightness-display">72%</strong>
+          </div>
+          <div class="slider-wrapper">
+            <input type="range" id="modal-brightness-slider" min="0" max="100" value="72" oninput="onModalBrightnessChange(this.value)">
+          </div>
+        </div>
+
+        <!-- Temperatura da Luz -->
+        <div class="modal-control-block" id="modal-temp-block">
+          <div class="control-header-row">
+            <span><i class="fa-solid fa-temperature-half"></i> Temperatura da luz</span>
+            <strong id="modal-temp-display">3000K</strong>
+          </div>
+          <div class="temp-slider-container">
+            <span class="temp-label-icon">🌅 Quente</span>
+            <input type="range" id="modal-temp-slider" min="2700" max="6500" step="100" value="3000" oninput="onModalTempChange(this.value)">
+            <span class="temp-label-icon">Fria ❄️</span>
+          </div>
+          <div class="temp-preset-pills">
+            <button type="button" class="btn-preset-pill" onclick="setModalTempPreset(2700)">2700K (Quente)</button>
+            <button type="button" class="btn-preset-pill" onclick="setModalTempPreset(4000)">4000K (Neutra)</button>
+            <button type="button" class="btn-preset-pill" onclick="setModalTempPreset(6500)">6500K (Fria)</button>
+          </div>
+        </div>
+
+        <!-- Cor RGB (Quando suportado) -->
+        <div class="modal-control-block" id="modal-rgb-block">
+          <div class="control-header-row">
+            <span><i class="fa-solid fa-palette"></i> Cor RGB</span>
+            <span class="badge-rgb-support">RGB Compatível</span>
+          </div>
+          <div class="light-color-swatches">
+            <button type="button" class="color-swatch-btn" style="background:#ff3333;" onclick="setModalColor('#ff3333')" title="Vermelho"></button>
+            <button type="button" class="color-swatch-btn" style="background:#00d2ff;" onclick="setModalColor('#00d2ff')" title="Azul Cyan"></button>
+            <button type="button" class="color-swatch-btn" style="background:#2ecc71;" onclick="setModalColor('#2ecc71')" title="Verde"></button>
+            <button type="button" class="color-swatch-btn" style="background:#a855f7;" onclick="setModalColor('#a855f7')" title="Roxo"></button>
+            <button type="button" class="color-swatch-btn" style="background:#ff7a00;" onclick="setModalColor('#ff7a00')" title="Laranja"></button>
+            <button type="button" class="color-swatch-btn" style="background:#ffffff; border: 1px solid #aaa;" onclick="setModalColor('#ffffff')" title="Branco"></button>
+            <input type="color" id="modal-color-picker" class="custom-color-input" onchange="setModalColor(this.value)" title="Cor personalizada">
+          </div>
+        </div>
+
+        <!-- Sensor de Movimento (Quando suportado) -->
+        <div class="modal-control-block" id="modal-motion-block">
+          <div class="control-header-row">
+            <span><i class="fa-solid fa-person-walking"></i> Sensor de movimento</span>
+            <span class="motion-status-pill" id="modal-motion-status">🟢 Ativo</span>
+          </div>
+          <div class="motion-last-seen" id="modal-motion-last">Último movimento: há 2 min</div>
+          <div class="motion-options">
+            <label class="motion-check-label">
+              <input type="checkbox" id="modal-motion-turnon" checked>
+              <span>Ligar quando movimento for detectado</span>
+            </label>
+            <label class="motion-check-label">
+              <input type="checkbox" id="modal-motion-turnoff" checked>
+              <span>Desligar após ausência</span>
+            </label>
+            <div class="motion-delay-row">
+              <span>Tempo de espera:</span>
+              <select id="modal-motion-delay" class="form-select-sm">
+                <option value="5">5 minutos</option>
+                <option value="10">10 minutos</option>
+                <option value="15">15 minutos</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 2: ESTATÍSTICAS (Tempo de Funcionamento, Consumo Individual, Histórico) -->
+      <div id="modal-tab-estatisticas" class="modal-tab-panel">
+        <!-- 7. Tempo de funcionamento -->
+        <div class="modal-control-block">
+          <div class="control-header-row">
+            <span><i class="fa-solid fa-stopwatch"></i> Tempo de funcionamento</span>
+          </div>
+          <div class="runtime-stat-grid">
+            <div class="runtime-stat-box">
+              <span class="stat-box-label">Hoje</span>
+              <strong id="modal-runtime-today">3h 42min</strong>
+            </div>
+            <div class="runtime-stat-box">
+              <span class="stat-box-label">Esta semana</span>
+              <strong id="modal-runtime-week">18h 21min</strong>
+            </div>
+            <div class="runtime-stat-box">
+              <span class="stat-box-label">Este mês</span>
+              <strong id="modal-runtime-month">67h 14min</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. Consumo individual -->
+        <div class="modal-control-block">
+          <div class="control-header-row">
+            <span><i class="fa-solid fa-bolt"></i> Consumo</span>
+          </div>
+          <div class="consumption-card-row">
+            <div class="consumption-metric">
+              <span class="consumption-label">Hoje</span>
+              <strong id="modal-consumption-kwh" class="consumption-kwh">0,42 kWh</strong>
+            </div>
+            <div class="consumption-metric">
+              <span class="consumption-label">Estimativa</span>
+              <strong id="modal-consumption-cost" class="consumption-cost">R$ 0,31</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9. Histórico -->
+        <div class="modal-control-block">
+          <div class="control-header-row">
+            <span><i class="fa-solid fa-clipboard-list"></i> Histórico</span>
+          </div>
+          <ul class="device-mini-history" id="modal-device-history">
+            <!-- Gerado dinamicamente -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- ABA 3: AGENDAMENTO (10. Agendamento) -->
+      <div id="modal-tab-agendamento" class="modal-tab-panel">
+        <div class="modal-control-block">
+          <div class="control-header-row">
+            <span><i class="fa-solid fa-clock"></i> Agendar</span>
+            <label class="switch">
+              <input type="checkbox" id="modal-schedule-enable" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="schedule-inputs-row">
+            <div class="form-group-time">
+              <label>Ligar às:</label>
+              <input type="time" id="modal-schedule-on" value="18:30" class="time-input">
+            </div>
+            <div class="form-group-time">
+              <label>Desligar às:</label>
+              <input type="time" id="modal-schedule-off" value="23:45" class="time-input">
+            </div>
+          </div>
+          <div class="schedule-days-section">
+            <label class="schedule-days-title">Dias:</label>
+            <div class="schedule-days-row">
+              <label class="day-check-btn"><input type="checkbox" name="sched-day" value="1" checked><span>Seg</span></label>
+              <label class="day-check-btn"><input type="checkbox" name="sched-day" value="2" checked><span>Ter</span></label>
+              <label class="day-check-btn"><input type="checkbox" name="sched-day" value="3" checked><span>Qua</span></label>
+              <label class="day-check-btn"><input type="checkbox" name="sched-day" value="4" checked><span>Qui</span></label>
+              <label class="day-check-btn"><input type="checkbox" name="sched-day" value="5" checked><span>Sex</span></label>
+              <label class="day-check-btn"><input type="checkbox" name="sched-day" value="6"><span>Sáb</span></label>
+              <label class="day-check-btn"><input type="checkbox" name="sched-day" value="0"><span>Dom</span></label>
+            </div>
+          </div>
+          <button type="button" class="btn-ai-action btn-ai-primary" style="width: 100%; margin-top: 15px;" onclick="saveLightSchedule()">
+            <i class="fa-solid fa-floppy-disk"></i> Salvar Agendamento
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="margin-top: 15px; display: flex; justify-content: flex-end;">
+        <button type="button" class="btn-ai-action btn-ai-secondary" onclick="closeLightDetailModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- JAVASCRIPT INTEGRADO -->
   <script>
     // @ts-nocheck
@@ -1263,11 +1927,11 @@
     let isNotificationsEnabled = localStorage.getItem('domus_notif_enabled') !== 'false';
     let handledSituations = JSON.parse(localStorage.getItem('domus_handled_situations') || '{}');
 
-    // CONTABILIZAÃ‡ÃƒO DE TEMPO DOS DISPOSITIVOS
+    // CONTABILIZAÇÃO DE TEMPO DOS DISPOSITIVOS
     // Armazena segundos acumulados por dispositivo: { [energyId]: number (segundos) }
     let deviceRunTimes = JSON.parse(localStorage.getItem('domus_device_times') || '{}');
 
-    // Mapeamento de cronometros reais individuais por lâmpada (Key: iconId)
+    // Mapeamento de cronômetros reais individuais por lâmpada (Key: iconId)
     const lightTimers = {};
     const FIVE_MINUTES_MS = 300000; // 5 minutos em milissegundos (300.000 ms)
 
@@ -1282,9 +1946,9 @@
       },
       {
         id: 'auto_2',
-        title: 'Luz AutomÃ¡tica da Sala',
+        title: 'Luz Automática da Sala',
         trigger: 'Movimento detectado',
-        action: 'Ligar iluminaÃ§Ã£o em 70%',
+        action: 'Ligar iluminação em 70%',
         active: true,
         icon: 'fa-lightbulb'
       },
@@ -1292,7 +1956,7 @@
         id: 'auto_3',
         title: 'Economia Inteligente',
         trigger: '5min sem movimento',
-        action: 'Apagar lÃ¢mpada da sala',
+        action: 'Apagar lâmpada da sala',
         active: true,
         icon: 'fa-leaf'
       }
@@ -1307,7 +1971,7 @@
       isNotificationsEnabled = enabled;
       localStorage.setItem('domus_notif_enabled', enabled ? 'true' : 'false');
       const statusText = enabled ? 'ativadas' : 'desativadas';
-      logActivity(`NotificaÃ§Ãµes em tempo real ${statusText}`, 'fa-solid fa-bell', enabled ? 'var(--blue-accent)' : 'var(--orange-bright)');
+      logActivity(`Notificações em tempo real ${statusText}`, 'fa-solid fa-bell', enabled ? 'var(--blue-accent)' : 'var(--orange-bright)');
 
       if (!enabled) {
         const container = document.getElementById('toast-container');
@@ -1602,7 +2266,7 @@
       if (existingCard) return;
 
       const emptyMsg = container.querySelector('div');
-      if (emptyMsg && emptyMsg.innerText.includes('Nenhuma nova sugestÃ£o')) {
+      if (emptyMsg && emptyMsg.innerText.includes('Nenhuma nova sugestão')) {
         emptyMsg.remove();
       }
 
@@ -1612,7 +2276,7 @@
       card.innerHTML = `
         <div class="ai-card-header">
           <span class="ai-tag tag-energy"><i class="${sug.icon}"></i> ${sug.badgeText}</span>
-          <span class="ai-time">AnÃ¡lise Recente</span>
+          <span class="ai-time">Análise Recente</span>
         </div>
         <h4>${sug.title}</h4>
         <p>${sug.adaptMsg}</p>
@@ -1620,7 +2284,7 @@
           <button type="button" class="btn-ai-action btn-ai-primary" onclick="convertDynamicSuggestionToAutomation('${sug.autoTitle}', '${sug.autoTrigger}', '${sug.autoAction}', '${sug.id}')">
             <i class="fa-solid fa-robot"></i> Criar Automação
           </button>
-          <button type="button" class="btn-ai-action btn-ai-secondary" onclick="dismissSituation('${sug.id}')">Ignorar SugestÃ£o</button>
+          <button type="button" class="btn-ai-action btn-ai-secondary" onclick="dismissSituation('${sug.id}')">Ignorar Sugestão</button>
         </div>
       `;
       container.prepend(card);
@@ -1636,7 +2300,7 @@
         container.innerHTML = `
           <div style="text-align: center; padding: 25px; color: var(--text-muted); font-size: 0.85rem;">
             <i class="fa-solid fa-circle-check fa-2x" style="color: var(--blue-accent); margin-bottom: 8px; display: block;"></i>
-            Nenhuma nova sugestÃ£o pendente. Seu DOMUS estÃ¡ totalmente otimizado!
+            Nenhuma nova sugestão pendente. Seu DOMUS está totalmente otimizado!
           </div>`;
       }
       updateDashboardAdaptiveUI();
@@ -1657,7 +2321,7 @@
         const container = document.getElementById('adaptive-suggestions-container');
         const firstCard = container ? container.querySelector('.ai-card') : null;
         if (firstCard) {
-          const title = firstCard.querySelector('h4')?.innerText || 'SugestÃ£o do DOMUS pendente';
+          const title = firstCard.querySelector('h4')?.innerText || 'Sugestão do DOMUS pendente';
           const p = firstCard.querySelector('p')?.innerText || '';
           if (msgEl) msgEl.innerText = p || title;
           emptyBox.style.display = 'none';
@@ -1695,9 +2359,9 @@
         icon: 'fa-solid fa-lightbulb',
         title: `💡 Desperdício: ${deviceName}`,
         badgeText: 'Sugestão do DOMUS',
-        toastMsg: `A <strong>${deviceName}</strong> permaneceu acesa por mais de 5 minutos continuos sem movimento no ambiente.`,
+        toastMsg: `A <strong>${deviceName}</strong> permaneceu acesa por mais de 5 minutos contínuos sem movimento no ambiente.`,
         adaptMsg: `O DOMUS identificou que a ${deviceName} permaneceu acesa por mais de 5 minutos seguidos.`,
-        actionLabel: 'Desligar lampada',
+        actionLabel: 'Desligar lâmpada',
         actionCode: `turnOffSpecificDevice('${iconId}'); resolveSituation('${situationId}');`,
         autoTitle: `Desligar ${deviceName} Sem Movimento`,
         autoTrigger: 'Sem Movimento (5min)',
@@ -1823,19 +2487,199 @@
     const lightSwitches = document.querySelectorAll('.light-switch');
     const lightsStatusText = document.getElementById('lights-count-status');
 
+    // BASE DE DADOS DOS DISPOSITIVOS DE ILUMINAÇÃO
+    const lightingDevices = {
+      'bulb-icon-1': {
+        id: 'bulb-icon-1',
+        name: 'Luz da Sala',
+        room: 'Sala de Estar',
+        type: 'Lâmpada Principal',
+        power: 12,
+        energyId: 'energy-sala',
+        brightness: 72,
+        colorTemp: 3000,
+        rgbSupported: true,
+        currentColor: '#ffaa44',
+        scheduleActive: true,
+        scheduleOn: '18:30',
+        scheduleOff: '23:45',
+        hasMotionSensor: true,
+        motionActive: true,
+        lastMotion: 'há 2 min',
+        history: [
+          { time: '18:15', event: 'Lâmpada ligada' },
+          { time: '17:30', event: 'Brilho ajustado para 72%' },
+          { time: '15:20', event: 'Lâmpada desligada' }
+        ]
+      },
+      'bulb-icon-2': {
+        id: 'bulb-icon-2',
+        name: 'Luz da Cozinha',
+        room: 'Cozinha',
+        type: 'Luzes LED',
+        power: 15,
+        energyId: 'energy-cozinha',
+        brightness: 80,
+        colorTemp: 4000,
+        rgbSupported: false,
+        currentColor: '#ffffff',
+        scheduleActive: false,
+        scheduleOn: '06:30',
+        scheduleOff: '22:00',
+        hasMotionSensor: false,
+        motionActive: false,
+        lastMotion: 'Sem sensor',
+        history: [
+          { time: '19:10', event: 'Lâmpada ligada' },
+          { time: '14:05', event: 'Lâmpada desligada' }
+        ]
+      },
+      'bulb-icon-3': {
+        id: 'bulb-icon-3',
+        name: 'Luz do Quarto Principal',
+        room: 'Quarto Principal',
+        type: 'Lâmpada Inteligente',
+        power: 9,
+        energyId: 'energy-quarto-p',
+        brightness: 60,
+        colorTemp: 2700,
+        rgbSupported: true,
+        currentColor: '#ff9955',
+        scheduleActive: true,
+        scheduleOn: '21:00',
+        scheduleOff: '07:00',
+        hasMotionSensor: false,
+        motionActive: false,
+        lastMotion: 'Sem sensor',
+        history: [
+          { time: '21:00', event: 'Cena Noite ativada' },
+          { time: '07:15', event: 'Lâmpada desligada' }
+        ]
+      },
+      'bulb-icon-4': {
+        id: 'bulb-icon-4',
+        name: 'Luz do Quarto 2',
+        room: 'Quarto 2',
+        type: 'Lâmpada Inteligente',
+        power: 9,
+        energyId: 'energy-quarto-2',
+        brightness: 50,
+        colorTemp: 3500,
+        rgbSupported: true,
+        currentColor: '#00d2ff',
+        scheduleActive: false,
+        scheduleOn: '21:30',
+        scheduleOff: '06:30',
+        hasMotionSensor: false,
+        motionActive: false,
+        lastMotion: 'Sem sensor',
+        history: [
+          { time: '16:45', event: 'Lâmpada ligada' },
+          { time: '18:00', event: 'Brilho ajustado para 50%' }
+        ]
+      },
+      'bulb-icon-5': {
+        id: 'bulb-icon-5',
+        name: 'Luz do Banheiro',
+        room: 'Banheiro',
+        type: 'Luz Neutra',
+        power: 10,
+        energyId: 'energy-banheiro',
+        brightness: 100,
+        colorTemp: 4000,
+        rgbSupported: false,
+        currentColor: '#ffffff',
+        scheduleActive: false,
+        scheduleOn: '06:00',
+        scheduleOff: '00:00',
+        hasMotionSensor: true,
+        motionActive: true,
+        lastMotion: 'há 12 min',
+        history: [
+          { time: '18:15', event: 'Lâmpada ligada' },
+          { time: '18:20', event: 'Lâmpada desligada' }
+        ]
+      },
+      'bulb-icon-6': {
+        id: 'bulb-icon-6',
+        name: 'Luz da Garagem',
+        room: 'Garagem',
+        type: 'Lâmpada Tubular LED',
+        power: 18,
+        energyId: 'energy-garagem',
+        brightness: 100,
+        colorTemp: 6500,
+        rgbSupported: false,
+        currentColor: '#ffffff',
+        scheduleActive: true,
+        scheduleOn: '18:45',
+        scheduleOff: '23:00',
+        hasMotionSensor: true,
+        motionActive: true,
+        lastMotion: 'há 1 min',
+        history: [
+          { time: '18:02', event: 'Movimento detectado' },
+          { time: '18:02', event: 'Lâmpada ligada' }
+        ]
+      },
+      'bulb-icon-7': {
+        id: 'bulb-icon-7',
+        name: 'Refletor do Quintal',
+        room: 'Refletor do Quintal',
+        type: 'Refletor de Alta Potência',
+        power: 50,
+        energyId: 'energy-quintal',
+        brightness: 100,
+        colorTemp: 5000,
+        rgbSupported: false,
+        currentColor: '#ffffff',
+        scheduleActive: true,
+        scheduleOn: '19:00',
+        scheduleOff: '06:00',
+        hasMotionSensor: true,
+        motionActive: true,
+        lastMotion: 'há 45 min',
+        history: [
+          { time: '19:00', event: 'Refletor ligado' },
+          { time: '06:00', event: 'Refletor desligado' }
+        ]
+      }
+    };
+
+    let currentModalBulbId = 'bulb-icon-1';
+    let lightingMasterBrightness = 75;
+
     function updateLightingSystem(event) {
       let activeCount = 0;
-      lightSwitches.forEach(sw => {
+      let totalWatts = 0;
+      let totalBrightness = 0;
+      const allSwitches = document.querySelectorAll('.light-switch');
+
+      allSwitches.forEach(sw => {
         const iconId = sw.getAttribute('data-icon');
         const deviceName = sw.getAttribute('data-name');
         const energyId = sw.getAttribute('data-energy-id');
+        const powerWatts = parseFloat(sw.getAttribute('data-power')) || 10;
         const iconBox = document.getElementById(iconId);
         const energyLabel = document.getElementById(energyId);
+        const roomCard = document.getElementById(`room-card-${iconId}`);
+        const roomBadge = document.getElementById(`badge-${iconId}`);
+        const specBadge = document.getElementById(`spec-${iconId}`);
+        const dev = lightingDevices[iconId] || {};
 
         if (sw.checked) {
           activeCount++;
+          totalWatts += powerWatts;
+          totalBrightness += (dev.brightness || 75);
+
           if (iconBox) iconBox.classList.add('active-glow');
-          const dailyKwh = ((parseFloat(sw.getAttribute('data-power')) * 8) / 1000).toFixed(3);
+          if (roomCard) roomCard.classList.add('card-light-on');
+          if (roomBadge) {
+            roomBadge.innerText = '🟢 1/1 ligada';
+            roomBadge.classList.add('badge-on');
+          }
+
+          const dailyKwh = ((powerWatts * 8) / 1000).toFixed(3);
           if (energyLabel) {
             energyLabel.innerText = `${dailyKwh} kWh/dia`;
             energyLabel.style.color = "var(--orange-bright)";
@@ -1852,6 +2696,11 @@
           }
         } else {
           if (iconBox) iconBox.classList.remove('active-glow');
+          if (roomCard) roomCard.classList.remove('card-light-on');
+          if (roomBadge) {
+            roomBadge.innerText = '⚪ 0/1 ligada';
+            roomBadge.classList.remove('badge-on');
+          }
           if (energyLabel) {
             energyLabel.innerText = "0.00 kWh/dia";
             energyLabel.style.color = "var(--text-muted)";
@@ -1875,19 +2724,390 @@
           closeToastById(sitId);
           removeAdaptiveSuggestionCard(sitId);
         }
+
+        // Atualiza a etiqueta de especificações do ambiente
+        if (specBadge && dev) {
+          if (iconId === 'bulb-icon-7') {
+            specBadge.innerText = '100% · Externa';
+          } else {
+            specBadge.innerText = `${dev.brightness || 75}% · ${dev.colorTemp || 3000}K`;
+          }
+        }
       });
 
-      if (lightsStatusText) lightsStatusText.innerText = `${activeCount} ${activeCount === 1 ? 'luz acesa' : 'luzes acesas'}`;
-      const dashIndLights = document.getElementById('dash-indicator-lights');
-      if (dashIndLights) dashIndLights.innerText = `${activeCount} ${activeCount === 1 ? 'ligada' : 'ligadas'}`;
+      // 1. Atualiza cabeçalho e contadores
+      const offCount = allSwitches.length - activeCount;
+      const headerStats = document.getElementById('lighting-header-stats');
+      if (headerStats) {
+        headerStats.innerText = `7 ambientes · ${activeCount} ${activeCount === 1 ? 'lâmpada ligada' : 'lâmpadas ligadas'} · ${offCount} ${offCount === 1 ? 'desligada' : 'desligadas'}`;
+      }
 
-      if (event) {
+      // 2. Atualiza KPI cards
+      const kpiActive = document.getElementById('lighting-kpi-active');
+      if (kpiActive) kpiActive.innerText = `${activeCount} / ${allSwitches.length}`;
+
+      const avgBrightness = activeCount > 0 ? Math.round(totalBrightness / activeCount) : 0;
+      const kpiBrightness = document.getElementById('lighting-kpi-brightness');
+      if (kpiBrightness) kpiBrightness.innerText = `${avgBrightness}%`;
+
+      const kpiWatts = document.getElementById('lighting-kpi-watts');
+      if (kpiWatts) kpiWatts.innerText = `${totalWatts} W`;
+
+      // Calcula o tempo de funcionamento acumulado da iluminação
+      let totalLightingSeconds = 0;
+      Object.keys(lightingDevices).forEach(id => {
+        const eid = lightingDevices[id].energyId;
+        totalLightingSeconds += (deviceRunTimes[eid] || 0);
+      });
+      const kpiRuntime = document.getElementById('lighting-kpi-runtime');
+      if (kpiRuntime) {
+        if (totalLightingSeconds === 0) {
+          kpiRuntime.innerText = '3h 24min';
+        } else {
+          const hrs = Math.floor(totalLightingSeconds / 3600);
+          const mins = Math.floor((totalLightingSeconds % 3600) / 60);
+          kpiRuntime.innerText = `${hrs}h ${mins}min`;
+        }
+      }
+
+      // Sincroniza textos do Dashboard
+      if (lightsStatusText) {
+        lightsStatusText.innerText = `${activeCount} ${activeCount === 1 ? 'luz acesa' : 'luzes acesas'}`;
+      }
+      const dashIndLights = document.getElementById('dash-indicator-lights');
+      if (dashIndLights) {
+        dashIndLights.innerText = `${activeCount} ${activeCount === 1 ? 'ligada' : 'ligadas'}`;
+      }
+
+      // Atualiza o modal se estiver aberto
+      if (currentModalBulbId) {
+        syncModalStateWithBulb(currentModalBulbId);
+      }
+
+      // Alerta de inteligência adaptativa na iluminação
+      updateLightingAdaptiveAlert();
+
+      // Log de atividade se acionado pelo usuário
+      if (event && event.target) {
         const name = event.target.getAttribute('data-name');
         const state = event.target.checked ? 'Ligada' : 'Desligada';
         logActivity(`${name} ${state}`, 'fa-solid fa-lightbulb', 'var(--orange-bright)');
+
+        const iconId = event.target.getAttribute('data-icon');
+        if (lightingDevices[iconId]) {
+          const now = new Date();
+          const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+          lightingDevices[iconId].history.unshift({ time: timeStr, event: `Lâmpada ${state.toLowerCase()}` });
+          if (lightingDevices[iconId].history.length > 8) lightingDevices[iconId].history.pop();
+        }
       }
     }
 
+    function turnOnAllLights() {
+      document.querySelectorAll('.light-switch').forEach(sw => {
+        if (!sw.checked) {
+          sw.checked = true;
+          sw.dispatchEvent(new Event('change'));
+        }
+      });
+      showToastNotification('Iluminação', 'Todas as lâmpadas foram ligadas.', 'fa-solid fa-power-off', 'var(--orange-bright)');
+    }
+
+    function turnOffAllLights() {
+      document.querySelectorAll('.light-switch').forEach(sw => {
+        if (sw.checked) {
+          sw.checked = false;
+          sw.dispatchEvent(new Event('change'));
+        }
+      });
+      showToastNotification('Iluminação', 'Todas as lâmpadas foram desligadas.', 'fa-regular fa-lightbulb', 'var(--blue-accent)');
+    }
+
+    function setMasterBrightness(val) {
+      lightingMasterBrightness = parseInt(val, 10);
+      const disp = document.getElementById('master-brightness-val');
+      if (disp) disp.innerText = `${val}%`;
+
+      Object.keys(lightingDevices).forEach(id => {
+        if (id !== 'bulb-icon-6' && id !== 'bulb-icon-7') {
+          lightingDevices[id].brightness = lightingMasterBrightness;
+          const spec = document.getElementById(`spec-${id}`);
+          if (spec) spec.innerText = `${val}% · ${lightingDevices[id].colorTemp}K`;
+        }
+      });
+      updateLightingSystem();
+    }
+
+    function applyLightingScene(sceneKey) {
+      const scenes = {
+        'dia': {
+          name: 'Dia',
+          on: ['bulb-icon-1', 'bulb-icon-2', 'bulb-icon-3', 'bulb-icon-5'],
+          off: ['bulb-icon-6', 'bulb-icon-7'],
+          brightness: 95,
+          temp: 5000
+        },
+        'noite': {
+          name: 'Noite',
+          on: ['bulb-icon-1', 'bulb-icon-3'],
+          off: ['bulb-icon-2', 'bulb-icon-4', 'bulb-icon-5', 'bulb-icon-6', 'bulb-icon-7'],
+          brightness: 20,
+          temp: 2700
+        },
+        'cinema': {
+          name: 'Cinema',
+          on: ['bulb-icon-1'],
+          off: ['bulb-icon-2', 'bulb-icon-3', 'bulb-icon-4', 'bulb-icon-5', 'bulb-icon-6', 'bulb-icon-7'],
+          brightness: 15,
+          temp: 2700
+        },
+        'estudo': {
+          name: 'Estudo',
+          on: ['bulb-icon-3', 'bulb-icon-4'],
+          off: ['bulb-icon-6', 'bulb-icon-7'],
+          brightness: 90,
+          temp: 5000
+        },
+        'cheguei': {
+          name: 'Cheguei',
+          on: ['bulb-icon-1', 'bulb-icon-2', 'bulb-icon-6'],
+          off: [],
+          brightness: 75,
+          temp: 3500
+        },
+        'festa': {
+          name: 'Festa',
+          on: ['bulb-icon-1', 'bulb-icon-3', 'bulb-icon-7'],
+          off: [],
+          brightness: 90,
+          temp: 4000
+        }
+      };
+
+      const sc = scenes[sceneKey];
+      if (!sc) return;
+
+      sc.on.forEach(id => {
+        const sw = document.querySelector(`.light-switch[data-icon="${id}"]`);
+        if (sw && !sw.checked) {
+          sw.checked = true;
+          sw.dispatchEvent(new Event('change'));
+        }
+        if (lightingDevices[id]) {
+          lightingDevices[id].brightness = sc.brightness;
+          lightingDevices[id].colorTemp = sc.temp;
+        }
+      });
+
+      sc.off.forEach(id => {
+        const sw = document.querySelector(`.light-switch[data-icon="${id}"]`);
+        if (sw && sw.checked) {
+          sw.checked = false;
+          sw.dispatchEvent(new Event('change'));
+        }
+      });
+
+      updateLightingSystem();
+      logActivity(`Cena ${sc.name} ativada`, 'fa-solid fa-wand-magic-sparkles', 'var(--orange-bright)');
+      showToastNotification('Cena Ativada', `Cena ${sc.name} aplicada com sucesso!`, 'fa-solid fa-wand-magic-sparkles', 'var(--orange-bright)');
+    }
+
+    function openLightDetailModal(bulbId) {
+      currentModalBulbId = bulbId;
+      const dev = lightingDevices[bulbId];
+      if (!dev) return;
+
+      const modal = document.getElementById('modal-light-advanced');
+      if (!modal) return;
+
+      document.getElementById('modal-light-room-name').innerText = dev.room;
+      document.getElementById('modal-light-lamp-name').innerText = dev.type;
+
+      syncModalStateWithBulb(bulbId);
+
+      const brSlider = document.getElementById('modal-brightness-slider');
+      const brDisp = document.getElementById('modal-brightness-display');
+      if (brSlider) brSlider.value = dev.brightness;
+      if (brDisp) brDisp.innerText = `${dev.brightness}%`;
+
+      const tempSlider = document.getElementById('modal-temp-slider');
+      const tempDisp = document.getElementById('modal-temp-display');
+      if (tempSlider) tempSlider.value = dev.colorTemp;
+      if (tempDisp) tempDisp.innerText = `${dev.colorTemp}K`;
+
+      const rgbBlock = document.getElementById('modal-rgb-block');
+      if (rgbBlock) rgbBlock.style.display = dev.rgbSupported ? 'block' : 'none';
+
+      const motionBlock = document.getElementById('modal-motion-block');
+      if (motionBlock) motionBlock.style.display = dev.hasMotionSensor ? 'block' : 'none';
+
+      const secondsActive = deviceRunTimes[dev.energyId] || 0;
+      const hrsToday = Math.floor(secondsActive / 3600);
+      const minsToday = Math.floor((secondsActive % 3600) / 60);
+      const rtToday = document.getElementById('modal-runtime-today');
+      if (rtToday) {
+        rtToday.innerText = secondsActive > 0 ? `${hrsToday}h ${minsToday}min` : '3h 42min';
+      }
+
+      const kwhCalc = (((dev.power * (secondsActive || 13320)) / 3600) / 1000).toFixed(2);
+      const costCalc = (parseFloat(kwhCalc) * 0.75).toFixed(2);
+      const kwhEl = document.getElementById('modal-consumption-kwh');
+      const costEl = document.getElementById('modal-consumption-cost');
+      if (kwhEl) kwhEl.innerText = `${kwhCalc.replace('.', ',')} kWh`;
+      if (costEl) costEl.innerText = `R$ ${costCalc.replace('.', ',')}`;
+
+      const histEl = document.getElementById('modal-device-history');
+      if (histEl) {
+        if (!dev.history || dev.history.length === 0) {
+          histEl.innerHTML = '<li style="color: var(--text-muted);">Nenhum evento registrado</li>';
+        } else {
+          histEl.innerHTML = dev.history.map(h => `<li><i class="fa-solid fa-clock" style="color: var(--blue-accent);"></i> <strong>${h.time}</strong> — 💡 ${h.event}</li>`).join('');
+        }
+      }
+
+      modal.classList.add('active');
+    }
+
+    function closeLightDetailModal() {
+      const modal = document.getElementById('modal-light-advanced');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function syncModalStateWithBulb(bulbId) {
+      const sw = document.querySelector(`.light-switch[data-icon="${bulbId}"]`);
+      const isChecked = sw ? sw.checked : false;
+      const toggle = document.getElementById('modal-light-toggle-state');
+      const text = document.getElementById('modal-state-text');
+      const dot = document.getElementById('modal-state-dot');
+      const iconBox = document.getElementById('modal-light-icon-box');
+
+      if (toggle) toggle.checked = isChecked;
+      if (text) text.innerText = isChecked ? 'Ligada' : 'Desligada';
+      if (dot) dot.classList.toggle('active', isChecked);
+      if (iconBox) iconBox.classList.toggle('active-glow', isChecked);
+    }
+
+    function toggleLightFromModal() {
+      if (!currentModalBulbId) return;
+      const sw = document.querySelector(`.light-switch[data-icon="${currentModalBulbId}"]`);
+      if (sw) {
+        sw.checked = !sw.checked;
+        sw.dispatchEvent(new Event('change'));
+      }
+    }
+
+    function switchModalLightTab(tabName, btn) {
+      document.querySelectorAll('.modal-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.modal-tab-panel').forEach(p => p.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      const target = document.getElementById(`modal-tab-${tabName}`);
+      if (target) target.classList.add('active');
+    }
+
+    function onModalBrightnessChange(val) {
+      if (!currentModalBulbId || !lightingDevices[currentModalBulbId]) return;
+      lightingDevices[currentModalBulbId].brightness = parseInt(val, 10);
+      const disp = document.getElementById('modal-brightness-display');
+      if (disp) disp.innerText = `${val}%`;
+      const spec = document.getElementById(`spec-${currentModalBulbId}`);
+      if (spec) spec.innerText = `${val}% · ${lightingDevices[currentModalBulbId].colorTemp}K`;
+      updateLightingSystem();
+    }
+
+    function onModalTempChange(val) {
+      if (!currentModalBulbId || !lightingDevices[currentModalBulbId]) return;
+      lightingDevices[currentModalBulbId].colorTemp = parseInt(val, 10);
+      const disp = document.getElementById('modal-temp-display');
+      if (disp) disp.innerText = `${val}K`;
+      const spec = document.getElementById(`spec-${currentModalBulbId}`);
+      if (spec) spec.innerText = `${lightingDevices[currentModalBulbId].brightness}% · ${val}K`;
+    }
+
+    function setModalTempPreset(k) {
+      const slider = document.getElementById('modal-temp-slider');
+      if (slider) slider.value = k;
+      onModalTempChange(k);
+    }
+
+    function setModalColor(hex) {
+      if (!currentModalBulbId || !lightingDevices[currentModalBulbId]) return;
+      lightingDevices[currentModalBulbId].currentColor = hex;
+      showToastNotification('Cor Alterada', `Cor RGB da lâmpada alterada para ${hex}.`, 'fa-solid fa-palette', hex);
+    }
+
+    function saveLightSchedule() {
+      showToastNotification('Agendamento', 'Agendamento de iluminação salvo com sucesso!', 'fa-solid fa-clock', 'var(--blue-accent)');
+      closeLightDetailModal();
+    }
+
+    function updateLightingAdaptiveAlert() {
+      const alertBox = document.getElementById('lighting-adaptive-alert');
+      const emptyBox = document.getElementById('lighting-adaptive-empty');
+      const swGaragem = document.querySelector('.light-switch[data-icon="bulb-icon-6"]');
+
+      if (swGaragem && swGaragem.checked) {
+        if (alertBox) alertBox.style.display = 'block';
+        if (emptyBox) emptyBox.style.display = 'none';
+      } else {
+        if (alertBox) alertBox.style.display = 'none';
+        if (emptyBox) emptyBox.style.display = 'flex';
+      }
+    }
+
+    function dismissLightingAdaptiveAlert() {
+      const alertBox = document.getElementById('lighting-adaptive-alert');
+      const emptyBox = document.getElementById('lighting-adaptive-empty');
+      if (alertBox) alertBox.style.display = 'none';
+      if (emptyBox) emptyBox.style.display = 'flex';
+      showToastNotification('Sugestão', 'Sugestão dispensada.', 'fa-solid fa-check', 'var(--blue-accent)');
+    }
+
+    function toggleLightingAutomation(autoId, isChecked) {
+      showToastNotification('Automação', isChecked ? 'Automação ativada com sucesso.' : 'Automação pausada.', 'fa-solid fa-bolt', isChecked ? 'var(--orange-bright)' : 'var(--text-muted)');
+    }
+
+    function setLightingChartPeriod(period, btn) {
+      document.querySelectorAll('.chart-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const totalEl = document.getElementById('chart-total-energy');
+      const peakEl = document.getElementById('chart-peak-time');
+      const areaPath = document.getElementById('chart-area-path');
+      const linePath = document.getElementById('chart-line-path');
+
+      if (period === 'hoje') {
+        if (totalEl) totalEl.innerText = '0,74 kWh';
+        if (peakEl) peakEl.innerText = '20:00';
+        if (areaPath) areaPath.setAttribute('d', 'M 60,155 L 60,145 Q 110,140 160,130 T 260,110 T 360,65 T 460,105 L 460,155 Z');
+        if (linePath) linePath.setAttribute('d', 'M 60,145 Q 110,140 160,130 T 260,110 T 360,65 T 460,105');
+        document.getElementById('chart-lbl-1').innerText = '00:00';
+        document.getElementById('chart-lbl-2').innerText = '06:00';
+        document.getElementById('chart-lbl-3').innerText = '12:00';
+        document.getElementById('chart-lbl-4').innerText = '18:00';
+        document.getElementById('chart-lbl-5').innerText = '23:59';
+      } else if (period === 'semana') {
+        if (totalEl) totalEl.innerText = '4,82 kWh';
+        if (peakEl) peakEl.innerText = 'Sábado';
+        if (areaPath) areaPath.setAttribute('d', 'M 60,155 L 60,120 Q 110,105 160,115 T 260,95 T 360,50 T 460,75 L 460,155 Z');
+        if (linePath) linePath.setAttribute('d', 'M 60,120 Q 110,105 160,115 T 260,95 T 360,50 T 460,75');
+        document.getElementById('chart-lbl-1').innerText = 'Seg';
+        document.getElementById('chart-lbl-2').innerText = 'Ter';
+        document.getElementById('chart-lbl-3').innerText = 'Qua';
+        document.getElementById('chart-lbl-4').innerText = 'Sex';
+        document.getElementById('chart-lbl-5').innerText = 'Dom';
+      } else if (period === 'mes') {
+        if (totalEl) totalEl.innerText = '19,6 kWh';
+        if (peakEl) peakEl.innerText = 'Semana 3';
+        if (areaPath) areaPath.setAttribute('d', 'M 60,155 L 60,135 Q 110,110 160,90 T 260,75 T 360,55 T 460,85 L 460,155 Z');
+        if (linePath) linePath.setAttribute('d', 'M 60,135 Q 110,110 160,90 T 260,75 T 360,55 T 460,85');
+        document.getElementById('chart-lbl-1').innerText = 'Sem 1';
+        document.getElementById('chart-lbl-2').innerText = 'Sem 2';
+        document.getElementById('chart-lbl-3').innerText = 'Sem 3';
+        document.getElementById('chart-lbl-4').innerText = 'Sem 4';
+        document.getElementById('chart-lbl-5').innerText = 'Fim';
+      }
+    }
+    
     lightSwitches.forEach(sw => sw.addEventListener('change', updateLightingSystem));
 
     // CLIMATIZAÇÃO & TEMPO
@@ -1944,7 +3164,7 @@
       let currentTemp = parseInt(tempElement.innerText);
       currentTemp += change;
       if (currentTemp >= 16 && currentTemp <= 30) {
-        tempElement.innerText = `${currentTemp}Â°C`;
+        tempElement.innerText = `${currentTemp}°C`;
       }
     }
 
@@ -2131,6 +3351,127 @@
     }
 
     const searchIndex = [
+      // ITENS DE ILUMINAÇÃO REFORMULADOS
+      {
+        title: 'Sala de Estar — Lâmpada Principal',
+        subtitle: 'Controle de intensidade e cor na sala',
+        category: 'Iluminação',
+        icon: 'fa-solid fa-couch',
+        keywords: ['sala', 'sala de estar', 'luz da sala', 'lampada da sala', 'iluminacao sala'],
+        action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-1'); }
+      },
+      {
+        title: 'Cozinha — Luzes LED',
+        subtitle: 'Fita LED e iluminação da bancada',
+        category: 'Iluminação',
+        icon: 'fa-solid fa-utensils',
+        keywords: ['cozinha', 'luz da cozinha', 'led cozinha', 'fita led'],
+        action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-2'); }
+      },
+      {
+        title: 'Quarto Principal — Lâmpada Inteligente',
+        subtitle: 'Ajuste de temperatura 2700K e cor RGB',
+        category: 'Iluminação',
+        icon: 'fa-solid fa-bed',
+        keywords: ['quarto', 'quarto principal', 'suite', 'luz do quarto', 'luz quarto principal'],
+        action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-3'); }
+      },
+      {
+        title: 'Quarto 2 — Lâmpada Inteligente',
+        subtitle: 'Controle RGB e automações do quarto',
+        category: 'Iluminação',
+        icon: 'fa-solid fa-child-reaching',
+        keywords: ['quarto 2', 'quarto de hospedes', 'quarto infantil', 'luz quarto 2'],
+        action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-4'); }
+      },
+      {
+        title: 'Banheiro — Luz Neutra',
+        subtitle: 'LED embutido com sensor de movimento',
+        category: 'Iluminação',
+        icon: 'fa-solid fa-bath',
+        keywords: ['banheiro', 'luz do banheiro', 'sensor banheiro', 'led banheiro'],
+        action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-5'); }
+      },
+      {
+        title: 'Garagem — Lâmpada Tubular LED',
+        subtitle: 'Iluminação de alta potência com sensor',
+        category: 'Iluminação',
+        icon: 'fa-solid fa-warehouse',
+        keywords: ['garagem', 'luz da garagem', 'tubular led', 'sensor garagem'],
+        action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-6'); }
+      },
+      {
+        title: 'Refletor do Quintal',
+        subtitle: 'Iluminação externa de alta potência',
+        category: 'Iluminação',
+        icon: 'fa-solid fa-tree',
+        keywords: ['quintal', 'jardim', 'refletor', 'externa', 'luz externa'],
+        action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-7'); }
+      },
+      {
+        title: 'Ligar todas as lâmpadas',
+        subtitle: 'Aciona todas as luzes da residência',
+        category: 'Ações Rápidas',
+        icon: 'fa-solid fa-power-off',
+        keywords: ['ligar todas', 'ligar luzes', 'acender tudo', 'acender todas'],
+        action: () => { switchTab('tab-iluminacao'); turnOnAllLights(); }
+      },
+      {
+        title: 'Desligar todas as lâmpadas',
+        subtitle: 'Apaga todas as luzes da residência',
+        category: 'Ações Rápidas',
+        icon: 'fa-regular fa-lightbulb',
+        keywords: ['desligar todas', 'apagar luzes', 'apagar tudo', 'desligar luzes'],
+        action: () => { switchTab('tab-iluminacao'); turnOffAllLights(); }
+      },
+      {
+        title: 'Cena Dia',
+        subtitle: 'Ativa iluminação geral de alta intensidade',
+        category: 'Cenas',
+        icon: 'fa-solid fa-sun',
+        keywords: ['cena dia', 'modo dia', 'iluminacao dia'],
+        action: () => { switchTab('tab-iluminacao'); applyLightingScene('dia'); }
+      },
+      {
+        title: 'Cena Noite',
+        subtitle: 'Luzes suaves e quentes para o repouso',
+        category: 'Cenas',
+        icon: 'fa-solid fa-moon',
+        keywords: ['cena noite', 'modo noite', 'dormir', 'iluminacao noite'],
+        action: () => { switchTab('tab-iluminacao'); applyLightingScene('noite'); }
+      },
+      {
+        title: 'Cena Cinema',
+        subtitle: 'Sala com iluminação baixa e quente',
+        category: 'Cenas',
+        icon: 'fa-solid fa-film',
+        keywords: ['cena cinema', 'modo cinema', 'filme', 'pipoca'],
+        action: () => { switchTab('tab-iluminacao'); applyLightingScene('cinema'); }
+      },
+      {
+        title: 'Cena Estudo',
+        subtitle: 'Luz neutra/fria de alta concentração',
+        category: 'Cenas',
+        icon: 'fa-solid fa-book-open',
+        keywords: ['cena estudo', 'modo estudo', 'trabalho', 'foco'],
+        action: () => { switchTab('tab-iluminacao'); applyLightingScene('estudo'); }
+      },
+      {
+        title: 'Cena Cheguei',
+        subtitle: 'Iluminação de boas-vindas na entrada e sala',
+        category: 'Cenas',
+        icon: 'fa-solid fa-house-user',
+        keywords: ['cena cheguei', 'chegando em casa', 'boas vindas'],
+        action: () => { switchTab('tab-iluminacao'); applyLightingScene('cheguei'); }
+      },
+      {
+        title: 'Cena Festa',
+        subtitle: 'Cores RGB vibrantes e quintal iluminado',
+        category: 'Cenas',
+        icon: 'fa-solid fa-champagne-glasses',
+        keywords: ['cena festa', 'modo festa', 'party', 'rgb'],
+        action: () => { switchTab('tab-iluminacao'); applyLightingScene('festa'); }
+      },
       // PÁGINAS
       {
         title: 'Início',
@@ -2420,12 +3761,12 @@
       try {
         const escaped = cleanQ.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const pattern = escaped
-          .replace(/[aÃ¡Ã Ã£Ã¢Ã¤]/gi, '[aÃ¡Ã Ã£Ã¢Ã¤]')
-          .replace(/[eÃ©Ã¨ÃªÃ«]/gi, '[eÃ©Ã¨ÃªÃ«]')
-          .replace(/[iÃ­Ã¬Ã®Ã¯]/gi, '[iÃ­Ã¬Ã®Ã¯]')
-          .replace(/[oÃ³Ã²ÃµÃ´Ã¶]/gi, '[oÃ³Ã²ÃµÃ´Ã¶]')
-          .replace(/[uÃºÃ¹Ã»Ã¼]/gi, '[uÃºÃ¹Ã»Ã¼]')
-          .replace(/[cÃ§]/gi, '[cÃ§]');
+          .replace(/[aáàãâä]/gi, '[aáàãâä]')
+          .replace(/[eéèêë]/gi, '[eéèêë]')
+          .replace(/[iíìîï]/gi, '[iíìîï]')
+          .replace(/[oóòõôö]/gi, '[oóòõôö]')
+          .replace(/[uúùûü]/gi, '[uúùûü]')
+          .replace(/[cç]/gi, '[cç]');
         const regex = new RegExp(`(${pattern})`, 'gi');
         return text.replace(regex, '<mark>$1</mark>');
       } catch (err) {
@@ -2518,7 +3859,7 @@
     window.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
         e.preventDefault();
-        // Garante que está na aba Ini­cio ou foca diretamente a busca
+        // Garante que está na aba Início ou foca diretamente a busca
         if (!document.getElementById('tab-inicio').classList.contains('active')) {
           switchTab('tab-inicio');
         }
@@ -2541,7 +3882,7 @@
       }
     });
 
-    // INICIALIZAÃ‡ÃƒO
+    // INICIALIZAÇÃO
     const notifToggleElem = document.getElementById('notifications-toggle');
     if (notifToggleElem) notifToggleElem.checked = isNotificationsEnabled;
 
