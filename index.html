@@ -532,7 +532,7 @@
                 </div>
               </div>
               <label class="switch">
-                <input type="checkbox" class="light-switch" data-name="Luz do Quarto 2" data-icon="bulb-icon-4" data-power="9" data-energy-id="energy-quarto-2" checked>
+                <input type="checkbox" class="light-switch" data-name="Luz do Quarto 2" data-icon="bulb-icon-4" data-power="9" data-energy-id="energy-quarto-2">
                 <span class="slider"></span>
               </label>
             </div>
@@ -562,7 +562,7 @@
                 </div>
               </div>
               <label class="switch">
-                <input type="checkbox" class="light-switch" data-name="Luz do Banheiro" data-icon="bulb-icon-5" data-power="10" data-energy-id="energy-banheiro" checked>
+                <input type="checkbox" class="light-switch" data-name="Luz do Banheiro" data-icon="bulb-icon-5" data-power="10" data-energy-id="energy-banheiro">
                 <span class="slider"></span>
               </label>
             </div>
@@ -648,7 +648,7 @@
               <div class="icon-box active-glow-blue"><i class="fa-solid fa-brain"></i></div>
             </div>
             <div id="lighting-adaptive-container">
-              <div class="adaptive-status-empty" id="lighting-adaptive-empty">
+              <div class="adaptive-status-empty" id="lighting-adaptive-empty" style="display: flex;">
                 <div class="adaptive-empty-icon"><i class="fa-solid fa-circle-check"></i></div>
                 <div class="adaptive-empty-text">
                   <strong>Nenhuma ação necessária no momento.</strong>
@@ -658,7 +658,7 @@
               <div class="adaptive-status-active" id="lighting-adaptive-alert" style="display: none;">
                 <div class="adaptive-active-alert">
                   <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i>
-                  <span id="lighting-adaptive-msg">A iluminação da Garagem está ligada há 5h18min e não foi detectado movimento recentemente.</span>
+                  <span id="lighting-adaptive-msg">A iluminação do ambiente permaneceu acesa por mais de 5 minutos sem movimento detectado.</span>
                 </div>
                 <div class="adaptive-actions-row" style="display: flex; gap: 10px; margin-top: 12px;">
                   <button type="button" class="btn-ai-action btn-ai-primary" onclick="turnOffSpecificDevice('bulb-icon-6')">
@@ -1934,6 +1934,10 @@
     // Mapeamento de cronômetros reais individuais por lâmpada (Key: iconId)
     const lightTimers = {};
     const FIVE_MINUTES_MS = 300000; // 5 minutos em milissegundos (300.000 ms)
+    const FIVE_MINUTES_SECONDS = 300; // 5 minutos em segundos
+    let continuousLightOnSeconds = {};
+    let alertedFiveMinutes = {};
+    let dismissedLightingSituations = {};
 
     let automationsData = JSON.parse(localStorage.getItem('domus_automations') || 'null') || [
       {
@@ -2159,12 +2163,22 @@
     setInterval(() => {
       let hasRunningDevice = false;
 
-      // Incrementa tempo para lâmpadas ligadas
+      // Incrementa tempo para lâmpadas ligadas e contabiliza tempo contínuo real
       document.querySelectorAll('.light-switch:checked').forEach(sw => {
         const energyId = sw.getAttribute('data-energy-id');
+        const iconId = sw.getAttribute('data-icon');
         deviceRunTimes[energyId] = (deviceRunTimes[energyId] || 0) + 1;
         updateSingleDeviceTimerDisplay(energyId, true, 'light');
         hasRunningDevice = true;
+
+        continuousLightOnSeconds[iconId] = (continuousLightOnSeconds[iconId] || 0) + 1;
+
+        // Se atingir 5 minutos (300 segundos), dispara o alerta se ainda não disparou
+        if (continuousLightOnSeconds[iconId] >= FIVE_MINUTES_SECONDS && !alertedFiveMinutes[iconId]) {
+          alertedFiveMinutes[iconId] = true;
+          const deviceName = sw.getAttribute('data-name');
+          triggerFiveMinuteLightAlert(deviceName, iconId);
+        }
       });
 
       // Incrementa tempo para ares-condicionados ligados
@@ -2179,18 +2193,61 @@
         updateGlobalTotalActiveTime();
         localStorage.setItem('domus_device_times', JSON.stringify(deviceRunTimes));
       }
+
+      // Atualiza o contador e mensagem de tempo real do card de inteligência adaptativa
+      updateLightingAdaptiveAlert();
     }, 1000);
 
     // SISTEMA DE NOTIFICAÇÕES FLUTUANTES (TOASTS)
-    function showToastNotification(options) {
+    function closeToastElement(btn, situationId) {
+      const toast = btn ? btn.closest('.toast-card') : null;
+      if (toast) {
+        toast.classList.remove('show');
+        toast.classList.add('hide');
+        setTimeout(() => {
+          if (toast && toast.parentNode) toast.remove();
+        }, 320);
+      }
+      if (situationId && situationId !== 'undefined' && situationId !== '') {
+        handledSituations[situationId] = true;
+        localStorage.setItem('domus_handled_situations', JSON.stringify(handledSituations));
+        removeAdaptiveSuggestionCard(situationId);
+      }
+    }
+
+    function showToastNotification(optionsOrTitle, messageArg, iconArg, colorArg) {
       if (!isNotificationsEnabled) return;
 
-      const { id, type, title, icon, message, badgeText, primaryBtn, secondaryBtn } = options;
+      let id, type, title, icon, message, badgeText, primaryBtn, secondaryBtn, customColor;
+
+      if (typeof optionsOrTitle === 'object' && optionsOrTitle !== null) {
+        id = optionsOrTitle.id || `toast_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+        type = optionsOrTitle.type || 'suggestion';
+        title = (optionsOrTitle.title && optionsOrTitle.title !== 'undefined') ? optionsOrTitle.title : 'Notificação DOMUS';
+        icon = optionsOrTitle.icon || 'fa-solid fa-lightbulb';
+        message = optionsOrTitle.message || optionsOrTitle.toastMsg || '';
+        if (message === 'undefined') message = '';
+        badgeText = optionsOrTitle.badgeText || '';
+        primaryBtn = optionsOrTitle.primaryBtn || null;
+        secondaryBtn = optionsOrTitle.secondaryBtn || null;
+        customColor = optionsOrTitle.color || null;
+      } else {
+        id = `toast_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+        type = 'suggestion';
+        title = (optionsOrTitle && optionsOrTitle !== 'undefined') ? optionsOrTitle : 'Notificação DOMUS';
+        message = (messageArg && messageArg !== 'undefined') ? messageArg : '';
+        icon = iconArg || 'fa-solid fa-lightbulb';
+        badgeText = '';
+        primaryBtn = null;
+        secondaryBtn = null;
+        customColor = colorArg || null;
+      }
 
       if (id && handledSituations[id]) return;
       if (id && document.getElementById(`toast-${id}`)) return;
 
       const container = document.getElementById('toast-container');
+      if (!container) return;
 
       const typeClasses = {
         info: { border: 'toast-type-info', badge: 'badge-blue', defaultIcon: 'fa-solid fa-circle-info' },
@@ -2203,7 +2260,7 @@
 
       const toast = document.createElement('div');
       toast.className = `toast-card ${visual.border}`;
-      if (id) toast.id = `toast-${id}`;
+      toast.id = `toast-${id}`;
 
       let primaryBtnHtml = primaryBtn ? `
         <button type="button" class="btn-ai-action btn-ai-primary" onclick="${primaryBtn.action}">
@@ -2220,36 +2277,45 @@
       toast.innerHTML = `
         <div class="toast-header">
           <div class="toast-title-group">
-            <i class="${icon || visual.defaultIcon}"></i>
-            <span class="toast-title">${title}</span>
+            <i class="${icon || visual.defaultIcon}" style="${customColor ? `color: ${customColor} !important;` : ''}"></i>
+            <span class="toast-title">${title || 'Notificação DOMUS'}</span>
           </div>
           <span style="font-size: 0.7rem; color: var(--text-muted);">${timeNow}</span>
-          <button type="button" class="toast-close" onclick="dismissSituation('${id}')">&times;</button>
+          <button type="button" class="toast-close" onclick="closeToastElement(this, '${id}')" title="Fechar notificação">&times;</button>
         </div>
         ${badgeText ? `<span class="toast-badge ${visual.badge}">${badgeText}</span>` : ''}
-        <div class="toast-body">${message}</div>
-        <div class="toast-actions">
-          ${primaryBtnHtml}
-          ${secondaryBtnHtml}
-        </div>
+        ${(message && message !== 'undefined') ? `<div class="toast-body">${message}</div>` : ''}
+        ${(primaryBtnHtml || secondaryBtnHtml) ? `<div class="toast-actions">${primaryBtnHtml}${secondaryBtnHtml}</div>` : ''}
       `;
 
       container.appendChild(toast);
 
-      setTimeout(() => { toast.classList.add('show'); }, 50);
+      setTimeout(() => { toast.classList.add('show'); }, 40);
+
+      // Auto-remover notificações sem botões de ação após 5 segundos
+      if (!primaryBtn && !secondaryBtn) {
+        setTimeout(() => {
+          if (toast && toast.parentNode) {
+            toast.classList.remove('show');
+            toast.classList.add('hide');
+            setTimeout(() => { if (toast && toast.parentNode) toast.remove(); }, 320);
+          }
+        }, 5000);
+      }
     }
 
     function closeToastById(id) {
+      if (!id || id === 'undefined') return;
       const toast = document.getElementById(`toast-${id}`);
       if (toast) {
         toast.classList.remove('show');
         toast.classList.add('hide');
-        toast.addEventListener('animationend', () => { toast.remove(); });
+        setTimeout(() => { if (toast && toast.parentNode) toast.remove(); }, 320);
       }
     }
 
     function dismissSituation(situationId) {
-      if (situationId) {
+      if (situationId && situationId !== 'undefined') {
         handledSituations[situationId] = true;
         localStorage.setItem('domus_handled_situations', JSON.stringify(handledSituations));
         closeToastById(situationId);
@@ -2349,9 +2415,14 @@
     function triggerFiveMinuteLightAlert(deviceName, iconId) {
       const situationId = `sit_light_${iconId}`;
 
-      if (handledSituations[situationId]) {
-        delete handledSituations[situationId];
+      if (handledSituations[situationId] || dismissedLightingSituations[iconId]) {
+        return;
       }
+
+      const secs = continuousLightOnSeconds[iconId] || FIVE_MINUTES_SECONDS;
+      const hrs = Math.floor(secs / 3600);
+      const mins = Math.floor((secs % 3600) / 60);
+      const timeStr = hrs > 0 ? `${hrs}h ${mins}min` : `${mins} minutos`;
 
       const sug = {
         id: situationId,
@@ -2359,8 +2430,8 @@
         icon: 'fa-solid fa-lightbulb',
         title: `💡 Desperdício: ${deviceName}`,
         badgeText: 'Sugestão do DOMUS',
-        toastMsg: `A <strong>${deviceName}</strong> permaneceu acesa por mais de 5 minutos contínuos sem movimento no ambiente.`,
-        adaptMsg: `O DOMUS identificou que a ${deviceName} permaneceu acesa por mais de 5 minutos seguidos.`,
+        toastMsg: `A <strong>${deviceName}</strong> permaneceu acesa por mais de ${timeStr} contínuos sem movimento no ambiente.`,
+        adaptMsg: `O DOMUS identificou que a ${deviceName} permaneceu acesa por mais de ${timeStr} seguidos.`,
         actionLabel: 'Desligar lâmpada',
         actionCode: `turnOffSpecificDevice('${iconId}'); resolveSituation('${situationId}');`,
         autoTitle: `Desligar ${deviceName} Sem Movimento`,
@@ -2380,6 +2451,7 @@
       });
 
       registerAdaptiveSuggestionInUI(sug);
+      updateLightingAdaptiveAlert();
     }
 
     function turnOffSpecificDevice(iconId) {
@@ -2431,9 +2503,13 @@
     }
 
     function toggleAutomationActive(index, isActive) {
+      if (!automationsData[index]) return;
       automationsData[index].active = isActive;
       saveAutomationsToStorage();
-      logActivity(`Automação "${automationsData[index].title}" ${isActive ? 'ativada' : 'pausada'}`, 'fa-solid fa-robot', 'var(--blue-accent)');
+      const autoTitle = automationsData[index].title || 'Automação';
+      const msg = `Automação "${autoTitle}" ${isActive ? 'ativada' : 'pausada'}.`;
+      logActivity(msg, 'fa-solid fa-robot', 'var(--blue-accent)');
+      showToastNotification('⚡ Automação Inteligente', msg, 'fa-solid fa-robot', isActive ? 'var(--orange-bright)' : 'var(--blue-accent)');
     }
 
     function deleteAutomation(index) {
@@ -2714,6 +2790,9 @@
             clearTimeout(lightTimers[iconId]);
             delete lightTimers[iconId];
           }
+          delete continuousLightOnSeconds[iconId];
+          delete alertedFiveMinutes[iconId];
+          delete dismissedLightingSituations[iconId];
 
           // Limpa a situação pendente
           const sitId = `sit_light_${iconId}`;
@@ -2734,6 +2813,9 @@
           }
         }
       });
+
+      // Salva os estados atuais para persistir apenas se o usuário tiver deixado ligado/desligado
+      saveLightStatesToStorage();
 
       // 1. Atualiza cabeçalho e contadores
       const offCount = allSwitches.length - activeCount;
@@ -2761,13 +2843,9 @@
       });
       const kpiRuntime = document.getElementById('lighting-kpi-runtime');
       if (kpiRuntime) {
-        if (totalLightingSeconds === 0) {
-          kpiRuntime.innerText = '3h 24min';
-        } else {
-          const hrs = Math.floor(totalLightingSeconds / 3600);
-          const mins = Math.floor((totalLightingSeconds % 3600) / 60);
-          kpiRuntime.innerText = `${hrs}h ${mins}min`;
-        }
+        const hrs = Math.floor(totalLightingSeconds / 3600);
+        const mins = Math.floor((totalLightingSeconds % 3600) / 60);
+        kpiRuntime.innerText = `${hrs}h ${mins}min`;
       }
 
       // Sincroniza textos do Dashboard
@@ -2792,6 +2870,10 @@
         const name = event.target.getAttribute('data-name');
         const state = event.target.checked ? 'Ligada' : 'Desligada';
         logActivity(`${name} ${state}`, 'fa-solid fa-lightbulb', 'var(--orange-bright)');
+
+        if (event.isTrusted) {
+          showToastNotification('💡 Iluminação', `${name} foi ${state.toLowerCase()}.`, 'fa-solid fa-lightbulb', event.target.checked ? 'var(--orange-bright)' : 'var(--blue-accent)');
+        }
 
         const iconId = event.target.getAttribute('data-icon');
         if (lightingDevices[iconId]) {
@@ -2835,6 +2917,14 @@
           if (spec) spec.innerText = `${val}% · ${lightingDevices[id].colorTemp}K`;
         }
       });
+
+      if (currentModalBulbId && lightingDevices[currentModalBulbId]) {
+        const brSlider = document.getElementById('modal-brightness-slider');
+        const brDisp = document.getElementById('modal-brightness-display');
+        if (brSlider) brSlider.value = val;
+        if (brDisp) brDisp.innerText = `${val}%`;
+      }
+
       updateLightingSystem();
     }
 
@@ -3006,21 +3096,66 @@
 
     function onModalBrightnessChange(val) {
       if (!currentModalBulbId || !lightingDevices[currentModalBulbId]) return;
-      lightingDevices[currentModalBulbId].brightness = parseInt(val, 10);
+      const b = parseInt(val, 10);
+      lightingDevices[currentModalBulbId].brightness = b;
       const disp = document.getElementById('modal-brightness-display');
-      if (disp) disp.innerText = `${val}%`;
+      if (disp) disp.innerText = `${b}%`;
       const spec = document.getElementById(`spec-${currentModalBulbId}`);
-      if (spec) spec.innerText = `${val}% · ${lightingDevices[currentModalBulbId].colorTemp}K`;
+      if (spec) {
+        if (currentModalBulbId === 'bulb-icon-7') {
+          spec.innerText = `${b}% · Externa`;
+        } else {
+          spec.innerText = `${b}% · ${lightingDevices[currentModalBulbId].colorTemp}K`;
+        }
+      }
+
+      // Atualiza visualmente o glow do ícone no modal
+      const modalIcon = document.getElementById('modal-light-icon-box');
+      if (modalIcon) {
+        modalIcon.style.filter = `drop-shadow(0 0 ${Math.max(4, b / 6)}px var(--orange-bright))`;
+      }
+
       updateLightingSystem();
     }
 
     function onModalTempChange(val) {
       if (!currentModalBulbId || !lightingDevices[currentModalBulbId]) return;
-      lightingDevices[currentModalBulbId].colorTemp = parseInt(val, 10);
+      const k = parseInt(val, 10);
+      lightingDevices[currentModalBulbId].colorTemp = k;
       const disp = document.getElementById('modal-temp-display');
-      if (disp) disp.innerText = `${val}K`;
+      if (disp) disp.innerText = `${k}K`;
       const spec = document.getElementById(`spec-${currentModalBulbId}`);
-      if (spec) spec.innerText = `${lightingDevices[currentModalBulbId].brightness}% · ${val}K`;
+      if (spec) {
+        if (currentModalBulbId === 'bulb-icon-7') {
+          spec.innerText = `${lightingDevices[currentModalBulbId].brightness}% · Externa`;
+        } else {
+          spec.innerText = `${lightingDevices[currentModalBulbId].brightness}% · ${k}K`;
+        }
+      }
+
+      // Destaca botão pill ativo correspondente
+      document.querySelectorAll('.btn-preset-pill').forEach(btn => {
+        const btnK = parseInt(btn.innerText, 10);
+        if (Math.abs(btnK - k) < 300) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Reflete a temperatura de cor no ícone da lâmpada no modal
+      let tempColor = '#ff9f43';
+      if (k < 3300) {
+        tempColor = '#ff9500';
+      } else if (k < 4800) {
+        tempColor = '#ffeaa7';
+      } else {
+        tempColor = '#00d2ff';
+      }
+      const modalIconI = document.querySelector('#modal-light-icon-box i');
+      if (modalIconI) {
+        modalIconI.style.color = tempColor;
+      }
     }
 
     function setModalTempPreset(k) {
@@ -3043,10 +3178,45 @@
     function updateLightingAdaptiveAlert() {
       const alertBox = document.getElementById('lighting-adaptive-alert');
       const emptyBox = document.getElementById('lighting-adaptive-empty');
-      const swGaragem = document.querySelector('.light-switch[data-icon="bulb-icon-6"]');
+      const msgSpan = document.getElementById('lighting-adaptive-msg');
 
-      if (swGaragem && swGaragem.checked) {
-        if (alertBox) alertBox.style.display = 'block';
+      let longestAlertBulb = null;
+      let maxSeconds = 0;
+
+      document.querySelectorAll('.light-switch:checked').forEach(sw => {
+        const iconId = sw.getAttribute('data-icon');
+        const secs = continuousLightOnSeconds[iconId] || 0;
+        // Alerta quando atingir 5 minutos (300 segundos) sem movimento
+        if (secs >= FIVE_MINUTES_SECONDS && secs > maxSeconds && !dismissedLightingSituations[iconId]) {
+          maxSeconds = secs;
+          longestAlertBulb = {
+            iconId: iconId,
+            name: sw.getAttribute('data-name'),
+            seconds: secs
+          };
+        }
+      });
+
+      if (longestAlertBulb && !handledSituations[`sit_light_${longestAlertBulb.iconId}`]) {
+        const hrs = Math.floor(longestAlertBulb.seconds / 3600);
+        const mins = Math.floor((longestAlertBulb.seconds % 3600) / 60);
+        let timeStr = hrs > 0 ? `${hrs}h ${mins}min` : `${mins}min`;
+
+        if (msgSpan) {
+          msgSpan.innerText = `A iluminação da ${longestAlertBulb.name} está ligada há ${timeStr} e não foi detectado movimento recentemente.`;
+        }
+
+        if (alertBox) {
+          const btnDesligar = alertBox.querySelector('.btn-ai-primary');
+          if (btnDesligar) {
+            btnDesligar.setAttribute('onclick', `turnOffSpecificDevice('${longestAlertBulb.iconId}'); dismissLightingAdaptiveAlert('${longestAlertBulb.iconId}');`);
+          }
+          const btnIgnorar = alertBox.querySelector('.btn-ai-secondary');
+          if (btnIgnorar) {
+            btnIgnorar.setAttribute('onclick', `dismissLightingAdaptiveAlert('${longestAlertBulb.iconId}');`);
+          }
+          alertBox.style.display = 'block';
+        }
         if (emptyBox) emptyBox.style.display = 'none';
       } else {
         if (alertBox) alertBox.style.display = 'none';
@@ -3054,7 +3224,10 @@
       }
     }
 
-    function dismissLightingAdaptiveAlert() {
+    function dismissLightingAdaptiveAlert(iconId) {
+      if (iconId) {
+        dismissedLightingSituations[iconId] = true;
+      }
       const alertBox = document.getElementById('lighting-adaptive-alert');
       const emptyBox = document.getElementById('lighting-adaptive-empty');
       if (alertBox) alertBox.style.display = 'none';
@@ -3063,7 +3236,17 @@
     }
 
     function toggleLightingAutomation(autoId, isChecked) {
-      showToastNotification('Automação', isChecked ? 'Automação ativada com sucesso.' : 'Automação pausada.', 'fa-solid fa-bolt', isChecked ? 'var(--orange-bright)' : 'var(--text-muted)');
+      const titles = {
+        'auto_anoitecer': 'Ao anoitecer',
+        'auto_movimento': 'Ao detectar movimento',
+        'auto_chegar': 'Ao chegar',
+        'auto_dormir': 'Horário de dormir',
+        'auto_programado': 'Horário programado'
+      };
+      const autoName = titles[autoId] || 'Automação';
+      const msg = isChecked ? `Automação "${autoName}" ativada.` : `Automação "${autoName}" pausada.`;
+      showToastNotification('⚡ Automação Inteligente', msg, 'fa-solid fa-bolt', isChecked ? 'var(--orange-bright)' : 'var(--blue-accent)');
+      logActivity(msg, 'fa-solid fa-bolt', isChecked ? 'var(--orange-bright)' : 'var(--blue-accent)');
     }
 
     function setLightingChartPeriod(period, btn) {
@@ -3882,11 +4065,43 @@
       }
     });
 
-    
+    // PERSISTÊNCIA DE ESTADO DAS LÂMPADAS
+    function saveLightStatesToStorage() {
+      const states = {};
+      document.querySelectorAll('.light-switch').forEach(sw => {
+        const iconId = sw.getAttribute('data-icon');
+        states[iconId] = sw.checked;
+      });
+      localStorage.setItem('domus_light_states', JSON.stringify(states));
+    }
+
+    function restoreLightStatesFromStorage() {
+      const saved = localStorage.getItem('domus_light_states');
+      if (saved) {
+        try {
+          const states = JSON.parse(saved);
+          document.querySelectorAll('.light-switch').forEach(sw => {
+            const iconId = sw.getAttribute('data-icon');
+            if (states[iconId] !== undefined) {
+              sw.checked = Boolean(states[iconId]);
+            }
+          });
+        } catch (e) {
+          console.error('Erro ao restaurar lâmpadas', e);
+        }
+      } else {
+        // Se nunca configurado pelo usuário, NENHUMA lâmpada fica ligada
+        document.querySelectorAll('.light-switch').forEach(sw => {
+          sw.checked = false;
+        });
+      }
+    }
+
     // INICIALIZAÇÃO
     const notifToggleElem = document.getElementById('notifications-toggle');
     if (notifToggleElem) notifToggleElem.checked = isNotificationsEnabled;
 
+    restoreLightStatesFromStorage();
     updateLightingSystem();
     updateACSystem();
     renderResidents();
