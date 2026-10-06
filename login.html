@@ -835,9 +835,35 @@
         } catch (err) {
           console.warn('Erro na requisiÃ§Ã£o Supabase:', err);
         }
+
+        // 2. TENTA CONSULTAR A TABELA NA NUVEM DOMUS_USERS (Permite logar de qualquer computador!)
+        try {
+          const { data: cloudUser, error: cloudErr } = await supabaseClient
+            .from('domus_users')
+            .select('*')
+            .eq('email', emailKey)
+            .maybeSingle();
+
+          if (cloudUser && cloudUser.password === password) {
+            const sessionUser = {
+              id: cloudUser.id,
+              email: cloudUser.email,
+              user_metadata: { full_name: cloudUser.full_name }
+            };
+            localStorage.setItem('domus_demo_session', JSON.stringify(sessionUser));
+            setAuthButtonLoading(submitBtn, false);
+            showAuthAlert('success', `Ol&aacute;, ${cloudUser.full_name}! Login realizado com sucesso. Entrando...`);
+            setTimeout(() => {
+              redirectToMainApp();
+            }, 500);
+            return;
+          }
+        } catch (cErr) {
+          console.warn('Aviso ao consultar tabela domus_users na nuvem:', cErr);
+        }
       }
 
-      // 2. FALLBACK IMEDIATO: BANCO LOCAL COMPATÃVEL
+      // 3. FALLBACK IMEDIATO: BANCO LOCAL COMPATÃVEL
       const localUser = localUsersDB[emailKey];
       if (localUser && localUser.password === password) {
         const sessionUser = {
@@ -950,9 +976,21 @@
         } catch (err) {
           console.warn('Erro ao conectar ao Supabase:', err);
         }
+
+        // 2. SALVA NA TABELA NA NUVEM DOMUS_USERS (Permite que qualquer outro computador faÃ§a login!)
+        try {
+          await supabaseClient.from('domus_users').upsert({
+            email: emailKey,
+            full_name: name,
+            password: password,
+            created_at: new Date().toISOString()
+          }, { onConflict: 'email' });
+        } catch (uErr) {
+          console.warn('GravaÃ§Ã£o em domus_users:', uErr);
+        }
       }
 
-      // 2. CRIA SESSÃƒO E ENTRA NO SISTEMA COM SUCESSO
+      // 3. CRIA SESSÃƒO E ENTRA NO SISTEMA COM SUCESSO
       const sessionUser = {
         id: finalUserId,
         email: emailKey,
@@ -1015,7 +1053,6 @@
       }
     }
 
-    
     // VERIFICAÃ‡ÃƒO AUTOMÃTICA DE SESSÃƒO ATIVA AO ABRIR LOGIN.HTML
     (function checkExistingSession() {
       const urlParams = new URLSearchParams(window.location.search);
