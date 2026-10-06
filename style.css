@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -3989,8 +3988,9 @@ body.light-mode .chart-filter-btn.active {
   position: fixed;
   inset: 0;
   width: 100%;
+  height: 100%;
   min-height: 100vh;
-  z-index: 99999;
+  z-index: 999999;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4383,7 +4383,6 @@ body.light-mode .chart-filter-btn.active {
   line-height: 1.4;
 }
 
-
 @media (max-width: 480px) {
   .auth-card {
     padding: 28px 20px;
@@ -4392,4 +4391,3 @@ body.light-mode .chart-filter-btn.active {
     font-size: 1.6rem;
   }
 }
-

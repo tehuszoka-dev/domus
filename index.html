@@ -1,56 +1,703 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DOMUS - Smart Home</title>
-  <meta name="description" content="Painel inteligente DOMUS para controle de iluminação, climatização, segurança e monitoramento de tempo e consumo de energia.">
+  <meta name="description" content="Painel inteligente DOMUS para controle de iluminaÃ§Ã£o, climatizaÃ§Ã£o, seguranÃ§a e monitoramento de tempo e consumo de energia.">
   <meta property="og:title" content="DOMUS - Smart Home">
-  <meta property="og:description" content="Painel inteligente DOMUS para controle de iluminação, climatização, segurança e monitoramento de tempo e consumo de energia.">
+  <meta property="og:description" content="Painel inteligente DOMUS para controle de iluminaÃ§Ã£o, climatizaÃ§Ã£o, seguranÃ§a e monitoramento de tempo e consumo de energia.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
-<script src="/_aistudio-iframe.js?v=2c34bde1"></script></head>
+  <!-- SUPABASE JS SDK V2 (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="style.css?v=2.2">
+  <style>
+    /* ========================================================
+       ESTILOS DA TELA DE LOGIN OBRIGATÃ“RIA DOMUS (GARANTIA DE CARREGAMENTO IMEDIATO)
+       ======================================================== */
+    .domus-app-wrapper {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+    }
+    .domus-app-wrapper.auth-hidden {
+      display: none !important;
+    }
+
+    .domus-auth-screen {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background-color: #0b0f17;
+      background-image: 
+        radial-gradient(circle at 10% 15%, rgba(0, 210, 255, 0.18) 0%, transparent 45%),
+        radial-gradient(circle at 90% 85%, rgba(255, 122, 0, 0.16) 0%, transparent 50%),
+        linear-gradient(135deg, #0e131d 0%, #070a10 100%);
+      overflow-y: auto;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      box-sizing: border-box;
+    }
+
+    .domus-auth-screen * {
+      box-sizing: border-box;
+    }
+
+    .auth-ambient-glow {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(90px);
+    }
+    .auth-ambient-glow.glow-cyan {
+      width: 360px;
+      height: 360px;
+      top: 5%;
+      left: 10%;
+      background: rgba(0, 210, 255, 0.18);
+    }
+    .auth-ambient-glow.glow-orange {
+      width: 380px;
+      height: 380px;
+      bottom: 5%;
+      right: 10%;
+      background: rgba(255, 122, 0, 0.15);
+    }
+
+    .auth-card-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 450px;
+      margin: auto;
+    }
+
+    .auth-card {
+      background: rgba(20, 26, 38, 0.92);
+      border: 1px solid rgba(0, 210, 255, 0.22);
+      border-radius: 24px;
+      padding: 38px 34px;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 35px rgba(0, 210, 255, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00d2ff, #ff7a00, #00d2ff);
+      background-size: 200% 100%;
+      animation: authBarGlow 4s linear infinite;
+    }
+
+    @keyframes authBarGlow {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 200% 0%; }
+    }
+
+    .auth-brand-area {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .auth-logo-badge {
+      width: 62px;
+      height: 62px;
+      margin: 0 auto 12px auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0, 210, 255, 0.16) 0%, rgba(255, 122, 0, 0.16) 100%);
+      color: #00d2ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      box-shadow: 0 0 25px rgba(0, 210, 255, 0.35), inset 0 0 12px rgba(0, 210, 255, 0.25);
+      border: 1.5px solid rgba(0, 210, 255, 0.4);
+    }
+
+    .auth-brand-title {
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      margin: 0;
+      color: #f0f6fc;
+      line-height: 1.2;
+    }
+
+    .auth-brand-subtitle {
+      display: block;
+      font-size: 0.72rem;
+      letter-spacing: 2.5px;
+      color: #00d2ff;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .auth-brand-slogan {
+      font-size: 0.82rem;
+      color: #8b949e;
+      margin-top: 8px;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    /* TABS NO TOPO DO CARD */
+    .auth-nav-tabs {
+      display: flex;
+      gap: 6px;
+      background: rgba(13, 17, 23, 0.8);
+      padding: 5px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 22px;
+    }
+
+    .auth-tab-btn {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #8b949e;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      font-family: inherit;
+    }
+
+    .auth-tab-btn:hover {
+      color: #f0f6fc;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .auth-tab-btn.active {
+      background: linear-gradient(135deg, rgba(0, 210, 255, 0.2) 0%, rgba(0, 210, 255, 0.1) 100%);
+      color: #00d2ff;
+      font-weight: 600;
+      box-shadow: 0 0 14px rgba(0, 210, 255, 0.25);
+      border: 1px solid rgba(0, 210, 255, 0.35);
+    }
+
+    .auth-view-header {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .auth-view-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #f0f6fc;
+      margin-bottom: 5px;
+    }
+
+    .auth-view-desc {
+      font-size: 0.83rem;
+      color: #8b949e;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .auth-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+    }
+
+    .auth-input-group label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #f0f6fc;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .auth-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .auth-input-icon {
+      position: absolute;
+      left: 14px;
+      color: #8b949e;
+      font-size: 0.95rem;
+      pointer-events: none;
+      transition: color 0.2s;
+    }
+
+    .auth-input-field {
+      width: 100%;
+      padding: 12px 14px 12px 42px;
+      background: rgba(13, 17, 23, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      color: #f0f6fc;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.25s ease;
+      font-family: inherit;
+    }
+
+    .auth-input-field:focus {
+      border-color: #00d2ff;
+      background: rgba(0, 210, 255, 0.05);
+      box-shadow: 0 0 14px rgba(0, 210, 255, 0.35);
+    }
+
+    .auth-input-field:focus ~ .auth-input-icon {
+      color: #00d2ff;
+    }
+
+    .auth-pwd-toggle {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: #8b949e;
+      cursor: pointer;
+      padding: 6px;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    .auth-pwd-toggle:hover {
+      color: #f0f6fc;
+    }
+
+    .auth-extra-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: -4px;
+    }
+
+    .auth-text-link {
+      background: none;
+      border: none;
+      color: #00d2ff;
+      font-size: 0.8rem;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: none;
+      transition: color 0.2s;
+      font-family: inherit;
+    }
+
+    .auth-text-link:hover {
+      color: #66e3ff;
+      text-decoration: underline;
+    }
+
+    .btn-auth-submit {
+      width: 100%;
+      padding: 13px 18px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.98rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 18px rgba(255, 122, 0, 0.45);
+      transition: all 0.25s ease;
+      margin-top: 6px;
+      font-family: inherit;
+    }
+
+    .btn-auth-submit:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(255, 122, 0, 0.65);
+    }
+
+    .btn-auth-submit:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .btn-auth-submit:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .auth-switch-prompt {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.83rem;
+      color: #8b949e;
+    }
+
+    .auth-switch-prompt button {
+      background: none;
+      border: none;
+      color: #ff7a00;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0 4px;
+      transition: color 0.2s;
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    .auth-switch-prompt button:hover {
+      color: #ffaa44;
+      text-decoration: underline;
+    }
+
+    .auth-back-btn {
+      background: none;
+      border: none;
+      color: #8b949e;
+      font-size: 0.84rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      transition: color 0.2s;
+      font-family: inherit;
+    }
+
+    .auth-back-btn:hover {
+      color: #f0f6fc;
+    }
+
+    .auth-status-alert {
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      animation: authFadeIn 0.25s ease;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    .auth-status-alert.alert-error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+
+    .auth-status-alert.alert-success {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #86efac;
+    }
+
+    .auth-status-alert.alert-info {
+      background: rgba(0, 210, 255, 0.14);
+      border: 1px solid rgba(0, 210, 255, 0.4);
+      color: #7dd3fc;
+    }
+
+    @keyframes authFadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 30px 20px;
+      }
+      .auth-brand-title {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
 <body>
 
-  <!-- CONTAINER DE NOTIFICAÇÕES FLUTUANTES (CANTO INFERIOR DIREITO) -->
+  <!-- CONTAINER DE NOTIFICAÃ‡Ã•ES FLUTUANTES (CANTO INFERIOR DIREITO) -->
   <div id="toast-container"></div>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="brand">
-      <h2>DOMUS</h2>
-      <span>SMART HOME SYSTEM</span>
+  <!-- TELA DE AUTENTICAÃ‡ÃƒO OBRIGATÃ“RIA DOMUS (LOGIN, CADASTRO, RECUPERAÃ‡ÃƒO) -->
+  <div id="domus-auth-screen" class="domus-auth-screen" style="display: flex !important;">
+    <div class="auth-ambient-glow glow-cyan"></div>
+    <div class="auth-ambient-glow glow-orange"></div>
+
+    <div class="auth-card-container">
+      <div class="auth-card">
+        <!-- CABEÃ‡ALHO COM LOGO E SLOGAN -->
+        <div class="auth-brand-area">
+          <div class="auth-logo-badge">
+            <i class="fa-solid fa-house-signal"></i>
+          </div>
+          <h2 class="auth-brand-title">DOMUS</h2>
+          <span class="auth-brand-subtitle">SMART HOME SYSTEM</span>
+          <p class="auth-brand-slogan">Integrando a tecnologia ao seu modo de viver.</p>
+        </div>
+
+        <!-- TABS DE NAVEGAÃ‡ÃƒO ENTRE LOGIN E CADASTRO -->
+        <div class="auth-nav-tabs">
+          <button type="button" class="auth-tab-btn active" id="tab-btn-login" onclick="showAuthView('login')">
+            <i class="fa-solid fa-right-to-bracket"></i> Entrar
+          </button>
+          <button type="button" class="auth-tab-btn" id="tab-btn-register" onclick="showAuthView('register')">
+            <i class="fa-solid fa-user-plus"></i> Criar Conta
+          </button>
+        </div>
+
+        <!-- CAIXA DE MENSAGENS / ALERTAS AMIGÃVEIS -->
+        <div id="auth-status-box" class="auth-status-alert" style="display: none;"></div>
+
+        <!-- 1. VIEW DE LOGIN -->
+        <div id="auth-view-login" class="auth-view-content">
+          <div class="auth-view-header">
+            <h3 class="auth-view-title">Bem-vindo ao DOMUS</h3>
+            <p class="auth-view-desc">Entre para acessar sua residÃªncia inteligente</p>
+          </div>
+
+          <form id="auth-login-form" class="auth-form" onsubmit="handleAuthLogin(event)" novalidate>
+            <div class="auth-input-group">
+              <label for="auth-login-email"><i class="fa-solid fa-envelope"></i> E-mail</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="email" 
+                  id="auth-login-email" 
+                  class="auth-input-field" 
+                  placeholder="seu.email@exemplo.com" 
+                  required 
+                  autocomplete="email"
+                >
+                <i class="fa-solid fa-envelope auth-input-icon"></i>
+              </div>
+            </div>
+
+            <div class="auth-input-group">
+              <label for="auth-login-password"><i class="fa-solid fa-lock"></i> Senha</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="password" 
+                  id="auth-login-password" 
+                  class="auth-input-field" 
+                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" 
+                  required 
+                  autocomplete="current-password"
+                >
+                <i class="fa-solid fa-lock auth-input-icon"></i>
+                <button type="button" class="auth-pwd-toggle" onclick="toggleAuthPasswordVisibility('auth-login-password', this)" title="Mostrar ou ocultar senha">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="auth-extra-row">
+              <button type="button" class="auth-text-link" onclick="showAuthView('forgot')">Esqueci minha senha</button>
+            </div>
+
+            <button type="submit" class="btn-auth-submit" id="btn-login-submit">
+              <span class="btn-auth-text"><i class="fa-solid fa-right-to-bracket"></i> Entrar</span>
+              <span class="btn-auth-loading" style="display: none;"><i class="fa-solid fa-circle-notch fa-spin"></i> Autenticando...</span>
+            </button>
+          </form>
+
+          <div class="auth-switch-prompt">
+            NÃ£o tem uma conta? 
+            <button type="button" onclick="showAuthView('register')">Criar conta</button>
+          </div>
+        </div>
+
+        <!-- 2. VIEW DE CADASTRO -->
+        <div id="auth-view-register" class="auth-view-content" style="display: none;">
+          <div class="auth-view-header">
+            <h3 class="auth-view-title">Criar Conta no DOMUS</h3>
+            <p class="auth-view-desc">Cadastre-se para gerenciar sua residÃªncia inteligente</p>
+          </div>
+
+          <form id="auth-register-form" class="auth-form" onsubmit="handleAuthRegister(event)" novalidate>
+            <div class="auth-input-group">
+              <label for="auth-reg-name"><i class="fa-solid fa-user"></i> Nome completo</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="text" 
+                  id="auth-reg-name" 
+                  class="auth-input-field" 
+                  placeholder="Ex: Matheus Silva" 
+                  required 
+                  autocomplete="name"
+                >
+                <i class="fa-solid fa-user auth-input-icon"></i>
+              </div>
+            </div>
+
+            <div class="auth-input-group">
+              <label for="auth-reg-email"><i class="fa-solid fa-envelope"></i> E-mail</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="email" 
+                  id="auth-reg-email" 
+                  class="auth-input-field" 
+                  placeholder="seu.email@exemplo.com" 
+                  required 
+                  autocomplete="email"
+                >
+                <i class="fa-solid fa-envelope auth-input-icon"></i>
+              </div>
+            </div>
+
+            <div class="auth-input-group">
+              <label for="auth-reg-password"><i class="fa-solid fa-lock"></i> Senha</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="password" 
+                  id="auth-reg-password" 
+                  class="auth-input-field" 
+                  placeholder="MÃ­nimo 6 caracteres" 
+                  required 
+                  autocomplete="new-password"
+                >
+                <i class="fa-solid fa-lock auth-input-icon"></i>
+                <button type="button" class="auth-pwd-toggle" onclick="toggleAuthPasswordVisibility('auth-reg-password', this)" title="Mostrar ou ocultar senha">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="auth-input-group">
+              <label for="auth-reg-confirm"><i class="fa-solid fa-shield-halved"></i> Confirmar senha</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="password" 
+                  id="auth-reg-confirm" 
+                  class="auth-input-field" 
+                  placeholder="Repita sua senha" 
+                  required 
+                  autocomplete="new-password"
+                >
+                <i class="fa-solid fa-shield-halved auth-input-icon"></i>
+                <button type="button" class="auth-pwd-toggle" onclick="toggleAuthPasswordVisibility('auth-reg-confirm', this)" title="Mostrar ou ocultar senha">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-auth-submit" id="btn-register-submit">
+              <span class="btn-auth-text"><i class="fa-solid fa-user-plus"></i> Criar Conta</span>
+              <span class="btn-auth-loading" style="display: none;"><i class="fa-solid fa-circle-notch fa-spin"></i> Criando conta...</span>
+            </button>
+          </form>
+
+          <div class="auth-switch-prompt">
+            JÃ¡ possui uma conta? 
+            <button type="button" onclick="showAuthView('login')">Entrar</button>
+          </div>
+        </div>
+
+        <!-- 3. VIEW DE RECUPERAÃ‡ÃƒO DE SENHA -->
+        <div id="auth-view-forgot" class="auth-view-content" style="display: none;">
+          <div class="auth-view-header">
+            <h3 class="auth-view-title">RecuperaÃ§Ã£o de Senha</h3>
+            <p class="auth-view-desc">Informe seu e-mail cadastrado para receber o link de redefiniÃ§Ã£o.</p>
+          </div>
+
+          <form id="auth-forgot-form" class="auth-form" onsubmit="handleAuthForgotPassword(event)" novalidate>
+            <div class="auth-input-group">
+              <label for="auth-forgot-email"><i class="fa-solid fa-envelope"></i> E-mail cadastrado</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="email" 
+                  id="auth-forgot-email" 
+                  class="auth-input-field" 
+                  placeholder="seu.email@exemplo.com" 
+                  required 
+                  autocomplete="email"
+                >
+                <i class="fa-solid fa-envelope auth-input-icon"></i>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-auth-submit" id="btn-forgot-submit">
+              <span class="btn-auth-text"><i class="fa-solid fa-paper-plane"></i> Enviar Link de RecuperaÃ§Ã£o</span>
+              <span class="btn-auth-loading" style="display: none;"><i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...</span>
+            </button>
+          </form>
+
+          <div class="auth-switch-prompt">
+            <button type="button" class="auth-back-btn" onclick="showAuthView('login')">
+              <i class="fa-solid fa-arrow-left"></i> Voltar para o login
+            </button>
+          </div>
+        </div>
+
+      </div>
     </div>
+  </div>
+
+  <!-- WRAPPER DO SISTEMA DOMUS PROTEGIDO POR AUTENTICAÃ‡ÃƒO -->
+  <div id="domus-app-wrapper" class="domus-app-wrapper auth-hidden" style="display: none !important;">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <h2>DOMUS</h2>
+        <span>SMART HOME SYSTEM</span>
+      </div>
 
     <ul class="nav-list">
-      <li class="nav-item active" data-tab="tab-inicio"><i class="fa-solid fa-house"></i> Início</li>
-      <li class="nav-item" data-tab="tab-iluminacao"><i class="fa-solid fa-lightbulb"></i> Iluminação</li>
-      <li class="nav-item" data-tab="tab-climatizacao"><i class="fa-solid fa-snowflake"></i> Climatização</li>
-      <li class="nav-item" data-tab="tab-seguranca"><i class="fa-solid fa-shield-halved"></i> Segurança</li>
+      <li class="nav-item active" data-tab="tab-inicio"><i class="fa-solid fa-house"></i> InÃ­cio</li>
+      <li class="nav-item" data-tab="tab-iluminacao"><i class="fa-solid fa-lightbulb"></i> IluminaÃ§Ã£o</li>
+      <li class="nav-item" data-tab="tab-climatizacao"><i class="fa-solid fa-snowflake"></i> ClimatizaÃ§Ã£o</li>
+      <li class="nav-item" data-tab="tab-seguranca"><i class="fa-solid fa-shield-halved"></i> SeguranÃ§a</li>
       <li class="nav-item" data-tab="tab-energia"><i class="fa-solid fa-bolt"></i> Consumo de Energia</li>
-      <li class="nav-item" data-tab="tab-inteligencia"><i class="fa-solid fa-brain"></i> Inteligência Adaptativa</li>
-      <li class="nav-item" data-tab="tab-automacoes"><i class="fa-solid fa-robot"></i> Automações</li>
+      <li class="nav-item" data-tab="tab-inteligencia"><i class="fa-solid fa-brain"></i> InteligÃªncia Adaptativa</li>
+      <li class="nav-item" data-tab="tab-automacoes"><i class="fa-solid fa-robot"></i> AutomaÃ§Ãµes</li>
       <li class="nav-item" data-tab="tab-perfil"><i class="fa-solid fa-user"></i> Perfil</li>
     </ul>
 
-    <button type="button" class="btn-primary" style="margin-top: auto;" onclick="alert('Sessão encerrada com sucesso.')"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+    <button type="button" class="btn-primary" style="margin-top: auto;" onclick="domusSignOut()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
   </aside>
 
-  <!-- ÁREA PRINCIPAL DO DASHBOARD -->
+  <!-- ÃREA PRINCIPAL DO DASHBOARD -->
   <main class="main-content">
 
-    <!-- ABA 1: INÍCIO -->
+    <!-- ABA 1: INÃCIO -->
     <div id="tab-inicio" class="tab-content active">
-      <!-- HEADER BANNER COM SAUDAÇÃO E PESQUISA GLOBAL -->
+      <!-- HEADER BANNER COM SAUDAÃ‡ÃƒO E PESQUISA GLOBAL -->
       <header class="header-banner">
         <div class="header-banner-main">
           <div class="header-greeting-col">
-            <h1>Olá, matheusdlucca!</h1>
-            <p>Sua residência está segura e operando normalmente.</p>
+            <h1 id="user-greeting-name">OlÃ¡, matheusdlucca!</h1>
+            <p>Sua residÃªncia estÃ¡ segura e operando normalmente.</p>
           </div>
           <div class="status-badge status-ativo">
             <i class="fa-solid fa-check"></i> Sistema Online
@@ -82,7 +729,7 @@
         </div>
       </header>
 
-      <!-- 3 COLUNAS PRINCIPAIS: STATUS GERAL, CLIMATIZAÇÃO, HISTÓRICO RECENTE -->
+      <!-- 3 COLUNAS PRINCIPAIS: STATUS GERAL, CLIMATIZAÃ‡ÃƒO, HISTÃ“RICO RECENTE -->
       <div class="dashboard-grid dashboard-top-grid">
         <!-- 5. STATUS GERAL -->
         <div class="card status-card">
@@ -97,17 +744,17 @@
           <div class="status-indicators-mini">
             <div class="status-indicator-pill">
               <span class="indicator-dot dot-green"></span>
-              <span class="indicator-name">Segurança</span>
+              <span class="indicator-name">SeguranÃ§a</span>
               <span class="indicator-val">Normal</span>
             </div>
             <div class="status-indicator-pill">
               <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright); font-size: 0.75rem;"></i>
-              <span class="indicator-name">Iluminação</span>
+              <span class="indicator-name">IluminaÃ§Ã£o</span>
               <span class="indicator-val" id="dash-indicator-lights">0 ligadas</span>
             </div>
             <div class="status-indicator-pill">
               <i class="fa-solid fa-snowflake" style="color: var(--blue-accent); font-size: 0.75rem;"></i>
-              <span class="indicator-name">Climatização</span>
+              <span class="indicator-name">ClimatizaÃ§Ã£o</span>
               <span class="indicator-val" id="dash-indicator-ac">Normal</span>
             </div>
             <div class="status-indicator-pill">
@@ -118,24 +765,24 @@
           </div>
         </div>
 
-        <!-- 6. CLIMATIZAÇÃO -->
+        <!-- 6. CLIMATIZAÃ‡ÃƒO -->
         <div class="card status-card">
           <div class="card-title">
-            <span>Climatização</span>
+            <span>ClimatizaÃ§Ã£o</span>
             <div class="icon-box active-glow"><i class="fa-solid fa-temperature-half"></i></div>
           </div>
           <h3 id="ac-count-status">0 aparelhos ligados</h3>
-          <p class="status-subtext">Temperatura média de conforto: 22°C</p>
+          <p class="status-subtext">Temperatura mÃ©dia de conforto: 22Â°C</p>
           <div class="comfort-status-box" id="climate-comfort-box">
             <i class="fa-solid fa-leaf" style="color: #2ecc71;"></i>
-            <span id="climate-comfort-text">Conforto térmico normal</span>
+            <span id="climate-comfort-text">Conforto tÃ©rmico normal</span>
           </div>
         </div>
 
-        <!-- 7. HISTÓRICO RECENTE -->
+        <!-- 7. HISTÃ“RICO RECENTE -->
         <div class="card history-summary-card">
           <div class="card-title">
-            <span>Histórico Recente</span>
+            <span>HistÃ³rico Recente</span>
             <i class="fa-solid fa-clock-rotate-left"></i>
           </div>
 
@@ -145,18 +792,18 @@
 
           <div class="history-card-footer">
             <button type="button" class="btn-history-link" onclick="openFullHistoryModal()">
-              Ver histórico <i class="fa-solid fa-arrow-right"></i>
+              Ver histÃ³rico <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- 4. AÇÕES RÁPIDAS NO DASHBOARD -->
+      <!-- 4. AÃ‡Ã•ES RÃPIDAS NO DASHBOARD -->
       <div class="card quick-actions-card">
         <div class="quick-actions-bar-header">
           <div class="quick-title-group">
             <i class="fa-solid fa-bolt" style="color: var(--orange-bright);"></i>
-            <span>Ações rápidas</span>
+            <span>AÃ§Ãµes rÃ¡pidas</span>
           </div>
           <span class="quick-subtitle">Acesso direto aos controles principais</span>
         </div>
@@ -166,8 +813,8 @@
               <i class="fa-solid fa-lightbulb"></i>
             </span>
             <span class="dash-action-text">
-              <strong>Iluminação</strong>
-              <span>Lâmpadas e cenas</span>
+              <strong>IluminaÃ§Ã£o</strong>
+              <span>LÃ¢mpadas e cenas</span>
             </span>
           </button>
 
@@ -176,7 +823,7 @@
               <i class="fa-solid fa-snowflake"></i>
             </span>
             <span class="dash-action-text">
-              <strong>Climatização</strong>
+              <strong>ClimatizaÃ§Ã£o</strong>
               <span>Temperatura e AC</span>
             </span>
           </button>
@@ -186,7 +833,7 @@
               <i class="fa-solid fa-shield-halved"></i>
             </span>
             <span class="dash-action-text">
-              <strong>Segurança</strong>
+              <strong>SeguranÃ§a</strong>
               <span>Alarme e sensores</span>
             </span>
           </button>
@@ -196,14 +843,14 @@
               <i class="fa-solid fa-robot"></i>
             </span>
             <span class="dash-action-text">
-              <strong>Automações</strong>
+              <strong>AutomaÃ§Ãµes</strong>
               <span>Rotinas inteligentes</span>
             </span>
           </button>
         </div>
       </div>
 
-      <!-- 8. RESUMO DE ENERGIA & 9. INTELIGÊNCIA ADAPTATIVA (2 COLUNAS) -->
+      <!-- 8. RESUMO DE ENERGIA & 9. INTELIGÃŠNCIA ADAPTATIVA (2 COLUNAS) -->
       <div class="dashboard-split-row">
         <!-- 8. RESUMO DE ENERGIA -->
         <div class="card energy-summary-card" onclick="switchTab('tab-energia')">
@@ -218,10 +865,10 @@
               <span class="energy-number" id="dash-energy-kwh">128</span>
               <span class="energy-unit">kWh</span>
             </div>
-            <p class="energy-period-label">Consumo neste mês</p>
+            <p class="energy-period-label">Consumo neste mÃªs</p>
             <div class="energy-trend-badge trend-down">
               <i class="fa-solid fa-arrow-trend-down"></i>
-              <span>↓ 8% em relação ao período anterior</span>
+              <span>â†“ 8% em relaÃ§Ã£o ao perÃ­odo anterior</span>
             </div>
           </div>
           <div class="card-inline-action">
@@ -229,10 +876,10 @@
           </div>
         </div>
 
-        <!-- 9. INTELIGÊNCIA ADAPTATIVA -->
+        <!-- 9. INTELIGÃŠNCIA ADAPTATIVA -->
         <div class="card adaptive-summary-card" id="dash-adaptive-card">
           <div class="card-title">
-            <span>Inteligência Adaptativa</span>
+            <span>InteligÃªncia Adaptativa</span>
             <div class="icon-box active-glow-blue"><i class="fa-solid fa-brain"></i></div>
           </div>
           <div id="dash-adaptive-body">
@@ -241,17 +888,17 @@
                 <i class="fa-solid fa-circle-check"></i>
               </div>
               <div class="adaptive-empty-text">
-                <strong>Nenhuma ação necessária no momento.</strong>
-                <p>O DOMUS está operando com eficiência máxima.</p>
+                <strong>Nenhuma aÃ§Ã£o necessÃ¡ria no momento.</strong>
+                <p>O DOMUS estÃ¡ operando com eficiÃªncia mÃ¡xima.</p>
               </div>
             </div>
             <div class="adaptive-status-active" id="dash-adaptive-active" style="display: none;">
               <div class="adaptive-active-alert">
                 <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright); font-size: 1.1rem;"></i>
-                <span id="dash-adaptive-msg">A luz da sala está ligada há 12 minutos sem movimento detectado.</span>
+                <span id="dash-adaptive-msg">A luz da sala estÃ¡ ligada hÃ¡ 12 minutos sem movimento detectado.</span>
               </div>
               <button type="button" class="btn-ai-action btn-ai-primary" onclick="switchTab('tab-inteligencia')">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> Ver sugestão
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Ver sugestÃ£o
               </button>
             </div>
           </div>
@@ -259,21 +906,21 @@
       </div>
     </div>
 
-    <!-- ABA 2: ILUMINAÇÃO -->
-        <!-- ABA 2: ILUMINAÇÃO INTELIGENTE REFORMULADA -->
+    <!-- ABA 2: ILUMINAÃ‡ÃƒO -->
+        <!-- ABA 2: ILUMINAÃ‡ÃƒO INTELIGENTE REFORMULADA -->
     <div id="tab-iluminacao" class="tab-content">
-      <!-- 1. CABEÇALHO -->
+      <!-- 1. CABEÃ‡ALHO -->
       <div class="lighting-hero-banner">
         <div class="lighting-hero-left">
           <div class="lighting-title-badge-row">
-            <h1><i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i> Iluminação</h1>
+            <h1><i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i> IluminaÃ§Ã£o</h1>
             <div class="system-online-badge">
-              <span class="online-indicator-dot"></span> Sistema de iluminação online
+              <span class="online-indicator-dot"></span> Sistema de iluminaÃ§Ã£o online
             </div>
           </div>
-          <p class="lighting-hero-desc">Controle inteligente da iluminação da sua residência</p>
+          <p class="lighting-hero-desc">Controle inteligente da iluminaÃ§Ã£o da sua residÃªncia</p>
           <div class="lighting-pill-counter" id="lighting-header-stats">
-            7 ambientes · 2 lâmpadas ligadas · 5 desligadas
+            7 ambientes Â· 2 lÃ¢mpadas ligadas Â· 5 desligadas
           </div>
         </div>
       </div>
@@ -285,7 +932,7 @@
             <i class="fa-solid fa-lightbulb"></i>
           </div>
           <div class="kpi-data">
-            <span class="kpi-label">Lâmpadas ligadas</span>
+            <span class="kpi-label">LÃ¢mpadas ligadas</span>
             <div class="kpi-value-row">
               <strong id="lighting-kpi-active" class="kpi-value">2 / 7</strong>
             </div>
@@ -298,11 +945,11 @@
             <i class="fa-solid fa-sun"></i>
           </div>
           <div class="kpi-data">
-            <span class="kpi-label">Brilho médio</span>
+            <span class="kpi-label">Brilho mÃ©dio</span>
             <div class="kpi-value-row">
               <strong id="lighting-kpi-brightness" class="kpi-value">68%</strong>
             </div>
-            <span class="kpi-sub">da iluminação ativa</span>
+            <span class="kpi-sub">da iluminaÃ§Ã£o ativa</span>
           </div>
         </div>
 
@@ -315,7 +962,7 @@
             <div class="kpi-value-row">
               <strong id="lighting-kpi-watts" class="kpi-value">42 W</strong>
             </div>
-            <span class="kpi-sub">iluminação</span>
+            <span class="kpi-sub">iluminaÃ§Ã£o</span>
           </div>
         </div>
 
@@ -338,7 +985,7 @@
         <div class="master-card-header">
           <div>
             <div class="master-card-title">Controle geral</div>
-            <div class="master-card-subtitle">Todas as lâmpadas</div>
+            <div class="master-card-subtitle">Todas as lÃ¢mpadas</div>
           </div>
           <div class="lighting-master-actions">
             <button type="button" class="btn-domus-primary" id="btn-turn-on-all" onclick="turnOnAllLights()">
@@ -361,58 +1008,58 @@
         </div>
       </div>
 
-      <!-- 4. CENAS RÁPIDAS -->
+      <!-- 4. CENAS RÃPIDAS -->
       <div class="lighting-section-wrap">
         <div class="lighting-section-title">
-          <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--orange-bright);"></i> Cenas rápidas
+          <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--orange-bright);"></i> Cenas rÃ¡pidas
         </div>
         <div class="lighting-scenes-grid">
           <div class="card scene-card" onclick="applyLightingScene('dia')" role="button" tabindex="0">
             <div class="scene-card-icon" style="color: #f59e0b; background: rgba(245, 158, 11, 0.15);">
               <i class="fa-solid fa-sun"></i>
             </div>
-            <div class="scene-card-title">☀️ Dia</div>
-            <p class="scene-card-desc">Iluminação geral em intensidade alta.</p>
+            <div class="scene-card-title">â˜€ï¸ Dia</div>
+            <p class="scene-card-desc">IluminaÃ§Ã£o geral em intensidade alta.</p>
           </div>
 
           <div class="card scene-card" onclick="applyLightingScene('noite')" role="button" tabindex="0">
             <div class="scene-card-icon" style="color: #6366f1; background: rgba(99, 102, 241, 0.15);">
               <i class="fa-solid fa-moon"></i>
             </div>
-            <div class="scene-card-title">🌙 Noite</div>
-            <p class="scene-card-desc">Reduz iluminação e desliga ambientes desnecessários.</p>
+            <div class="scene-card-title">ðŸŒ™ Noite</div>
+            <p class="scene-card-desc">Reduz iluminaÃ§Ã£o e desliga ambientes desnecessÃ¡rios.</p>
           </div>
 
           <div class="card scene-card" onclick="applyLightingScene('cinema')" role="button" tabindex="0">
             <div class="scene-card-icon" style="color: #ec4899; background: rgba(236, 72, 153, 0.15);">
               <i class="fa-solid fa-film"></i>
             </div>
-            <div class="scene-card-title">🎬 Cinema</div>
-            <p class="scene-card-desc">Sala com iluminação baixa e quente.</p>
+            <div class="scene-card-title">ðŸŽ¬ Cinema</div>
+            <p class="scene-card-desc">Sala com iluminaÃ§Ã£o baixa e quente.</p>
           </div>
 
           <div class="card scene-card" onclick="applyLightingScene('estudo')" role="button" tabindex="0">
             <div class="scene-card-icon" style="color: #00d2ff; background: rgba(0, 210, 255, 0.15);">
               <i class="fa-solid fa-book-open"></i>
             </div>
-            <div class="scene-card-title">📚 Estudo</div>
-            <p class="scene-card-desc">Iluminação forte e mais neutra/fria.</p>
+            <div class="scene-card-title">ðŸ“š Estudo</div>
+            <p class="scene-card-desc">IluminaÃ§Ã£o forte e mais neutra/fria.</p>
           </div>
 
           <div class="card scene-card" onclick="applyLightingScene('cheguei')" role="button" tabindex="0">
             <div class="scene-card-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.15);">
               <i class="fa-solid fa-house-user"></i>
             </div>
-            <div class="scene-card-title">🏠 Cheguei</div>
-            <p class="scene-card-desc">Ativa iluminação de boas-vindas.</p>
+            <div class="scene-card-title">ðŸ  Cheguei</div>
+            <p class="scene-card-desc">Ativa iluminaÃ§Ã£o de boas-vindas.</p>
           </div>
 
           <div class="card scene-card" onclick="applyLightingScene('festa')" role="button" tabindex="0">
             <div class="scene-card-icon" style="color: #a855f7; background: rgba(168, 85, 247, 0.15);">
               <i class="fa-solid fa-champagne-glasses"></i>
             </div>
-            <div class="scene-card-title">🎉 Festa</div>
-            <p class="scene-card-desc">Ativa iluminação configurada para festa.</p>
+            <div class="scene-card-title">ðŸŽ‰ Festa</div>
+            <p class="scene-card-desc">Ativa iluminaÃ§Ã£o configurada para festa.</p>
           </div>
         </div>
       </div>
@@ -431,14 +1078,14 @@
                 <i class="fa-solid fa-couch" style="color: var(--blue-accent);"></i>
                 <strong>Sala de Estar</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-1">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-1">âšª 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
                 <div id="bulb-icon-1" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
                 <div>
-                  <strong>Lâmpada Principal</strong>
-                  <div style="font-size: 0.75rem; color: var(--text-muted);">Lâmpada inteligente</div>
+                  <strong>LÃ¢mpada Principal</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">LÃ¢mpada inteligente</div>
                 </div>
               </div>
               <label class="switch">
@@ -447,7 +1094,7 @@
               </label>
             </div>
             <div class="room-card-footer">
-              <span class="light-meta-spec" id="spec-bulb-icon-1">72% · 3000K</span>
+              <span class="light-meta-spec" id="spec-bulb-icon-1">72% Â· 3000K</span>
               <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-1')">
                 <i class="fa-solid fa-sliders"></i> Ajustes
               </button>
@@ -461,7 +1108,7 @@
                 <i class="fa-solid fa-utensils" style="color: var(--orange-bright);"></i>
                 <strong>Cozinha</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-2">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-2">âšª 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -477,7 +1124,7 @@
               </label>
             </div>
             <div class="room-card-footer">
-              <span class="light-meta-spec" id="spec-bulb-icon-2">80% · 4000K</span>
+              <span class="light-meta-spec" id="spec-bulb-icon-2">80% Â· 4000K</span>
               <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-2')">
                 <i class="fa-solid fa-sliders"></i> Ajustes
               </button>
@@ -491,13 +1138,13 @@
                 <i class="fa-solid fa-bed" style="color: #a855f7;"></i>
                 <strong>Quarto Principal</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-3">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-3">âšª 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
                 <div id="bulb-icon-3" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
                 <div>
-                  <strong>Lâmpada Inteligente</strong>
+                  <strong>LÃ¢mpada Inteligente</strong>
                   <div style="font-size: 0.75rem; color: var(--text-muted);">RGB &amp; CCT inteligente</div>
                 </div>
               </div>
@@ -507,7 +1154,7 @@
               </label>
             </div>
             <div class="room-card-footer">
-              <span class="light-meta-spec" id="spec-bulb-icon-3">60% · 2700K</span>
+              <span class="light-meta-spec" id="spec-bulb-icon-3">60% Â· 2700K</span>
               <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-3')">
                 <i class="fa-solid fa-sliders"></i> Ajustes
               </button>
@@ -521,13 +1168,13 @@
                 <i class="fa-solid fa-child-reaching" style="color: #00d2ff;"></i>
                 <strong>Quarto 2</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-4">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-4">âšª 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
                 <div id="bulb-icon-4" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
                 <div>
-                  <strong>Lâmpada Inteligente</strong>
+                  <strong>LÃ¢mpada Inteligente</strong>
                   <div style="font-size: 0.75rem; color: var(--text-muted);">RGB inteligente</div>
                 </div>
               </div>
@@ -537,7 +1184,7 @@
               </label>
             </div>
             <div class="room-card-footer">
-              <span class="light-meta-spec" id="spec-bulb-icon-4">50% · 3500K</span>
+              <span class="light-meta-spec" id="spec-bulb-icon-4">50% Â· 3500K</span>
               <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-4')">
                 <i class="fa-solid fa-sliders"></i> Ajustes
               </button>
@@ -551,7 +1198,7 @@
                 <i class="fa-solid fa-bath" style="color: #06b6d4;"></i>
                 <strong>Banheiro</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-5">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-5">âšª 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -567,7 +1214,7 @@
               </label>
             </div>
             <div class="room-card-footer">
-              <span class="light-meta-spec" id="spec-bulb-icon-5">100% · 4000K</span>
+              <span class="light-meta-spec" id="spec-bulb-icon-5">100% Â· 4000K</span>
               <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-5')">
                 <i class="fa-solid fa-sliders"></i> Ajustes
               </button>
@@ -581,13 +1228,13 @@
                 <i class="fa-solid fa-warehouse" style="color: #f59e0b;"></i>
                 <strong>Garagem</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-6">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-6">âšª 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
                 <div id="bulb-icon-6" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
                 <div>
-                  <strong>Lâmpada Tubular LED</strong>
+                  <strong>LÃ¢mpada Tubular LED</strong>
                   <div style="font-size: 0.75rem; color: var(--text-muted);">Alta luminosidade</div>
                 </div>
               </div>
@@ -597,7 +1244,7 @@
               </label>
             </div>
             <div class="room-card-footer">
-              <span class="light-meta-spec" id="spec-bulb-icon-6">100% · 6500K</span>
+              <span class="light-meta-spec" id="spec-bulb-icon-6">100% Â· 6500K</span>
               <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-6')">
                 <i class="fa-solid fa-sliders"></i> Ajustes
               </button>
@@ -611,14 +1258,14 @@
                 <i class="fa-solid fa-tree" style="color: #10b981;"></i>
                 <strong>Refletor do Quintal</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-7">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-7">âšª 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
                 <div id="bulb-icon-7" class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
                 <div>
-                  <strong>Refletor de Alta Potência</strong>
-                  <div style="font-size: 0.75rem; color: var(--text-muted);">Iluminação externa</div>
+                  <strong>Refletor de Alta PotÃªncia</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">IluminaÃ§Ã£o externa</div>
                 </div>
               </div>
               <label class="switch">
@@ -627,7 +1274,7 @@
               </label>
             </div>
             <div class="room-card-footer">
-              <span class="light-meta-spec" id="spec-bulb-icon-7">100% · Externa</span>
+              <span class="light-meta-spec" id="spec-bulb-icon-7">100% Â· Externa</span>
               <button type="button" class="btn-room-adjust" onclick="openLightDetailModal('bulb-icon-7')">
                 <i class="fa-solid fa-sliders"></i> Ajustes
               </button>
@@ -637,28 +1284,28 @@
         </div>
       </div>
 
-      <!-- SEÇÕES COMPLEMENTARES: INTELIGÊNCIA ADAPTATIVA, AUTOMAÇÕES & GRÁFICO DE CONSUMO -->
+      <!-- SEÃ‡Ã•ES COMPLEMENTARES: INTELIGÃŠNCIA ADAPTATIVA, AUTOMAÃ‡Ã•ES & GRÃFICO DE CONSUMO -->
       <div class="dashboard-split-row" style="margin-top: 25px;">
-        <!-- Coluna Esquerda: Inteligência Adaptativa & Automações -->
+        <!-- Coluna Esquerda: InteligÃªncia Adaptativa & AutomaÃ§Ãµes -->
         <div class="lighting-left-col">
-          <!-- 12. INTELIGÊNCIA ADAPTATIVA NA ILUMINAÇÃO -->
+          <!-- 12. INTELIGÃŠNCIA ADAPTATIVA NA ILUMINAÃ‡ÃƒO -->
           <div class="card lighting-adaptive-card">
             <div class="card-title">
-              <span>Inteligência Adaptativa</span>
+              <span>InteligÃªncia Adaptativa</span>
               <div class="icon-box active-glow-blue"><i class="fa-solid fa-brain"></i></div>
             </div>
             <div id="lighting-adaptive-container">
               <div class="adaptive-status-empty" id="lighting-adaptive-empty" style="display: flex;">
                 <div class="adaptive-empty-icon"><i class="fa-solid fa-circle-check"></i></div>
                 <div class="adaptive-empty-text">
-                  <strong>Nenhuma ação necessária no momento.</strong>
-                  <p>Iluminação operando nos níveis ideais de consumo.</p>
+                  <strong>Nenhuma aÃ§Ã£o necessÃ¡ria no momento.</strong>
+                  <p>IluminaÃ§Ã£o operando nos nÃ­veis ideais de consumo.</p>
                 </div>
               </div>
               <div class="adaptive-status-active" id="lighting-adaptive-alert" style="display: none;">
                 <div class="adaptive-active-alert">
                   <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright);"></i>
-                  <span id="lighting-adaptive-msg">A iluminação do ambiente permaneceu acesa por mais de 5 minutos sem movimento detectado.</span>
+                  <span id="lighting-adaptive-msg">A iluminaÃ§Ã£o do ambiente permaneceu acesa por mais de 5 minutos sem movimento detectado.</span>
                 </div>
                 <div class="adaptive-actions-row" style="display: flex; gap: 10px; margin-top: 12px;">
                   <button type="button" class="btn-ai-action btn-ai-primary" onclick="turnOffSpecificDevice('bulb-icon-6')">
@@ -672,17 +1319,17 @@
             </div>
           </div>
 
-          <!-- 13. AUTOMAÇÕES INTELIGENTES -->
+          <!-- 13. AUTOMAÃ‡Ã•ES INTELIGENTES -->
           <div class="card lighting-automations-card">
             <div class="card-title">
-              <span>Automações Inteligentes</span>
+              <span>AutomaÃ§Ãµes Inteligentes</span>
               <i class="fa-solid fa-bolt" style="color: var(--blue-accent);"></i>
             </div>
             <div class="lighting-automations-list">
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>🌇 Ao anoitecer</strong>
-                  <span>Ligar iluminação externa (Refletor do Quintal)</span>
+                  <strong>ðŸŒ‡ Ao anoitecer</strong>
+                  <span>Ligar iluminaÃ§Ã£o externa (Refletor do Quintal)</span>
                 </div>
                 <label class="switch">
                   <input type="checkbox" checked onchange="toggleLightingAutomation('auto_anoitecer', this.checked)">
@@ -692,8 +1339,8 @@
 
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>🚶 Ao detectar movimento</strong>
-                  <span>Ligar iluminação da garagem</span>
+                  <strong>ðŸš¶ Ao detectar movimento</strong>
+                  <span>Ligar iluminaÃ§Ã£o da garagem</span>
                 </div>
                 <label class="switch">
                   <input type="checkbox" checked onchange="toggleLightingAutomation('auto_movimento', this.checked)">
@@ -703,8 +1350,8 @@
 
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>🏠 Ao chegar</strong>
-                  <span>Ativar iluminação de boas-vindas</span>
+                  <strong>ðŸ  Ao chegar</strong>
+                  <span>Ativar iluminaÃ§Ã£o de boas-vindas</span>
                 </div>
                 <label class="switch">
                   <input type="checkbox" checked onchange="toggleLightingAutomation('auto_chegar', this.checked)">
@@ -714,8 +1361,8 @@
 
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>🌙 Horário de dormir</strong>
-                  <span>Reduzir iluminação geral da casa às 23h30</span>
+                  <strong>ðŸŒ™ HorÃ¡rio de dormir</strong>
+                  <span>Reduzir iluminaÃ§Ã£o geral da casa Ã s 23h30</span>
                 </div>
                 <label class="switch">
                   <input type="checkbox" onchange="toggleLightingAutomation('auto_dormir', this.checked)">
@@ -725,8 +1372,8 @@
 
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>⏰ Horário programado</strong>
-                  <span>Ligar/desligar dispositivos em horários definidos</span>
+                  <strong>â° HorÃ¡rio programado</strong>
+                  <span>Ligar/desligar dispositivos em horÃ¡rios definidos</span>
                 </div>
                 <label class="switch">
                   <input type="checkbox" checked onchange="toggleLightingAutomation('auto_programado', this.checked)">
@@ -737,20 +1384,20 @@
           </div>
         </div>
 
-        <!-- Coluna Direita: 15. GRÁFICO DE CONSUMO DA ILUMINAÇÃO -->
+        <!-- Coluna Direita: 15. GRÃFICO DE CONSUMO DA ILUMINAÃ‡ÃƒO -->
         <div class="card lighting-chart-card">
           <div class="chart-header-row">
             <div>
               <div class="card-title" style="margin-bottom: 2px;">
-                <span>Consumo da iluminação</span>
+                <span>Consumo da iluminaÃ§Ã£o</span>
                 <i class="fa-solid fa-chart-line" style="color: var(--orange-bright);"></i>
               </div>
-              <span class="chart-sub-label">Evolução do consumo energético das lâmpadas</span>
+              <span class="chart-sub-label">EvoluÃ§Ã£o do consumo energÃ©tico das lÃ¢mpadas</span>
             </div>
             <div class="chart-filter-pills">
               <button type="button" class="chart-filter-btn active" onclick="setLightingChartPeriod('hoje', this)">Hoje</button>
               <button type="button" class="chart-filter-btn" onclick="setLightingChartPeriod('semana', this)">Semana</button>
-              <button type="button" class="chart-filter-btn" onclick="setLightingChartPeriod('mes', this)">Mês</button>
+              <button type="button" class="chart-filter-btn" onclick="setLightingChartPeriod('mes', this)">MÃªs</button>
             </div>
           </div>
 
@@ -760,7 +1407,7 @@
               <strong id="chart-total-energy">0,74 kWh</strong>
             </div>
             <div class="chart-kpi-item">
-              <span>Horário de Pico</span>
+              <span>HorÃ¡rio de Pico</span>
               <strong id="chart-peak-time">20:00</strong>
             </div>
             <div class="chart-kpi-item">
@@ -769,7 +1416,7 @@
             </div>
           </div>
 
-          <!-- Gráfico SVG interativo e futurista -->
+          <!-- GrÃ¡fico SVG interativo e futurista -->
           <div class="lighting-chart-container" id="lighting-svg-container">
             <svg viewBox="0 0 500 180" class="lighting-svg-chart">
               <defs>
@@ -808,7 +1455,7 @@
       </div>
     </div>
 
-    <!-- ABA 3: CLIMATIZAÇÃO -->
+    <!-- ABA 3: CLIMATIZAÃ‡ÃƒO -->
     <div id="tab-climatizacao" class="tab-content">
       <div class="dashboard-grid">
         <div class="card" style="grid-column: span 2;">
@@ -825,7 +1472,7 @@
             <div class="ac-controls">
               <div class="temp-control">
                 <button type="button" class="btn-temp" onclick="adjustTemp('temp-sala', -1)">-</button>
-                <span id="temp-sala">22°C</span>
+                <span id="temp-sala">22Â°C</span>
                 <button type="button" class="btn-temp" onclick="adjustTemp('temp-sala', 1)">+</button>
               </div>
               <label class="switch">
@@ -843,7 +1490,7 @@
             <div class="ac-controls">
               <div class="temp-control">
                 <button type="button" class="btn-temp" onclick="adjustTemp('temp-quarto', -1)">-</button>
-                <span id="temp-quarto">24°C</span>
+                <span id="temp-quarto">24Â°C</span>
                 <button type="button" class="btn-temp" onclick="adjustTemp('temp-quarto', 1)">+</button>
               </div>
               <label class="switch">
@@ -861,7 +1508,7 @@
             <div class="ac-controls">
               <div class="temp-control">
                 <button type="button" class="btn-temp" onclick="adjustTemp('temp-quarto-p', -1)">-</button>
-                <span id="temp-quarto-p">20°C</span>
+                <span id="temp-quarto-p">20Â°C</span>
                 <button type="button" class="btn-temp" onclick="adjustTemp('temp-quarto-p', 1)">+</button>
               </div>
               <label class="switch">
@@ -874,12 +1521,12 @@
       </div>
     </div>
 
-    <!-- ABA 4: SEGURANÇA -->
+    <!-- ABA 4: SEGURANÃ‡A -->
     <div id="tab-seguranca" class="tab-content">
       <div class="dashboard-grid">
         <div class="card">
           <div class="card-title">
-            <span>Monitoramento de Câmeras</span>
+            <span>Monitoramento de CÃ¢meras</span>
             <span class="status-badge status-ativo">Ativo</span>
           </div>
 
@@ -899,17 +1546,17 @@
 
         <div class="card">
           <div class="card-title">
-            <span>Sensores de Segurança</span>
+            <span>Sensores de SeguranÃ§a</span>
             <i class="fa-solid fa-shield-halved" style="color: var(--blue-accent);"></i>
           </div>
 
           <div class="device-item">
             <div class="device-info">
               <div id="sensor-icon-1" class="icon-box"><i class="fa-solid fa-door-closed"></i></div>
-              <div><strong>Portão Principal</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Sensor de Abertura</div></div>
+              <div><strong>PortÃ£o Principal</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Sensor de Abertura</div></div>
             </div>
             <label class="switch">
-              <input type="checkbox" class="sensor-switch" data-name="Portão Principal" data-icon="sensor-icon-1" data-type="door">
+              <input type="checkbox" class="sensor-switch" data-name="PortÃ£o Principal" data-icon="sensor-icon-1" data-type="door">
               <span class="slider"></span>
             </label>
           </div>
@@ -917,7 +1564,7 @@
           <div class="device-item">
             <div class="device-info">
               <div id="sensor-icon-2" class="icon-box"><i class="fa-solid fa-person-walking"></i></div>
-              <div><strong>Sensor Garagem</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Detecção de Movimento</div></div>
+              <div><strong>Sensor Garagem</strong><div style="font-size: 0.75rem; color: var(--text-muted);">DetecÃ§Ã£o de Movimento</div></div>
             </div>
             <label class="switch">
               <input type="checkbox" class="sensor-switch" data-name="Sensor de Movimento da Garagem" data-icon="sensor-icon-2" data-type="motion">
@@ -928,7 +1575,7 @@
           <div class="device-item">
             <div class="device-info">
               <div id="sensor-icon-3" class="icon-box"><i class="fa-solid fa-window-maximize"></i></div>
-              <div><strong>Janela da Sala</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Sensor Magnético</div></div>
+              <div><strong>Janela da Sala</strong><div style="font-size: 0.75rem; color: var(--text-muted);">Sensor MagnÃ©tico</div></div>
             </div>
             <label class="switch">
               <input type="checkbox" class="sensor-switch" data-name="Janela da Sala" data-icon="sensor-icon-3" data-type="door">
@@ -944,7 +1591,7 @@
       <div class="dashboard-grid">
         <div class="card" style="grid-column: span 2;">
           <div class="card-title">
-            <span>Métricas Globais de Energia &amp; Tempo</span>
+            <span>MÃ©tricas Globais de Energia &amp; Tempo</span>
             <div style="display: flex; gap: 8px; align-items: center;">
               <button type="button" class="btn-reset-all-timers" onclick="resetAllDeviceTimers()" title="Reiniciar contadores de tempo">
                 <i class="fa-solid fa-rotate-left"></i> Zerar Contadores
@@ -955,7 +1602,7 @@
 
           <div class="energy-metrics">
             <div class="metric-box"><h4>Hoje</h4><span>4.2 kWh</span></div>
-            <div class="metric-box"><h4>Mês</h4><span>128 kWh</span></div>
+            <div class="metric-box"><h4>MÃªs</h4><span>128 kWh</span></div>
             <div class="metric-box"><h4>Estimativa</h4><span>R$ 115</span></div>
             <div class="metric-box">
               <h4>Tempo Ativo Total</h4>
@@ -974,10 +1621,10 @@
           </div>
         </div>
 
-        <!-- Climatização com Contabilização de Tempo -->
+        <!-- ClimatizaÃ§Ã£o com ContabilizaÃ§Ã£o de Tempo -->
         <div class="card">
           <div class="card-title">
-            <span>Consumo da Climatização</span>
+            <span>Consumo da ClimatizaÃ§Ã£o</span>
             <i class="fa-solid fa-snowflake" style="color: var(--blue-accent);"></i>
           </div>
 
@@ -1030,10 +1677,10 @@
           </div>
         </div>
 
-        <!-- Iluminação com Contabilização de Tempo -->
+        <!-- IluminaÃ§Ã£o com ContabilizaÃ§Ã£o de Tempo -->
         <div class="card">
           <div class="card-title">
-            <span>Consumo da Iluminação</span>
+            <span>Consumo da IluminaÃ§Ã£o</span>
             <i class="fa-solid fa-plug" style="color: var(--orange-bright);"></i>
           </div>
 
@@ -1152,34 +1799,34 @@
       </div>
     </div>
 
-    <!-- ABA 6: INTELIGÊNCIA ADAPTATIVA -->
+    <!-- ABA 6: INTELIGÃŠNCIA ADAPTATIVA -->
     <div id="tab-inteligencia" class="tab-content">
       <div class="ai-banner">
         <div class="ai-header-info">
           <i class="fa-solid fa-wand-magic-sparkles fa-2x" style="color: var(--orange-bright);"></i>
           <div>
-            <h2>Núcleo de Inteligência Adaptativa</h2>
-            <p>O DOMUS monitora e analisa o comportamento da residência em tempo real, sugerindo automações eficientes.</p>
+            <h2>NÃºcleo de InteligÃªncia Adaptativa</h2>
+            <p>O DOMUS monitora e analisa o comportamento da residÃªncia em tempo real, sugerindo automaÃ§Ãµes eficientes.</p>
           </div>
         </div>
-        <span class="status-badge status-ativo"><i class="fa-solid fa-microchip"></i> Análise Ativa</span>
+        <span class="status-badge status-ativo"><i class="fa-solid fa-microchip"></i> AnÃ¡lise Ativa</span>
       </div>
 
       <div class="dashboard-grid">
         <div class="card" style="grid-column: span 2;">
           <div class="card-title">
-            <span>🧠 Sugestões Identificadas</span>
+            <span>ðŸ§  SugestÃµes Identificadas</span>
             <i class="fa-solid fa-brain" style="color: var(--orange-bright);"></i>
           </div>
 
           <div id="adaptive-suggestions-container">
-            <!-- Sugestões da Inteligência Adaptativa geradas via JS -->
+            <!-- SugestÃµes da InteligÃªncia Adaptativa geradas via JS -->
           </div>
         </div>
 
         <div class="card">
           <div class="card-title">
-            <span>Padrões de Comportamento</span>
+            <span>PadrÃµes de Comportamento</span>
             <i class="fa-solid fa-chart-line" style="color: var(--blue-accent);"></i>
           </div>
 
@@ -1188,14 +1835,14 @@
               <i class="fa-solid fa-clock pattern-icon"></i>
               <div>
                 <strong>Uso Frequente Noturno</strong>
-                <p>A iluminação da sala é utilizada prioritariamente entre 19:00h e 23:00h.</p>
+                <p>A iluminaÃ§Ã£o da sala Ã© utilizada prioritariamente entre 19:00h e 23:00h.</p>
               </div>
             </li>
             <li class="pattern-item">
               <i class="fa-solid fa-leaf pattern-icon" style="color: #2ecc71;"></i>
               <div>
                 <strong>Potencial de Economia</strong>
-                <p>Desligar dispositivos ociosos pode reduzir até 18% no consumo mensal.</p>
+                <p>Desligar dispositivos ociosos pode reduzir atÃ© 18% no consumo mensal.</p>
               </div>
             </li>
           </ul>
@@ -1203,31 +1850,31 @@
       </div>
     </div>
 
-    <!-- ABA 7: AUTOMAÇÕES -->
+    <!-- ABA 7: AUTOMAÃ‡Ã•ES -->
     <div id="tab-automacoes" class="tab-content">
       <div class="header-banner">
         <div>
-          <h1>Automações da Residência</h1>
-          <p>Gerencie regras automáticas e rotinas inteligentes do seu DOMUS.</p>
+          <h1>AutomaÃ§Ãµes da ResidÃªncia</h1>
+          <p>Gerencie regras automÃ¡ticas e rotinas inteligentes do seu DOMUS.</p>
         </div>
-        <button type="button" class="btn-primary" style="width: auto; padding: 10px 20px;" onclick="openAutomationModal()"><i class="fa-solid fa-plus"></i> Criar Automação</button>
+        <button type="button" class="btn-primary" style="width: auto; padding: 10px 20px;" onclick="openAutomationModal()"><i class="fa-solid fa-plus"></i> Criar AutomaÃ§Ã£o</button>
       </div>
 
       <div class="dashboard-grid">
         <div class="card" style="grid-column: span 2;">
           <div class="card-title">
-            <span>Automações Ativas</span>
+            <span>AutomaÃ§Ãµes Ativas</span>
             <i class="fa-solid fa-robot" style="color: var(--blue-accent);"></i>
           </div>
 
           <div id="automations-cards-container" class="automations-grid">
-            <!-- Cards de Automações inseridos dinamicamente -->
+            <!-- Cards de AutomaÃ§Ãµes inseridos dinamicamente -->
           </div>
         </div>
 
         <div class="card">
           <div class="card-title">
-            <span>Resumo de Automações</span>
+            <span>Resumo de AutomaÃ§Ãµes</span>
             <i class="fa-solid fa-sliders" style="color: var(--orange-bright);"></i>
           </div>
 
@@ -1241,8 +1888,8 @@
 
           <div class="device-item">
             <div>
-              <strong>Execuções este mês</strong>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Acionamentos automáticos</div>
+              <strong>ExecuÃ§Ãµes este mÃªs</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Acionamentos automÃ¡ticos</div>
             </div>
             <strong style="font-size: 1.2rem; color: var(--blue-accent);">148</strong>
           </div>
@@ -1260,7 +1907,7 @@
             <div class="icon-box active-glow profile-avatar" id="profile-avatar-icon">
               <i class="fa-solid fa-user-astronaut fa-2x"></i>
             </div>
-            <span class="online-indicator" title="Usuário Ativo"></span>
+            <span class="online-indicator" title="UsuÃ¡rio Ativo"></span>
           </div>
           <div class="profile-text-details">
             <div class="profile-name-row">
@@ -1278,11 +1925,11 @@
         </button>
       </div>
 
-      <!-- 2. AÇÕES RÁPIDAS -->
+      <!-- 2. AÃ‡Ã•ES RÃPIDAS -->
       <div class="profile-quick-actions-bar">
         <div class="quick-actions-header">
           <i class="fa-solid fa-bolt" style="color: var(--orange-bright);"></i>
-          <span>Ações rápidas</span>
+          <span>AÃ§Ãµes rÃ¡pidas</span>
         </div>
         <div class="quick-actions-buttons">
           <button type="button" class="btn-quick-action" onclick="openEditProfileModal()">
@@ -1297,25 +1944,25 @@
         </div>
       </div>
 
-      <!-- 3. RESIDÊNCIA + MORADORES (LADO A LADO) -->
+      <!-- 3. RESIDÃŠNCIA + MORADORES (LADO A LADO) -->
       <div class="profile-two-columns">
-        <!-- RESUMO DA RESIDÊNCIA COMPACTO -->
+        <!-- RESUMO DA RESIDÃŠNCIA COMPACTO -->
         <div class="card profile-compact-card">
           <div class="card-title">
-            <span>Resumo da Residência</span>
+            <span>Resumo da ResidÃªncia</span>
             <i class="fa-solid fa-house-chimney" style="color: var(--blue-accent);"></i>
           </div>
           <div class="residence-clean-box">
             <div class="residence-title-row">
-              <h4>Residência Lucca</h4>
+              <h4>ResidÃªncia Lucca</h4>
               <span class="residence-unit-text"><i class="fa-solid fa-location-dot"></i> Bloco A &middot; Unidade 402</span>
             </div>
             <div class="residence-inline-stats">
-              <span><strong>6</strong> Cômodos</span>
+              <span><strong>6</strong> CÃ´modos</span>
               <span class="inline-bullet">&middot;</span>
               <span><strong id="profile-total-devices">13</strong> Dispositivos</span>
               <span class="inline-bullet">&middot;</span>
-              <span><strong id="profile-automations-count">3</strong> Automações</span>
+              <span><strong id="profile-automations-count">3</strong> AutomaÃ§Ãµes</span>
             </div>
           </div>
         </div>
@@ -1332,10 +1979,10 @@
         </div>
       </div>
 
-      <!-- 4. ESTATÍSTICAS DE USO DO DOMUS (HORIZONTAL & COMPACTO) -->
+      <!-- 4. ESTATÃSTICAS DE USO DO DOMUS (HORIZONTAL & COMPACTO) -->
       <div class="card profile-stats-card">
         <div class="card-title">
-          <span>Estatísticas de Uso do DOMUS</span>
+          <span>EstatÃ­sticas de Uso do DOMUS</span>
           <i class="fa-solid fa-chart-line" style="color: var(--orange-bright);"></i>
         </div>
         <div class="stats-horizontal-strip">
@@ -1351,7 +1998,7 @@
             <i class="fa-solid fa-wand-magic-sparkles stat-strip-icon" style="color: var(--blue-accent);"></i>
             <div class="stat-strip-content">
               <strong>89%</strong>
-              <span>Aproveitamento de Automações</span>
+              <span>Aproveitamento de AutomaÃ§Ãµes</span>
             </div>
           </div>
           <div class="stat-strip-sep"></div>
@@ -1367,18 +2014,18 @@
             <i class="fa-solid fa-bolt stat-strip-icon" style="color: #f1c40f;"></i>
             <div class="stat-strip-content">
               <strong>128 kWh</strong>
-              <span>Consumo Total no Mês</span>
+              <span>Consumo Total no MÃªs</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 5. PREFERÊNCIAS & 6. APARÊNCIA E ACESSIBILIDADE (LADO A LADO) -->
+      <!-- 5. PREFERÃŠNCIAS & 6. APARÃŠNCIA E ACESSIBILIDADE (LADO A LADO) -->
       <div class="profile-two-columns">
-        <!-- 5. PREFERÊNCIAS DO DOMUS -->
+        <!-- 5. PREFERÃŠNCIAS DO DOMUS -->
         <div class="card profile-compact-card">
           <div class="card-title">
-            <span>Preferências do DOMUS</span>
+            <span>PreferÃªncias do DOMUS</span>
             <i class="fa-solid fa-sliders" style="color: var(--blue-accent);"></i>
           </div>
 
@@ -1387,7 +2034,7 @@
               <div class="minimal-item-info">
                 <i class="fa-solid fa-bell minimal-icon" style="color: var(--blue-accent);"></i>
                 <div>
-                  <strong>Notificações em Tempo Real</strong>
+                  <strong>NotificaÃ§Ãµes em Tempo Real</strong>
                   <p>Alertas no painel e flutuantes</p>
                 </div>
               </div>
@@ -1401,12 +2048,12 @@
               <div class="minimal-item-info">
                 <i class="fa-solid fa-brain minimal-icon" style="color: var(--orange-bright);"></i>
                 <div>
-                  <strong>Inteligência Adaptativa</strong>
-                  <p>Ajustes e aprendizado automático</p>
+                  <strong>InteligÃªncia Adaptativa</strong>
+                  <p>Ajustes e aprendizado automÃ¡tico</p>
                 </div>
               </div>
               <label class="switch">
-                <input type="checkbox" checked onchange="logActivity('Inteligência Adaptativa ' + (this.checked ? 'ativada' : 'pausada'), 'fa-solid fa-brain', 'var(--blue-accent)')">
+                <input type="checkbox" checked onchange="logActivity('InteligÃªncia Adaptativa ' + (this.checked ? 'ativada' : 'pausada'), 'fa-solid fa-brain', 'var(--blue-accent)')">
                 <span class="slider"></span>
               </label>
             </div>
@@ -1427,10 +2074,10 @@
           </div>
         </div>
 
-        <!-- 6. APARÊNCIA E ACESSIBILIDADE -->
+        <!-- 6. APARÃŠNCIA E ACESSIBILIDADE -->
         <div class="card profile-compact-card">
           <div class="card-title">
-            <span>Aparência e Acessibilidade</span>
+            <span>AparÃªncia e Acessibilidade</span>
             <i class="fa-solid fa-universal-access" style="color: var(--orange-bright);"></i>
           </div>
 
@@ -1454,7 +2101,7 @@
                 <i class="fa-solid fa-volume-high minimal-icon" style="color: var(--orange-bright);"></i>
                 <div>
                   <strong>Comando de Voz Elevado</strong>
-                  <p>Feedback por áudio no painel</p>
+                  <p>Feedback por Ã¡udio no painel</p>
                 </div>
               </div>
               <label class="switch">
@@ -1480,10 +2127,10 @@
         </div>
       </div>
 
-      <!-- 7. SEGURANÇA DA CONTA -->
+      <!-- 7. SEGURANÃ‡A DA CONTA -->
       <div class="card profile-security-card">
         <div class="card-title">
-          <span>Segurança da Conta</span>
+          <span>SeguranÃ§a da Conta</span>
           <i class="fa-solid fa-lock" style="color: var(--blue-accent);"></i>
         </div>
 
@@ -1492,8 +2139,8 @@
             <div class="security-item-left">
               <i class="fa-solid fa-shield-halved security-item-icon" style="color: var(--blue-accent);"></i>
               <div>
-                <strong>Autenticação em Duas Etapas (2FA)</strong>
-                <p>Proteção reforçada via aplicativo autenticador</p>
+                <strong>AutenticaÃ§Ã£o em Duas Etapas (2FA)</strong>
+                <p>ProteÃ§Ã£o reforÃ§ada via aplicativo autenticador</p>
               </div>
             </div>
             <span class="status-badge status-ativo"><i class="fa-solid fa-check"></i> Ativo</span>
@@ -1504,7 +2151,7 @@
               <i class="fa-solid fa-key security-item-icon" style="color: var(--orange-bright);"></i>
               <div>
                 <strong>Senha do Painel DOMUS</strong>
-                <p>Última alteração há 30 dias</p>
+                <p>Ãšltima alteraÃ§Ã£o hÃ¡ 30 dias</p>
               </div>
             </div>
             <button type="button" class="btn-ai-action btn-ai-secondary" onclick="openChangePasswordAlert()">
@@ -1527,29 +2174,29 @@
         </div>
       </div>
 
-      <!-- 9. CONFIGURAÇÕES AVANÇADAS (RECOLHÍVEL) -->
+      <!-- 9. CONFIGURAÃ‡Ã•ES AVANÃ‡ADAS (RECOLHÃVEL) -->
       <details class="card advanced-settings-card">
         <summary class="advanced-settings-summary">
           <span class="advanced-summary-left">
             <i class="fa-solid fa-gear" style="color: var(--orange-bright);"></i>
-            <span>Configurações avançadas</span>
+            <span>ConfiguraÃ§Ãµes avanÃ§adas</span>
           </span>
           <i class="fa-solid fa-chevron-down advanced-arrow"></i>
         </summary>
         <div class="advanced-settings-content">
           <div class="advanced-subitem">
             <div>
-              <strong>Limpar Histórico de Atividades</strong>
-              <p>Remove os logs de acionamentos recentes da memória local da sessão.</p>
+              <strong>Limpar HistÃ³rico de Atividades</strong>
+              <p>Remove os logs de acionamentos recentes da memÃ³ria local da sessÃ£o.</p>
             </div>
             <button type="button" class="btn-ai-action btn-ai-secondary" onclick="clearActivityHistory()">
-              <i class="fa-solid fa-trash-can"></i> Limpar histórico
+              <i class="fa-solid fa-trash-can"></i> Limpar histÃ³rico
             </button>
           </div>
           <div class="advanced-subitem">
             <div>
-              <strong>Diagnóstico de Rede Matter / Zigbee</strong>
-              <p>Testa latência e integridade de resposta dos sensores e atuadores.</p>
+              <strong>DiagnÃ³stico de Rede Matter / Zigbee</strong>
+              <p>Testa latÃªncia e integridade de resposta dos sensores e atuadores.</p>
             </div>
             <button type="button" class="btn-ai-action btn-ai-secondary" onclick="runNetworkDiagnostics()">
               <i class="fa-solid fa-network-wired"></i> Executar teste
@@ -1557,8 +2204,8 @@
           </div>
           <div class="advanced-subitem">
             <div>
-              <strong>Exportar Relatório Mensal</strong>
-              <p>Gera arquivo com métricas de consumo e eficiência energética.</p>
+              <strong>Exportar RelatÃ³rio Mensal</strong>
+              <p>Gera arquivo com mÃ©tricas de consumo e eficiÃªncia energÃ©tica.</p>
             </div>
             <button type="button" class="btn-ai-action btn-ai-secondary" onclick="exportMonthlyReport()">
               <i class="fa-solid fa-download"></i> Exportar (.CSV)
@@ -1569,12 +2216,12 @@
 
     </div>
 
-    <!-- RODAPÉ (FOOTER) -->
+    <!-- RODAPÃ‰ (FOOTER) -->
     <footer class="domus-footer">
       <div class="footer-content">
         <div class="footer-brand">
           <span class="footer-logo">DOMUS</span>
-          <p class="footer-copy">&copy; 2026 DOMUS &mdash; Sistema Inteligente de Automação Residencial</p>
+          <p class="footer-copy">&copy; 2026 DOMUS &mdash; Sistema Inteligente de AutomaÃ§Ã£o Residencial</p>
         </div>
         <p class="footer-quote">&ldquo;Integrando a tecnologia ao seu modo de viver.&rdquo;</p>
         <div class="footer-credits">
@@ -1584,12 +2231,13 @@
     </footer>
 
   </main>
+  </div> <!-- FIM DO WRAPPER DO SISTEMA DOMUS PROTEGIDO POR AUTENTICAÃ‡ÃƒO -->
 
   <!-- MODAL DE EDITAR PERFIL -->
   <div id="modal-edit-profile" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-user-pen" style="color: var(--orange-bright);"></i> Editar Perfil do Usuário</h3>
+        <h3><i class="fa-solid fa-user-pen" style="color: var(--orange-bright);"></i> Editar Perfil do UsuÃ¡rio</h3>
         <button type="button" class="btn-close-modal" onclick="closeEditProfileModal()">&times;</button>
       </div>
       <form id="form-edit-profile" onsubmit="handleSaveProfile(event)">
@@ -1598,17 +2246,17 @@
           <input type="text" id="edit-profile-name" value="Matheus D. Lucca" required>
         </div>
         <div class="form-group">
-          <label>Identificador (@usuário)</label>
+          <label>Identificador (@usuÃ¡rio)</label>
           <input type="text" id="edit-profile-handle" value="@01_Lucca" required>
         </div>
         <div class="form-group">
-          <label>Ícone / Avatar</label>
+          <label>Ãcone / Avatar</label>
           <select id="edit-profile-avatar-select" class="custom-select">
             <option value="fa-user-astronaut" selected>Astronauta (Atual)</option>
             <option value="fa-user-tie">Executivo</option>
-            <option value="fa-user-gear">Engenheiro / Técnico</option>
+            <option value="fa-user-gear">Engenheiro / TÃ©cnico</option>
             <option value="fa-user-ninja">Ninja</option>
-            <option value="fa-user-graduate">Acadêmico</option>
+            <option value="fa-user-graduate">AcadÃªmico</option>
           </select>
         </div>
         <div class="modal-actions">
@@ -1632,10 +2280,10 @@
           <input type="text" id="resident-name" placeholder="Ex: Nome/Apelido" required>
         </div>
         <div class="form-group">
-          <label>Nível de Permissão</label>
+          <label>NÃ­vel de PermissÃ£o</label>
           <select id="resident-role" class="custom-select" required>
             <option value="Administrador">Administrador (Acesso Total)</option>
-            <option value="Morador" selected>Morador (Acesso Padrão)</option>
+            <option value="Morador" selected>Morador (Acesso PadrÃ£o)</option>
             <option value="Visitante">Visitante (Acesso Restrito)</option>
           </select>
         </div>
@@ -1647,16 +2295,16 @@
     </div>
   </div>
 
-  <!-- MODAL DE CRIAR AUTOMAÇÃO -->
+  <!-- MODAL DE CRIAR AUTOMAÃ‡ÃƒO -->
   <div id="modal-add-automation" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-robot" style="color: var(--orange-bright);"></i> Criar Nova Automação</h3>
+        <h3><i class="fa-solid fa-robot" style="color: var(--orange-bright);"></i> Criar Nova AutomaÃ§Ã£o</h3>
         <button type="button" class="btn-close-modal" onclick="closeAutomationModal()">&times;</button>
       </div>
       <form id="form-add-automation" onsubmit="handleSaveAutomation(event)">
         <div class="form-group">
-          <label>Nome da Automação</label>
+          <label>Nome da AutomaÃ§Ã£o</label>
           <input type="text" id="auto-title" placeholder="Ex: Apagar luzes da sala sem movimento" required>
         </div>
 
@@ -1664,46 +2312,46 @@
           <label>QUANDO (Gatilho)</label>
           <select id="auto-trigger" required>
             <option value="Sem Movimento (5min)">5 minutos sem movimento na Sala</option>
-            <option value="Horário (22:30h)">Horário atingir 22:30h</option>
+            <option value="HorÃ¡rio (22:30h)">HorÃ¡rio atingir 22:30h</option>
             <option value="Porta/Janela Aberta">Porta/Janela aberta por mais de 10min</option>
             <option value="Consumo Elevado">Consumo ultrapassar 3.5 kWh</option>
-            <option value="Temperatura Altura">Temperatura ambiente subir acima de 26°C</option>
+            <option value="Temperatura Altura">Temperatura ambiente subir acima de 26Â°C</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label>ENTÃO (Ação Executada)</label>
+          <label>ENTÃƒO (AÃ§Ã£o Executada)</label>
           <select id="auto-action" required>
-            <option value="Apagar Iluminação">Apagar lâmpadas do cômodo</option>
-            <option value="Ativar Modo Noturno">Ativar Modo Noturno e Travar Portão</option>
-            <option value="Ajustar Climatização">Ajustar Ar-Condicionado para 23°C</option>
-            <option value="Enviar Notificação">Enviar alerta de segurança ao usuário</option>
+            <option value="Apagar IluminaÃ§Ã£o">Apagar lÃ¢mpadas do cÃ´modo</option>
+            <option value="Ativar Modo Noturno">Ativar Modo Noturno e Travar PortÃ£o</option>
+            <option value="Ajustar ClimatizaÃ§Ã£o">Ajustar Ar-Condicionado para 23Â°C</option>
+            <option value="Enviar NotificaÃ§Ã£o">Enviar alerta de seguranÃ§a ao usuÃ¡rio</option>
           </select>
         </div>
 
         <div class="modal-actions">
           <button type="button" class="btn-ai-action btn-ai-secondary" onclick="closeAutomationModal()">Cancelar</button>
-          <button type="submit" class="btn-ai-action btn-ai-primary"><i class="fa-solid fa-check"></i> Salvar Automação</button>
+          <button type="submit" class="btn-ai-action btn-ai-primary"><i class="fa-solid fa-check"></i> Salvar AutomaÃ§Ã£o</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL DE HISTÓRICO COMPLETO -->
+  <!-- MODAL DE HISTÃ“RICO COMPLETO -->
   <div id="modal-full-history" class="modal-overlay">
     <div class="modal-content modal-history-content">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-clock-rotate-left" style="color: var(--blue-accent);"></i> Histórico de Eventos do DOMUS</h3>
+        <h3><i class="fa-solid fa-clock-rotate-left" style="color: var(--blue-accent);"></i> HistÃ³rico de Eventos do DOMUS</h3>
         <button type="button" class="btn-close-modal" onclick="closeFullHistoryModal()">&times;</button>
       </div>
-      <p class="modal-subtitle" style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Registro completo de eventos e acionamentos na sessão atual.</p>
+      <p class="modal-subtitle" style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Registro completo de eventos e acionamentos na sessÃ£o atual.</p>
       
       <div class="history-filter-row">
         <div class="history-filter-pills">
           <button type="button" class="history-pill active" onclick="filterHistoryLogs('all', this)">Todos</button>
-          <button type="button" class="history-pill" onclick="filterHistoryLogs('luz', this)">💡 Iluminação</button>
-          <button type="button" class="history-pill" onclick="filterHistoryLogs('clima', this)">❄️ Clima</button>
-          <button type="button" class="history-pill" onclick="filterHistoryLogs('seguranca', this)">🛡️ Segurança</button>
+          <button type="button" class="history-pill" onclick="filterHistoryLogs('luz', this)">ðŸ’¡ IluminaÃ§Ã£o</button>
+          <button type="button" class="history-pill" onclick="filterHistoryLogs('clima', this)">â„ï¸ Clima</button>
+          <button type="button" class="history-pill" onclick="filterHistoryLogs('seguranca', this)">ðŸ›¡ï¸ SeguranÃ§a</button>
         </div>
         <button type="button" class="btn-ai-action btn-ai-secondary" style="font-size: 0.75rem; padding: 5px 12px;" onclick="clearActivityHistory()">
           <i class="fa-solid fa-trash-can"></i> Limpar logs
@@ -1716,7 +2364,7 @@
     </div>
   </div>
 
-  <!-- MODAL DE CONTROLE AVANÇADO DA ILUMINAÇÃO -->
+  <!-- MODAL DE CONTROLE AVANÃ‡ADO DA ILUMINAÃ‡ÃƒO -->
   <div id="modal-light-advanced" class="modal-overlay">
     <div class="modal-content modal-light-content">
       <div class="modal-header">
@@ -1724,7 +2372,7 @@
           <div id="modal-light-icon-box" class="icon-box active-glow"><i class="fa-solid fa-lightbulb"></i></div>
           <div>
             <h3 id="modal-light-room-name">Sala de Estar</h3>
-            <span id="modal-light-lamp-name" class="modal-lamp-subtitle">Lâmpada Principal</span>
+            <span id="modal-light-lamp-name" class="modal-lamp-subtitle">LÃ¢mpada Principal</span>
           </div>
         </div>
         <button type="button" class="btn-close-modal" onclick="closeLightDetailModal()">&times;</button>
@@ -1742,10 +2390,10 @@
         </label>
       </div>
 
-      <!-- Abas de navegação do modal -->
+      <!-- Abas de navegaÃ§Ã£o do modal -->
       <div class="modal-tab-nav">
         <button type="button" class="modal-tab-btn active" onclick="switchModalLightTab('controle', this)">Controle</button>
-        <button type="button" class="modal-tab-btn" onclick="switchModalLightTab('estatisticas', this)">Estatísticas</button>
+        <button type="button" class="modal-tab-btn" onclick="switchModalLightTab('estatisticas', this)">EstatÃ­sticas</button>
         <button type="button" class="modal-tab-btn" onclick="switchModalLightTab('agendamento', this)">Agendamento</button>
       </div>
 
@@ -1769,9 +2417,9 @@
             <strong id="modal-temp-display">3000K</strong>
           </div>
           <div class="temp-slider-container">
-            <span class="temp-label-icon">🌅 Quente</span>
+            <span class="temp-label-icon">ðŸŒ… Quente</span>
             <input type="range" id="modal-temp-slider" min="2700" max="6500" step="100" value="3000" oninput="onModalTempChange(this.value)">
-            <span class="temp-label-icon">Fria ❄️</span>
+            <span class="temp-label-icon">Fria â„ï¸</span>
           </div>
           <div class="temp-preset-pills">
             <button type="button" class="btn-preset-pill" onclick="setModalTempPreset(2700)">2700K (Quente)</button>
@@ -1784,7 +2432,7 @@
         <div class="modal-control-block" id="modal-rgb-block">
           <div class="control-header-row">
             <span><i class="fa-solid fa-palette"></i> Cor RGB</span>
-            <span class="badge-rgb-support">RGB Compatível</span>
+            <span class="badge-rgb-support">RGB CompatÃ­vel</span>
           </div>
           <div class="light-color-swatches">
             <button type="button" class="color-swatch-btn" style="background:#ff3333;" onclick="setModalColor('#ff3333')" title="Vermelho"></button>
@@ -1801,9 +2449,9 @@
         <div class="modal-control-block" id="modal-motion-block">
           <div class="control-header-row">
             <span><i class="fa-solid fa-person-walking"></i> Sensor de movimento</span>
-            <span class="motion-status-pill" id="modal-motion-status">🟢 Ativo</span>
+            <span class="motion-status-pill" id="modal-motion-status">ðŸŸ¢ Ativo</span>
           </div>
-          <div class="motion-last-seen" id="modal-motion-last">Último movimento: há 2 min</div>
+          <div class="motion-last-seen" id="modal-motion-last">Ãšltimo movimento: hÃ¡ 2 min</div>
           <div class="motion-options">
             <label class="motion-check-label">
               <input type="checkbox" id="modal-motion-turnon" checked>
@@ -1811,7 +2459,7 @@
             </label>
             <label class="motion-check-label">
               <input type="checkbox" id="modal-motion-turnoff" checked>
-              <span>Desligar após ausência</span>
+              <span>Desligar apÃ³s ausÃªncia</span>
             </label>
             <div class="motion-delay-row">
               <span>Tempo de espera:</span>
@@ -1825,7 +2473,7 @@
         </div>
       </div>
 
-      <!-- ABA 2: ESTATÍSTICAS (Tempo de Funcionamento, Consumo Individual, Histórico) -->
+      <!-- ABA 2: ESTATÃSTICAS (Tempo de Funcionamento, Consumo Individual, HistÃ³rico) -->
       <div id="modal-tab-estatisticas" class="modal-tab-panel">
         <!-- 7. Tempo de funcionamento -->
         <div class="modal-control-block">
@@ -1842,7 +2490,7 @@
               <strong id="modal-runtime-week">18h 21min</strong>
             </div>
             <div class="runtime-stat-box">
-              <span class="stat-box-label">Este mês</span>
+              <span class="stat-box-label">Este mÃªs</span>
               <strong id="modal-runtime-month">67h 14min</strong>
             </div>
           </div>
@@ -1865,10 +2513,10 @@
           </div>
         </div>
 
-        <!-- 9. Histórico -->
+        <!-- 9. HistÃ³rico -->
         <div class="modal-control-block">
           <div class="control-header-row">
-            <span><i class="fa-solid fa-clipboard-list"></i> Histórico</span>
+            <span><i class="fa-solid fa-clipboard-list"></i> HistÃ³rico</span>
           </div>
           <ul class="device-mini-history" id="modal-device-history">
             <!-- Gerado dinamicamente -->
@@ -1888,11 +2536,11 @@
           </div>
           <div class="schedule-inputs-row">
             <div class="form-group-time">
-              <label>Ligar às:</label>
+              <label>Ligar Ã s:</label>
               <input type="time" id="modal-schedule-on" value="18:30" class="time-input">
             </div>
             <div class="form-group-time">
-              <label>Desligar às:</label>
+              <label>Desligar Ã s:</label>
               <input type="time" id="modal-schedule-off" value="23:45" class="time-input">
             </div>
           </div>
@@ -1904,7 +2552,7 @@
               <label class="day-check-btn"><input type="checkbox" name="sched-day" value="3" checked><span>Qua</span></label>
               <label class="day-check-btn"><input type="checkbox" name="sched-day" value="4" checked><span>Qui</span></label>
               <label class="day-check-btn"><input type="checkbox" name="sched-day" value="5" checked><span>Sex</span></label>
-              <label class="day-check-btn"><input type="checkbox" name="sched-day" value="6"><span>Sáb</span></label>
+              <label class="day-check-btn"><input type="checkbox" name="sched-day" value="6"><span>SÃ¡b</span></label>
               <label class="day-check-btn"><input type="checkbox" name="sched-day" value="0"><span>Dom</span></label>
             </div>
           </div>
@@ -1923,15 +2571,546 @@
   <!-- JAVASCRIPT INTEGRADO -->
   <script>
     // @ts-nocheck
+
+    // ==========================================================================
+    // SUPABASE AUTH & CONTROLE DE SESSÃƒO DO DOMUS
+    // ==========================================================================
+    // INSTRUÃ‡Ã•ES DE CONFIGURAÃ‡ÃƒO:
+    // 1. Acesse https://supabase.com -> Seu Projeto -> Project Settings -> API
+    // 2. Substitua 'SUPABASE_URL' pela Project URL do seu projeto (ex: https://xyz.supabase.co)
+    // 3. Substitua 'SUPABASE_ANON_KEY' pela sua Anon Public API Key
+    const SUPABASE_URL = 'https://SEU-PROJETO.supabase.co'; // Copiado na aba "Geral"
+const SUPABASE_KEY = 'sb_publishable_TMX2by3mFmYgmN3zDETdRq_qfkCJ...'; // Copiado do botão da imagem
+
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let supabaseClient = null;
+    let currentAuthUser = null;
+    let currentAuthProfile = null;
+
+    // BANCO DE DADOS LOCAL COMPATÃVEL DE USUÃRIOS
+    let localUsersDB = JSON.parse(localStorage.getItem('domus_users_db') || '{}');
+    if (Object.keys(localUsersDB).length === 0) {
+      localUsersDB['matheus@domus.com'] = {
+        id: 'usr_matheus',
+        email: 'matheus@domus.com',
+        full_name: 'Matheus D. Lucca',
+        password: '123'
+      };
+      localStorage.setItem('domus_users_db', JSON.stringify(localUsersDB));
+    }
+
+    function isSupabaseConfigured() {
+      return SUPABASE_URL && 
+             SUPABASE_URL !== 'SUPABASE_URL' && 
+             !SUPABASE_URL.includes('SUA_URL_DO_SUPABASE') &&
+             SUPABASE_ANON_KEY && 
+             SUPABASE_ANON_KEY !== 'SUPABASE_ANON_KEY' &&
+             !SUPABASE_ANON_KEY.includes('SUA_CHAVE_PUBLICA_ANON') &&
+             Boolean(window.supabase);
+    }
+
+    function isUserAuthenticated() {
+      if (isSupabaseConfigured()) {
+        return Boolean(currentAuthUser);
+      }
+      return Boolean(localStorage.getItem('domus_demo_session'));
+    }
+
+    function showAuthScreen(view = 'login') {
+      const authScreen = document.getElementById('domus-auth-screen');
+      const appWrapper = document.getElementById('domus-app-wrapper');
+      if (authScreen) {
+        authScreen.style.setProperty('display', 'flex', 'important');
+      }
+      if (appWrapper) {
+        appWrapper.style.setProperty('display', 'none', 'important');
+        appWrapper.classList.add('auth-hidden');
+      }
+      showAuthView(view);
+      clearAuthAlert();
+    }
+
+    function showAppScreen() {
+      const authScreen = document.getElementById('domus-auth-screen');
+      const appWrapper = document.getElementById('domus-app-wrapper');
+      if (authScreen) {
+        authScreen.style.setProperty('display', 'none', 'important');
+      }
+      if (appWrapper) {
+        appWrapper.style.setProperty('display', 'flex', 'important');
+        appWrapper.classList.remove('auth-hidden');
+      }
+    }
+
+    function showAuthView(viewName) {
+      const views = ['login', 'register', 'forgot'];
+      views.forEach(v => {
+        const el = document.getElementById(`auth-view-${v}`);
+        if (el) el.style.display = (v === viewName) ? 'block' : 'none';
+      });
+
+      const tabLogin = document.getElementById('tab-btn-login');
+      const tabReg = document.getElementById('tab-btn-register');
+      if (tabLogin) tabLogin.classList.toggle('active', viewName === 'login');
+      if (tabReg) tabReg.classList.toggle('active', viewName === 'register');
+
+      clearAuthAlert();
+    }
+
+    function showAuthAlert(type, message) {
+      const box = document.getElementById('auth-status-box');
+      if (!box) return;
+      box.className = `auth-status-alert alert-${type}`;
+      let icon = 'fa-circle-exclamation';
+      if (type === 'success') icon = 'fa-circle-check';
+      if (type === 'info') icon = 'fa-circle-info';
+      box.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+      box.style.display = 'flex';
+    }
+
+    function clearAuthAlert() {
+      const box = document.getElementById('auth-status-box');
+      if (box) {
+        box.style.display = 'none';
+        box.innerHTML = '';
+      }
+    }
+
+    function toggleAuthPasswordVisibility(fieldId, btn) {
+      const input = document.getElementById(fieldId);
+      if (!input) return;
+      const isPwd = input.type === 'password';
+      input.type = isPwd ? 'text' : 'password';
+      if (btn) {
+        btn.innerHTML = isPwd ? '<i class="fa-solid fa-eye-slash"></i>' : '<i class="fa-solid fa-eye"></i>';
+      }
+    }
+
+    function setAuthButtonLoading(btn, isLoading, loadingText = 'Carregando...') {
+      if (!btn) return;
+      btn.disabled = isLoading;
+      const textSpan = btn.querySelector('.btn-auth-text');
+      const loadSpan = btn.querySelector('.btn-auth-loading');
+      if (textSpan) textSpan.style.display = isLoading ? 'none' : 'inline-flex';
+      if (loadSpan) {
+        loadSpan.style.display = isLoading ? 'inline-flex' : 'none';
+        if (loadingText) loadSpan.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> ${loadingText}`;
+      }
+    }
+
+    function applyUserDataToUI(fullName, email) {
+      if (!fullName) fullName = 'UsuÃ¡rio';
+      const firstName = fullName.trim().split(' ')[0] || fullName;
+
+      // SaudaÃ§Ã£o principal no topo do dashboard
+      const greetingEl = document.getElementById('user-greeting-name');
+      if (greetingEl) {
+        greetingEl.innerText = `OlÃ¡, ${firstName}!`;
+      }
+
+      // Nome e handle na aba de Perfil
+      const profNameEl = document.getElementById('profile-display-name');
+      if (profNameEl) {
+        profNameEl.innerText = fullName;
+      }
+
+      const profHandleEl = document.getElementById('profile-display-handle');
+      if (profHandleEl) {
+        const handle = email ? email.split('@')[0] : firstName.toLowerCase();
+        profHandleEl.innerText = `@${handle}`;
+      }
+
+      const editNameInput = document.getElementById('edit-profile-name');
+      if (editNameInput) {
+        editNameInput.value = fullName;
+      }
+    }
+
+    async function fetchAndApplyUserProfile(user) {
+      if (!user) return;
+      let fullName = user.user_metadata?.full_name || '';
+      let email = user.email || '';
+
+      if (isSupabaseConfigured() && supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+
+          if (data && data.full_name) {
+            fullName = data.full_name;
+            currentAuthProfile = data;
+          } else {
+            const nameToSave = fullName || (email ? email.split('@')[0] : 'UsuÃ¡rio');
+            await supabaseClient.from('profiles').upsert({
+              id: user.id,
+              full_name: nameToSave,
+              email: email,
+              updated_at: new Date().toISOString()
+            });
+            fullName = nameToSave;
+          }
+        } catch (err) {
+          console.warn('Perfil Supabase nÃ£o carregado, usando metadados:', err);
+        }
+      }
+
+      if (!fullName) {
+        fullName = email ? email.split('@')[0] : 'UsuÃ¡rio';
+      }
+
+      applyUserDataToUI(fullName, email);
+    }
+
+    async function handleAuthLogin(event) {
+      event.preventDefault();
+      clearAuthAlert();
+
+      const emailInput = document.getElementById('auth-login-email');
+      const passwordInput = document.getElementById('auth-login-password');
+      const submitBtn = document.getElementById('btn-login-submit');
+
+      const email = emailInput ? emailInput.value.trim() : '';
+      const password = passwordInput ? passwordInput.value : '';
+
+      if (!email) {
+        showAuthAlert('error', 'Digite seu e-mail.');
+        if (emailInput) emailInput.focus();
+        return;
+      }
+      if (!password) {
+        showAuthAlert('error', 'Digite sua senha.');
+        if (passwordInput) passwordInput.focus();
+        return;
+      }
+
+      setAuthButtonLoading(submitBtn, true, 'Autenticando...');
+
+      if (isSupabaseConfigured() && supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+          });
+
+          setAuthButtonLoading(submitBtn, false);
+
+          if (error) {
+            if (error.message && (error.message.includes('Invalid login') || error.message.includes('invalid_grant'))) {
+              showAuthAlert('error', 'E-mail ou senha incorretos.');
+            } else if (error.message && error.message.includes('Email not confirmed')) {
+              showAuthAlert('error', 'E-mail ainda nÃ£o confirmado. Verifique sua caixa de entrada.');
+            } else {
+              showAuthAlert('error', 'NÃ£o foi possÃ­vel realizar o login. Tente novamente.');
+            }
+            return;
+          }
+
+          if (data && data.user) {
+            currentAuthUser = data.user;
+            await fetchAndApplyUserProfile(data.user);
+            showAppScreen();
+            showToastNotification('Bem-vindo', 'Login realizado com sucesso no DOMUS.', 'fa-solid fa-shield-halved', 'var(--blue-accent)');
+          }
+        } catch (err) {
+          setAuthButtonLoading(submitBtn, false);
+          showAuthAlert('error', 'NÃ£o foi possÃ­vel realizar o login. Tente novamente.');
+        }
+      } else {
+        // BANCO DE DADOS LOCAL COMPATÃVEL
+        setTimeout(() => {
+          setAuthButtonLoading(submitBtn, false);
+          const emailKey = email.toLowerCase();
+          const userFound = localUsersDB[emailKey];
+
+          if (userFound) {
+            if (userFound.password === password) {
+              const sessionUser = {
+                id: userFound.id,
+                email: userFound.email,
+                user_metadata: { full_name: userFound.full_name }
+              };
+              localStorage.setItem('domus_demo_session', JSON.stringify(sessionUser));
+              currentAuthUser = sessionUser;
+              applyUserDataToUI(userFound.full_name, userFound.email);
+              showAppScreen();
+              showToastNotification('Bem-vindo', `OlÃ¡, ${userFound.full_name}! Login realizado com sucesso.`, 'fa-solid fa-circle-check', 'var(--orange-bright)');
+            } else {
+              showAuthAlert('error', 'E-mail ou senha incorretos.');
+            }
+          } else {
+            showAuthAlert('error', 'UsuÃ¡rio nÃ£o encontrado. Se ainda nÃ£o possui cadastro, clique em "Criar Conta" acima.');
+          }
+        }, 500);
+      }
+    }
+
+    async function handleAuthRegister(event) {
+      event.preventDefault();
+      clearAuthAlert();
+
+      const nameInput = document.getElementById('auth-reg-name');
+      const emailInput = document.getElementById('auth-reg-email');
+      const passwordInput = document.getElementById('auth-reg-password');
+      const confirmInput = document.getElementById('auth-reg-confirm');
+      const submitBtn = document.getElementById('btn-register-submit');
+
+      const name = nameInput ? nameInput.value.trim() : '';
+      const email = emailInput ? emailInput.value.trim() : '';
+      const password = passwordInput ? passwordInput.value : '';
+      const confirm = confirmInput ? confirmInput.value : '';
+
+      if (!name) {
+        showAuthAlert('error', 'Digite seu nome completo.');
+        if (nameInput) nameInput.focus();
+        return;
+      }
+      if (!email) {
+        showAuthAlert('error', 'Digite seu e-mail.');
+        if (emailInput) emailInput.focus();
+        return;
+      }
+      if (!password) {
+        showAuthAlert('error', 'Digite sua senha.');
+        if (passwordInput) passwordInput.focus();
+        return;
+      }
+      if (password.length < 6) {
+        showAuthAlert('error', 'A senha deve conter no mÃ­nimo 6 caracteres.');
+        if (passwordInput) passwordInput.focus();
+        return;
+      }
+      if (password !== confirm) {
+        showAuthAlert('error', 'As senhas informadas nÃ£o coincidem.');
+        if (confirmInput) confirmInput.focus();
+        return;
+      }
+
+      setAuthButtonLoading(submitBtn, true, 'Criando conta...');
+
+      // Salva no banco de dados local compatÃ­vel
+      const emailKey = email.toLowerCase();
+      localUsersDB[emailKey] = {
+        id: 'usr_' + Date.now(),
+        email: emailKey,
+        full_name: name,
+        password: password,
+        created_at: new Date().toISOString()
+      };
+      localStorage.setItem('domus_users_db', JSON.stringify(localUsersDB));
+
+      if (isSupabaseConfigured() && supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+              data: {
+                full_name: name
+              }
+            }
+          });
+
+          setAuthButtonLoading(submitBtn, false);
+
+          if (error) {
+            if (error.message && error.message.includes('User already registered')) {
+              showAuthAlert('error', 'Este e-mail jÃ¡ possui uma conta cadastrada. Tente fazer login.');
+            } else {
+              showAuthAlert('error', 'NÃ£o foi possÃ­vel realizar o cadastro no Supabase. Tente novamente.');
+            }
+            return;
+          }
+
+          if (data && data.user) {
+            if (data.session) {
+              currentAuthUser = data.user;
+              await fetchAndApplyUserProfile(data.user);
+              showAppScreen();
+              showToastNotification('Conta Criada', `Bem-vindo ao DOMUS, ${name}!`, 'fa-solid fa-circle-check', 'var(--orange-bright)');
+            } else {
+              showAuthAlert('success', 'Conta criada com sucesso! Verifique seu e-mail para ativar seu acesso.');
+              setTimeout(() => {
+                showAuthView('login');
+              }, 4000);
+            }
+          }
+        } catch (err) {
+          setAuthButtonLoading(submitBtn, false);
+          showAuthAlert('error', 'NÃ£o foi possÃ­vel realizar o cadastro. Tente novamente.');
+        }
+      } else {
+        // BANCO DE DADOS LOCAL COMPATÃVEL
+        setTimeout(() => {
+          setAuthButtonLoading(submitBtn, false);
+          const sessionUser = {
+            id: localUsersDB[emailKey].id,
+            email: emailKey,
+            user_metadata: { full_name: name }
+          };
+          localStorage.setItem('domus_demo_session', JSON.stringify(sessionUser));
+          currentAuthUser = sessionUser;
+          applyUserDataToUI(name, emailKey);
+          showAppScreen();
+          showToastNotification('Conta Criada', `Bem-vindo ao DOMUS, ${name}! Seu cadastro foi realizado com sucesso.`, 'fa-solid fa-circle-check', 'var(--orange-bright)');
+        }, 550);
+      }
+    }
+
+    async function handleAuthForgotPassword(event) {
+      event.preventDefault();
+      clearAuthAlert();
+
+      const emailInput = document.getElementById('auth-forgot-email');
+      const submitBtn = document.getElementById('btn-forgot-submit');
+      const email = emailInput ? emailInput.value.trim() : '';
+
+      if (!email) {
+        showAuthAlert('error', 'Digite seu e-mail cadastrado.');
+        if (emailInput) emailInput.focus();
+        return;
+      }
+
+      setAuthButtonLoading(submitBtn, true, 'Enviando link...');
+
+      if (isSupabaseConfigured() && supabaseClient) {
+        try {
+          const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin
+          });
+          setAuthButtonLoading(submitBtn, false);
+          if (error) {
+            showAuthAlert('error', 'NÃ£o foi possÃ­vel enviar a recuperaÃ§Ã£o. Verifique o e-mail informado.');
+          } else {
+            showAuthAlert('success', 'Link de recuperaÃ§Ã£o enviado para seu e-mail! Verifique sua caixa de entrada.');
+            if (emailInput) emailInput.value = '';
+          }
+        } catch (err) {
+          setAuthButtonLoading(submitBtn, false);
+          showAuthAlert('error', 'NÃ£o foi possÃ­vel enviar a recuperaÃ§Ã£o. Tente novamente.');
+        }
+      } else {
+        // MODO DEMONSTRAÃ‡ÃƒO
+        setTimeout(() => {
+          setAuthButtonLoading(submitBtn, false);
+          showAuthAlert('success', 'Link de recuperaÃ§Ã£o simulado com sucesso! Verifique seu e-mail.');
+          if (emailInput) emailInput.value = '';
+        }, 600);
+      }
+    }
+
+    async function domusSignOut() {
+      if (isSupabaseConfigured() && supabaseClient) {
+        try {
+          await supabaseClient.auth.signOut();
+        } catch (e) {
+          console.warn('Erro ao sair do Supabase:', e);
+        }
+      }
+      localStorage.removeItem('domus_demo_session');
+      sessionStorage.removeItem('domus_demo_session');
+      currentAuthUser = null;
+      currentAuthProfile = null;
+      showAuthScreen('login');
+      showToastNotification('SessÃ£o Encerrada', 'VocÃª saiu com sucesso do sistema.', 'fa-solid fa-right-from-bracket', 'var(--blue-accent)');
+    }
+
+    async function checkInitialAuthSession() {
+      // 1. Se houver parÃ¢metro de logout ou forÃ§ar login na URL
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('logout') === 'true' || urlParams.get('auth') === 'login') {
+        localStorage.removeItem('domus_demo_session');
+        sessionStorage.removeItem('domus_demo_session');
+        currentAuthUser = null;
+        showAuthScreen('login');
+        return;
+      }
+
+      // 2. Se o Supabase estiver configurado com credenciais vÃ¡lidas
+      if (isSupabaseConfigured()) {
+        try {
+          supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: {
+              persistSession: true,
+              autoRefreshToken: true,
+              detectSessionInUrl: true
+            }
+          });
+
+          supabaseClient.auth.onAuthStateChange(async (event, session) => {
+            if (session && session.user) {
+              currentAuthUser = session.user;
+              await fetchAndApplyUserProfile(session.user);
+              showAppScreen();
+            } else if (event === 'SIGNED_OUT') {
+              currentAuthUser = null;
+              showAuthScreen('login');
+            }
+          });
+
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (session && session.user) {
+            currentAuthUser = session.user;
+            await fetchAndApplyUserProfile(session.user);
+            showAppScreen();
+            return;
+          }
+        } catch (e) {
+          console.error('Falha ao inicializar Supabase Client:', e);
+        }
+      }
+
+      // 3. VerificaÃ§Ã£o de sessÃ£o salva em modo compatÃ­vel/local
+      const demoSession = localStorage.getItem('domus_demo_session');
+      if (demoSession) {
+        try {
+          const parsed = JSON.parse(demoSession);
+          if (parsed && (parsed.email || parsed.id)) {
+            currentAuthUser = parsed;
+            applyUserDataToUI(parsed.user_metadata?.full_name || parsed.email, parsed.email);
+            showAppScreen();
+            return;
+          }
+        } catch (e) {
+          localStorage.removeItem('domus_demo_session');
+        }
+      }
+
+      // 4. Se nÃ£o houver sessÃ£o ativa: BLOQUEIA ACESSO E EXIBE TELA DE LOGIN OBRIGATÃ“RIA
+      showAuthScreen('login');
+    }
+
+    // DISPARO IMEDIATO DA VERIFICAÃ‡ÃƒO DE AUTENTICAÃ‡ÃƒO (PROTEGE O SISTEMA NO PRIMEIRO MILISSEGUNDO)
+    try {
+      checkInitialAuthSession();
+    } catch (authErr) {
+      console.warn('VerificaÃ§Ã£o inicial de autenticaÃ§Ã£o:', authErr);
+      showAuthScreen('login');
+    }
+
     // ESTADO E LOCALSTORAGE
     let isNotificationsEnabled = localStorage.getItem('domus_notif_enabled') !== 'false';
     let handledSituations = JSON.parse(localStorage.getItem('domus_handled_situations') || '{}');
 
-    // CONTABILIZAÇÃO DE TEMPO DOS DISPOSITIVOS
+    // CONTABILIZAÃ‡ÃƒO DE TEMPO DOS DISPOSITIVOS
     // Armazena segundos acumulados por dispositivo: { [energyId]: number (segundos) }
     let deviceRunTimes = JSON.parse(localStorage.getItem('domus_device_times') || '{}');
+    let lightingOperationalSeconds = parseInt(localStorage.getItem('domus_lighting_runtime') || '0', 10);
 
-    // Mapeamento de cronômetros reais individuais por lâmpada (Key: iconId)
+    // FunÃ§Ã£o universal para trilhos de sliders com preenchimento idÃªntico em todos os navegadores
+    function updateSliderTrackFill(slider, activeColor, minVal, maxVal) {
+      if (!slider) return;
+      const min = minVal !== undefined ? minVal : (parseFloat(slider.min) || 0);
+      const max = maxVal !== undefined ? maxVal : (parseFloat(slider.max) || 100);
+      const val = parseFloat(slider.value) || 0;
+      const pct = Math.max(0, Math.min(100, ((val - min) / (max - min)) * 100));
+      slider.style.background = `linear-gradient(to right, ${activeColor} 0%, ${activeColor} ${pct}%, rgba(255, 255, 255, 0.14) ${pct}%, rgba(255, 255, 255, 0.14) 100%)`;
+    }
+
+    // Mapeamento de cronÃ´metros reais individuais por lÃ¢mpada (Key: iconId)
     const lightTimers = {};
     const FIVE_MINUTES_MS = 300000; // 5 minutos em milissegundos (300.000 ms)
     const FIVE_MINUTES_SECONDS = 300; // 5 minutos em segundos
@@ -1950,9 +3129,9 @@
       },
       {
         id: 'auto_2',
-        title: 'Luz Automática da Sala',
+        title: 'Luz AutomÃ¡tica da Sala',
         trigger: 'Movimento detectado',
-        action: 'Ligar iluminação em 70%',
+        action: 'Ligar iluminaÃ§Ã£o em 70%',
         active: true,
         icon: 'fa-lightbulb'
       },
@@ -1960,7 +3139,7 @@
         id: 'auto_3',
         title: 'Economia Inteligente',
         trigger: '5min sem movimento',
-        action: 'Apagar lâmpada da sala',
+        action: 'Apagar lÃ¢mpada da sala',
         active: true,
         icon: 'fa-leaf'
       }
@@ -1975,7 +3154,7 @@
       isNotificationsEnabled = enabled;
       localStorage.setItem('domus_notif_enabled', enabled ? 'true' : 'false');
       const statusText = enabled ? 'ativadas' : 'desativadas';
-      logActivity(`Notificações em tempo real ${statusText}`, 'fa-solid fa-bell', enabled ? 'var(--blue-accent)' : 'var(--orange-bright)');
+      logActivity(`NotificaÃ§Ãµes em tempo real ${statusText}`, 'fa-solid fa-bell', enabled ? 'var(--blue-accent)' : 'var(--orange-bright)');
 
       if (!enabled) {
         const container = document.getElementById('toast-container');
@@ -1983,11 +3162,16 @@
       }
     }
 
-    // NAVEGAÇÃO DE ABAS CENTRALIZADA & FLUIDA
+    // NAVEGAÃ‡ÃƒO DE ABAS CENTRALIZADA & FLUIDA (PROTEGIDA POR AUTENTICAÃ‡ÃƒO)
     const navItems = document.querySelectorAll('.nav-item');
     const tabContents = document.querySelectorAll('.tab-content');
 
     function switchTab(tabId, targetSelector) {
+      if (!isUserAuthenticated()) {
+        showAuthScreen('login');
+        return;
+      }
+
       navItems.forEach(i => i.classList.remove('active'));
       tabContents.forEach(c => c.classList.remove('active'));
 
@@ -2016,7 +3200,7 @@
       });
     });
 
-    // HISTÓRICO DE ATIVIDADES (COMPACTO NO DASHBOARD + COMPLETO NO MODAL)
+    // HISTÃ“RICO DE ATIVIDADES (COMPACTO NO DASHBOARD + COMPLETO NO MODAL)
     const activityLog = document.getElementById('activity-log');
     const fullHistoryLog = document.getElementById('full-history-log');
 
@@ -2027,9 +3211,9 @@
       // Classificar categoria para filtro
       let cat = 'outros';
       const msgLow = message.toLowerCase();
-      if (msgLow.includes('luz') || msgLow.includes('lâmpada')) cat = 'luz';
+      if (msgLow.includes('luz') || msgLow.includes('lÃ¢mpada')) cat = 'luz';
       else if (msgLow.includes('ar-condicionado') || msgLow.includes('clima') || msgLow.includes('temperatura')) cat = 'clima';
-      else if (msgLow.includes('alarme') || msgLow.includes('sensor') || msgLow.includes('segurança')) cat = 'seguranca';
+      else if (msgLow.includes('alarme') || msgLow.includes('sensor') || msgLow.includes('seguranÃ§a')) cat = 'seguranca';
 
       // Item para o card do dashboard
       if (activityLog) {
@@ -2041,13 +3225,13 @@
         `;
         activityLog.prepend(li);
 
-        // Manter o card de histórico do dashboard compacto (máximo 4 eventos mais recentes)
+        // Manter o card de histÃ³rico do dashboard compacto (mÃ¡ximo 4 eventos mais recentes)
         while (activityLog.children.length > 4) {
           activityLog.removeChild(activityLog.lastElementChild);
         }
       }
 
-      // Item para o modal de histórico completo
+      // Item para o modal de histÃ³rico completo
       if (fullHistoryLog) {
         const fullLi = document.createElement('li');
         fullLi.className = 'activity-item';
@@ -2087,7 +3271,7 @@
 
     logActivity('Alarme Armado', 'fa-solid fa-shield-halved', 'var(--blue-accent)');
 
-    // FUNÇÕES DE FORMATO E GERENCIAMENTO DE TEMPO
+    // FUNÃ‡Ã•ES DE FORMATO E GERENCIAMENTO DE TEMPO
     function formatTime(totalSeconds) {
       const hrs = Math.floor(totalSeconds / 3600);
       const mins = Math.floor((totalSeconds % 3600) / 60);
@@ -2140,11 +3324,11 @@
     }
 
     function resetAllDeviceTimers() {
-      if (confirm('Deseja zerar a contabilização de tempo de todos os dispositivos?')) {
+      if (confirm('Deseja zerar a contabilizaÃ§Ã£o de tempo de todos os dispositivos?')) {
         deviceRunTimes = {};
         localStorage.removeItem('domus_device_times');
 
-        // Atualiza a visualização de todos
+        // Atualiza a visualizaÃ§Ã£o de todos
         document.querySelectorAll('.light-switch').forEach(sw => {
           const energyId = sw.getAttribute('data-energy-id');
           updateSingleDeviceTimerDisplay(energyId, sw.checked, 'light');
@@ -2159,12 +3343,16 @@
       }
     }
 
-    // CICLO DE CONTABILIZAÇÃO DE TEMPO (A CADA 1 SEGUNDO)
+    // CICLO DE CONTABILIZAÃ‡ÃƒO DE TEMPO (A CADA 1 SEGUNDO)
     setInterval(() => {
       let hasRunningDevice = false;
 
-      // Incrementa tempo para lâmpadas ligadas e contabiliza tempo contínuo real
-      document.querySelectorAll('.light-switch:checked').forEach(sw => {
+      // Verifica lÃ¢mpadas ligadas
+      const activeLightSwitches = document.querySelectorAll('.light-switch:checked');
+      const hasActiveLights = activeLightSwitches.length > 0;
+
+      // Incrementa tempo para lÃ¢mpadas ligadas e contabiliza tempo contÃ­nuo real
+      activeLightSwitches.forEach(sw => {
         const energyId = sw.getAttribute('data-energy-id');
         const iconId = sw.getAttribute('data-icon');
         deviceRunTimes[energyId] = (deviceRunTimes[energyId] || 0) + 1;
@@ -2173,13 +3361,60 @@
 
         continuousLightOnSeconds[iconId] = (continuousLightOnSeconds[iconId] || 0) + 1;
 
-        // Se atingir 5 minutos (300 segundos), dispara o alerta se ainda não disparou
+        // Se atingir 5 minutos (300 segundos), dispara o alerta se ainda nÃ£o disparou
         if (continuousLightOnSeconds[iconId] >= FIVE_MINUTES_SECONDS && !alertedFiveMinutes[iconId]) {
           alertedFiveMinutes[iconId] = true;
           const deviceName = sw.getAttribute('data-name');
           triggerFiveMinuteLightAlert(deviceName, iconId);
         }
       });
+
+      // Se houver qualquer lÃ¢mpada ligada, o tempo total de iluminaÃ§Ã£o avanÃ§a em tempo real
+      // Quando todas forem desligadas, o cronÃ´metro PAUSA mantendo o tempo acumulado
+      if (hasActiveLights) {
+        lightingOperationalSeconds++;
+        localStorage.setItem('domus_lighting_runtime', lightingOperationalSeconds);
+      }
+
+      // Atualiza o display do KPI de Tempo de Funcionamento na Aba de IluminaÃ§Ã£o
+      const kpiRuntime = document.getElementById('lighting-kpi-runtime');
+      if (kpiRuntime) {
+        const hrs = Math.floor(lightingOperationalSeconds / 3600);
+        const mins = Math.floor((lightingOperationalSeconds % 3600) / 60);
+        const secs = lightingOperationalSeconds % 60;
+        if (hrs > 0) {
+          kpiRuntime.innerText = `${hrs}h ${mins}min`;
+        } else if (mins > 0) {
+          kpiRuntime.innerText = `${mins}min ${secs}s`;
+        } else {
+          kpiRuntime.innerText = `${secs}s`;
+        }
+      }
+
+      // Se o modal de lÃ¢mpada estiver aberto, atualiza o tempo da lÃ¢mpada individual em tempo real
+      if (currentModalBulbId && lightingDevices[currentModalBulbId]) {
+        const dev = lightingDevices[currentModalBulbId];
+        const secondsActive = deviceRunTimes[dev.energyId] || 0;
+        const hrsM = Math.floor(secondsActive / 3600);
+        const minsM = Math.floor((secondsActive % 3600) / 60);
+        const secsM = secondsActive % 60;
+        const rtToday = document.getElementById('modal-runtime-today');
+        if (rtToday) {
+          if (hrsM > 0) {
+            rtToday.innerText = `${hrsM}h ${minsM}min`;
+          } else if (minsM > 0) {
+            rtToday.innerText = `${minsM}min ${secsM}s`;
+          } else {
+            rtToday.innerText = `${secsM}s`;
+          }
+        }
+        const kwhCalc = (((dev.power * secondsActive) / 3600) / 1000).toFixed(2);
+        const costCalc = (parseFloat(kwhCalc) * 0.75).toFixed(2);
+        const kwhEl = document.getElementById('modal-consumption-kwh');
+        const costEl = document.getElementById('modal-consumption-cost');
+        if (kwhEl) kwhEl.innerText = `${kwhCalc.replace('.', ',')} kWh`;
+        if (costEl) costEl.innerText = `R$ ${costCalc.replace('.', ',')}`;
+      }
 
       // Incrementa tempo para ares-condicionados ligados
       document.querySelectorAll('.ac-switch:checked').forEach(sw => {
@@ -2194,11 +3429,11 @@
         localStorage.setItem('domus_device_times', JSON.stringify(deviceRunTimes));
       }
 
-      // Atualiza o contador e mensagem de tempo real do card de inteligência adaptativa
+      // Atualiza o contador e mensagem de tempo real do card de inteligÃªncia adaptativa
       updateLightingAdaptiveAlert();
     }, 1000);
 
-    // SISTEMA DE NOTIFICAÇÕES FLUTUANTES (TOASTS)
+    // SISTEMA DE NOTIFICAÃ‡Ã•ES FLUTUANTES (TOASTS)
     function closeToastElement(btn, situationId) {
       const toast = btn ? btn.closest('.toast-card') : null;
       if (toast) {
@@ -2223,7 +3458,7 @@
       if (typeof optionsOrTitle === 'object' && optionsOrTitle !== null) {
         id = optionsOrTitle.id || `toast_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
         type = optionsOrTitle.type || 'suggestion';
-        title = (optionsOrTitle.title && optionsOrTitle.title !== 'undefined') ? optionsOrTitle.title : 'Notificação DOMUS';
+        title = (optionsOrTitle.title && optionsOrTitle.title !== 'undefined') ? optionsOrTitle.title : 'NotificaÃ§Ã£o DOMUS';
         icon = optionsOrTitle.icon || 'fa-solid fa-lightbulb';
         message = optionsOrTitle.message || optionsOrTitle.toastMsg || '';
         if (message === 'undefined') message = '';
@@ -2234,7 +3469,7 @@
       } else {
         id = `toast_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
         type = 'suggestion';
-        title = (optionsOrTitle && optionsOrTitle !== 'undefined') ? optionsOrTitle : 'Notificação DOMUS';
+        title = (optionsOrTitle && optionsOrTitle !== 'undefined') ? optionsOrTitle : 'NotificaÃ§Ã£o DOMUS';
         message = (messageArg && messageArg !== 'undefined') ? messageArg : '';
         icon = iconArg || 'fa-solid fa-lightbulb';
         badgeText = '';
@@ -2278,10 +3513,10 @@
         <div class="toast-header">
           <div class="toast-title-group">
             <i class="${icon || visual.defaultIcon}" style="${customColor ? `color: ${customColor} !important;` : ''}"></i>
-            <span class="toast-title">${title || 'Notificação DOMUS'}</span>
+            <span class="toast-title">${title || 'NotificaÃ§Ã£o DOMUS'}</span>
           </div>
           <span style="font-size: 0.7rem; color: var(--text-muted);">${timeNow}</span>
-          <button type="button" class="toast-close" onclick="closeToastElement(this, '${id}')" title="Fechar notificação">&times;</button>
+          <button type="button" class="toast-close" onclick="closeToastElement(this, '${id}')" title="Fechar notificaÃ§Ã£o">&times;</button>
         </div>
         ${badgeText ? `<span class="toast-badge ${visual.badge}">${badgeText}</span>` : ''}
         ${(message && message !== 'undefined') ? `<div class="toast-body">${message}</div>` : ''}
@@ -2292,7 +3527,7 @@
 
       setTimeout(() => { toast.classList.add('show'); }, 40);
 
-      // Auto-remover notificações sem botões de ação após 5 segundos
+      // Auto-remover notificaÃ§Ãµes sem botÃµes de aÃ§Ã£o apÃ³s 5 segundos
       if (!primaryBtn && !secondaryBtn) {
         setTimeout(() => {
           if (toast && toast.parentNode) {
@@ -2323,7 +3558,7 @@
       }
     }
 
-    // REGISTRO E RENDERIZAÇÃO DE SUGESTÕES DINÂMICAS NA ABA DE INTELIGÊNCIA
+    // REGISTRO E RENDERIZAÃ‡ÃƒO DE SUGESTÃ•ES DINÃ‚MICAS NA ABA DE INTELIGÃŠNCIA
     function registerAdaptiveSuggestionInUI(sug) {
       const container = document.getElementById('adaptive-suggestions-container');
       if (!container) return;
@@ -2332,7 +3567,7 @@
       if (existingCard) return;
 
       const emptyMsg = container.querySelector('div');
-      if (emptyMsg && emptyMsg.innerText.includes('Nenhuma nova sugestão')) {
+      if (emptyMsg && emptyMsg.innerText.includes('Nenhuma nova sugestÃ£o')) {
         emptyMsg.remove();
       }
 
@@ -2342,15 +3577,15 @@
       card.innerHTML = `
         <div class="ai-card-header">
           <span class="ai-tag tag-energy"><i class="${sug.icon}"></i> ${sug.badgeText}</span>
-          <span class="ai-time">Análise Recente</span>
+          <span class="ai-time">AnÃ¡lise Recente</span>
         </div>
         <h4>${sug.title}</h4>
         <p>${sug.adaptMsg}</p>
         <div class="ai-actions">
           <button type="button" class="btn-ai-action btn-ai-primary" onclick="convertDynamicSuggestionToAutomation('${sug.autoTitle}', '${sug.autoTrigger}', '${sug.autoAction}', '${sug.id}')">
-            <i class="fa-solid fa-robot"></i> Criar Automação
+            <i class="fa-solid fa-robot"></i> Criar AutomaÃ§Ã£o
           </button>
-          <button type="button" class="btn-ai-action btn-ai-secondary" onclick="dismissSituation('${sug.id}')">Ignorar Sugestão</button>
+          <button type="button" class="btn-ai-action btn-ai-secondary" onclick="dismissSituation('${sug.id}')">Ignorar SugestÃ£o</button>
         </div>
       `;
       container.prepend(card);
@@ -2366,7 +3601,7 @@
         container.innerHTML = `
           <div style="text-align: center; padding: 25px; color: var(--text-muted); font-size: 0.85rem;">
             <i class="fa-solid fa-circle-check fa-2x" style="color: var(--blue-accent); margin-bottom: 8px; display: block;"></i>
-            Nenhuma nova sugestão pendente. Seu DOMUS está totalmente otimizado!
+            Nenhuma nova sugestÃ£o pendente. Seu DOMUS estÃ¡ totalmente otimizado!
           </div>`;
       }
       updateDashboardAdaptiveUI();
@@ -2387,7 +3622,7 @@
         const container = document.getElementById('adaptive-suggestions-container');
         const firstCard = container ? container.querySelector('.ai-card') : null;
         if (firstCard) {
-          const title = firstCard.querySelector('h4')?.innerText || 'Sugestão do DOMUS pendente';
+          const title = firstCard.querySelector('h4')?.innerText || 'SugestÃ£o do DOMUS pendente';
           const p = firstCard.querySelector('p')?.innerText || '';
           if (msgEl) msgEl.innerText = p || title;
           emptyBox.style.display = 'none';
@@ -2411,7 +3646,7 @@
       resolveSituation(situationId);
     }
 
-    // DISPARADOR INDIVIDUAL DE NOTIFICAÇÃO DE ILUMINAÇÃO (SUPORTA MÚLTIPLAS LÂMPADAS)
+    // DISPARADOR INDIVIDUAL DE NOTIFICAÃ‡ÃƒO DE ILUMINAÃ‡ÃƒO (SUPORTA MÃšLTIPLAS LÃ‚MPADAS)
     function triggerFiveMinuteLightAlert(deviceName, iconId) {
       const situationId = `sit_light_${iconId}`;
 
@@ -2428,15 +3663,15 @@
         id: situationId,
         type: 'suggestion',
         icon: 'fa-solid fa-lightbulb',
-        title: `💡 Desperdício: ${deviceName}`,
-        badgeText: 'Sugestão do DOMUS',
-        toastMsg: `A <strong>${deviceName}</strong> permaneceu acesa por mais de ${timeStr} contínuos sem movimento no ambiente.`,
+        title: `ðŸ’¡ DesperdÃ­cio: ${deviceName}`,
+        badgeText: 'SugestÃ£o do DOMUS',
+        toastMsg: `A <strong>${deviceName}</strong> permaneceu acesa por mais de ${timeStr} contÃ­nuos sem movimento no ambiente.`,
         adaptMsg: `O DOMUS identificou que a ${deviceName} permaneceu acesa por mais de ${timeStr} seguidos.`,
-        actionLabel: 'Desligar lâmpada',
+        actionLabel: 'Desligar lÃ¢mpada',
         actionCode: `turnOffSpecificDevice('${iconId}'); resolveSituation('${situationId}');`,
         autoTitle: `Desligar ${deviceName} Sem Movimento`,
         autoTrigger: 'Sem Movimento (5min)',
-        autoAction: 'Apagar Iluminação'
+        autoAction: 'Apagar IluminaÃ§Ã£o'
       };
 
       showToastNotification({
@@ -2462,7 +3697,7 @@
       }
     }
 
-    // AUTOMAÇÕES
+    // AUTOMAÃ‡Ã•ES
     function updateAutomationsUI() {
       const container = document.getElementById('automations-cards-container');
       if (!container) return;
@@ -2487,10 +3722,10 @@
           </div>
           <div class="automation-details">
             <div><span class="auto-label">QUANDO:</span> ${auto.trigger}</div>
-            <div><span class="auto-label">ENTÃO:</span> ${auto.action}</div>
+            <div><span class="auto-label">ENTÃƒO:</span> ${auto.action}</div>
           </div>
           <div class="automation-actions">
-            <button type="button" class="btn-remove-resident" onclick="deleteAutomation(${idx})" title="Excluir Automação"><i class="fa-solid fa-trash-can"></i> Excluir</button>
+            <button type="button" class="btn-remove-resident" onclick="deleteAutomation(${idx})" title="Excluir AutomaÃ§Ã£o"><i class="fa-solid fa-trash-can"></i> Excluir</button>
           </div>
         `;
         container.appendChild(card);
@@ -2506,17 +3741,17 @@
       if (!automationsData[index]) return;
       automationsData[index].active = isActive;
       saveAutomationsToStorage();
-      const autoTitle = automationsData[index].title || 'Automação';
-      const msg = `Automação "${autoTitle}" ${isActive ? 'ativada' : 'pausada'}.`;
+      const autoTitle = automationsData[index].title || 'AutomaÃ§Ã£o';
+      const msg = `AutomaÃ§Ã£o "${autoTitle}" ${isActive ? 'ativada' : 'pausada'}.`;
       logActivity(msg, 'fa-solid fa-robot', 'var(--blue-accent)');
-      showToastNotification('⚡ Automação Inteligente', msg, 'fa-solid fa-robot', isActive ? 'var(--orange-bright)' : 'var(--blue-accent)');
+      showToastNotification('âš¡ AutomaÃ§Ã£o Inteligente', msg, 'fa-solid fa-robot', isActive ? 'var(--orange-bright)' : 'var(--blue-accent)');
     }
 
     function deleteAutomation(index) {
-      if (confirm(`Deseja remover a automação "${automationsData[index].title}"?`)) {
+      if (confirm(`Deseja remover a automaÃ§Ã£o "${automationsData[index].title}"?`)) {
         const removed = automationsData.splice(index, 1);
         saveAutomationsToStorage();
-        logActivity(`Automação "${removed[0].title}" removida`, 'fa-solid fa-trash-can', 'var(--orange-bright)');
+        logActivity(`AutomaÃ§Ã£o "${removed[0].title}" removida`, 'fa-solid fa-trash-can', 'var(--orange-bright)');
       }
     }
 
@@ -2554,22 +3789,22 @@
       automationsData.push(newAuto);
       saveAutomationsToStorage();
       closeAutomationModal();
-      logActivity(`Nova Automação Criada: ${title}`, 'fa-solid fa-plus', 'var(--blue-accent)');
+      logActivity(`Nova AutomaÃ§Ã£o Criada: ${title}`, 'fa-solid fa-plus', 'var(--blue-accent)');
 
       document.querySelector('[data-tab="tab-automacoes"]').click();
     }
 
-    // CONTROLE DE ILUMINAÇÃO & TEMPO
+    // CONTROLE DE ILUMINAÃ‡ÃƒO & TEMPO
     const lightSwitches = document.querySelectorAll('.light-switch');
     const lightsStatusText = document.getElementById('lights-count-status');
 
-    // BASE DE DADOS DOS DISPOSITIVOS DE ILUMINAÇÃO
+    // BASE DE DADOS DOS DISPOSITIVOS DE ILUMINAÃ‡ÃƒO
     const lightingDevices = {
       'bulb-icon-1': {
         id: 'bulb-icon-1',
         name: 'Luz da Sala',
         room: 'Sala de Estar',
-        type: 'Lâmpada Principal',
+        type: 'LÃ¢mpada Principal',
         power: 12,
         energyId: 'energy-sala',
         brightness: 72,
@@ -2581,11 +3816,11 @@
         scheduleOff: '23:45',
         hasMotionSensor: true,
         motionActive: true,
-        lastMotion: 'há 2 min',
+        lastMotion: 'hÃ¡ 2 min',
         history: [
-          { time: '18:15', event: 'Lâmpada ligada' },
+          { time: '18:15', event: 'LÃ¢mpada ligada' },
           { time: '17:30', event: 'Brilho ajustado para 72%' },
-          { time: '15:20', event: 'Lâmpada desligada' }
+          { time: '15:20', event: 'LÃ¢mpada desligada' }
         ]
       },
       'bulb-icon-2': {
@@ -2606,15 +3841,15 @@
         motionActive: false,
         lastMotion: 'Sem sensor',
         history: [
-          { time: '19:10', event: 'Lâmpada ligada' },
-          { time: '14:05', event: 'Lâmpada desligada' }
+          { time: '19:10', event: 'LÃ¢mpada ligada' },
+          { time: '14:05', event: 'LÃ¢mpada desligada' }
         ]
       },
       'bulb-icon-3': {
         id: 'bulb-icon-3',
         name: 'Luz do Quarto Principal',
         room: 'Quarto Principal',
-        type: 'Lâmpada Inteligente',
+        type: 'LÃ¢mpada Inteligente',
         power: 9,
         energyId: 'energy-quarto-p',
         brightness: 60,
@@ -2629,14 +3864,14 @@
         lastMotion: 'Sem sensor',
         history: [
           { time: '21:00', event: 'Cena Noite ativada' },
-          { time: '07:15', event: 'Lâmpada desligada' }
+          { time: '07:15', event: 'LÃ¢mpada desligada' }
         ]
       },
       'bulb-icon-4': {
         id: 'bulb-icon-4',
         name: 'Luz do Quarto 2',
         room: 'Quarto 2',
-        type: 'Lâmpada Inteligente',
+        type: 'LÃ¢mpada Inteligente',
         power: 9,
         energyId: 'energy-quarto-2',
         brightness: 50,
@@ -2650,7 +3885,7 @@
         motionActive: false,
         lastMotion: 'Sem sensor',
         history: [
-          { time: '16:45', event: 'Lâmpada ligada' },
+          { time: '16:45', event: 'LÃ¢mpada ligada' },
           { time: '18:00', event: 'Brilho ajustado para 50%' }
         ]
       },
@@ -2670,17 +3905,17 @@
         scheduleOff: '00:00',
         hasMotionSensor: true,
         motionActive: true,
-        lastMotion: 'há 12 min',
+        lastMotion: 'hÃ¡ 12 min',
         history: [
-          { time: '18:15', event: 'Lâmpada ligada' },
-          { time: '18:20', event: 'Lâmpada desligada' }
+          { time: '18:15', event: 'LÃ¢mpada ligada' },
+          { time: '18:20', event: 'LÃ¢mpada desligada' }
         ]
       },
       'bulb-icon-6': {
         id: 'bulb-icon-6',
         name: 'Luz da Garagem',
         room: 'Garagem',
-        type: 'Lâmpada Tubular LED',
+        type: 'LÃ¢mpada Tubular LED',
         power: 18,
         energyId: 'energy-garagem',
         brightness: 100,
@@ -2692,17 +3927,17 @@
         scheduleOff: '23:00',
         hasMotionSensor: true,
         motionActive: true,
-        lastMotion: 'há 1 min',
+        lastMotion: 'hÃ¡ 1 min',
         history: [
           { time: '18:02', event: 'Movimento detectado' },
-          { time: '18:02', event: 'Lâmpada ligada' }
+          { time: '18:02', event: 'LÃ¢mpada ligada' }
         ]
       },
       'bulb-icon-7': {
         id: 'bulb-icon-7',
         name: 'Refletor do Quintal',
         room: 'Refletor do Quintal',
-        type: 'Refletor de Alta Potência',
+        type: 'Refletor de Alta PotÃªncia',
         power: 50,
         energyId: 'energy-quintal',
         brightness: 100,
@@ -2714,7 +3949,7 @@
         scheduleOff: '06:00',
         hasMotionSensor: true,
         motionActive: true,
-        lastMotion: 'há 45 min',
+        lastMotion: 'hÃ¡ 45 min',
         history: [
           { time: '19:00', event: 'Refletor ligado' },
           { time: '06:00', event: 'Refletor desligado' }
@@ -2751,7 +3986,7 @@
           if (iconBox) iconBox.classList.add('active-glow');
           if (roomCard) roomCard.classList.add('card-light-on');
           if (roomBadge) {
-            roomBadge.innerText = '🟢 1/1 ligada';
+            roomBadge.innerText = 'ðŸŸ¢ 1/1 ligada';
             roomBadge.classList.add('badge-on');
           }
 
@@ -2764,7 +3999,7 @@
           // Atualiza o estado da aba de energia
           updateSingleDeviceTimerDisplay(energyId, true, 'light');
 
-          // Inicia o cronômetro individual de 5 minutos para esta lâmpada
+          // Inicia o cronÃ´metro individual de 5 minutos para esta lÃ¢mpada
           if (!lightTimers[iconId]) {
             lightTimers[iconId] = setTimeout(() => {
               triggerFiveMinuteLightAlert(deviceName, iconId);
@@ -2774,7 +4009,7 @@
           if (iconBox) iconBox.classList.remove('active-glow');
           if (roomCard) roomCard.classList.remove('card-light-on');
           if (roomBadge) {
-            roomBadge.innerText = '⚪ 0/1 ligada';
+            roomBadge.innerText = 'âšª 0/1 ligada';
             roomBadge.classList.remove('badge-on');
           }
           if (energyLabel) {
@@ -2785,7 +4020,7 @@
           // Atualiza o estado da aba de energia
           updateSingleDeviceTimerDisplay(energyId, false, 'light');
 
-          // Cancela o cronômetro individual desta lâmpada ao desligá-la
+          // Cancela o cronÃ´metro individual desta lÃ¢mpada ao desligÃ¡-la
           if (lightTimers[iconId]) {
             clearTimeout(lightTimers[iconId]);
             delete lightTimers[iconId];
@@ -2794,7 +4029,7 @@
           delete alertedFiveMinutes[iconId];
           delete dismissedLightingSituations[iconId];
 
-          // Limpa a situação pendente
+          // Limpa a situaÃ§Ã£o pendente
           const sitId = `sit_light_${iconId}`;
           if (handledSituations[sitId]) {
             delete handledSituations[sitId];
@@ -2804,24 +4039,24 @@
           removeAdaptiveSuggestionCard(sitId);
         }
 
-        // Atualiza a etiqueta de especificações do ambiente
+        // Atualiza a etiqueta de especificaÃ§Ãµes do ambiente
         if (specBadge && dev) {
           if (iconId === 'bulb-icon-7') {
-            specBadge.innerText = '100% · Externa';
+            specBadge.innerText = '100% Â· Externa';
           } else {
-            specBadge.innerText = `${dev.brightness || 75}% · ${dev.colorTemp || 3000}K`;
+            specBadge.innerText = `${dev.brightness || 75}% Â· ${dev.colorTemp || 3000}K`;
           }
         }
       });
 
-      // Salva os estados atuais para persistir apenas se o usuário tiver deixado ligado/desligado
+      // Salva os estados atuais para persistir apenas se o usuÃ¡rio tiver deixado ligado/desligado
       saveLightStatesToStorage();
 
-      // 1. Atualiza cabeçalho e contadores
+      // 1. Atualiza cabeÃ§alho e contadores
       const offCount = allSwitches.length - activeCount;
       const headerStats = document.getElementById('lighting-header-stats');
       if (headerStats) {
-        headerStats.innerText = `7 ambientes · ${activeCount} ${activeCount === 1 ? 'lâmpada ligada' : 'lâmpadas ligadas'} · ${offCount} ${offCount === 1 ? 'desligada' : 'desligadas'}`;
+        headerStats.innerText = `7 ambientes Â· ${activeCount} ${activeCount === 1 ? 'lÃ¢mpada ligada' : 'lÃ¢mpadas ligadas'} Â· ${offCount} ${offCount === 1 ? 'desligada' : 'desligadas'}`;
       }
 
       // 2. Atualiza KPI cards
@@ -2835,17 +4070,25 @@
       const kpiWatts = document.getElementById('lighting-kpi-watts');
       if (kpiWatts) kpiWatts.innerText = `${totalWatts} W`;
 
-      // Calcula o tempo de funcionamento acumulado da iluminação
-      let totalLightingSeconds = 0;
-      Object.keys(lightingDevices).forEach(id => {
-        const eid = lightingDevices[id].energyId;
-        totalLightingSeconds += (deviceRunTimes[eid] || 0);
-      });
+      // Atualiza o tempo de funcionamento funcional da iluminaÃ§Ã£o
       const kpiRuntime = document.getElementById('lighting-kpi-runtime');
       if (kpiRuntime) {
-        const hrs = Math.floor(totalLightingSeconds / 3600);
-        const mins = Math.floor((totalLightingSeconds % 3600) / 60);
-        kpiRuntime.innerText = `${hrs}h ${mins}min`;
+        const hrs = Math.floor(lightingOperationalSeconds / 3600);
+        const mins = Math.floor((lightingOperationalSeconds % 3600) / 60);
+        const secs = lightingOperationalSeconds % 60;
+        if (hrs > 0) {
+          kpiRuntime.innerText = `${hrs}h ${mins}min`;
+        } else if (mins > 0) {
+          kpiRuntime.innerText = `${mins}min ${secs}s`;
+        } else {
+          kpiRuntime.innerText = `${secs}s`;
+        }
+      }
+
+      // Sincroniza o preenchimento do trilho do slider de brilho geral
+      const masterSlider = document.getElementById('master-brightness-slider');
+      if (masterSlider) {
+        updateSliderTrackFill(masterSlider, 'var(--orange-bright)');
       }
 
       // Sincroniza textos do Dashboard
@@ -2862,24 +4105,24 @@
         syncModalStateWithBulb(currentModalBulbId);
       }
 
-      // Alerta de inteligência adaptativa na iluminação
+      // Alerta de inteligÃªncia adaptativa na iluminaÃ§Ã£o
       updateLightingAdaptiveAlert();
 
-      // Log de atividade se acionado pelo usuário
+      // Log de atividade se acionado pelo usuÃ¡rio
       if (event && event.target) {
         const name = event.target.getAttribute('data-name');
         const state = event.target.checked ? 'Ligada' : 'Desligada';
         logActivity(`${name} ${state}`, 'fa-solid fa-lightbulb', 'var(--orange-bright)');
 
         if (event.isTrusted) {
-          showToastNotification('💡 Iluminação', `${name} foi ${state.toLowerCase()}.`, 'fa-solid fa-lightbulb', event.target.checked ? 'var(--orange-bright)' : 'var(--blue-accent)');
+          showToastNotification('ðŸ’¡ IluminaÃ§Ã£o', `${name} foi ${state.toLowerCase()}.`, 'fa-solid fa-lightbulb', event.target.checked ? 'var(--orange-bright)' : 'var(--blue-accent)');
         }
 
         const iconId = event.target.getAttribute('data-icon');
         if (lightingDevices[iconId]) {
           const now = new Date();
           const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-          lightingDevices[iconId].history.unshift({ time: timeStr, event: `Lâmpada ${state.toLowerCase()}` });
+          lightingDevices[iconId].history.unshift({ time: timeStr, event: `LÃ¢mpada ${state.toLowerCase()}` });
           if (lightingDevices[iconId].history.length > 8) lightingDevices[iconId].history.pop();
         }
       }
@@ -2892,7 +4135,7 @@
           sw.dispatchEvent(new Event('change'));
         }
       });
-      showToastNotification('Iluminação', 'Todas as lâmpadas foram ligadas.', 'fa-solid fa-power-off', 'var(--orange-bright)');
+      showToastNotification('IluminaÃ§Ã£o', 'Todas as lÃ¢mpadas foram ligadas.', 'fa-solid fa-power-off', 'var(--orange-bright)');
     }
 
     function turnOffAllLights() {
@@ -2902,7 +4145,7 @@
           sw.dispatchEvent(new Event('change'));
         }
       });
-      showToastNotification('Iluminação', 'Todas as lâmpadas foram desligadas.', 'fa-regular fa-lightbulb', 'var(--blue-accent)');
+      showToastNotification('IluminaÃ§Ã£o', 'Todas as lÃ¢mpadas foram desligadas.', 'fa-regular fa-lightbulb', 'var(--blue-accent)');
     }
 
     function setMasterBrightness(val) {
@@ -2914,7 +4157,7 @@
         if (id !== 'bulb-icon-6' && id !== 'bulb-icon-7') {
           lightingDevices[id].brightness = lightingMasterBrightness;
           const spec = document.getElementById(`spec-${id}`);
-          if (spec) spec.innerText = `${val}% · ${lightingDevices[id].colorTemp}K`;
+          if (spec) spec.innerText = `${val}% Â· ${lightingDevices[id].colorTemp}K`;
         }
       });
 
@@ -3017,13 +4260,29 @@
 
       const brSlider = document.getElementById('modal-brightness-slider');
       const brDisp = document.getElementById('modal-brightness-display');
-      if (brSlider) brSlider.value = dev.brightness;
+      if (brSlider) {
+        brSlider.value = dev.brightness;
+        updateSliderTrackFill(brSlider, 'var(--orange-bright)');
+      }
       if (brDisp) brDisp.innerText = `${dev.brightness}%`;
 
       const tempSlider = document.getElementById('modal-temp-slider');
       const tempDisp = document.getElementById('modal-temp-display');
-      if (tempSlider) tempSlider.value = dev.colorTemp;
+      if (tempSlider) {
+        tempSlider.value = dev.colorTemp;
+        updateSliderTrackFill(tempSlider, 'var(--blue-accent)', 2700, 6500);
+      }
       if (tempDisp) tempDisp.innerText = `${dev.colorTemp}K`;
+
+      // Atualiza botÃµes pills de temperatura
+      document.querySelectorAll('.btn-preset-pill').forEach(btn => {
+        const btnK = parseInt(btn.innerText, 10);
+        if (Math.abs(btnK - dev.colorTemp) < 300) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
 
       const rgbBlock = document.getElementById('modal-rgb-block');
       if (rgbBlock) rgbBlock.style.display = dev.rgbSupported ? 'block' : 'none';
@@ -3034,12 +4293,19 @@
       const secondsActive = deviceRunTimes[dev.energyId] || 0;
       const hrsToday = Math.floor(secondsActive / 3600);
       const minsToday = Math.floor((secondsActive % 3600) / 60);
+      const secsToday = secondsActive % 60;
       const rtToday = document.getElementById('modal-runtime-today');
       if (rtToday) {
-        rtToday.innerText = secondsActive > 0 ? `${hrsToday}h ${minsToday}min` : '3h 42min';
+        if (hrsToday > 0) {
+          rtToday.innerText = `${hrsToday}h ${minsToday}min`;
+        } else if (minsToday > 0) {
+          rtToday.innerText = `${minsToday}min ${secsToday}s`;
+        } else {
+          rtToday.innerText = `${secsToday}s`;
+        }
       }
 
-      const kwhCalc = (((dev.power * (secondsActive || 13320)) / 3600) / 1000).toFixed(2);
+      const kwhCalc = (((dev.power * (secondsActive || 0)) / 3600) / 1000).toFixed(2);
       const costCalc = (parseFloat(kwhCalc) * 0.75).toFixed(2);
       const kwhEl = document.getElementById('modal-consumption-kwh');
       const costEl = document.getElementById('modal-consumption-cost');
@@ -3051,7 +4317,7 @@
         if (!dev.history || dev.history.length === 0) {
           histEl.innerHTML = '<li style="color: var(--text-muted);">Nenhum evento registrado</li>';
         } else {
-          histEl.innerHTML = dev.history.map(h => `<li><i class="fa-solid fa-clock" style="color: var(--blue-accent);"></i> <strong>${h.time}</strong> — 💡 ${h.event}</li>`).join('');
+          histEl.innerHTML = dev.history.map(h => `<li><i class="fa-solid fa-clock" style="color: var(--blue-accent);"></i> <strong>${h.time}</strong> â€” ðŸ’¡ ${h.event}</li>`).join('');
         }
       }
 
@@ -3103,13 +4369,16 @@
       const spec = document.getElementById(`spec-${currentModalBulbId}`);
       if (spec) {
         if (currentModalBulbId === 'bulb-icon-7') {
-          spec.innerText = `${b}% · Externa`;
+          spec.innerText = `${b}% Â· Externa`;
         } else {
-          spec.innerText = `${b}% · ${lightingDevices[currentModalBulbId].colorTemp}K`;
+          spec.innerText = `${b}% Â· ${lightingDevices[currentModalBulbId].colorTemp}K`;
         }
       }
 
-      // Atualiza visualmente o glow do ícone no modal
+      const brSlider = document.getElementById('modal-brightness-slider');
+      if (brSlider) updateSliderTrackFill(brSlider, 'var(--orange-bright)');
+
+      // Atualiza visualmente o glow do Ã­cone no modal
       const modalIcon = document.getElementById('modal-light-icon-box');
       if (modalIcon) {
         modalIcon.style.filter = `drop-shadow(0 0 ${Math.max(4, b / 6)}px var(--orange-bright))`;
@@ -3127,13 +4396,16 @@
       const spec = document.getElementById(`spec-${currentModalBulbId}`);
       if (spec) {
         if (currentModalBulbId === 'bulb-icon-7') {
-          spec.innerText = `${lightingDevices[currentModalBulbId].brightness}% · Externa`;
+          spec.innerText = `${lightingDevices[currentModalBulbId].brightness}% Â· Externa`;
         } else {
-          spec.innerText = `${lightingDevices[currentModalBulbId].brightness}% · ${k}K`;
+          spec.innerText = `${lightingDevices[currentModalBulbId].brightness}% Â· ${k}K`;
         }
       }
 
-      // Destaca botão pill ativo correspondente
+      const tempSlider = document.getElementById('modal-temp-slider');
+      if (tempSlider) updateSliderTrackFill(tempSlider, 'var(--blue-accent)', 2700, 6500);
+
+      // Destaca botÃ£o pill ativo correspondente
       document.querySelectorAll('.btn-preset-pill').forEach(btn => {
         const btnK = parseInt(btn.innerText, 10);
         if (Math.abs(btnK - k) < 300) {
@@ -3143,7 +4415,7 @@
         }
       });
 
-      // Reflete a temperatura de cor no ícone da lâmpada no modal
+      // Reflete a temperatura de cor no Ã­cone da lÃ¢mpada no modal
       let tempColor = '#ff9f43';
       if (k < 3300) {
         tempColor = '#ff9500';
@@ -3160,18 +4432,21 @@
 
     function setModalTempPreset(k) {
       const slider = document.getElementById('modal-temp-slider');
-      if (slider) slider.value = k;
+      if (slider) {
+        slider.value = k;
+        updateSliderTrackFill(slider, 'var(--blue-accent)', 2700, 6500);
+      }
       onModalTempChange(k);
     }
 
     function setModalColor(hex) {
       if (!currentModalBulbId || !lightingDevices[currentModalBulbId]) return;
       lightingDevices[currentModalBulbId].currentColor = hex;
-      showToastNotification('Cor Alterada', `Cor RGB da lâmpada alterada para ${hex}.`, 'fa-solid fa-palette', hex);
+      showToastNotification('Cor Alterada', `Cor RGB da lÃ¢mpada alterada para ${hex}.`, 'fa-solid fa-palette', hex);
     }
 
     function saveLightSchedule() {
-      showToastNotification('Agendamento', 'Agendamento de iluminação salvo com sucesso!', 'fa-solid fa-clock', 'var(--blue-accent)');
+      showToastNotification('Agendamento', 'Agendamento de iluminaÃ§Ã£o salvo com sucesso!', 'fa-solid fa-clock', 'var(--blue-accent)');
       closeLightDetailModal();
     }
 
@@ -3203,7 +4478,7 @@
         let timeStr = hrs > 0 ? `${hrs}h ${mins}min` : `${mins}min`;
 
         if (msgSpan) {
-          msgSpan.innerText = `A iluminação da ${longestAlertBulb.name} está ligada há ${timeStr} e não foi detectado movimento recentemente.`;
+          msgSpan.innerText = `A iluminaÃ§Ã£o da ${longestAlertBulb.name} estÃ¡ ligada hÃ¡ ${timeStr} e nÃ£o foi detectado movimento recentemente.`;
         }
 
         if (alertBox) {
@@ -3232,7 +4507,7 @@
       const emptyBox = document.getElementById('lighting-adaptive-empty');
       if (alertBox) alertBox.style.display = 'none';
       if (emptyBox) emptyBox.style.display = 'flex';
-      showToastNotification('Sugestão', 'Sugestão dispensada.', 'fa-solid fa-check', 'var(--blue-accent)');
+      showToastNotification('SugestÃ£o', 'SugestÃ£o dispensada.', 'fa-solid fa-check', 'var(--blue-accent)');
     }
 
     function toggleLightingAutomation(autoId, isChecked) {
@@ -3240,12 +4515,12 @@
         'auto_anoitecer': 'Ao anoitecer',
         'auto_movimento': 'Ao detectar movimento',
         'auto_chegar': 'Ao chegar',
-        'auto_dormir': 'Horário de dormir',
-        'auto_programado': 'Horário programado'
+        'auto_dormir': 'HorÃ¡rio de dormir',
+        'auto_programado': 'HorÃ¡rio programado'
       };
-      const autoName = titles[autoId] || 'Automação';
-      const msg = isChecked ? `Automação "${autoName}" ativada.` : `Automação "${autoName}" pausada.`;
-      showToastNotification('⚡ Automação Inteligente', msg, 'fa-solid fa-bolt', isChecked ? 'var(--orange-bright)' : 'var(--blue-accent)');
+      const autoName = titles[autoId] || 'AutomaÃ§Ã£o';
+      const msg = isChecked ? `AutomaÃ§Ã£o "${autoName}" ativada.` : `AutomaÃ§Ã£o "${autoName}" pausada.`;
+      showToastNotification('âš¡ AutomaÃ§Ã£o Inteligente', msg, 'fa-solid fa-bolt', isChecked ? 'var(--orange-bright)' : 'var(--blue-accent)');
       logActivity(msg, 'fa-solid fa-bolt', isChecked ? 'var(--orange-bright)' : 'var(--blue-accent)');
     }
 
@@ -3270,7 +4545,7 @@
         document.getElementById('chart-lbl-5').innerText = '23:59';
       } else if (period === 'semana') {
         if (totalEl) totalEl.innerText = '4,82 kWh';
-        if (peakEl) peakEl.innerText = 'Sábado';
+        if (peakEl) peakEl.innerText = 'SÃ¡bado';
         if (areaPath) areaPath.setAttribute('d', 'M 60,155 L 60,120 Q 110,105 160,115 T 260,95 T 360,50 T 460,75 L 460,155 Z');
         if (linePath) linePath.setAttribute('d', 'M 60,120 Q 110,105 160,115 T 260,95 T 360,50 T 460,75');
         document.getElementById('chart-lbl-1').innerText = 'Seg';
@@ -3293,7 +4568,7 @@
     
     lightSwitches.forEach(sw => sw.addEventListener('change', updateLightingSystem));
 
-    // CLIMATIZAÇÃO & TEMPO
+    // CLIMATIZAÃ‡ÃƒO & TEMPO
     const acSwitches = document.querySelectorAll('.ac-switch');
     const acStatusText = document.getElementById('ac-count-status');
 
@@ -3329,7 +4604,7 @@
       if (dashIndAc) dashIndAc.innerText = activeCount > 0 ? `${activeCount} ligado${activeCount > 1 ? 's' : ''}` : 'Normal';
       const comfortText = document.getElementById('climate-comfort-text');
       if (comfortText) {
-        comfortText.innerText = activeCount > 0 ? `Climatização ativa (${activeCount} ligado${activeCount > 1 ? 's' : ''})` : 'Conforto térmico normal';
+        comfortText.innerText = activeCount > 0 ? `ClimatizaÃ§Ã£o ativa (${activeCount} ligado${activeCount > 1 ? 's' : ''})` : 'Conforto tÃ©rmico normal';
       }
 
       if (event) {
@@ -3347,7 +4622,7 @@
       let currentTemp = parseInt(tempElement.innerText);
       currentTemp += change;
       if (currentTemp >= 16 && currentTemp <= 30) {
-        tempElement.innerText = `${currentTemp}°C`;
+        tempElement.innerText = `${currentTemp}Â°C`;
       }
     }
 
@@ -3426,7 +4701,7 @@
       });
     }
 
-    // FUNÇÕES DO PERFIL E AÇÕES RÁPIDAS
+    // FUNÃ‡Ã•ES DO PERFIL E AÃ‡Ã•ES RÃPIDAS
     function openEditProfileModal() {
       const modal = document.getElementById('modal-edit-profile');
       if (modal) modal.classList.add('active');
@@ -3456,33 +4731,33 @@
     }
 
     function openChangePasswordAlert() {
-      alert('Segurança DOMUS:\nUm link protegido para redefinição da sua senha de acesso foi enviado com sucesso para o seu e-mail cadastrado.');
-      logActivity('Solicitação de troca de senha realizada', 'fa-solid fa-key', 'var(--orange-bright)');
+      alert('SeguranÃ§a DOMUS:\nUm link protegido para redefiniÃ§Ã£o da sua senha de acesso foi enviado com sucesso para o seu e-mail cadastrado.');
+      logActivity('SolicitaÃ§Ã£o de troca de senha realizada', 'fa-solid fa-key', 'var(--orange-bright)');
     }
 
     function openDevicesModal() {
-      alert('Dispositivos com Acesso Ativo ao DOMUS:\n1. Google Chrome / Windows 11 (Painel Web - Sessão Atual)\n2. DOMUS Mobile App / iPhone 15 Pro (iOS 18) - São Paulo, BR');
+      alert('Dispositivos com Acesso Ativo ao DOMUS:\n1. Google Chrome / Windows 11 (Painel Web - SessÃ£o Atual)\n2. DOMUS Mobile App / iPhone 15 Pro (iOS 18) - SÃ£o Paulo, BR');
       logActivity('Dispositivos conectados inspecionados', 'fa-solid fa-mobile-screen-button', 'var(--blue-accent)');
     }
 
     function clearActivityHistory() {
-      if (confirm('Deseja limpar todo o histórico recente de atividades da sessão?')) {
+      if (confirm('Deseja limpar todo o histÃ³rico recente de atividades da sessÃ£o?')) {
         const log = document.getElementById('activity-log');
         if (log) log.innerHTML = '';
         const fullLog = document.getElementById('full-history-log');
         if (fullLog) fullLog.innerHTML = '';
-        logActivity('Histórico de atividades limpo', 'fa-solid fa-broom', 'var(--blue-accent)');
+        logActivity('HistÃ³rico de atividades limpo', 'fa-solid fa-broom', 'var(--blue-accent)');
       }
     }
 
     function runNetworkDiagnostics() {
-      alert('Relatório de Diagnóstico DOMUS Mesh:\n• Gateway Zigbee/Matter: Online (100% de estabilidade)\n• Sensores de Presença/Abertura: 3/3 operando (Latência: 14ms)\n• Câmeras de Monitoramento: 2/2 transmitindo em tempo real (1080p)');
-      logActivity('Diagnóstico de rede Matter/Zigbee concluído', 'fa-solid fa-network-wired', 'var(--blue-accent)');
+      alert('RelatÃ³rio de DiagnÃ³stico DOMUS Mesh:\nâ€¢ Gateway Zigbee/Matter: Online (100% de estabilidade)\nâ€¢ Sensores de PresenÃ§a/Abertura: 3/3 operando (LatÃªncia: 14ms)\nâ€¢ CÃ¢meras de Monitoramento: 2/2 transmitindo em tempo real (1080p)');
+      logActivity('DiagnÃ³stico de rede Matter/Zigbee concluÃ­do', 'fa-solid fa-network-wired', 'var(--blue-accent)');
     }
 
     function exportMonthlyReport() {
-      alert('Relatório mensal de eficiência energética e automações gerado!\nO download do arquivo "DOMUS-Relatorio-Mensal.csv" foi iniciado.');
-      logActivity('Relatório mensal de energia exportado', 'fa-solid fa-file-arrow-down', 'var(--orange-bright)');
+      alert('RelatÃ³rio mensal de eficiÃªncia energÃ©tica e automaÃ§Ãµes gerado!\nO download do arquivo "DOMUS-Relatorio-Mensal.csv" foi iniciado.');
+      logActivity('RelatÃ³rio mensal de energia exportado', 'fa-solid fa-file-arrow-down', 'var(--orange-bright)');
     }
 
     function openAddResidentModal() {
@@ -3534,82 +4809,82 @@
     }
 
     const searchIndex = [
-      // ITENS DE ILUMINAÇÃO REFORMULADOS
+      // ITENS DE ILUMINAÃ‡ÃƒO REFORMULADOS
       {
-        title: 'Sala de Estar — Lâmpada Principal',
+        title: 'Sala de Estar â€” LÃ¢mpada Principal',
         subtitle: 'Controle de intensidade e cor na sala',
-        category: 'Iluminação',
+        category: 'IluminaÃ§Ã£o',
         icon: 'fa-solid fa-couch',
         keywords: ['sala', 'sala de estar', 'luz da sala', 'lampada da sala', 'iluminacao sala'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-1'); }
       },
       {
-        title: 'Cozinha — Luzes LED',
-        subtitle: 'Fita LED e iluminação da bancada',
-        category: 'Iluminação',
+        title: 'Cozinha â€” Luzes LED',
+        subtitle: 'Fita LED e iluminaÃ§Ã£o da bancada',
+        category: 'IluminaÃ§Ã£o',
         icon: 'fa-solid fa-utensils',
         keywords: ['cozinha', 'luz da cozinha', 'led cozinha', 'fita led'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-2'); }
       },
       {
-        title: 'Quarto Principal — Lâmpada Inteligente',
+        title: 'Quarto Principal â€” LÃ¢mpada Inteligente',
         subtitle: 'Ajuste de temperatura 2700K e cor RGB',
-        category: 'Iluminação',
+        category: 'IluminaÃ§Ã£o',
         icon: 'fa-solid fa-bed',
         keywords: ['quarto', 'quarto principal', 'suite', 'luz do quarto', 'luz quarto principal'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-3'); }
       },
       {
-        title: 'Quarto 2 — Lâmpada Inteligente',
-        subtitle: 'Controle RGB e automações do quarto',
-        category: 'Iluminação',
+        title: 'Quarto 2 â€” LÃ¢mpada Inteligente',
+        subtitle: 'Controle RGB e automaÃ§Ãµes do quarto',
+        category: 'IluminaÃ§Ã£o',
         icon: 'fa-solid fa-child-reaching',
         keywords: ['quarto 2', 'quarto de hospedes', 'quarto infantil', 'luz quarto 2'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-4'); }
       },
       {
-        title: 'Banheiro — Luz Neutra',
+        title: 'Banheiro â€” Luz Neutra',
         subtitle: 'LED embutido com sensor de movimento',
-        category: 'Iluminação',
+        category: 'IluminaÃ§Ã£o',
         icon: 'fa-solid fa-bath',
         keywords: ['banheiro', 'luz do banheiro', 'sensor banheiro', 'led banheiro'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-5'); }
       },
       {
-        title: 'Garagem — Lâmpada Tubular LED',
-        subtitle: 'Iluminação de alta potência com sensor',
-        category: 'Iluminação',
+        title: 'Garagem â€” LÃ¢mpada Tubular LED',
+        subtitle: 'IluminaÃ§Ã£o de alta potÃªncia com sensor',
+        category: 'IluminaÃ§Ã£o',
         icon: 'fa-solid fa-warehouse',
         keywords: ['garagem', 'luz da garagem', 'tubular led', 'sensor garagem'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-6'); }
       },
       {
         title: 'Refletor do Quintal',
-        subtitle: 'Iluminação externa de alta potência',
-        category: 'Iluminação',
+        subtitle: 'IluminaÃ§Ã£o externa de alta potÃªncia',
+        category: 'IluminaÃ§Ã£o',
         icon: 'fa-solid fa-tree',
         keywords: ['quintal', 'jardim', 'refletor', 'externa', 'luz externa'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-7'); }
       },
       {
-        title: 'Ligar todas as lâmpadas',
-        subtitle: 'Aciona todas as luzes da residência',
-        category: 'Ações Rápidas',
+        title: 'Ligar todas as lÃ¢mpadas',
+        subtitle: 'Aciona todas as luzes da residÃªncia',
+        category: 'AÃ§Ãµes RÃ¡pidas',
         icon: 'fa-solid fa-power-off',
         keywords: ['ligar todas', 'ligar luzes', 'acender tudo', 'acender todas'],
         action: () => { switchTab('tab-iluminacao'); turnOnAllLights(); }
       },
       {
-        title: 'Desligar todas as lâmpadas',
-        subtitle: 'Apaga todas as luzes da residência',
-        category: 'Ações Rápidas',
+        title: 'Desligar todas as lÃ¢mpadas',
+        subtitle: 'Apaga todas as luzes da residÃªncia',
+        category: 'AÃ§Ãµes RÃ¡pidas',
         icon: 'fa-regular fa-lightbulb',
         keywords: ['desligar todas', 'apagar luzes', 'apagar tudo', 'desligar luzes'],
         action: () => { switchTab('tab-iluminacao'); turnOffAllLights(); }
       },
       {
         title: 'Cena Dia',
-        subtitle: 'Ativa iluminação geral de alta intensidade',
+        subtitle: 'Ativa iluminaÃ§Ã£o geral de alta intensidade',
         category: 'Cenas',
         icon: 'fa-solid fa-sun',
         keywords: ['cena dia', 'modo dia', 'iluminacao dia'],
@@ -3625,7 +4900,7 @@
       },
       {
         title: 'Cena Cinema',
-        subtitle: 'Sala com iluminação baixa e quente',
+        subtitle: 'Sala com iluminaÃ§Ã£o baixa e quente',
         category: 'Cenas',
         icon: 'fa-solid fa-film',
         keywords: ['cena cinema', 'modo cinema', 'filme', 'pipoca'],
@@ -3633,7 +4908,7 @@
       },
       {
         title: 'Cena Estudo',
-        subtitle: 'Luz neutra/fria de alta concentração',
+        subtitle: 'Luz neutra/fria de alta concentraÃ§Ã£o',
         category: 'Cenas',
         icon: 'fa-solid fa-book-open',
         keywords: ['cena estudo', 'modo estudo', 'trabalho', 'foco'],
@@ -3641,7 +4916,7 @@
       },
       {
         title: 'Cena Cheguei',
-        subtitle: 'Iluminação de boas-vindas na entrada e sala',
+        subtitle: 'IluminaÃ§Ã£o de boas-vindas na entrada e sala',
         category: 'Cenas',
         icon: 'fa-solid fa-house-user',
         keywords: ['cena cheguei', 'chegando em casa', 'boas vindas'],
@@ -3655,117 +4930,117 @@
         keywords: ['cena festa', 'modo festa', 'party', 'rgb'],
         action: () => { switchTab('tab-iluminacao'); applyLightingScene('festa'); }
       },
-      // PÁGINAS
+      // PÃGINAS
       {
-        title: 'Início',
-        subtitle: 'Visão geral e painel principal',
-        category: 'Páginas',
+        title: 'InÃ­cio',
+        subtitle: 'VisÃ£o geral e painel principal',
+        category: 'PÃ¡ginas',
         icon: 'fa-solid fa-house',
         keywords: ['inicio', 'home', 'painel', 'dashboard', 'geral', 'status', 'resumo'],
         action: () => switchTab('tab-inicio')
       },
       {
-        title: 'Iluminação',
+        title: 'IluminaÃ§Ã£o',
         subtitle: 'Acessar controle das luzes',
-        category: 'Páginas',
+        category: 'PÃ¡ginas',
         icon: 'fa-solid fa-lightbulb',
         keywords: ['iluminacao', 'luz', 'luzes', 'lampadas', 'sala', 'quarto', 'cozinha', 'led', 'iluminacao ativa'],
         action: () => switchTab('tab-iluminacao')
       },
       {
-        title: 'Climatização',
+        title: 'ClimatizaÃ§Ã£o',
         subtitle: 'Controle de temperatura e ar-condicionado',
-        category: 'Páginas',
+        category: 'PÃ¡ginas',
         icon: 'fa-solid fa-snowflake',
         keywords: ['climatizacao', 'ar', 'ar-condicionado', 'temperatura', 'clima', 'frio', 'calor', 'graus', 'conforto'],
         action: () => switchTab('tab-climatizacao')
       },
       {
-        title: 'Segurança',
-        subtitle: 'Acessar sistema de segurança',
-        category: 'Páginas',
+        title: 'SeguranÃ§a',
+        subtitle: 'Acessar sistema de seguranÃ§a',
+        category: 'PÃ¡ginas',
         icon: 'fa-solid fa-shield-halved',
         keywords: ['seguranca', 'alarme', 'sensores', 'portas', 'janelas', 'cameras', 'presenca', 'protecao'],
         action: () => switchTab('tab-seguranca')
       },
       {
         title: 'Consumo de Energia',
-        subtitle: 'Ver consumo, histórico e estatísticas',
-        category: 'Páginas',
+        subtitle: 'Ver consumo, histÃ³rico e estatÃ­sticas',
+        category: 'PÃ¡ginas',
         icon: 'fa-solid fa-bolt',
         keywords: ['energia', 'consumo', 'kwh', 'gasto', 'conta', 'potencia', 'tempo', 'estatisticas'],
         action: () => switchTab('tab-energia')
       },
       {
-        title: 'Inteligência Adaptativa',
-        subtitle: 'Configurar inteligência e sugestões',
-        category: 'Páginas',
+        title: 'InteligÃªncia Adaptativa',
+        subtitle: 'Configurar inteligÃªncia e sugestÃµes',
+        category: 'PÃ¡ginas',
         icon: 'fa-solid fa-brain',
         keywords: ['inteligencia', 'inteligencia adaptativa', 'ia', 'adaptativa', 'sugestoes', 'aprendizado', 'otimizacao'],
         action: () => switchTab('tab-inteligencia')
       },
       {
-        title: 'Automações',
-        subtitle: 'Gerenciar automações e rotinas',
-        category: 'Páginas',
+        title: 'AutomaÃ§Ãµes',
+        subtitle: 'Gerenciar automaÃ§Ãµes e rotinas',
+        category: 'PÃ¡ginas',
         icon: 'fa-solid fa-robot',
         keywords: ['automacoes', 'rotinas', 'cenas', 'regras', 'agendamento', 'criar automacao'],
         action: () => switchTab('tab-automacoes')
       },
       {
         title: 'Perfil',
-        subtitle: 'Gerenciar conta, avatar e residência',
-        category: 'Páginas',
+        subtitle: 'Gerenciar conta, avatar e residÃªncia',
+        category: 'PÃ¡ginas',
         icon: 'fa-solid fa-user',
         keywords: ['perfil', 'conta', 'usuario', 'residencia', 'matheus', 'admin'],
         action: () => switchTab('tab-perfil')
       },
 
-      // SEÇÕES
+      // SEÃ‡Ã•ES
       {
         title: 'Luzes acesas',
-        subtitle: 'Ver iluminação ativa no momento',
-        category: 'Seções',
+        subtitle: 'Ver iluminaÃ§Ã£o ativa no momento',
+        category: 'SeÃ§Ãµes',
         icon: 'fa-solid fa-lightbulb',
         keywords: ['luz', 'luzes acesas', 'lampadas ligadas', 'iluminacao ativa', 'luzes'],
         action: () => switchTab('tab-iluminacao')
       },
       {
         title: 'Moradores cadastrados',
-        subtitle: 'Gerenciar moradores da residência',
-        category: 'Seções',
+        subtitle: 'Gerenciar moradores da residÃªncia',
+        category: 'SeÃ§Ãµes',
         icon: 'fa-solid fa-users',
         keywords: ['moradores', 'moradores cadastrados', 'familia', 'pessoas', 'residentes', 'usuarios'],
         action: () => switchTab('tab-perfil', '#residents-list-container')
       },
       {
-        title: 'Estatísticas',
-        subtitle: 'Métricas de uso e economia do DOMUS',
-        category: 'Seções',
+        title: 'EstatÃ­sticas',
+        subtitle: 'MÃ©tricas de uso e economia do DOMUS',
+        category: 'SeÃ§Ãµes',
         icon: 'fa-solid fa-chart-line',
         keywords: ['estatisticas', 'metricas', 'graficos', 'relatorio', 'uso', 'kwh', 'economia'],
         action: () => switchTab('tab-perfil', '.profile-stats-card')
       },
       {
-        title: 'Preferências',
-        subtitle: 'Preferências do DOMUS e notificações',
-        category: 'Seções',
+        title: 'PreferÃªncias',
+        subtitle: 'PreferÃªncias do DOMUS e notificaÃ§Ãµes',
+        category: 'SeÃ§Ãµes',
         icon: 'fa-solid fa-sliders',
         keywords: ['preferencias', 'ajustes', 'opcoes', 'sistema', 'configuracoes'],
         action: () => switchTab('tab-perfil', '#notifications-toggle')
       },
       {
-        title: 'Aparência e Acessibilidade',
+        title: 'AparÃªncia e Acessibilidade',
         subtitle: 'Tema claro/escuro e fonte ampliada',
-        category: 'Seções',
+        category: 'SeÃ§Ãµes',
         icon: 'fa-solid fa-universal-access',
         keywords: ['aparencia', 'aparencia e acessibilidade', 'acessibilidade', 'tema', 'fonte', 'tamanho de texto'],
         action: () => switchTab('tab-perfil', '#profile-theme-toggle')
       },
       {
-        title: 'Segurança da Conta',
-        subtitle: 'Gerenciar proteção da conta',
-        category: 'Seções',
+        title: 'SeguranÃ§a da Conta',
+        subtitle: 'Gerenciar proteÃ§Ã£o da conta',
+        category: 'SeÃ§Ãµes',
         icon: 'fa-solid fa-lock',
         keywords: ['seguranca', 'seguranca da conta', 'senha', '2fa', 'autenticacao', 'login', 'protecao'],
         action: () => switchTab('tab-perfil', '.profile-security-card')
@@ -3773,25 +5048,25 @@
       {
         title: 'Dispositivos Conectados',
         subtitle: 'Aparelhos ativos com acesso ao DOMUS',
-        category: 'Seções',
+        category: 'SeÃ§Ãµes',
         icon: 'fa-solid fa-mobile-screen-button',
         keywords: ['dispositivos', 'dispositivos conectados', 'aparelhos', 'celular', 'sessoes', 'login ativo', 'chrome'],
         action: () => openDevicesModal()
       },
       {
-        title: 'Histórico',
+        title: 'HistÃ³rico',
         subtitle: 'Consultar registro completo de atividades',
-        category: 'Seções',
+        category: 'SeÃ§Ãµes',
         icon: 'fa-solid fa-clock-rotate-left',
         keywords: ['historico', 'logs', 'eventos', 'atividades', 'registro', 'atividades recentes'],
         action: () => openFullHistoryModal()
       },
 
-      // CONFIGURAÇÕES E AÇÕES
+      // CONFIGURAÃ‡Ã•ES E AÃ‡Ã•ES
       {
         title: 'Modo Claro / Escuro',
         subtitle: 'Alternar entre tema escuro e claro',
-        category: 'Configurações',
+        category: 'ConfiguraÃ§Ãµes',
         icon: 'fa-solid fa-circle-half-stroke',
         keywords: ['modo claro', 'modo escuro', 'tema', 'light', 'dark', 'cor', 'tema claro', 'tema escuro', 'fundo'],
         action: () => {
@@ -3801,9 +5076,9 @@
         }
       },
       {
-        title: 'Notificações',
+        title: 'NotificaÃ§Ãµes',
         subtitle: 'Ativar ou pausar alertas em tempo real',
-        category: 'Configurações',
+        category: 'ConfiguraÃ§Ãµes',
         icon: 'fa-solid fa-bell',
         keywords: ['notificacoes', 'alertas', 'avisos', 'popups', 'toasts', 'sons'],
         action: () => {
@@ -3817,23 +5092,23 @@
       {
         title: 'Alertas de Uso Prolongado',
         subtitle: 'Avisos de equipamentos esquecidos ligados',
-        category: 'Configurações',
+        category: 'ConfiguraÃ§Ãµes',
         icon: 'fa-solid fa-bolt',
         keywords: ['alertas de uso prolongado', 'alertas', 'uso prolongado', 'desperdicio', 'economia'],
         action: () => switchTab('tab-perfil', '#notifications-toggle')
       },
       {
-        title: 'Autenticação em Duas Etapas (2FA)',
-        subtitle: 'Proteção reforçada de acesso à conta',
-        category: 'Configurações',
+        title: 'AutenticaÃ§Ã£o em Duas Etapas (2FA)',
+        subtitle: 'ProteÃ§Ã£o reforÃ§ada de acesso Ã  conta',
+        category: 'ConfiguraÃ§Ãµes',
         icon: 'fa-solid fa-shield-halved',
         keywords: ['2fa', 'autenticacao', 'duas etapas', 'codigo', 'token', 'seguranca'],
         action: () => switchTab('tab-perfil', '.profile-security-card')
       },
       {
         title: 'Alterar senha',
-        subtitle: 'Abrir configuração de senha do painel',
-        category: 'Configurações',
+        subtitle: 'Abrir configuraÃ§Ã£o de senha do painel',
+        category: 'ConfiguraÃ§Ãµes',
         icon: 'fa-solid fa-key',
         keywords: ['senha', 'alterar senha', 'mudar senha', 'password', 'redefinir senha', 'trocar senha'],
         action: () => openChangePasswordAlert()
@@ -3841,7 +5116,7 @@
       {
         title: 'Avatar e Perfil',
         subtitle: 'Editar nome, identificador e avatar',
-        category: 'Configurações',
+        category: 'ConfiguraÃ§Ãµes',
         icon: 'fa-solid fa-user-pen',
         keywords: ['avatar', 'foto', 'icone', 'editar perfil', 'nome', 'usuario', 'handle'],
         action: () => openEditProfileModal()
@@ -3849,7 +5124,7 @@
       {
         title: 'Adicionar morador',
         subtitle: 'Cadastrar novo residente no DOMUS',
-        category: 'Configurações',
+        category: 'ConfiguraÃ§Ãµes',
         icon: 'fa-solid fa-user-plus',
         keywords: ['moradores', 'adicionar morador', 'novo morador', 'cadastrar morador', 'residente'],
         action: () => openAddResidentModal()
@@ -3879,7 +5154,7 @@
 
       if (searchClearBtn) searchClearBtn.style.display = 'flex';
 
-      // Filtra e classifica relevância
+      // Filtra e classifica relevÃ¢ncia
       const matches = searchIndex.filter(item => {
         const titleNorm = normalizeSearchStr(item.title);
         const subNorm = normalizeSearchStr(item.subtitle);
@@ -3888,7 +5163,7 @@
         return titleNorm.includes(normQ) || subNorm.includes(normQ) || catNorm.includes(normQ) || inKeywords;
       });
 
-      // Ordena: títulos que começam com a busca primeiro, depois títulos que contêm, depois outros
+      // Ordena: tÃ­tulos que comeÃ§am com a busca primeiro, depois tÃ­tulos que contÃªm, depois outros
       matches.sort((a, b) => {
         const aTitle = normalizeSearchStr(a.title);
         const bTitle = normalizeSearchStr(b.title);
@@ -3907,7 +5182,7 @@
           <div class="search-empty-state">
             <i class="fa-solid fa-magnifying-glass search-empty-icon"></i>
             <div class="search-empty-title">Nenhum resultado encontrado.</div>
-            <p class="search-empty-hint">Tente pesquisar por <em>iluminação</em>, <em>segurança</em>, <em>energia</em>, <em>senha</em>...</p>
+            <p class="search-empty-hint">Tente pesquisar por <em>iluminaÃ§Ã£o</em>, <em>seguranÃ§a</em>, <em>energia</em>, <em>senha</em>...</p>
           </div>
         `;
         searchDropdown.style.display = 'block';
@@ -3944,12 +5219,12 @@
       try {
         const escaped = cleanQ.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const pattern = escaped
-          .replace(/[aáàãâä]/gi, '[aáàãâä]')
-          .replace(/[eéèêë]/gi, '[eéèêë]')
-          .replace(/[iíìîï]/gi, '[iíìîï]')
-          .replace(/[oóòõôö]/gi, '[oóòõôö]')
-          .replace(/[uúùûü]/gi, '[uúùûü]')
-          .replace(/[cç]/gi, '[cç]');
+          .replace(/[aÃ¡Ã Ã£Ã¢Ã¤]/gi, '[aÃ¡Ã Ã£Ã¢Ã¤]')
+          .replace(/[eÃ©Ã¨ÃªÃ«]/gi, '[eÃ©Ã¨ÃªÃ«]')
+          .replace(/[iÃ­Ã¬Ã®Ã¯]/gi, '[iÃ­Ã¬Ã®Ã¯]')
+          .replace(/[oÃ³Ã²ÃµÃ´Ã¶]/gi, '[oÃ³Ã²ÃµÃ´Ã¶]')
+          .replace(/[uÃºÃ¹Ã»Ã¼]/gi, '[uÃºÃ¹Ã»Ã¼]')
+          .replace(/[cÃ§]/gi, '[cÃ§]');
         const regex = new RegExp(`(${pattern})`, 'gi');
         return text.replace(regex, '<mark>$1</mark>');
       } catch (err) {
@@ -4042,7 +5317,7 @@
     window.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
         e.preventDefault();
-        // Garante que está na aba Início ou foca diretamente a busca
+        // Garante que estÃ¡ na aba InÃ­cio ou foca diretamente a busca
         if (!document.getElementById('tab-inicio').classList.contains('active')) {
           switchTab('tab-inicio');
         }
@@ -4065,18 +5340,18 @@
       }
     });
 
-    // PERSISTÊNCIA DE ESTADO DAS LÂMPADAS
+    // PERSISTÃŠNCIA DE ESTADO DAS LÃ‚MPADAS
     function saveLightStatesToStorage() {
       const states = {};
       document.querySelectorAll('.light-switch').forEach(sw => {
         const iconId = sw.getAttribute('data-icon');
         states[iconId] = sw.checked;
       });
-      localStorage.setItem('domus_light_states', JSON.stringify(states));
+      localStorage.setItem('domus_light_states_v2', JSON.stringify(states));
     }
 
     function restoreLightStatesFromStorage() {
-      const saved = localStorage.getItem('domus_light_states');
+      const saved = localStorage.getItem('domus_light_states_v2');
       if (saved) {
         try {
           const states = JSON.parse(saved);
@@ -4084,21 +5359,23 @@
             const iconId = sw.getAttribute('data-icon');
             if (states[iconId] !== undefined) {
               sw.checked = Boolean(states[iconId]);
+            } else {
+              sw.checked = false;
             }
           });
         } catch (e) {
-          console.error('Erro ao restaurar lâmpadas', e);
+          console.error('Erro ao restaurar lÃ¢mpadas', e);
+          document.querySelectorAll('.light-switch').forEach(sw => sw.checked = false);
         }
       } else {
-        // Se nunca configurado pelo usuário, NENHUMA lâmpada fica ligada
+        // Ao entrar no site pela primeira vez, NENHUMA lÃ¢mpada fica ligada
         document.querySelectorAll('.light-switch').forEach(sw => {
           sw.checked = false;
         });
       }
     }
 
-    
-    // INICIALIZAÇÃO
+    // INICIALIZAÃ‡ÃƒO
     const notifToggleElem = document.getElementById('notifications-toggle');
     if (notifToggleElem) notifToggleElem.checked = isNotificationsEnabled;
 
@@ -4108,6 +5385,15 @@
     renderResidents();
     updateAutomationsUI();
     updateGlobalTotalActiveTime();
+
+    // Sincroniza visual do slider de brilho geral no carregamento inicial
+    const initialMasterSlider = document.getElementById('master-brightness-slider');
+    if (initialMasterSlider) {
+      updateSliderTrackFill(initialMasterSlider, 'var(--orange-bright)');
+    }
+
+    // VERIFICAÃ‡ÃƒO OBRIGATÃ“RIA DA SESSÃƒO SUPABASE AUTH (BLOQUEIA DASHBOARD SE NÃƒO LOGADO)
+    checkInitialAuthSession();
   </script>
 
 </body>
