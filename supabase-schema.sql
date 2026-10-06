@@ -56,6 +56,7 @@ begin
 end;
 $$ language plpgsql security definer;
 
+
 -- Trigger disparado automaticamente apÃ³s novo cadastro em auth.users
 drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
