@@ -14,657 +14,14 @@
   <!-- SUPABASE JS SDK V2 (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="stylesheet" href="style.css?v=2.2">
-  <style>
-    /* ========================================================
-       ESTILOS DA TELA DE LOGIN OBRIGATÃ“RIA DOMUS (GARANTIA DE CARREGAMENTO IMEDIATO)
-       ======================================================== */
-    .domus-app-wrapper {
-      display: flex;
-      width: 100%;
-      min-height: 100vh;
-    }
-    .domus-app-wrapper.auth-hidden {
-      display: none !important;
-    }
-
-    .domus-auth-screen {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      min-height: 100vh;
-      z-index: 999999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background-color: #0b0f17;
-      background-image: 
-        radial-gradient(circle at 10% 15%, rgba(0, 210, 255, 0.18) 0%, transparent 45%),
-        radial-gradient(circle at 90% 85%, rgba(255, 122, 0, 0.16) 0%, transparent 50%),
-        linear-gradient(135deg, #0e131d 0%, #070a10 100%);
-      overflow-y: auto;
-      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      box-sizing: border-box;
-    }
-
-    .domus-auth-screen * {
-      box-sizing: border-box;
-    }
-
-    .auth-ambient-glow {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      filter: blur(90px);
-    }
-    .auth-ambient-glow.glow-cyan {
-      width: 360px;
-      height: 360px;
-      top: 5%;
-      left: 10%;
-      background: rgba(0, 210, 255, 0.18);
-    }
-    .auth-ambient-glow.glow-orange {
-      width: 380px;
-      height: 380px;
-      bottom: 5%;
-      right: 10%;
-      background: rgba(255, 122, 0, 0.15);
-    }
-
-    .auth-card-container {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      max-width: 450px;
-      margin: auto;
-    }
-
-    .auth-card {
-      background: rgba(20, 26, 38, 0.92);
-      border: 1px solid rgba(0, 210, 255, 0.22);
-      border-radius: 24px;
-      padding: 38px 34px;
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 35px rgba(0, 210, 255, 0.1);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .auth-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #00d2ff, #ff7a00, #00d2ff);
-      background-size: 200% 100%;
-      animation: authBarGlow 4s linear infinite;
-    }
-
-    @keyframes authBarGlow {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 200% 0%; }
-    }
-
-    .auth-brand-area {
-      text-align: center;
-      margin-bottom: 22px;
-    }
-
-    .auth-logo-badge {
-      width: 62px;
-      height: 62px;
-      margin: 0 auto 12px auto;
-      border-radius: 50%;
-      background: linear-gradient(135deg, rgba(0, 210, 255, 0.16) 0%, rgba(255, 122, 0, 0.16) 100%);
-      color: #00d2ff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.75rem;
-      box-shadow: 0 0 25px rgba(0, 210, 255, 0.35), inset 0 0 12px rgba(0, 210, 255, 0.25);
-      border: 1.5px solid rgba(0, 210, 255, 0.4);
-    }
-
-    .auth-brand-title {
-      font-size: 1.9rem;
-      font-weight: 700;
-      letter-spacing: 4px;
-      margin: 0;
-      color: #f0f6fc;
-      line-height: 1.2;
-    }
-
-    .auth-brand-subtitle {
-      display: block;
-      font-size: 0.72rem;
-      letter-spacing: 2.5px;
-      color: #00d2ff;
-      font-weight: 600;
-      margin-top: 4px;
-    }
-
-    .auth-brand-slogan {
-      font-size: 0.82rem;
-      color: #8b949e;
-      margin-top: 8px;
-      font-style: italic;
-      line-height: 1.4;
-    }
-
-    /* TABS NO TOPO DO CARD */
-    .auth-nav-tabs {
-      display: flex;
-      gap: 6px;
-      background: rgba(13, 17, 23, 0.8);
-      padding: 5px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      margin-bottom: 22px;
-    }
-
-    .auth-tab-btn {
-      flex: 1;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: none;
-      background: transparent;
-      color: #8b949e;
-      font-size: 0.88rem;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.25s ease;
-      font-family: inherit;
-    }
-
-    .auth-tab-btn:hover {
-      color: #f0f6fc;
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .auth-tab-btn.active {
-      background: linear-gradient(135deg, rgba(0, 210, 255, 0.2) 0%, rgba(0, 210, 255, 0.1) 100%);
-      color: #00d2ff;
-      font-weight: 600;
-      box-shadow: 0 0 14px rgba(0, 210, 255, 0.25);
-      border: 1px solid rgba(0, 210, 255, 0.35);
-    }
-
-    .auth-view-header {
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    .auth-view-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #f0f6fc;
-      margin-bottom: 5px;
-    }
-
-    .auth-view-desc {
-      font-size: 0.83rem;
-      color: #8b949e;
-      margin: 0;
-      line-height: 1.4;
-    }
-
-    .auth-form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .auth-input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      text-align: left;
-    }
-
-    .auth-input-group label {
-      font-size: 0.82rem;
-      font-weight: 500;
-      color: #f0f6fc;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .auth-input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .auth-input-icon {
-      position: absolute;
-      left: 14px;
-      color: #8b949e;
-      font-size: 0.95rem;
-      pointer-events: none;
-      transition: color 0.2s;
-    }
-
-    .auth-input-field {
-      width: 100%;
-      padding: 12px 14px 12px 42px;
-      background: rgba(13, 17, 23, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
-      color: #f0f6fc;
-      font-size: 0.9rem;
-      outline: none;
-      transition: all 0.25s ease;
-      font-family: inherit;
-    }
-
-    .auth-input-field:focus {
-      border-color: #00d2ff;
-      background: rgba(0, 210, 255, 0.05);
-      box-shadow: 0 0 14px rgba(0, 210, 255, 0.35);
-    }
-
-    .auth-input-field:focus ~ .auth-input-icon {
-      color: #00d2ff;
-    }
-
-    .auth-pwd-toggle {
-      position: absolute;
-      right: 12px;
-      background: none;
-      border: none;
-      color: #8b949e;
-      cursor: pointer;
-      padding: 6px;
-      font-size: 0.92rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.2s;
-    }
-
-    .auth-pwd-toggle:hover {
-      color: #f0f6fc;
-    }
-
-    .auth-extra-row {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      margin-top: -4px;
-    }
-
-    .auth-text-link {
-      background: none;
-      border: none;
-      color: #00d2ff;
-      font-size: 0.8rem;
-      cursor: pointer;
-      padding: 0;
-      text-decoration: none;
-      transition: color 0.2s;
-      font-family: inherit;
-    }
-
-    .auth-text-link:hover {
-      color: #66e3ff;
-      text-decoration: underline;
-    }
-
-    .btn-auth-submit {
-      width: 100%;
-      padding: 13px 18px;
-      border-radius: 10px;
-      border: none;
-      background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%);
-      color: #ffffff;
-      font-weight: 600;
-      font-size: 0.98rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 18px rgba(255, 122, 0, 0.45);
-      transition: all 0.25s ease;
-      margin-top: 6px;
-      font-family: inherit;
-    }
-
-    .btn-auth-submit:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(255, 122, 0, 0.65);
-    }
-
-    .btn-auth-submit:active:not(:disabled) {
-      transform: translateY(0);
-    }
-
-    .btn-auth-submit:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
-
-    .auth-switch-prompt {
-      text-align: center;
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      font-size: 0.83rem;
-      color: #8b949e;
-    }
-
-    .auth-switch-prompt button {
-      background: none;
-      border: none;
-      color: #ff7a00;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 0 4px;
-      transition: color 0.2s;
-      font-family: inherit;
-      font-size: inherit;
-    }
-
-    .auth-switch-prompt button:hover {
-      color: #ffaa44;
-      text-decoration: underline;
-    }
-
-    .auth-back-btn {
-      background: none;
-      border: none;
-      color: #8b949e;
-      font-size: 0.84rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 10px;
-      transition: color 0.2s;
-      font-family: inherit;
-    }
-
-    .auth-back-btn:hover {
-      color: #f0f6fc;
-    }
-
-    .auth-status-alert {
-      padding: 11px 14px;
-      border-radius: 10px;
-      font-size: 0.84rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-      animation: authFadeIn 0.25s ease;
-      line-height: 1.4;
-      text-align: left;
-    }
-
-    .auth-status-alert.alert-error {
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      color: #fca5a5;
-    }
-
-    .auth-status-alert.alert-success {
-      background: rgba(34, 197, 94, 0.15);
-      border: 1px solid rgba(34, 197, 94, 0.4);
-      color: #86efac;
-    }
-
-    .auth-status-alert.alert-info {
-      background: rgba(0, 210, 255, 0.14);
-      border: 1px solid rgba(0, 210, 255, 0.4);
-      color: #7dd3fc;
-    }
-
-    @keyframes authFadeIn {
-      from { opacity: 0; transform: translateY(-6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 480px) {
-      .auth-card {
-        padding: 30px 20px;
-      }
-      .auth-brand-title {
-        font-size: 1.6rem;
-      }
-    }
-  </style>
-</head>
+  </head>
 <body>
 
   <!-- CONTAINER DE NOTIFICAÃ‡Ã•ES FLUTUANTES (CANTO INFERIOR DIREITO) -->
   <div id="toast-container"></div>
 
-  <!-- TELA DE AUTENTICAÃ‡ÃƒO OBRIGATÃ“RIA DOMUS (LOGIN, CADASTRO, RECUPERAÃ‡ÃƒO) -->
-  <div id="domus-auth-screen" class="domus-auth-screen" style="display: flex !important;">
-    <div class="auth-ambient-glow glow-cyan"></div>
-    <div class="auth-ambient-glow glow-orange"></div>
-
-    <div class="auth-card-container">
-      <div class="auth-card">
-        <!-- CABEÃ‡ALHO COM LOGO E SLOGAN -->
-        <div class="auth-brand-area">
-          <div class="auth-logo-badge">
-            <i class="fa-solid fa-house-signal"></i>
-          </div>
-          <h2 class="auth-brand-title">DOMUS</h2>
-          <span class="auth-brand-subtitle">SMART HOME SYSTEM</span>
-          <p class="auth-brand-slogan">Integrando a tecnologia ao seu modo de viver.</p>
-        </div>
-
-        <!-- TABS DE NAVEGAÃ‡ÃƒO ENTRE LOGIN E CADASTRO -->
-        <div class="auth-nav-tabs">
-          <button type="button" class="auth-tab-btn active" id="tab-btn-login" onclick="showAuthView('login')">
-            <i class="fa-solid fa-right-to-bracket"></i> Entrar
-          </button>
-          <button type="button" class="auth-tab-btn" id="tab-btn-register" onclick="showAuthView('register')">
-            <i class="fa-solid fa-user-plus"></i> Criar Conta
-          </button>
-        </div>
-
-        <!-- CAIXA DE MENSAGENS / ALERTAS AMIGÃVEIS -->
-        <div id="auth-status-box" class="auth-status-alert" style="display: none;"></div>
-
-        <!-- 1. VIEW DE LOGIN -->
-        <div id="auth-view-login" class="auth-view-content">
-          <div class="auth-view-header">
-            <h3 class="auth-view-title">Bem-vindo ao DOMUS</h3>
-            <p class="auth-view-desc">Entre para acessar sua residÃªncia inteligente</p>
-          </div>
-
-          <form id="auth-login-form" class="auth-form" onsubmit="handleAuthLogin(event)" novalidate>
-            <div class="auth-input-group">
-              <label for="auth-login-email"><i class="fa-solid fa-envelope"></i> E-mail</label>
-              <div class="auth-input-wrapper">
-                <input 
-                  type="email" 
-                  id="auth-login-email" 
-                  class="auth-input-field" 
-                  placeholder="seu.email@exemplo.com" 
-                  required 
-                  autocomplete="email"
-                >
-                <i class="fa-solid fa-envelope auth-input-icon"></i>
-              </div>
-            </div>
-
-            <div class="auth-input-group">
-              <label for="auth-login-password"><i class="fa-solid fa-lock"></i> Senha</label>
-              <div class="auth-input-wrapper">
-                <input 
-                  type="password" 
-                  id="auth-login-password" 
-                  class="auth-input-field" 
-                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" 
-                  required 
-                  autocomplete="current-password"
-                >
-                <i class="fa-solid fa-lock auth-input-icon"></i>
-                <button type="button" class="auth-pwd-toggle" onclick="toggleAuthPasswordVisibility('auth-login-password', this)" title="Mostrar ou ocultar senha">
-                  <i class="fa-solid fa-eye"></i>
-                </button>
-              </div>
-            </div>
-
-            <div class="auth-extra-row">
-              <button type="button" class="auth-text-link" onclick="showAuthView('forgot')">Esqueci minha senha</button>
-            </div>
-
-            <button type="submit" class="btn-auth-submit" id="btn-login-submit">
-              <span class="btn-auth-text"><i class="fa-solid fa-right-to-bracket"></i> Entrar</span>
-              <span class="btn-auth-loading" style="display: none;"><i class="fa-solid fa-circle-notch fa-spin"></i> Autenticando...</span>
-            </button>
-          </form>
-
-          <div class="auth-switch-prompt">
-            NÃ£o tem uma conta? 
-            <button type="button" onclick="showAuthView('register')">Criar conta</button>
-          </div>
-        </div>
-
-        <!-- 2. VIEW DE CADASTRO -->
-        <div id="auth-view-register" class="auth-view-content" style="display: none;">
-          <div class="auth-view-header">
-            <h3 class="auth-view-title">Criar Conta no DOMUS</h3>
-            <p class="auth-view-desc">Cadastre-se para gerenciar sua residÃªncia inteligente</p>
-          </div>
-
-          <form id="auth-register-form" class="auth-form" onsubmit="handleAuthRegister(event)" novalidate>
-            <div class="auth-input-group">
-              <label for="auth-reg-name"><i class="fa-solid fa-user"></i> Nome completo</label>
-              <div class="auth-input-wrapper">
-                <input 
-                  type="text" 
-                  id="auth-reg-name" 
-                  class="auth-input-field" 
-                  placeholder="Ex: Matheus Silva" 
-                  required 
-                  autocomplete="name"
-                >
-                <i class="fa-solid fa-user auth-input-icon"></i>
-              </div>
-            </div>
-
-            <div class="auth-input-group">
-              <label for="auth-reg-email"><i class="fa-solid fa-envelope"></i> E-mail</label>
-              <div class="auth-input-wrapper">
-                <input 
-                  type="email" 
-                  id="auth-reg-email" 
-                  class="auth-input-field" 
-                  placeholder="seu.email@exemplo.com" 
-                  required 
-                  autocomplete="email"
-                >
-                <i class="fa-solid fa-envelope auth-input-icon"></i>
-              </div>
-            </div>
-
-            <div class="auth-input-group">
-              <label for="auth-reg-password"><i class="fa-solid fa-lock"></i> Senha</label>
-              <div class="auth-input-wrapper">
-                <input 
-                  type="password" 
-                  id="auth-reg-password" 
-                  class="auth-input-field" 
-                  placeholder="MÃ­nimo 6 caracteres" 
-                  required 
-                  autocomplete="new-password"
-                >
-                <i class="fa-solid fa-lock auth-input-icon"></i>
-                <button type="button" class="auth-pwd-toggle" onclick="toggleAuthPasswordVisibility('auth-reg-password', this)" title="Mostrar ou ocultar senha">
-                  <i class="fa-solid fa-eye"></i>
-                </button>
-              </div>
-            </div>
-
-            <div class="auth-input-group">
-              <label for="auth-reg-confirm"><i class="fa-solid fa-shield-halved"></i> Confirmar senha</label>
-              <div class="auth-input-wrapper">
-                <input 
-                  type="password" 
-                  id="auth-reg-confirm" 
-                  class="auth-input-field" 
-                  placeholder="Repita sua senha" 
-                  required 
-                  autocomplete="new-password"
-                >
-                <i class="fa-solid fa-shield-halved auth-input-icon"></i>
-                <button type="button" class="auth-pwd-toggle" onclick="toggleAuthPasswordVisibility('auth-reg-confirm', this)" title="Mostrar ou ocultar senha">
-                  <i class="fa-solid fa-eye"></i>
-                </button>
-              </div>
-            </div>
-
-            <button type="submit" class="btn-auth-submit" id="btn-register-submit">
-              <span class="btn-auth-text"><i class="fa-solid fa-user-plus"></i> Criar Conta</span>
-              <span class="btn-auth-loading" style="display: none;"><i class="fa-solid fa-circle-notch fa-spin"></i> Criando conta...</span>
-            </button>
-          </form>
-
-          <div class="auth-switch-prompt">
-            JÃ¡ possui uma conta? 
-            <button type="button" onclick="showAuthView('login')">Entrar</button>
-          </div>
-        </div>
-
-        <!-- 3. VIEW DE RECUPERAÃ‡ÃƒO DE SENHA -->
-        <div id="auth-view-forgot" class="auth-view-content" style="display: none;">
-          <div class="auth-view-header">
-            <h3 class="auth-view-title">RecuperaÃ§Ã£o de Senha</h3>
-            <p class="auth-view-desc">Informe seu e-mail cadastrado para receber o link de redefiniÃ§Ã£o.</p>
-          </div>
-
-          <form id="auth-forgot-form" class="auth-form" onsubmit="handleAuthForgotPassword(event)" novalidate>
-            <div class="auth-input-group">
-              <label for="auth-forgot-email"><i class="fa-solid fa-envelope"></i> E-mail cadastrado</label>
-              <div class="auth-input-wrapper">
-                <input 
-                  type="email" 
-                  id="auth-forgot-email" 
-                  class="auth-input-field" 
-                  placeholder="seu.email@exemplo.com" 
-                  required 
-                  autocomplete="email"
-                >
-                <i class="fa-solid fa-envelope auth-input-icon"></i>
-              </div>
-            </div>
-
-            <button type="submit" class="btn-auth-submit" id="btn-forgot-submit">
-              <span class="btn-auth-text"><i class="fa-solid fa-paper-plane"></i> Enviar Link de RecuperaÃ§Ã£o</span>
-              <span class="btn-auth-loading" style="display: none;"><i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...</span>
-            </button>
-          </form>
-
-          <div class="auth-switch-prompt">
-            <button type="button" class="auth-back-btn" onclick="showAuthView('login')">
-              <i class="fa-solid fa-arrow-left"></i> Voltar para o login
-            </button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
   <!-- WRAPPER DO SISTEMA DOMUS PROTEGIDO POR AUTENTICAÃ‡ÃƒO -->
-  <div id="domus-app-wrapper" class="domus-app-wrapper auth-hidden" style="display: none !important;">
+  <div id="domus-app-wrapper" class="domus-app-wrapper">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
@@ -2573,32 +1930,14 @@
     // @ts-nocheck
 
     // ==========================================================================
-    // SUPABASE AUTH & CONTROLE DE SESSÃƒO DO DOMUS
+    // CONTROLE DE ACESSO & AUTENTICAÃ‡ÃƒO DOMUS (INTEGRAÃ‡ÃƒO COM LOGIN.HTML)
     // ==========================================================================
-    // INSTRUÃ‡Ã•ES DE CONFIGURAÃ‡ÃƒO:
-    // 1. Acesse https://supabase.com -> Seu Projeto -> Project Settings -> API
-    // 2. Substitua 'SUPABASE_URL' pela Project URL do seu projeto (ex: https://xyz.supabase.co)
-    // 3. Substitua 'SUPABASE_ANON_KEY' pela sua Anon Public API Key
-    const SUPABASE_URL = 'https://SEU-PROJETO.supabase.co'; // Copiado na aba "Geral"
-const SUPABASE_KEY = 'sb_publishable_TMX2by3mFmYgmN3zDETdRq_qfkCJ...'; // Copiado do botão da imagem
-
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const SUPABASE_URL = 'https://acbgoyubehzihuffsga.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_TMX2by3mFmYgmN3ZdETdrQ_qfkCJdju';
 
     let supabaseClient = null;
     let currentAuthUser = null;
     let currentAuthProfile = null;
-
-    // BANCO DE DADOS LOCAL COMPATÃVEL DE USUÃRIOS
-    let localUsersDB = JSON.parse(localStorage.getItem('domus_users_db') || '{}');
-    if (Object.keys(localUsersDB).length === 0) {
-      localUsersDB['matheus@domus.com'] = {
-        id: 'usr_matheus',
-        email: 'matheus@domus.com',
-        full_name: 'Matheus D. Lucca',
-        password: '123'
-      };
-      localStorage.setItem('domus_users_db', JSON.stringify(localUsersDB));
-    }
 
     function isSupabaseConfigured() {
       return SUPABASE_URL && 
@@ -2614,89 +1953,11 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       if (isSupabaseConfigured()) {
         return Boolean(currentAuthUser);
       }
-      return Boolean(localStorage.getItem('domus_demo_session'));
+      return Boolean(currentAuthUser) || Boolean(localStorage.getItem('domus_demo_session'));
     }
 
-    function showAuthScreen(view = 'login') {
-      const authScreen = document.getElementById('domus-auth-screen');
-      const appWrapper = document.getElementById('domus-app-wrapper');
-      if (authScreen) {
-        authScreen.style.setProperty('display', 'flex', 'important');
-      }
-      if (appWrapper) {
-        appWrapper.style.setProperty('display', 'none', 'important');
-        appWrapper.classList.add('auth-hidden');
-      }
-      showAuthView(view);
-      clearAuthAlert();
-    }
-
-    function showAppScreen() {
-      const authScreen = document.getElementById('domus-auth-screen');
-      const appWrapper = document.getElementById('domus-app-wrapper');
-      if (authScreen) {
-        authScreen.style.setProperty('display', 'none', 'important');
-      }
-      if (appWrapper) {
-        appWrapper.style.setProperty('display', 'flex', 'important');
-        appWrapper.classList.remove('auth-hidden');
-      }
-    }
-
-    function showAuthView(viewName) {
-      const views = ['login', 'register', 'forgot'];
-      views.forEach(v => {
-        const el = document.getElementById(`auth-view-${v}`);
-        if (el) el.style.display = (v === viewName) ? 'block' : 'none';
-      });
-
-      const tabLogin = document.getElementById('tab-btn-login');
-      const tabReg = document.getElementById('tab-btn-register');
-      if (tabLogin) tabLogin.classList.toggle('active', viewName === 'login');
-      if (tabReg) tabReg.classList.toggle('active', viewName === 'register');
-
-      clearAuthAlert();
-    }
-
-    function showAuthAlert(type, message) {
-      const box = document.getElementById('auth-status-box');
-      if (!box) return;
-      box.className = `auth-status-alert alert-${type}`;
-      let icon = 'fa-circle-exclamation';
-      if (type === 'success') icon = 'fa-circle-check';
-      if (type === 'info') icon = 'fa-circle-info';
-      box.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
-      box.style.display = 'flex';
-    }
-
-    function clearAuthAlert() {
-      const box = document.getElementById('auth-status-box');
-      if (box) {
-        box.style.display = 'none';
-        box.innerHTML = '';
-      }
-    }
-
-    function toggleAuthPasswordVisibility(fieldId, btn) {
-      const input = document.getElementById(fieldId);
-      if (!input) return;
-      const isPwd = input.type === 'password';
-      input.type = isPwd ? 'text' : 'password';
-      if (btn) {
-        btn.innerHTML = isPwd ? '<i class="fa-solid fa-eye-slash"></i>' : '<i class="fa-solid fa-eye"></i>';
-      }
-    }
-
-    function setAuthButtonLoading(btn, isLoading, loadingText = 'Carregando...') {
-      if (!btn) return;
-      btn.disabled = isLoading;
-      const textSpan = btn.querySelector('.btn-auth-text');
-      const loadSpan = btn.querySelector('.btn-auth-loading');
-      if (textSpan) textSpan.style.display = isLoading ? 'none' : 'inline-flex';
-      if (loadSpan) {
-        loadSpan.style.display = isLoading ? 'inline-flex' : 'none';
-        if (loadingText) loadSpan.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> ${loadingText}`;
-      }
+    function redirectToLogin() {
+      window.location.replace('login.html');
     }
 
     function applyUserDataToUI(fullName, email) {
@@ -2765,243 +2026,7 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       applyUserDataToUI(fullName, email);
     }
 
-    async function handleAuthLogin(event) {
-      event.preventDefault();
-      clearAuthAlert();
-
-      const emailInput = document.getElementById('auth-login-email');
-      const passwordInput = document.getElementById('auth-login-password');
-      const submitBtn = document.getElementById('btn-login-submit');
-
-      const email = emailInput ? emailInput.value.trim() : '';
-      const password = passwordInput ? passwordInput.value : '';
-
-      if (!email) {
-        showAuthAlert('error', 'Digite seu e-mail.');
-        if (emailInput) emailInput.focus();
-        return;
-      }
-      if (!password) {
-        showAuthAlert('error', 'Digite sua senha.');
-        if (passwordInput) passwordInput.focus();
-        return;
-      }
-
-      setAuthButtonLoading(submitBtn, true, 'Autenticando...');
-
-      if (isSupabaseConfigured() && supabaseClient) {
-        try {
-          const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-          });
-
-          setAuthButtonLoading(submitBtn, false);
-
-          if (error) {
-            if (error.message && (error.message.includes('Invalid login') || error.message.includes('invalid_grant'))) {
-              showAuthAlert('error', 'E-mail ou senha incorretos.');
-            } else if (error.message && error.message.includes('Email not confirmed')) {
-              showAuthAlert('error', 'E-mail ainda nÃ£o confirmado. Verifique sua caixa de entrada.');
-            } else {
-              showAuthAlert('error', 'NÃ£o foi possÃ­vel realizar o login. Tente novamente.');
-            }
-            return;
-          }
-
-          if (data && data.user) {
-            currentAuthUser = data.user;
-            await fetchAndApplyUserProfile(data.user);
-            showAppScreen();
-            showToastNotification('Bem-vindo', 'Login realizado com sucesso no DOMUS.', 'fa-solid fa-shield-halved', 'var(--blue-accent)');
-          }
-        } catch (err) {
-          setAuthButtonLoading(submitBtn, false);
-          showAuthAlert('error', 'NÃ£o foi possÃ­vel realizar o login. Tente novamente.');
-        }
-      } else {
-        // BANCO DE DADOS LOCAL COMPATÃVEL
-        setTimeout(() => {
-          setAuthButtonLoading(submitBtn, false);
-          const emailKey = email.toLowerCase();
-          const userFound = localUsersDB[emailKey];
-
-          if (userFound) {
-            if (userFound.password === password) {
-              const sessionUser = {
-                id: userFound.id,
-                email: userFound.email,
-                user_metadata: { full_name: userFound.full_name }
-              };
-              localStorage.setItem('domus_demo_session', JSON.stringify(sessionUser));
-              currentAuthUser = sessionUser;
-              applyUserDataToUI(userFound.full_name, userFound.email);
-              showAppScreen();
-              showToastNotification('Bem-vindo', `OlÃ¡, ${userFound.full_name}! Login realizado com sucesso.`, 'fa-solid fa-circle-check', 'var(--orange-bright)');
-            } else {
-              showAuthAlert('error', 'E-mail ou senha incorretos.');
-            }
-          } else {
-            showAuthAlert('error', 'UsuÃ¡rio nÃ£o encontrado. Se ainda nÃ£o possui cadastro, clique em "Criar Conta" acima.');
-          }
-        }, 500);
-      }
-    }
-
-    async function handleAuthRegister(event) {
-      event.preventDefault();
-      clearAuthAlert();
-
-      const nameInput = document.getElementById('auth-reg-name');
-      const emailInput = document.getElementById('auth-reg-email');
-      const passwordInput = document.getElementById('auth-reg-password');
-      const confirmInput = document.getElementById('auth-reg-confirm');
-      const submitBtn = document.getElementById('btn-register-submit');
-
-      const name = nameInput ? nameInput.value.trim() : '';
-      const email = emailInput ? emailInput.value.trim() : '';
-      const password = passwordInput ? passwordInput.value : '';
-      const confirm = confirmInput ? confirmInput.value : '';
-
-      if (!name) {
-        showAuthAlert('error', 'Digite seu nome completo.');
-        if (nameInput) nameInput.focus();
-        return;
-      }
-      if (!email) {
-        showAuthAlert('error', 'Digite seu e-mail.');
-        if (emailInput) emailInput.focus();
-        return;
-      }
-      if (!password) {
-        showAuthAlert('error', 'Digite sua senha.');
-        if (passwordInput) passwordInput.focus();
-        return;
-      }
-      if (password.length < 6) {
-        showAuthAlert('error', 'A senha deve conter no mÃ­nimo 6 caracteres.');
-        if (passwordInput) passwordInput.focus();
-        return;
-      }
-      if (password !== confirm) {
-        showAuthAlert('error', 'As senhas informadas nÃ£o coincidem.');
-        if (confirmInput) confirmInput.focus();
-        return;
-      }
-
-      setAuthButtonLoading(submitBtn, true, 'Criando conta...');
-
-      // Salva no banco de dados local compatÃ­vel
-      const emailKey = email.toLowerCase();
-      localUsersDB[emailKey] = {
-        id: 'usr_' + Date.now(),
-        email: emailKey,
-        full_name: name,
-        password: password,
-        created_at: new Date().toISOString()
-      };
-      localStorage.setItem('domus_users_db', JSON.stringify(localUsersDB));
-
-      if (isSupabaseConfigured() && supabaseClient) {
-        try {
-          const { data, error } = await supabaseClient.auth.signUp({
-            email: email,
-            password: password,
-            options: {
-              data: {
-                full_name: name
-              }
-            }
-          });
-
-          setAuthButtonLoading(submitBtn, false);
-
-          if (error) {
-            if (error.message && error.message.includes('User already registered')) {
-              showAuthAlert('error', 'Este e-mail jÃ¡ possui uma conta cadastrada. Tente fazer login.');
-            } else {
-              showAuthAlert('error', 'NÃ£o foi possÃ­vel realizar o cadastro no Supabase. Tente novamente.');
-            }
-            return;
-          }
-
-          if (data && data.user) {
-            if (data.session) {
-              currentAuthUser = data.user;
-              await fetchAndApplyUserProfile(data.user);
-              showAppScreen();
-              showToastNotification('Conta Criada', `Bem-vindo ao DOMUS, ${name}!`, 'fa-solid fa-circle-check', 'var(--orange-bright)');
-            } else {
-              showAuthAlert('success', 'Conta criada com sucesso! Verifique seu e-mail para ativar seu acesso.');
-              setTimeout(() => {
-                showAuthView('login');
-              }, 4000);
-            }
-          }
-        } catch (err) {
-          setAuthButtonLoading(submitBtn, false);
-          showAuthAlert('error', 'NÃ£o foi possÃ­vel realizar o cadastro. Tente novamente.');
-        }
-      } else {
-        // BANCO DE DADOS LOCAL COMPATÃVEL
-        setTimeout(() => {
-          setAuthButtonLoading(submitBtn, false);
-          const sessionUser = {
-            id: localUsersDB[emailKey].id,
-            email: emailKey,
-            user_metadata: { full_name: name }
-          };
-          localStorage.setItem('domus_demo_session', JSON.stringify(sessionUser));
-          currentAuthUser = sessionUser;
-          applyUserDataToUI(name, emailKey);
-          showAppScreen();
-          showToastNotification('Conta Criada', `Bem-vindo ao DOMUS, ${name}! Seu cadastro foi realizado com sucesso.`, 'fa-solid fa-circle-check', 'var(--orange-bright)');
-        }, 550);
-      }
-    }
-
-    async function handleAuthForgotPassword(event) {
-      event.preventDefault();
-      clearAuthAlert();
-
-      const emailInput = document.getElementById('auth-forgot-email');
-      const submitBtn = document.getElementById('btn-forgot-submit');
-      const email = emailInput ? emailInput.value.trim() : '';
-
-      if (!email) {
-        showAuthAlert('error', 'Digite seu e-mail cadastrado.');
-        if (emailInput) emailInput.focus();
-        return;
-      }
-
-      setAuthButtonLoading(submitBtn, true, 'Enviando link...');
-
-      if (isSupabaseConfigured() && supabaseClient) {
-        try {
-          const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin
-          });
-          setAuthButtonLoading(submitBtn, false);
-          if (error) {
-            showAuthAlert('error', 'NÃ£o foi possÃ­vel enviar a recuperaÃ§Ã£o. Verifique o e-mail informado.');
-          } else {
-            showAuthAlert('success', 'Link de recuperaÃ§Ã£o enviado para seu e-mail! Verifique sua caixa de entrada.');
-            if (emailInput) emailInput.value = '';
-          }
-        } catch (err) {
-          setAuthButtonLoading(submitBtn, false);
-          showAuthAlert('error', 'NÃ£o foi possÃ­vel enviar a recuperaÃ§Ã£o. Tente novamente.');
-        }
-      } else {
-        // MODO DEMONSTRAÃ‡ÃƒO
-        setTimeout(() => {
-          setAuthButtonLoading(submitBtn, false);
-          showAuthAlert('success', 'Link de recuperaÃ§Ã£o simulado com sucesso! Verifique seu e-mail.');
-          if (emailInput) emailInput.value = '';
-        }, 600);
-      }
-    }
-
+    // SAIR DO SISTEMA E REDIRECIONAR PARA LOGIN.HTML
     async function domusSignOut() {
       if (isSupabaseConfigured() && supabaseClient) {
         try {
@@ -3014,22 +2039,17 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       sessionStorage.removeItem('domus_demo_session');
       currentAuthUser = null;
       currentAuthProfile = null;
-      showAuthScreen('login');
-      showToastNotification('SessÃ£o Encerrada', 'VocÃª saiu com sucesso do sistema.', 'fa-solid fa-right-from-bracket', 'var(--blue-accent)');
+      window.location.replace('login.html?logout=true');
     }
 
-    async function checkInitialAuthSession() {
-      // 1. Se houver parÃ¢metro de logout ou forÃ§ar login na URL
+    // VERIFICAÃ‡ÃƒO OBRIGATÃ“RIA DE SESSÃƒO
+    async function checkAuthSession() {
       const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('logout') === 'true' || urlParams.get('auth') === 'login') {
-        localStorage.removeItem('domus_demo_session');
-        sessionStorage.removeItem('domus_demo_session');
-        currentAuthUser = null;
-        showAuthScreen('login');
+      if (urlParams.get('logout') === 'true' || urlParams.get('action') === 'logout') {
+        await domusSignOut();
         return;
       }
 
-      // 2. Se o Supabase estiver configurado com credenciais vÃ¡lidas
       if (isSupabaseConfigured()) {
         try {
           supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -3044,10 +2064,9 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             if (session && session.user) {
               currentAuthUser = session.user;
               await fetchAndApplyUserProfile(session.user);
-              showAppScreen();
             } else if (event === 'SIGNED_OUT') {
               currentAuthUser = null;
-              showAuthScreen('login');
+              redirectToLogin();
             }
           });
 
@@ -3055,7 +2074,6 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
           if (session && session.user) {
             currentAuthUser = session.user;
             await fetchAndApplyUserProfile(session.user);
-            showAppScreen();
             return;
           }
         } catch (e) {
@@ -3063,15 +2081,14 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         }
       }
 
-      // 3. VerificaÃ§Ã£o de sessÃ£o salva em modo compatÃ­vel/local
-      const demoSession = localStorage.getItem('domus_demo_session');
-      if (demoSession) {
+      // VerificaÃ§Ã£o em modo compatÃ­vel/local
+      const savedSession = localStorage.getItem('domus_demo_session');
+      if (savedSession) {
         try {
-          const parsed = JSON.parse(demoSession);
+          const parsed = JSON.parse(savedSession);
           if (parsed && (parsed.email || parsed.id)) {
             currentAuthUser = parsed;
             applyUserDataToUI(parsed.user_metadata?.full_name || parsed.email, parsed.email);
-            showAppScreen();
             return;
           }
         } catch (e) {
@@ -3079,16 +2096,16 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         }
       }
 
-      // 4. Se nÃ£o houver sessÃ£o ativa: BLOQUEIA ACESSO E EXIBE TELA DE LOGIN OBRIGATÃ“RIA
-      showAuthScreen('login');
+      // Se NÃƒO houver sessÃ£o autenticada: REDIRECIONA OBRIGATORIAMENTE PARA LOGIN.HTML!
+      redirectToLogin();
     }
 
-    // DISPARO IMEDIATO DA VERIFICAÃ‡ÃƒO DE AUTENTICAÃ‡ÃƒO (PROTEGE O SISTEMA NO PRIMEIRO MILISSEGUNDO)
+    // DISPARO IMEDIATO DA PROTEÃ‡ÃƒO DE ACESSO
     try {
-      checkInitialAuthSession();
+      checkAuthSession();
     } catch (authErr) {
-      console.warn('VerificaÃ§Ã£o inicial de autenticaÃ§Ã£o:', authErr);
-      showAuthScreen('login');
+      console.warn('Erro na guarda de autenticaÃ§Ã£o:', authErr);
+      redirectToLogin();
     }
 
     // ESTADO E LOCALSTORAGE
@@ -3168,7 +2185,7 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     function switchTab(tabId, targetSelector) {
       if (!isUserAuthenticated()) {
-        showAuthScreen('login');
+        redirectToLogin();
         return;
       }
 
@@ -5393,7 +4410,7 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     }
 
     // VERIFICAÃ‡ÃƒO OBRIGATÃ“RIA DA SESSÃƒO SUPABASE AUTH (BLOQUEIA DASHBOARD SE NÃƒO LOGADO)
-    checkInitialAuthSession();
+    checkAuthSession();
   </script>
 
 </body>

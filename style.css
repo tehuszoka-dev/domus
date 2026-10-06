@@ -4383,6 +4383,7 @@ body.light-mode .chart-filter-btn.active {
   line-height: 1.4;
 }
 
+
 @media (max-width: 480px) {
   .auth-card {
     padding: 28px 20px;
