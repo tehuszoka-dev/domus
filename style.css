@@ -30,7 +30,7 @@ html.large-font {
 }
 
 /* ========================================================
-   REGRAS ESPECÃFICAS PARA O TEMA CLARO (PROPORCIONAL & ELEGANTE)
+   REGRAS ESPECIFICAS PARA O TEMA CLARO (PROPORCIONAL & ELEGANTE)
    ======================================================== */
 body.light-mode .card,
 body.light-mode .header-banner,
@@ -77,7 +77,7 @@ body.light-mode .badge-tech {
   border-color: rgba(0, 170, 230, 0.3);
 }
 
-/* 2. AÃ‡Ã•ES RÃPIDAS NO TEMA CLARO */
+/* 2. ACOES RAPIDAS NO TEMA CLARO */
 body.light-mode .profile-quick-actions-bar {
   background: rgba(255, 255, 255, 0.90);
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -101,7 +101,7 @@ body.light-mode .btn-quick-action:hover {
   color: #0077aa;
 }
 
-/* 3. RESIDÃŠNCIA E MORADORES NO TEMA CLARO */
+/* 3. RESIDENCIA E MORADORES NO TEMA CLARO */
 body.light-mode .residence-clean-box,
 body.light-mode .resident-item,
 body.light-mode .minimal-item,
@@ -131,7 +131,7 @@ body.light-mode .resident-avatar-mini {
   background: rgba(255, 122, 0, 0.1);
 }
 
-/* 4. ESTATÃSTICAS NO TEMA CLARO */
+/* 4. ESTATISTICAS NO TEMA CLARO */
 body.light-mode .stats-horizontal-strip {
   background: #f8fafc;
   border: 1px solid rgba(0, 0, 0, 0.06);
@@ -149,7 +149,7 @@ body.light-mode .stat-strip-sep {
   background: rgba(0, 0, 0, 0.08);
 }
 
-/* 5. BOTÃ•ES SECUNDÃRIOS / DE AÃ‡ÃƒO NO TEMA CLARO */
+/* 5. BOTOES SECUNDARIOS / DE ACAO NO TEMA CLARO */
 body.light-mode .btn-ai-secondary {
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.14);
@@ -167,7 +167,7 @@ body.light-mode .slider {
   background-color: #cbd5e1;
 }
 
-/* 7. CONFIGURAÃ‡Ã•ES AVANÃ‡ADAS NO TEMA CLARO */
+/* 7. CONFIGURACOES AVANCADAS NO TEMA CLARO */
 body.light-mode .advanced-settings-summary {
   color: #111827;
 }
@@ -176,7 +176,7 @@ body.light-mode .advanced-settings-content {
   border-top-color: rgba(0, 0, 0, 0.08);
 }
 
-/* 8. INTELIGÃŠNCIA ADAPTATIVA & AUTOMAÃ‡Ã•ES NO TEMA CLARO */
+/* 8. INTELIGENCIA ADAPTATIVA & AUTOMACOES NO TEMA CLARO */
 body.light-mode .ai-banner {
   background: linear-gradient(135deg, rgba(0, 210, 255, 0.12) 0%, rgba(255, 122, 0, 0.12) 100%), #ffffff;
   border-color: rgba(0, 0, 0, 0.08);
@@ -433,7 +433,7 @@ button, input, select, textarea, kbd {
   transform: translateY(-2px);
 }
 
-/* ÃREA PRINCIPAL DO DASHBOARD COM IMAGEM DE FUNDO NÃTIDA */
+/* AREA PRINCIPAL DO DASHBOARD COM IMAGEM DE FUNDO NITIDA */
 .main-content {
   flex: 1;
   padding: 30px;
@@ -754,7 +754,7 @@ body.light-mode .search-results-dropdown {
   display: block;
 }
 
-/* 5. TOP GRID: STATUS GERAL, CLIMATIZAÃ‡ÃƒO, HISTÃ“RICO RECENTE (3 COLUNAS) */
+/* 5. TOP GRID: STATUS GERAL, CLIMATIZACAO, HISTORICO RECENTE (3 COLUNAS) */
 .dashboard-top-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -842,7 +842,7 @@ body.light-mode .search-results-dropdown {
   flex-shrink: 0;
 }
 
-/* 6. CLIMATIZAÃ‡ÃƒO CARD */
+/* 6. CLIMATIZACAO CARD */
 .comfort-status-box {
   display: inline-flex;
   align-items: center;
@@ -857,7 +857,7 @@ body.light-mode .search-results-dropdown {
   font-weight: 500;
 }
 
-/* 7. HISTÃ“RICO RECENTE CARD */
+/* 7. HISTORICO RECENTE CARD */
 .history-summary-card {
   display: flex;
   flex-direction: column;
@@ -897,7 +897,7 @@ body.light-mode .search-results-dropdown {
 }
 
 /* ========================================================
-   4. AÃ‡Ã•ES RÃPIDAS NO DASHBOARD
+   4. ACOES RAPIDAS NO DASHBOARD
    ======================================================== */
 .quick-actions-card {
   margin-bottom: 20px;
@@ -989,7 +989,7 @@ body.light-mode .search-results-dropdown {
 }
 
 /* ========================================================
-   8. ENERGIA & 9. INTELIGÃŠNCIA ADAPTATIVA (2 COLUNAS)
+   8. ENERGIA & 9. INTELIGENCIA ADAPTATIVA (2 COLUNAS)
    ======================================================== */
 .dashboard-split-row {
   display: grid;
@@ -1068,7 +1068,7 @@ body.light-mode .search-results-dropdown {
   gap: 6px;
 }
 
-/* INTELIGÃŠNCIA ADAPTATIVA CARD */
+/* INTELIGENCIA ADAPTATIVA CARD */
 .adaptive-summary-card {
   display: flex;
   flex-direction: column;
@@ -1127,7 +1127,7 @@ body.light-mode .search-results-dropdown {
   line-height: 1.4;
 }
 
-/* MODAL DE HISTÃ“RICO COMPLETO */
+/* MODAL DE HISTORICO COMPLETO */
 .modal-history-content {
   max-width: 650px;
   max-height: 85vh;
@@ -1320,7 +1320,7 @@ input:checked + .slider:before {
   transform: translateX(20px);
 }
 
-/* SEGURANÃ‡A E CÃ‚MERAS */
+/* SEGURANCA E CAMERAS */
 .camera-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -1436,7 +1436,7 @@ input:checked + .slider:before {
   transition: height 0.5s;
 }
 
-/* INTELIGÃŠNCIA ADAPTATIVA */
+/* INTELIGENCIA ADAPTATIVA */
 .ai-banner {
   background: linear-gradient(135deg, rgba(0, 210, 255, 0.15) 0%, rgba(255, 122, 0, 0.15) 100%), var(--bg-card);
   border: 1px solid var(--border-color);
@@ -1592,7 +1592,7 @@ input:checked + .slider:before {
   margin-top: 2px;
 }
 
-/* AUTOMAÃ‡Ã•ES */
+/* AUTOMACOES */
 .automations-grid {
   display: flex;
   flex-direction: column;
@@ -1763,7 +1763,7 @@ input:checked + .slider:before {
   font-size: 0.82rem;
 }
 
-/* 2. AÃ‡Ã•ES RÃPIDAS */
+/* 2. ACOES RAPIDAS */
 .profile-quick-actions-bar {
   background: var(--item-bg);
   border: 1px solid var(--border-color);
@@ -1829,7 +1829,7 @@ input:checked + .slider:before {
   margin-bottom: 0;
 }
 
-/* 3. RESIDÃŠNCIA COMPACTO */
+/* 3. RESIDENCIA COMPACTO */
 .residence-clean-box {
   background: var(--item-bg);
   border: 1px solid var(--border-color);
@@ -1972,7 +1972,7 @@ input:checked + .slider:before {
   border-radius: 10px;
 }
 
-/* 4. ESTATÃSTICAS DE USO DO DOMUS */
+/* 4. ESTATISTICAS DE USO DO DOMUS */
 .profile-stats-card {
   margin-bottom: 20px;
   padding: 18px 20px;
@@ -2025,7 +2025,7 @@ input:checked + .slider:before {
   background: var(--border-color);
 }
 
-/* 5 & 6. LISTA MINIMALISTA (PREFERÃŠNCIAS & ACESSIBILIDADE) */
+/* 5 & 6. LISTA MINIMALISTA (PREFERENCIAS & ACESSIBILIDADE) */
 .minimal-list {
   display: flex;
   flex-direction: column;
@@ -2071,7 +2071,7 @@ input:checked + .slider:before {
   margin-top: 2px;
 }
 
-/* 7. SEGURANÃ‡A DA CONTA */
+/* 7. SEGURANCA DA CONTA */
 .profile-security-card {
   margin-bottom: 20px;
   padding: 18px 20px;
@@ -2133,7 +2133,7 @@ input:checked + .slider:before {
   align-self: flex-start;
 }
 
-/* 9. CONFIGURAÃ‡Ã•ES AVANÃ‡ADAS (ACCORDION RECOLHÃVEL) */
+/* 9. CONFIGURACOES AVANCADAS (ACCORDION RECOLHIVEL) */
 .advanced-settings-card {
   margin-bottom: 20px;
   padding: 16px 20px;
@@ -2327,7 +2327,7 @@ body.light-mode .form-group select option {
   margin-top: 20px;
 }
 
-/* NOTIFICAÃ‡Ã•ES INTELLIGENTES FLUTUANTES (TOASTS) */
+/* NOTIFICACOES INTELLIGENTES FLUTUANTES (TOASTS) */
 #toast-container {
   position: fixed;
   bottom: 25px;
@@ -2481,7 +2481,7 @@ body.light-mode .form-group select option {
 }
 
 /* ========================================================
-   ATUALIZAÃ‡Ã•ES: CONTABILIZAÃ‡ÃƒO DE TEMPO NA ABA DE ENERGIA
+   ATUALIZACOES: CONTABILIZACAO DE TEMPO NA ABA DE ENERGIA
    ======================================================== */
 
 .energy-item {
@@ -2605,7 +2605,7 @@ body.light-mode .form-group select option {
 }
 
 /* ========================================================
-   RODAPÃ‰ (FOOTER)
+   RODAPE (FOOTER)
    ======================================================== */
 .domus-footer {
   margin-top: 40px;
@@ -2718,7 +2718,7 @@ body.light-mode .domus-footer {
 
 
 /* ==========================================================================
-   ILUMINAÃ‡ÃƒO INTELIGENTE (FUTURISTIC LIGHTING DASHBOARD)
+   ILUMINACAO INTELIGENTE (FUTURISTIC LIGHTING DASHBOARD)
    ========================================================================== */
 
 .lighting-hero-banner {
@@ -3026,7 +3026,7 @@ body.light-mode .domus-footer {
   box-shadow: 0 0 16px var(--orange-bright);
 }
 
-/* 4. CENAS RÃPIDAS */
+/* 4. CENAS RAPIDAS */
 .lighting-section-wrap {
   margin-bottom: 24px;
 }
@@ -3191,7 +3191,7 @@ body.light-mode .domus-footer {
   transform: translateY(-1px);
 }
 
-/* SEÃ‡ÃƒO INFERIOR: ESQUERDA (IA & AUTOMAÃ‡Ã•ES) E DIREITA (GRÃFICO) */
+/* SECAO INFERIOR: ESQUERDA (IA & AUTOMACOES) E DIREITA (GRAFICO) */
 .lighting-left-col {
   flex: 1;
   display: flex;
@@ -3241,7 +3241,7 @@ body.light-mode .domus-footer {
   color: var(--text-muted);
 }
 
-/* 15. GRÃFICO DE CONSUMO */
+/* 15. GRAFICO DE CONSUMO */
 .lighting-chart-card {
   flex: 1.2;
   padding: 22px;
@@ -3323,7 +3323,7 @@ body.light-mode .domus-footer {
 }
 
 /* ==========================================================================
-   MODAL DE CONTROLE AVANÃ‡ADO DA ILUMINAÃ‡ÃƒO
+   MODAL DE CONTROLE AVANCADO DA ILUMINACAO
    ========================================================================== */
 .modal-light-content {
   max-width: 520px !important;
@@ -3839,7 +3839,7 @@ body.light-mode .domus-footer {
 }
 
 /* ==========================================================================
-   LIGHT MODE SUPPORTS FOR ILUMINAÃ‡ÃƒO
+   LIGHT MODE SUPPORTS FOR ILUMINACAO
    ========================================================================== */
 body.light-mode .lighting-hero-banner,
 body.light-mode .lighting-kpi-card,
@@ -3915,7 +3915,7 @@ body.light-mode .chart-filter-btn.active {
 }
 
 /* ==========================================================================
-   RESPONSIVIDADE DA ABA ILUMINAÃ‡ÃƒO
+   RESPONSIVIDADE DA ABA ILUMINACAO
    ========================================================================== */
 @media (max-width: 1100px) {
   .lighting-kpi-grid {
@@ -3972,7 +3972,7 @@ body.light-mode .chart-filter-btn.active {
 }
 
 /* ========================================================
-   TELA DE AUTENTICAÃ‡ÃƒO DOMUS (LOGIN, CADASTRO & RECUPERAÃ‡ÃƒO)
+   TELA DE AUTENTICACAO DOMUS (LOGIN, CADASTRO & RECUPERACAO)
    ======================================================== */
 .domus-app-wrapper {
   display: flex;
@@ -4370,7 +4370,7 @@ body.light-mode .chart-filter-btn.active {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* BANNER DE INSTRUÃ‡Ã•ES DE CONFIGURAÃ‡ÃƒO DO SUPABASE */
+/* BANNER DE INSTRUCOES DE CONFIGURACAO DO SUPABASE */
 .auth-setup-guide {
   margin-top: 16px;
   background: rgba(0, 210, 255, 0.06);
@@ -4383,7 +4383,6 @@ body.light-mode .chart-filter-btn.active {
   line-height: 1.4;
 }
 
-
 @media (max-width: 480px) {
   .auth-card {
     padding: 28px 20px;
@@ -4392,3 +4391,885 @@ body.light-mode .chart-filter-btn.active {
     font-size: 1.6rem;
   }
 }
+
+/* ==========================================================================
+   NOVA ESTRUTURA DA SIDEBAR (ACCORDIONS EXPANSÍVEIS E ITENS LIMPOS)
+   ========================================================================== */
+.nav-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 10px 12px;
+}
+
+.nav-accordion {
+  list-style: none;
+  margin-bottom: 6px;
+}
+
+.nav-accordion-header {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.nav-accordion-header:hover {
+  color: var(--text-main);
+  background: rgba(0, 210, 255, 0.06);
+  border-color: rgba(0, 210, 255, 0.15);
+}
+
+.nav-accordion-header.open {
+  color: var(--blue-accent);
+  background: rgba(0, 210, 255, 0.08);
+  border-color: rgba(0, 210, 255, 0.25);
+}
+
+.acc-arrow {
+  font-size: 0.72rem;
+  transition: transform 0.25s ease;
+}
+
+.nav-accordion-header.open .acc-arrow {
+  transform: rotate(180deg);
+}
+
+.nav-sublist {
+  list-style: none;
+  display: none;
+  padding-left: 8px;
+  margin-top: 5px;
+  gap: 3px;
+  flex-direction: column;
+}
+
+.nav-sublist.open {
+  display: flex;
+}
+
+.nav-subitem {
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.83rem;
+  transition: all 0.2s ease;
+}
+
+.nav-subitem:hover, .nav-subitem.active {
+  background: rgba(0, 210, 255, 0.12);
+  color: var(--blue-accent);
+  border-left: 3px solid var(--blue-accent);
+}
+
+.chat-badge {
+  background: var(--orange-bright);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 10px;
+  margin-left: auto;
+  box-shadow: 0 0 8px var(--orange-glow);
+}
+
+/* ==========================================================================
+   ID DOMUS DE 9 DÍGITOS NO PERFIL
+   ========================================================================== */
+.domus-id-badge-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 210, 255, 0.08);
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-top: 8px;
+  box-shadow: 0 0 14px rgba(0, 210, 255, 0.12);
+}
+
+.domus-id-label {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.domus-id-number {
+  font-family: monospace;
+  font-weight: 700;
+  color: var(--blue-accent);
+  letter-spacing: 2.5px;
+  font-size: 1.05rem;
+}
+
+.btn-copy-id {
+  background: rgba(255, 122, 0, 0.15);
+  border: 1px solid rgba(255, 122, 0, 0.4);
+  color: var(--orange-bright);
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.btn-copy-id:hover {
+  background: var(--orange-bright);
+  color: #fff;
+  box-shadow: 0 0 10px var(--orange-glow);
+}
+
+/* ==========================================================================
+   ABA DE MORADORES & PERMISSÕES
+   ========================================================================== */
+.moradores-header-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.moradores-title-area h2 {
+  font-size: 1.5rem;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.moradores-title-area p {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+.moradores-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.residents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.resident-card {
+  background: rgba(13, 17, 23, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.resident-card:hover {
+  border-color: var(--blue-accent);
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.15);
+}
+
+.resident-header-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.resident-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(0, 210, 255, 0.12);
+  border: 1.5px solid rgba(0, 210, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue-accent);
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.resident-info h4 {
+  font-size: 1rem;
+  color: var(--text-main);
+  margin-bottom: 2px;
+}
+
+.resident-meta-id {
+  font-size: 0.75rem;
+  color: var(--blue-accent);
+  font-family: monospace;
+}
+
+.resident-role-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.role-owner { background: rgba(255, 122, 0, 0.16); color: var(--orange-bright); border: 1px solid rgba(255, 122, 0, 0.35); }
+.role-resident { background: rgba(0, 210, 255, 0.14); color: var(--blue-accent); border: 1px solid rgba(0, 210, 255, 0.3); }
+.role-guest { background: rgba(139, 148, 158, 0.14); color: var(--text-muted); border: 1px solid rgba(139, 148, 158, 0.3); }
+
+.resident-perms-summary {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.resident-perms-summary strong {
+  color: var(--text-main);
+}
+
+.resident-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.btn-resident-action {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.btn-resident-action:hover {
+  background: rgba(0, 210, 255, 0.1);
+  color: var(--blue-accent);
+  border-color: var(--blue-accent);
+}
+
+.btn-resident-danger:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+/* ==========================================================================
+   ABA DE CHAT MULTIUSUÁRIO EM TEMPO REAL
+   ========================================================================== */
+.chat-layout-container {
+  display: flex;
+  height: calc(100vh - 120px);
+  min-height: 580px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 15px 45px rgba(0,0,0,0.55);
+}
+
+.chat-sidebar-conversations {
+  width: 320px;
+  border-right: 1px solid var(--border-color);
+  background: rgba(13, 17, 23, 0.75);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.chat-sidebar-header {
+  padding: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chat-header-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-header-title h3 {
+  font-size: 1.1rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-user-id-chip {
+  font-size: 0.72rem;
+  color: var(--blue-accent);
+  background: rgba(0, 210, 255, 0.1);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: monospace;
+}
+
+.btn-new-chat {
+  width: 100%;
+  padding: 9px 14px;
+  background: linear-gradient(135deg, var(--orange-bright), #ff9500);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 0 12px var(--orange-glow);
+  transition: transform 0.2s;
+}
+
+.btn-new-chat:hover {
+  transform: translateY(-1px);
+}
+
+.chat-search-bar {
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-search-bar i {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.chat-search-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.85rem;
+}
+
+.conversations-scroll-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.conversation-item {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  transition: all 0.2s ease;
+}
+
+.conversation-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.conversation-item.active {
+  background: rgba(0, 210, 255, 0.1);
+  border-left: 3px solid var(--blue-accent);
+}
+
+.conversation-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 210, 255, 0.12);
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue-accent);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.conversation-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.conv-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.conv-name-row strong {
+  font-size: 0.88rem;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.conv-time {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.conv-last-msg {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.conv-unread-pill {
+  background: var(--orange-bright);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: 6px;
+}
+
+/* JANELA PRINCIPAL DA CONVERSA */
+.chat-main-window {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #090d14;
+  position: relative;
+}
+
+.chat-active-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(13, 17, 23, 0.85);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-header-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-chat-back-mobile {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.chat-active-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(0, 210, 255, 0.15);
+  border: 1px solid rgba(0, 210, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue-accent);
+}
+
+.chat-active-info h4 {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  margin-bottom: 2px;
+}
+
+.chat-active-status {
+  font-size: 0.75rem;
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.chat-active-status::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+.btn-chat-icon {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-chat-icon:hover {
+  color: var(--blue-accent);
+  background: rgba(0, 210, 255, 0.1);
+  border-color: rgba(0, 210, 255, 0.3);
+}
+
+.chat-messages-stream {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chat-empty-state {
+  margin: auto;
+  text-align: center;
+  max-width: 380px;
+  color: var(--text-muted);
+}
+
+.chat-empty-state i {
+  font-size: 3rem;
+  color: var(--blue-accent);
+  margin-bottom: 14px;
+  opacity: 0.7;
+}
+
+.chat-empty-state h4 {
+  color: var(--text-main);
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.chat-empty-state p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+/* BALÕES DE MENSAGEM */
+.chat-bubble {
+  max-width: 68%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  position: relative;
+  word-break: break-word;
+  animation: bubblePop 0.2s ease;
+}
+
+@keyframes bubblePop {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.chat-bubble.sent {
+  align-self: flex-end;
+  background: linear-gradient(135deg, rgba(0, 210, 255, 0.2) 0%, rgba(0, 180, 255, 0.28) 100%);
+  border: 1px solid rgba(0, 210, 255, 0.35);
+  color: #f0f6fc;
+  border-bottom-right-radius: 3px;
+}
+
+.chat-bubble.received {
+  align-self: flex-start;
+  background: rgba(22, 27, 34, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f0f6fc;
+  border-bottom-left-radius: 3px;
+}
+
+.msg-reply-snippet {
+  background: rgba(0, 0, 0, 0.25);
+  border-left: 3px solid var(--orange-bright);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.msg-text {
+  margin-bottom: 4px;
+}
+
+.msg-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.msg-media-img {
+  max-width: 100%;
+  max-height: 240px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.msg-media-audio {
+  max-height: 38px;
+  margin-bottom: 6px;
+  width: 100%;
+}
+
+.msg-media-file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--blue-accent);
+  margin-bottom: 6px;
+  font-size: 0.82rem;
+}
+
+.msg-actions-hover {
+  display: none;
+  position: absolute;
+  top: -12px;
+  right: 10px;
+  background: #141a26;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 2px 6px;
+  gap: 6px;
+}
+
+.chat-bubble:hover .msg-actions-hover {
+  display: flex;
+}
+
+.btn-msg-hover {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.btn-msg-hover:hover {
+  color: var(--text-main);
+}
+
+/* BARRAS DE PREVIEW (RESPOSTA, GRAVAÇÃO, ANEXO) */
+.chat-reply-preview-bar, .chat-attachment-preview-bar {
+  padding: 8px 16px;
+  background: rgba(13, 17, 23, 0.95);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.chat-audio-record-bar, .chat-audio-preview-bar {
+  padding: 10px 16px;
+  background: rgba(255, 122, 0, 0.08);
+  border-top: 1px solid rgba(255, 122, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.record-pulse-dot {
+  width: 10px;
+  height: 10px;
+  background: #ef4444;
+  border-radius: 50%;
+  display: inline-block;
+  animation: recPulse 1s infinite alternate;
+}
+
+@keyframes recPulse {
+  from { opacity: 0.4; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1.2); }
+}
+
+.btn-audio-control {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-audio-cancel {
+  background: rgba(239, 68, 68, 0.16);
+  color: #f87171;
+}
+
+.btn-audio-stop {
+  background: var(--blue-accent);
+  color: #0b0f17;
+}
+
+.btn-audio-send {
+  background: var(--orange-bright);
+  color: #fff;
+}
+
+.btn-cancel-reply {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* RODAPÉ DO CHAT */
+.chat-input-footer {
+  padding: 12px 18px;
+  background: rgba(13, 17, 23, 0.95);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-chat-media {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.15rem;
+  cursor: pointer;
+  padding: 6px;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-chat-media:hover {
+  color: var(--blue-accent);
+}
+
+#chat-message-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 10px 16px;
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.88rem;
+  outline: none;
+  resize: none;
+  max-height: 100px;
+  line-height: 1.4;
+  transition: border-color 0.2s;
+}
+
+#chat-message-input:focus {
+  border-color: var(--blue-accent);
+  box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+}
+
+.btn-chat-send {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--orange-bright), #ff9500);
+  border: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px var(--orange-glow);
+  transition: transform 0.2s;
+}
+
+.btn-chat-send:hover {
+  transform: scale(1.06);
+}
+
+/* RESPONSIVIDADE DO CHAT NO MOBILE */
+@media (max-width: 768px) {
+  .chat-layout-container {
+    height: calc(100vh - 160px);
+  }
+  .chat-sidebar-conversations {
+    width: 100%;
+  }
+  .chat-main-window {
+    display: none;
+  }
+  .chat-main-window.mobile-active {
+    display: flex;
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+  }
+  .btn-chat-back-mobile {
+    display: inline-flex;
+  }
+}
+
+

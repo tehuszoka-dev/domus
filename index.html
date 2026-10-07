@@ -17,11 +17,233 @@
   </head>
 <body>
 
-  <!-- CONTAINER DE NOTIFICA&Ccedil;&Otilde;ES FLUTUANTES (CANTO INFERIOR DIREITO) -->
+  <!-- CONTAINER DE NOTIFICAÇÕES FLUTUANTES (CANTO INFERIOR DIREITO) -->
   <div id="toast-container"></div>
 
-  <!-- WRAPPER DO SISTEMA DOMUS PROTEGIDO POR AUTENTICA&Ccedil;&Atilde;O -->
-  <div id="domus-app-wrapper" class="domus-app-wrapper">
+  <!-- ==========================================================================
+       TELA DE LOGIN OBRIGATÓRIA DOMUS (APARECE ANTES DE QUALQUER ACESSO AO SISTEMA)
+       ========================================================================== -->
+  <div id="domus-auth-screen" class="domus-auth-screen">
+    <div class="auth-ambient-glow glow-cyan"></div>
+    <div class="auth-ambient-glow glow-orange"></div>
+
+    <div class="auth-card-container">
+      <div class="auth-card">
+        <!-- ÁREA DA MARCA DOMUS -->
+        <div class="auth-brand-area">
+          <div class="auth-logo-badge">
+            <i class="fa-solid fa-house-signal"></i>
+          </div>
+          <h1 class="auth-brand-title">DOMUS</h1>
+          <span class="auth-brand-subtitle">SMART HOME SYSTEM</span>
+          <p class="auth-brand-slogan">Integrando a tecnologia ao seu modo de viver.</p>
+        </div>
+
+        <!-- TABS DE NAVEGAÇÃO -->
+        <div class="auth-nav-tabs">
+          <button type="button" class="auth-tab-btn active" id="tab-btn-login" onclick="showAuthView('login')">
+            <i class="fa-solid fa-right-to-bracket"></i> Entrar
+          </button>
+          <button type="button" class="auth-tab-btn" id="tab-btn-register" onclick="showAuthView('register')">
+            <i class="fa-solid fa-user-plus"></i> Criar Conta
+          </button>
+        </div>
+
+        <!-- CAIXA DE ALERTAS AMIGÁVEIS -->
+        <div id="auth-status-box" class="auth-status-alert" style="display: none;"></div>
+
+        <!-- 1. VIEW DE LOGIN -->
+        <div id="auth-view-login">
+          <div class="auth-view-header">
+            <h2 class="auth-view-title">Bem-vindo ao DOMUS</h2>
+            <p class="auth-view-desc">Entre para acessar sua residência inteligente</p>
+          </div>
+
+          <form id="auth-login-form" class="auth-form" onsubmit="handleAuthLogin(event)" novalidate>
+            <div class="auth-input-group">
+              <label for="auth-login-email"><i class="fa-solid fa-envelope"></i> E-mail</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="email" 
+                  id="auth-login-email" 
+                  class="auth-input-field" 
+                  placeholder="seu.email@exemplo.com" 
+                  required 
+                  autocomplete="email"
+                >
+                <i class="fa-solid fa-envelope auth-input-icon"></i>
+              </div>
+            </div>
+
+            <div class="auth-input-group">
+              <label for="auth-login-password"><i class="fa-solid fa-lock"></i> Senha</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="password" 
+                  id="auth-login-password" 
+                  class="auth-input-field" 
+                  placeholder="••••••••" 
+                  required 
+                  autocomplete="current-password"
+                >
+                <i class="fa-solid fa-lock auth-input-icon"></i>
+                <button type="button" class="auth-pwd-toggle" onclick="toggleAuthPasswordVisibility('auth-login-password', this)" title="Mostrar ou ocultar senha">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="auth-extra-row">
+              <button type="button" class="auth-text-link" onclick="showAuthView('forgot')">Esqueci minha senha</button>
+            </div>
+
+            <button type="submit" class="btn-auth-submit" id="btn-login-submit">
+              <span class="btn-auth-text"><i class="fa-solid fa-right-to-bracket"></i> Entrar</span>
+              <span class="btn-auth-loading" style="display: none;"><i class="fa-solid fa-circle-notch fa-spin"></i> Autenticando...</span>
+            </button>
+          </form>
+
+          <div class="auth-switch-prompt">
+            Não tem uma conta? 
+            <button type="button" onclick="showAuthView('register')">Criar conta</button>
+          </div>
+        </div>
+
+        <!-- 2. VIEW DE CADASTRO -->
+        <div id="auth-view-register" style="display: none;">
+          <div class="auth-view-header">
+            <h2 class="auth-view-title">Criar Conta no DOMUS</h2>
+            <p class="auth-view-desc">Cadastre-se para gerenciar sua residência inteligente</p>
+          </div>
+
+          <form id="auth-register-form" class="auth-form" onsubmit="handleAuthRegister(event)" novalidate>
+            <div class="auth-input-group">
+              <label for="auth-reg-name"><i class="fa-solid fa-user"></i> Nome completo</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="text" 
+                  id="auth-reg-name" 
+                  class="auth-input-field" 
+                  placeholder="Ex: Matheus Silva" 
+                  required 
+                  autocomplete="name"
+                >
+                <i class="fa-solid fa-user auth-input-icon"></i>
+              </div>
+            </div>
+
+            <div class="auth-input-group">
+              <label for="auth-reg-email"><i class="fa-solid fa-envelope"></i> E-mail</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="email" 
+                  id="auth-reg-email" 
+                  class="auth-input-field" 
+                  placeholder="seu.email@exemplo.com" 
+                  required 
+                  autocomplete="email"
+                >
+                <i class="fa-solid fa-envelope auth-input-icon"></i>
+              </div>
+            </div>
+
+            <div class="auth-input-group">
+              <label for="auth-reg-password"><i class="fa-solid fa-lock"></i> Senha</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="password" 
+                  id="auth-reg-password" 
+                  class="auth-input-field" 
+                  placeholder="Mínimo de 6 caracteres" 
+                  required 
+                  autocomplete="new-password"
+                >
+                <i class="fa-solid fa-lock auth-input-icon"></i>
+                <button type="button" class="auth-pwd-toggle" onclick="toggleAuthPasswordVisibility('auth-reg-password', this)" title="Mostrar ou ocultar senha">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="auth-input-group">
+              <label for="auth-reg-confirm"><i class="fa-solid fa-shield-halved"></i> Confirmar senha</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="password" 
+                  id="auth-reg-confirm" 
+                  class="auth-input-field" 
+                  placeholder="Repita sua senha" 
+                  required 
+                  autocomplete="new-password"
+                >
+                <i class="fa-solid fa-shield-halved auth-input-icon"></i>
+                <button type="button" class="auth-pwd-toggle" onclick="toggleAuthPasswordVisibility('auth-reg-confirm', this)" title="Mostrar ou ocultar senha">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-auth-submit" id="btn-register-submit">
+              <span class="btn-auth-text"><i class="fa-solid fa-user-plus"></i> Criar Conta</span>
+              <span class="btn-auth-loading" style="display: none;"><i class="fa-solid fa-circle-notch fa-spin"></i> Criando conta...</span>
+            </button>
+          </form>
+
+          <div class="auth-switch-prompt">
+            Já possui uma conta? 
+            <button type="button" onclick="showAuthView('login')">Entrar</button>
+          </div>
+        </div>
+
+        <!-- 3. VIEW DE RECUPERAÇÃO DE SENHA -->
+        <div id="auth-view-forgot" style="display: none;">
+          <div class="auth-view-header">
+            <h2 class="auth-view-title">Recuperação de Senha</h2>
+            <p class="auth-view-desc">Informe seu e-mail cadastrado para receber o link de redefinição.</p>
+          </div>
+
+          <form id="auth-forgot-form" class="auth-form" onsubmit="handleAuthForgotPassword(event)" novalidate>
+            <div class="auth-input-group">
+              <label for="auth-forgot-email"><i class="fa-solid fa-envelope"></i> E-mail cadastrado</label>
+              <div class="auth-input-wrapper">
+                <input 
+                  type="email" 
+                  id="auth-forgot-email" 
+                  class="auth-input-field" 
+                  placeholder="seu.email@exemplo.com" 
+                  required 
+                  autocomplete="email"
+                >
+                <i class="fa-solid fa-envelope auth-input-icon"></i>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-auth-submit" id="btn-forgot-submit">
+              <span class="btn-auth-text"><i class="fa-solid fa-paper-plane"></i> Enviar Link de Recuperação</span>
+              <span class="btn-auth-loading" style="display: none;"><i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...</span>
+            </button>
+          </form>
+
+          <div class="auth-switch-prompt">
+            <button type="button" class="auth-back-btn" onclick="showAuthView('login')">
+              <i class="fa-solid fa-arrow-left"></i> Voltar para o login
+            </button>
+          </div>
+        </div>
+
+        <!-- BOTÃO DE ACESSO AOS CÓDIGOS PARA VS CODE -->
+        <div style="margin-top: 18px; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px;">
+          <a href="codigos.html" style="display: inline-flex; align-items: center; gap: 8px; color: var(--blue-accent); font-size: 0.82rem; text-decoration: none; padding: 8px 14px; background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0, 210, 255, 0.18)'" onmouseout="this.style.background='rgba(0, 210, 255, 0.08)'">
+            <i class="fa-solid fa-code"></i> <strong>Central de Códigos (Copiar para VS Code)</strong>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- WRAPPER DO SISTEMA DOMUS PROTEGIDO POR AUTENTICAÇÃO -->
+  <div id="domus-app-wrapper" class="domus-app-wrapper auth-hidden">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
@@ -31,14 +253,62 @@
       </div>
 
     <ul class="nav-list">
-      <li class="nav-item active" data-tab="tab-inicio"><i class="fa-solid fa-house"></i> In&iacute;cio</li>
-      <li class="nav-item" data-tab="tab-iluminacao"><i class="fa-solid fa-lightbulb"></i> Ilumina&ccedil;&atilde;o</li>
-      <li class="nav-item" data-tab="tab-climatizacao"><i class="fa-solid fa-snowflake"></i> Climatiza&ccedil;&atilde;o</li>
-      <li class="nav-item" data-tab="tab-seguranca"><i class="fa-solid fa-shield-halved"></i> Seguran&ccedil;a</li>
-      <li class="nav-item" data-tab="tab-energia"><i class="fa-solid fa-bolt"></i> Consumo de Energia</li>
-      <li class="nav-item" data-tab="tab-inteligencia"><i class="fa-solid fa-brain"></i> Intelig&ecirc;ncia Adaptativa</li>
-      <li class="nav-item" data-tab="tab-automacoes"><i class="fa-solid fa-robot"></i> Automa&ccedil;&otilde;es</li>
+      <!-- 5 ITENS PRINCIPAIS FIXOS -->
+      <li class="nav-item active" data-tab="tab-inicio"><i class="fa-solid fa-house"></i> Início</li>
+      <li class="nav-item" data-tab="tab-inteligencia"><i class="fa-solid fa-brain"></i> Inteligência</li>
+      <li class="nav-item" data-tab="tab-seguranca"><i class="fa-solid fa-shield-halved"></i> Segurança</li>
       <li class="nav-item" data-tab="tab-perfil"><i class="fa-solid fa-user"></i> Perfil</li>
+      <li class="nav-item" data-tab="tab-chat" id="nav-item-chat">
+        <i class="fa-solid fa-comments"></i> Chat
+        <span class="chat-badge" id="sidebar-chat-badge" style="display: none;">0</span>
+      </li>
+
+      <!-- SEPARADOR -->
+      <li class="nav-divider"></li>
+
+      <!-- SEÇÃO EXPANSÍVEL 1: CONTROLE DA CASA -->
+      <li class="nav-accordion">
+        <button type="button" class="nav-accordion-header" onclick="toggleNavAccordion('acc-controle')">
+          <span><i class="fa-solid fa-sliders"></i> Controle da Casa</span>
+          <i class="fa-solid fa-chevron-down acc-arrow"></i>
+        </button>
+        <ul class="nav-sublist" id="acc-controle">
+          <li class="nav-subitem" data-tab="tab-iluminacao"><i class="fa-solid fa-lightbulb"></i> Iluminação</li>
+          <li class="nav-subitem" data-tab="tab-climatizacao"><i class="fa-solid fa-snowflake"></i> Climatização</li>
+          <li class="nav-subitem" data-tab="tab-energia"><i class="fa-solid fa-bolt"></i> Energia</li>
+          <li class="nav-subitem" data-tab="tab-automacoes"><i class="fa-solid fa-robot"></i> Automações</li>
+          <li class="nav-subitem" onclick="openDevicesModal()"><i class="fa-solid fa-plug"></i> Dispositivos</li>
+          <li class="nav-subitem" onclick="openRoomsModal()"><i class="fa-solid fa-door-open"></i> Cômodos</li>
+        </ul>
+      </li>
+
+      <!-- SEÇÃO EXPANSÍVEL 2: MONITORAMENTO -->
+      <li class="nav-accordion">
+        <button type="button" class="nav-accordion-header" onclick="toggleNavAccordion('acc-monitor')">
+          <span><i class="fa-solid fa-chart-line"></i> Monitoramento</span>
+          <i class="fa-solid fa-chevron-down acc-arrow"></i>
+        </button>
+        <ul class="nav-sublist" id="acc-monitor">
+          <li class="nav-subitem" onclick="openHistoryModal()"><i class="fa-solid fa-clock-rotate-left"></i> Histórico</li>
+          <li class="nav-subitem" data-tab="tab-energia"><i class="fa-solid fa-chart-pie"></i> Consumo</li>
+          <li class="nav-subitem" onclick="openEventsModal()"><i class="fa-solid fa-calendar-check"></i> Eventos</li>
+          <li class="nav-subitem" onclick="openNotificationsModal()"><i class="fa-solid fa-bell"></i> Notificações</li>
+        </ul>
+      </li>
+
+      <!-- SEÇÃO EXPANSÍVEL 3: CASA & MORADORES -->
+      <li class="nav-accordion">
+        <button type="button" class="nav-accordion-header" onclick="toggleNavAccordion('acc-casa')">
+          <span><i class="fa-solid fa-people-roof"></i> Casa</span>
+          <i class="fa-solid fa-chevron-down acc-arrow"></i>
+        </button>
+        <ul class="nav-sublist" id="acc-casa">
+          <li class="nav-subitem" data-tab="tab-moradores"><i class="fa-solid fa-users"></i> Moradores</li>
+          <li class="nav-subitem" onclick="openInvitationsModal()"><i class="fa-solid fa-envelope-open-text"></i> Convites</li>
+          <li class="nav-subitem" onclick="openPermissionsModal()"><i class="fa-solid fa-user-shield"></i> Permissões</li>
+          <li class="nav-subitem" onclick="openResidenceSettingsModal()"><i class="fa-solid fa-gear"></i> Configurações da Residência</li>
+        </ul>
+      </li>
     </ul>
 
     <button type="button" class="btn-primary" style="margin-top: auto;" onclick="domusSignOut()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
@@ -375,7 +645,7 @@
             <div class="scene-card-icon" style="color: #f59e0b; background: rgba(245, 158, 11, 0.15);">
               <i class="fa-solid fa-sun"></i>
             </div>
-            <div class="scene-card-title">â˜€ï¸ Dia</div>
+            <div class="scene-card-title">☀️ Dia</div>
             <p class="scene-card-desc">Ilumina&ccedil;&atilde;o geral em intensidade alta.</p>
           </div>
 
@@ -383,7 +653,7 @@
             <div class="scene-card-icon" style="color: #6366f1; background: rgba(99, 102, 241, 0.15);">
               <i class="fa-solid fa-moon"></i>
             </div>
-            <div class="scene-card-title">ðŸŒ™ Noite</div>
+            <div class="scene-card-title">🌙 Noite</div>
             <p class="scene-card-desc">Reduz ilumina&ccedil;&atilde;o e desliga ambientes desnecess&aacute;rios.</p>
           </div>
 
@@ -391,7 +661,7 @@
             <div class="scene-card-icon" style="color: #ec4899; background: rgba(236, 72, 153, 0.15);">
               <i class="fa-solid fa-film"></i>
             </div>
-            <div class="scene-card-title">ðŸŽ¬ Cinema</div>
+            <div class="scene-card-title">🎬 Cinema</div>
             <p class="scene-card-desc">Sala com ilumina&ccedil;&atilde;o baixa e quente.</p>
           </div>
 
@@ -399,7 +669,7 @@
             <div class="scene-card-icon" style="color: #00d2ff; background: rgba(0, 210, 255, 0.15);">
               <i class="fa-solid fa-book-open"></i>
             </div>
-            <div class="scene-card-title">ðŸ“š Estudo</div>
+            <div class="scene-card-title">📚 Estudo</div>
             <p class="scene-card-desc">Ilumina&ccedil;&atilde;o forte e mais neutra/fria.</p>
           </div>
 
@@ -407,7 +677,7 @@
             <div class="scene-card-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.15);">
               <i class="fa-solid fa-house-user"></i>
             </div>
-            <div class="scene-card-title">ðŸ  Cheguei</div>
+            <div class="scene-card-title">🏠 Cheguei</div>
             <p class="scene-card-desc">Ativa ilumina&ccedil;&atilde;o de boas-vindas.</p>
           </div>
 
@@ -415,7 +685,7 @@
             <div class="scene-card-icon" style="color: #a855f7; background: rgba(168, 85, 247, 0.15);">
               <i class="fa-solid fa-champagne-glasses"></i>
             </div>
-            <div class="scene-card-title">ðŸŽ‰ Festa</div>
+            <div class="scene-card-title">🎉 Festa</div>
             <p class="scene-card-desc">Ativa ilumina&ccedil;&atilde;o configurada para festa.</p>
           </div>
         </div>
@@ -435,7 +705,7 @@
                 <i class="fa-solid fa-couch" style="color: var(--blue-accent);"></i>
                 <strong>Sala de Estar</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-1">âšª 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-1">⚪ 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -465,7 +735,7 @@
                 <i class="fa-solid fa-utensils" style="color: var(--orange-bright);"></i>
                 <strong>Cozinha</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-2">âšª 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-2">⚪ 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -495,7 +765,7 @@
                 <i class="fa-solid fa-bed" style="color: #a855f7;"></i>
                 <strong>Quarto Principal</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-3">âšª 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-3">⚪ 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -525,7 +795,7 @@
                 <i class="fa-solid fa-child-reaching" style="color: #00d2ff;"></i>
                 <strong>Quarto 2</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-4">âšª 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-4">⚪ 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -555,7 +825,7 @@
                 <i class="fa-solid fa-bath" style="color: #06b6d4;"></i>
                 <strong>Banheiro</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-5">âšª 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-5">⚪ 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -585,7 +855,7 @@
                 <i class="fa-solid fa-warehouse" style="color: #f59e0b;"></i>
                 <strong>Garagem</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-6">âšª 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-6">⚪ 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -615,7 +885,7 @@
                 <i class="fa-solid fa-tree" style="color: #10b981;"></i>
                 <strong>Refletor do Quintal</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-7">âšª 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-7">⚪ 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -685,7 +955,7 @@
             <div class="lighting-automations-list">
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>ðŸŒ‡ Ao anoitecer</strong>
+                  <strong>🌇 Ao anoitecer</strong>
                   <span>Ligar ilumina&ccedil;&atilde;o externa (Refletor do Quintal)</span>
                 </div>
                 <label class="switch">
@@ -696,7 +966,7 @@
 
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>ðŸš¶ Ao detectar movimento</strong>
+                  <strong>🚶 Ao detectar movimento</strong>
                   <span>Ligar ilumina&ccedil;&atilde;o da garagem</span>
                 </div>
                 <label class="switch">
@@ -707,7 +977,7 @@
 
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>ðŸ  Ao chegar</strong>
+                  <strong>🏠 Ao chegar</strong>
                   <span>Ativar ilumina&ccedil;&atilde;o de boas-vindas</span>
                 </div>
                 <label class="switch">
@@ -718,7 +988,7 @@
 
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>ðŸŒ™ Hor&aacute;rio de dormir</strong>
+                  <strong>🌙 Hor&aacute;rio de dormir</strong>
                   <span>Reduzir ilumina&ccedil;&atilde;o geral da casa &agrave;s 23h30</span>
                 </div>
                 <label class="switch">
@@ -729,7 +999,7 @@
 
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>â° Hor&aacute;rio programado</strong>
+                  <strong>⏰ Hor&aacute;rio programado</strong>
                   <span>Ligar/desligar dispositivos em hor&aacute;rios definidos</span>
                 </div>
                 <label class="switch">
@@ -1172,7 +1442,7 @@
       <div class="dashboard-grid">
         <div class="card" style="grid-column: span 2;">
           <div class="card-title">
-            <span>ðŸ§  Sugest&otilde;es Identificadas</span>
+            <span>🧠 Sugest&otilde;es Identificadas</span>
             <i class="fa-solid fa-brain" style="color: var(--orange-bright);"></i>
           </div>
 
@@ -1268,11 +1538,19 @@
           </div>
           <div class="profile-text-details">
             <div class="profile-name-row">
-              <h2 id="profile-display-name">Matheus D. Lucca</h2>
-              <span class="profile-username" id="profile-display-handle">@01_Lucca</span>
+              <h2 id="profile-display-name">Carregando...</h2>
+              <span class="profile-username" id="profile-display-handle">@usuario</span>
             </div>
-            <div class="profile-badges">
-              <span class="badge badge-admin"><i class="fa-solid fa-shield-halved"></i> Administrador do Sistema</span>
+            <div style="font-size: 0.82rem; color: var(--text-muted); margin: 2px 0 4px 0;" id="profile-display-email">email@exemplo.com</div>
+            <div class="domus-id-badge-container">
+              <span class="domus-id-label">ID DOMUS:</span>
+              <span class="domus-id-number" id="profile-display-public-id">--- --- ---</span>
+              <button type="button" class="btn-copy-id" onclick="copyDomusId()" title="Copiar ID DOMUS de 9 dígitos">
+                <i class="fa-solid fa-copy"></i> Copiar ID
+              </button>
+            </div>
+            <div class="profile-badges" style="margin-top: 6px;">
+              <span class="badge badge-admin" id="profile-residence-role-badge"><i class="fa-solid fa-shield-halved"></i> Dono da Residência</span>
               <span class="badge badge-tech"><i class="fa-solid fa-microchip"></i> DOMUS Pro Connect</span>
             </div>
           </div>
@@ -1573,6 +1851,164 @@
 
     </div>
 
+    <!-- ABA 9: CHAT EM TEMPO REAL MULTIUSUÁRIO -->
+    <div id="tab-chat" class="tab-content">
+      <div class="chat-layout-container">
+        <!-- BARRA LATERAL DE CONVERSAS -->
+        <aside class="chat-sidebar-conversations">
+          <div class="chat-sidebar-header">
+            <div class="chat-header-title">
+              <h3><i class="fa-solid fa-comments"></i> Mensagens</h3>
+              <span class="chat-user-id-chip" title="Seu ID Público">ID: <strong id="chat-my-public-id">---</strong></span>
+            </div>
+            <button type="button" class="btn-new-chat" onclick="openNewChatModal()">
+              <i class="fa-solid fa-plus"></i> Nova conversa por ID
+            </button>
+          </div>
+
+          <div class="chat-search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Buscar conversas..." id="chat-search-input" oninput="filterConversationsList(this.value)">
+          </div>
+
+          <div class="conversations-scroll-list" id="conversations-list-container">
+            <div style="padding: 24px; text-align: center; color: var(--text-muted); font-size: 0.85rem;">
+              <i class="fa-solid fa-comment-dots" style="font-size: 1.8rem; margin-bottom: 8px; color: var(--blue-accent); display: block;"></i>
+              Nenhuma conversa iniciada.<br>Clique em "+ Nova conversa" e digite o ID DOMUS de 9 dígitos de outro usuário.
+            </div>
+          </div>
+        </aside>
+
+        <!-- JANELA PRINCIPAL DA CONVERSA -->
+        <section class="chat-main-window" id="chat-main-window">
+          <!-- CABEÇALHO DA CONVERSA ATIVA -->
+          <div class="chat-active-header" id="chat-active-header">
+            <div class="chat-header-user">
+              <button type="button" class="btn-chat-back-mobile" onclick="closeMobileChatWindow()"><i class="fa-solid fa-arrow-left"></i></button>
+              <div class="chat-active-avatar" id="chat-active-avatar">
+                <i class="fa-solid fa-user"></i>
+              </div>
+              <div class="chat-active-info">
+                <h4 id="chat-active-name">Selecione uma conversa</h4>
+                <span class="chat-active-status" id="chat-active-status">Pronto para conversar</span>
+              </div>
+            </div>
+            <div class="chat-header-actions">
+              <button type="button" class="btn-chat-icon" onclick="copyActiveContactId()" title="Copiar ID do contato"><i class="fa-solid fa-id-card"></i></button>
+            </div>
+          </div>
+
+          <!-- MENSAGENS -->
+          <div class="chat-messages-stream" id="chat-messages-stream">
+            <div class="chat-empty-state" id="chat-empty-state">
+              <i class="fa-solid fa-comments"></i>
+              <h4>Nenhuma conversa selecionada</h4>
+              <p>Adicione um contato informando o ID DOMUS de 9 dígitos ou selecione uma conversa existente ao lado para começar.</p>
+              <button type="button" class="btn-ai-action btn-ai-primary" onclick="openNewChatModal()">
+                <i class="fa-solid fa-user-plus"></i> Iniciar conversa por ID
+              </button>
+            </div>
+          </div>
+
+          <!-- BARRA DE RESPOSTA -->
+          <div class="chat-reply-preview-bar" id="chat-reply-preview-bar" style="display: none;">
+            <div class="reply-bar-content" style="display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-reply" style="color: var(--orange-bright);"></i>
+              <div>
+                <strong id="reply-to-author" style="font-size: 0.78rem; color: var(--blue-accent);">Autor</strong>
+                <p id="reply-to-text" style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">Texto da mensagem...</p>
+              </div>
+            </div>
+            <button type="button" class="btn-cancel-reply" onclick="cancelReply()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <!-- BARRA DE GRAVAÇÃO DE ÁUDIO -->
+          <div class="chat-audio-record-bar" id="chat-audio-record-bar" style="display: none;">
+            <div class="audio-recording-indicator">
+              <span class="record-pulse-dot"></span>
+              <span id="audio-record-timer" style="font-weight: 700; color: #ef4444; font-family: monospace;">00:00</span>
+              <span style="font-size: 0.78rem; color: var(--text-muted); margin-left: 8px;">Gravando áudio...</span>
+            </div>
+            <div class="audio-record-controls">
+              <button type="button" class="btn-audio-control btn-audio-cancel" onclick="cancelAudioRecording()"><i class="fa-solid fa-trash"></i> Cancelar</button>
+              <button type="button" class="btn-audio-control btn-audio-stop" onclick="stopAudioRecording()"><i class="fa-solid fa-stop"></i> Parar e Ouvir</button>
+            </div>
+          </div>
+
+          <!-- BARRA DE PREVIEW DO ÁUDIO PRONTO -->
+          <div class="chat-audio-preview-bar" id="chat-audio-preview-bar" style="display: none;">
+            <audio id="audio-preview-player" controls style="height: 36px; max-width: 280px;"></audio>
+            <div class="audio-preview-controls" style="display: flex; gap: 8px;">
+              <button type="button" class="btn-audio-control btn-audio-cancel" onclick="discardRecordedAudio()"><i class="fa-solid fa-trash"></i> Descartar</button>
+              <button type="button" class="btn-audio-control btn-audio-send" onclick="sendRecordedAudio()"><i class="fa-solid fa-paper-plane"></i> Enviar</button>
+            </div>
+          </div>
+
+          <!-- BARRA DE PREVIEW DE ANEXO -->
+          <div class="chat-attachment-preview-bar" id="chat-attachment-preview-bar" style="display: none;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <img id="attachment-preview-img" src="" style="display: none; max-height: 50px; border-radius: 6px;">
+              <div id="attachment-preview-file-info" style="display: none; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--blue-accent);">
+                <i class="fa-solid fa-file"></i>
+                <span id="attachment-preview-filename">arquivo.pdf</span>
+              </div>
+            </div>
+            <button type="button" class="btn-cancel-reply" onclick="clearAttachmentPreview()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <!-- RODAPÉ DE ENVIO DE MENSAGENS -->
+          <div class="chat-input-footer" id="chat-input-footer">
+            <input type="file" id="chat-file-input" style="display: none;" onchange="handleChatFileSelect(this)">
+            <button type="button" class="btn-chat-media" onclick="document.getElementById('chat-file-input').click()" title="Anexar imagem ou arquivo">
+              <i class="fa-solid fa-paperclip"></i>
+            </button>
+            <button type="button" class="btn-chat-media" onclick="startAudioRecording()" title="Gravar mensagem de voz" id="btn-record-audio">
+              <i class="fa-solid fa-microphone"></i>
+            </button>
+
+            <textarea id="chat-message-input" placeholder="Digite uma mensagem... (Enter para enviar, Shift+Enter para linha)" rows="1" onkeydown="handleChatInputKeyDown(event)"></textarea>
+
+            <button type="button" class="btn-chat-send" onclick="sendChatMessage()" id="btn-chat-send" title="Enviar mensagem">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ABA 10: GESTÃO DE MORADORES E RESIDÊNCIA -->
+    <div id="tab-moradores" class="tab-content">
+      <div class="moradores-header-card">
+        <div class="moradores-title-area">
+          <h2 id="moradores-residence-name">Residência Principal</h2>
+          <p>Gerencie quem tem acesso à sua casa inteligente e defina permissões granulares para cada morador.</p>
+        </div>
+        <div class="moradores-actions">
+          <button type="button" class="btn-ai-action btn-ai-primary" id="btn-owner-add-resident" onclick="openAddResidentModal()">
+            <i class="fa-solid fa-user-plus"></i> Convidar Morador por ID
+          </button>
+          <button type="button" class="btn-ai-action btn-ai-secondary" onclick="openResidenceSettingsModal()">
+            <i class="fa-solid fa-gear"></i> Configurações da Residência
+          </button>
+        </div>
+      </div>
+
+      <!-- BANNER DE CONVITES PENDENTES -->
+      <div id="pending-invitations-banner" style="display: none; margin-bottom: 20px;"></div>
+
+      <!-- GRID DE MORADORES DA RESIDÊNCIA -->
+      <div class="card">
+        <div class="card-title">
+          <span>Moradores da Residência (<span id="residents-total-count">1</span>)</span>
+          <span class="badge badge-tech" id="my-residence-role-badge">Você é o Dono</span>
+        </div>
+
+        <div class="residents-grid" id="residents-full-grid">
+          <!-- Renderizado dinamicamente direto do Supabase residence_members -->
+        </div>
+      </div>
+    </div>
+
     <!-- RODAP&Eacute; (FOOTER) -->
     <footer class="domus-footer">
       <div class="footer-content">
@@ -1706,9 +2142,9 @@
       <div class="history-filter-row">
         <div class="history-filter-pills">
           <button type="button" class="history-pill active" onclick="filterHistoryLogs('all', this)">Todos</button>
-          <button type="button" class="history-pill" onclick="filterHistoryLogs('luz', this)">ðŸ’¡ Ilumina&ccedil;&atilde;o</button>
-          <button type="button" class="history-pill" onclick="filterHistoryLogs('clima', this)">â„ï¸ Clima</button>
-          <button type="button" class="history-pill" onclick="filterHistoryLogs('seguranca', this)">ðŸ›¡ï¸ Seguran&ccedil;a</button>
+          <button type="button" class="history-pill" onclick="filterHistoryLogs('luz', this)">💡 Ilumina&ccedil;&atilde;o</button>
+          <button type="button" class="history-pill" onclick="filterHistoryLogs('clima', this)">❄️ Clima</button>
+          <button type="button" class="history-pill" onclick="filterHistoryLogs('seguranca', this)">🛡️ Seguran&ccedil;a</button>
         </div>
         <button type="button" class="btn-ai-action btn-ai-secondary" style="font-size: 0.75rem; padding: 5px 12px;" onclick="clearActivityHistory()">
           <i class="fa-solid fa-trash-can"></i> Limpar logs
@@ -1774,9 +2210,9 @@
             <strong id="modal-temp-display">3000K</strong>
           </div>
           <div class="temp-slider-container">
-            <span class="temp-label-icon">ðŸŒ… Quente</span>
+            <span class="temp-label-icon">🌅 Quente</span>
             <input type="range" id="modal-temp-slider" min="2700" max="6500" step="100" value="3000" oninput="onModalTempChange(this.value)">
-            <span class="temp-label-icon">Fria â„ï¸</span>
+            <span class="temp-label-icon">Fria ❄️</span>
           </div>
           <div class="temp-preset-pills">
             <button type="button" class="btn-preset-pill" onclick="setModalTempPreset(2700)">2700K (Quente)</button>
@@ -1806,7 +2242,7 @@
         <div class="modal-control-block" id="modal-motion-block">
           <div class="control-header-row">
             <span><i class="fa-solid fa-person-walking"></i> Sensor de movimento</span>
-            <span class="motion-status-pill" id="modal-motion-status">ðŸŸ¢ Ativo</span>
+            <span class="motion-status-pill" id="modal-motion-status">🟢 Ativo</span>
           </div>
           <div class="motion-last-seen" id="modal-motion-last">&Uacute;ltimo movimento: h&aacute; 2 min</div>
           <div class="motion-options">
@@ -1930,9 +2366,11 @@
     // @ts-nocheck
 
     // ==========================================================================
-    // CONTROLE DE ACESSO & AUTENTICA\u00C7\u00C3O DOMUS (INTEGRA\u00C7\u00C3O COM LOGIN.HTML)
+    // CONTROLE DE ACESSO & AUTENTICAÇÃO DOMUS COM SUPABASE AUTH
     // ==========================================================================
-    const SUPABASE_URL = 'https://acbgoyubehzihuffsga.supabase.co';
+    // Chaves configuradas para o seu projeto Supabase:
+    const RAW_SUPABASE_URL = 'https://acbgqfyubehzihuffsga.supabase.co/rest/v1/';
+    const SUPABASE_URL = RAW_SUPABASE_URL.replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '');
     const SUPABASE_ANON_KEY = 'sb_publishable_TMX2by3mFmYgmN3ZdETdrQ_qfkCJdju';
 
     let supabaseClient = null;
@@ -1950,27 +2388,97 @@
     }
 
     function isUserAuthenticated() {
-      if (isSupabaseConfigured()) {
-        return Boolean(currentAuthUser);
+      return Boolean(currentAuthUser);
+    }
+
+    // ALTERNÂNCIA VISUAL: MOSTRAR TELA DE LOGIN VS MOSTRAR SISTEMA DOMUS
+    function showAuthScreen() {
+      const authScreen = document.getElementById('domus-auth-screen');
+      const appWrapper = document.getElementById('domus-app-wrapper');
+      if (authScreen) authScreen.style.display = 'flex';
+      if (appWrapper) appWrapper.classList.add('auth-hidden');
+    }
+
+    function showAppScreen(user) {
+      const authScreen = document.getElementById('domus-auth-screen');
+      const appWrapper = document.getElementById('domus-app-wrapper');
+      if (authScreen) authScreen.style.display = 'none';
+      if (appWrapper) appWrapper.classList.remove('auth-hidden');
+      if (user) {
+        currentAuthUser = user;
+        fetchAndApplyUserProfile(user);
       }
-      return Boolean(currentAuthUser) || Boolean(localStorage.getItem('domus_demo_session'));
     }
 
-    function redirectToLogin() {
-      window.location.replace('login.html');
+    // CONTROLE DE TELAS DO CARD DE AUTENTICAÇÃO (LOGIN, CADASTRO, RECUPERAÇÃO)
+    function showAuthView(viewName) {
+      const views = ['login', 'register', 'forgot'];
+      views.forEach(v => {
+        const el = document.getElementById(`auth-view-${v}`);
+        if (el) el.style.display = (v === viewName) ? 'block' : 'none';
+      });
+
+      const tabLogin = document.getElementById('tab-btn-login');
+      const tabReg = document.getElementById('tab-btn-register');
+      if (tabLogin) tabLogin.classList.toggle('active', viewName === 'login');
+      if (tabReg) tabReg.classList.toggle('active', viewName === 'register');
+
+      clearAuthAlert();
     }
 
+    function showAuthAlert(type, message) {
+      const box = document.getElementById('auth-status-box');
+      if (!box) return;
+      box.className = `auth-status-alert alert-${type}`;
+      let icon = 'fa-circle-exclamation';
+      if (type === 'success') icon = 'fa-circle-check';
+      if (type === 'info') icon = 'fa-circle-info';
+      box.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+      box.style.display = 'flex';
+    }
+
+    function clearAuthAlert() {
+      const box = document.getElementById('auth-status-box');
+      if (box) {
+        box.style.display = 'none';
+        box.innerHTML = '';
+      }
+    }
+
+    function toggleAuthPasswordVisibility(fieldId, btn) {
+      const input = document.getElementById(fieldId);
+      if (!input) return;
+      const isPwd = input.type === 'password';
+      input.type = isPwd ? 'text' : 'password';
+      if (btn) {
+        btn.innerHTML = isPwd ? '<i class="fa-solid fa-eye-slash"></i>' : '<i class="fa-solid fa-eye"></i>';
+      }
+    }
+
+    function setAuthButtonLoading(btn, isLoading, loadingText = 'Carregando...') {
+      if (!btn) return;
+      btn.disabled = isLoading;
+      const textSpan = btn.querySelector('.btn-auth-text');
+      const loadSpan = btn.querySelector('.btn-auth-loading');
+      if (textSpan) textSpan.style.display = isLoading ? 'none' : 'inline-flex';
+      if (loadSpan) {
+        loadSpan.style.display = isLoading ? 'inline-flex' : 'none';
+        if (loadingText) loadSpan.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> ${loadingText}`;
+      }
+    }
+
+    // APLICAÇÃO DOS DADOS DO USUÁRIO LOGADO NO CABEÇALHO E NO PERFIL
     function applyUserDataToUI(fullName, email) {
-      if (!fullName) fullName = 'Usu\u00E1rio';
+      if (!fullName) fullName = 'Usuário';
       const firstName = fullName.trim().split(' ')[0] || fullName;
 
-      // Sauda\u00E7\u00E3o principal no topo do dashboard
+      // Saudação principal no topo do dashboard: "Olá, Matheus!" / "Olá, Arthur!"
       const greetingEl = document.getElementById('user-greeting-name');
       if (greetingEl) {
-        greetingEl.innerText = `Ol\u00E1, ${firstName}!`;
+        greetingEl.innerText = `Olá, ${firstName}!`;
       }
 
-      // Nome e handle na aba de Perfil
+      // Nome e identificador na aba de Perfil
       const profNameEl = document.getElementById('profile-display-name');
       if (profNameEl) {
         profNameEl.innerText = fullName;
@@ -1988,6 +2496,7 @@
       }
     }
 
+    // BUSCA DO PERFIL NO BANCO DE DADOS SUPABASE (TABELA PROFILES COM RLS)
     async function fetchAndApplyUserProfile(user) {
       if (!user) return;
       let fullName = user.user_metadata?.full_name || '';
@@ -1999,34 +2508,233 @@
             .from('profiles')
             .select('*')
             .eq('id', user.id)
-            .single();
+            .maybeSingle();
 
           if (data && data.full_name) {
             fullName = data.full_name;
             currentAuthProfile = data;
-          } else {
-            const nameToSave = fullName || (email ? email.split('@')[0] : 'Usu\u00E1rio');
-            await supabaseClient.from('profiles').upsert({
-              id: user.id,
-              full_name: nameToSave,
-              email: email,
-              updated_at: new Date().toISOString()
-            });
-            fullName = nameToSave;
           }
         } catch (err) {
-          console.warn('Perfil Supabase n\u00E3o carregado, usando metadados:', err);
+          console.warn('Perfil Supabase carregado via metadados:', err);
         }
       }
 
       if (!fullName) {
-        fullName = email ? email.split('@')[0] : 'Usu\u00E1rio';
+        fullName = email ? email.split('@')[0] : 'Usuário';
       }
 
       applyUserDataToUI(fullName, email);
     }
 
-    // SAIR DO SISTEMA E REDIRECIONAR PARA LOGIN.HTML
+    // 1. FLUXO DE LOGIN COM SUPABASE AUTH
+    async function handleAuthLogin(event) {
+      event.preventDefault();
+      clearAuthAlert();
+
+      const emailInput = document.getElementById('auth-login-email');
+      const passwordInput = document.getElementById('auth-login-password');
+      const submitBtn = document.getElementById('btn-login-submit');
+
+      const email = emailInput ? emailInput.value.trim() : '';
+      const password = passwordInput ? passwordInput.value : '';
+
+      if (!email) {
+        showAuthAlert('error', 'Digite seu e-mail.');
+        if (emailInput) emailInput.focus();
+        return;
+      }
+      if (!password) {
+        showAuthAlert('error', 'Digite sua senha.');
+        if (passwordInput) passwordInput.focus();
+        return;
+      }
+
+      setAuthButtonLoading(submitBtn, true, 'Autenticando...');
+
+      if (!isSupabaseConfigured() || !supabaseClient) {
+        setAuthButtonLoading(submitBtn, false);
+        showAuthAlert('error', 'Supabase não configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
+        return;
+      }
+
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+        if (error) {
+          setAuthButtonLoading(submitBtn, false);
+          const errLower = (error.message || '').toLowerCase();
+          if (errLower.includes('email not confirmed')) {
+            showAuthAlert('error', 'Por favor, confirme seu e-mail antes de entrar (ou desative a confirmação de e-mail no painel do Supabase).');
+          } else if (errLower.includes('invalid login credentials') || errLower.includes('invalid_grant')) {
+            showAuthAlert('error', 'E-mail ou senha incorretos.');
+          } else {
+            showAuthAlert('error', 'Não foi possível realizar o login. Tente novamente.');
+          }
+          return;
+        }
+
+        if (data && data.user) {
+          setAuthButtonLoading(submitBtn, false);
+          const name = data.user.user_metadata?.full_name || email.split('@')[0];
+          const firstName = name.trim().split(' ')[0] || name;
+          showAuthAlert('success', `Bem-vindo de volta, ${firstName}! Entrando...`);
+          setTimeout(() => {
+            showAppScreen(data.user);
+          }, 450);
+        }
+      } catch (err) {
+        setAuthButtonLoading(submitBtn, false);
+        console.error('Erro no login Supabase:', err);
+        showAuthAlert('error', 'Não foi possível realizar o login. Tente novamente.');
+      }
+    }
+
+    // 2. FLUXO DE CADASTRO COM SUPABASE AUTH
+    async function handleAuthRegister(event) {
+      event.preventDefault();
+      clearAuthAlert();
+
+      const nameInput = document.getElementById('auth-reg-name');
+      const emailInput = document.getElementById('auth-reg-email');
+      const passwordInput = document.getElementById('auth-reg-password');
+      const confirmInput = document.getElementById('auth-reg-confirm');
+      const submitBtn = document.getElementById('btn-register-submit');
+
+      const name = nameInput ? nameInput.value.trim() : '';
+      const email = emailInput ? emailInput.value.trim() : '';
+      const password = passwordInput ? passwordInput.value : '';
+      const confirm = confirmInput ? confirmInput.value : '';
+
+      if (!name) {
+        showAuthAlert('error', 'Digite seu nome completo.');
+        if (nameInput) nameInput.focus();
+        return;
+      }
+      if (!email) {
+        showAuthAlert('error', 'Digite seu e-mail.');
+        if (emailInput) emailInput.focus();
+        return;
+      }
+      if (!password) {
+        showAuthAlert('error', 'Digite sua senha.');
+        if (passwordInput) passwordInput.focus();
+        return;
+      }
+      if (password.length < 6) {
+        showAuthAlert('error', 'A senha deve conter no mínimo 6 caracteres.');
+        if (passwordInput) passwordInput.focus();
+        return;
+      }
+      if (password !== confirm) {
+        showAuthAlert('error', 'As senhas informadas não coincidem.');
+        if (confirmInput) confirmInput.focus();
+        return;
+      }
+
+      setAuthButtonLoading(submitBtn, true, 'Criando conta...');
+
+      if (!isSupabaseConfigured() || !supabaseClient) {
+        setAuthButtonLoading(submitBtn, false);
+        showAuthAlert('error', 'Supabase não configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
+        return;
+      }
+
+      try {
+        const { data, error } = await supabaseClient.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: {
+              full_name: name
+            }
+          }
+        });
+
+        setAuthButtonLoading(submitBtn, false);
+
+        if (error) {
+          const errLower = (error.message || '').toLowerCase();
+          if (errLower.includes('already registered') || errLower.includes('already in use') || errLower.includes('user already exists')) {
+            showAuthAlert('error', 'Este e-mail já possui conta cadastrada. Tente fazer login.');
+          } else if (errLower.includes('password')) {
+            showAuthAlert('error', 'A senha informada não atende aos requisitos de segurança.');
+          } else {
+            showAuthAlert('error', 'Não foi possível realizar o cadastro. Tente novamente.');
+          }
+          return;
+        }
+
+        // Se o Supabase permitir login imediato (Confirmação de e-mail desligada):
+        if (data && data.session) {
+          const firstName = name.trim().split(' ')[0] || name;
+          showAuthAlert('success', `Conta criada com sucesso! Bem-vindo, ${firstName}. Entrando...`);
+          setTimeout(() => {
+            showAppScreen(data.user);
+          }, 500);
+          return;
+        }
+
+        // Se o Supabase exigir confirmação por link de e-mail:
+        showAuthAlert('success', 'Conta criada com sucesso! Se a confirmação de e-mail estiver ativa no Supabase, confirme o link enviado antes de entrar.');
+        setTimeout(() => {
+          showAuthView('login');
+        }, 3500);
+
+      } catch (err) {
+        setAuthButtonLoading(submitBtn, false);
+        console.error('Erro ao cadastrar no Supabase:', err);
+        showAuthAlert('error', 'Não foi possível realizar o cadastro. Tente novamente.');
+      }
+    }
+
+    // 3. FLUXO DE RECUPERAÇÃO DE SENHA COM SUPABASE AUTH
+    async function handleAuthForgotPassword(event) {
+      event.preventDefault();
+      clearAuthAlert();
+
+      const emailInput = document.getElementById('auth-forgot-email');
+      const submitBtn = document.getElementById('btn-forgot-submit');
+      const email = emailInput ? emailInput.value.trim() : '';
+
+      if (!email) {
+        showAuthAlert('error', 'Digite seu e-mail cadastrado.');
+        if (emailInput) emailInput.focus();
+        return;
+      }
+
+      setAuthButtonLoading(submitBtn, true, 'Enviando link...');
+
+      if (!isSupabaseConfigured() || !supabaseClient) {
+        setAuthButtonLoading(submitBtn, false);
+        showAuthAlert('error', 'Supabase não configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
+        return;
+      }
+
+      try {
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin
+        });
+        setAuthButtonLoading(submitBtn, false);
+
+        if (error) {
+          showAuthAlert('error', 'Não foi possível enviar o link de recuperação. Tente novamente.');
+          return;
+        }
+
+        showAuthAlert('success', 'Link de recuperação enviado! Verifique sua caixa de entrada.');
+        setTimeout(() => {
+          showAuthView('login');
+        }, 3500);
+      } catch (err) {
+        setAuthButtonLoading(submitBtn, false);
+        showAuthAlert('error', 'Não foi possível enviar o link de recuperação.');
+      }
+    }
+
+    // SAIR DO SISTEMA (LOGOUT SUPABASE E RETORNO OBRIGATÓRIO À TELA DE LOGIN)
     async function domusSignOut() {
       if (isSupabaseConfigured() && supabaseClient) {
         try {
@@ -2035,14 +2743,13 @@
           console.warn('Erro ao sair do Supabase:', e);
         }
       }
-      localStorage.removeItem('domus_demo_session');
-      sessionStorage.removeItem('domus_demo_session');
       currentAuthUser = null;
       currentAuthProfile = null;
-      window.location.replace('login.html?logout=true');
+      showAuthScreen();
+      showAuthAlert('info', 'Você saiu do sistema com segurança.');
     }
 
-    // VERIFICA\u00C7\u00C3O OBRIGAT\u00D3RIA DE SESS\u00C3O
+    // VERIFICAÇÃO OBRIGATÓRIA DE SESSÃO AO ABRIR O DOMUS
     async function checkAuthSession() {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('logout') === 'true' || urlParams.get('action') === 'logout') {
@@ -2052,60 +2759,49 @@
 
       if (isSupabaseConfigured()) {
         try {
-          supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-            auth: {
-              persistSession: true,
-              autoRefreshToken: true,
-              detectSessionInUrl: true
-            }
-          });
+          if (!supabaseClient && window.supabase) {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+              auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+              }
+            });
+          }
 
-          supabaseClient.auth.onAuthStateChange(async (event, session) => {
+          if (supabaseClient) {
+            supabaseClient.auth.onAuthStateChange(async (event, session) => {
+              if (session && session.user) {
+                currentAuthUser = session.user;
+                showAppScreen(session.user);
+              } else if (event === 'SIGNED_OUT') {
+                currentAuthUser = null;
+                showAuthScreen();
+              }
+            });
+
+            const { data: { session } } = await supabaseClient.auth.getSession();
             if (session && session.user) {
               currentAuthUser = session.user;
-              await fetchAndApplyUserProfile(session.user);
-            } else if (event === 'SIGNED_OUT') {
-              currentAuthUser = null;
-              redirectToLogin();
+              showAppScreen(session.user);
+              return;
             }
-          });
-
-          const { data: { session } } = await supabaseClient.auth.getSession();
-          if (session && session.user) {
-            currentAuthUser = session.user;
-            await fetchAndApplyUserProfile(session.user);
-            return;
           }
         } catch (e) {
           console.error('Falha ao inicializar Supabase Client:', e);
         }
       }
 
-      // Verifica\u00E7\u00E3o em modo compat\u00EDvel/local
-      const savedSession = localStorage.getItem('domus_demo_session');
-      if (savedSession) {
-        try {
-          const parsed = JSON.parse(savedSession);
-          if (parsed && (parsed.email || parsed.id)) {
-            currentAuthUser = parsed;
-            applyUserDataToUI(parsed.user_metadata?.full_name || parsed.email, parsed.email);
-            return;
-          }
-        } catch (e) {
-          localStorage.removeItem('domus_demo_session');
-        }
-      }
-
-      // Se N\u00C3O houver sess\u00E3o autenticada: REDIRECIONA OBRIGATORIAMENTE PARA LOGIN.HTML!
-      redirectToLogin();
+      // Se NÃO houver sessão autenticada: MOSTRA OBRIGATORIAMENTE A TELA DE LOGIN!
+      showAuthScreen();
     }
 
-    // DISPARO IMEDIATO DA PROTE\u00C7\u00C3O DE ACESSO
+    // DISPARO IMEDIATO DA PROTEÇÃO DE ACESSO
     try {
       checkAuthSession();
     } catch (authErr) {
-      console.warn('Erro na guarda de autentica\u00E7\u00E3o:', authErr);
-      redirectToLogin();
+      console.warn('Erro na guarda de autenticação:', authErr);
+      showAuthScreen();
     }
 
     // ESTADO E LOCALSTORAGE
@@ -2680,7 +3376,7 @@
         id: situationId,
         type: 'suggestion',
         icon: 'fa-solid fa-lightbulb',
-        title: `ðŸ’¡ Desperd\u00EDcio: ${deviceName}`,
+        title: `💡 Desperd\u00EDcio: ${deviceName}`,
         badgeText: 'Sugest\u00E3o do DOMUS',
         toastMsg: `A <strong>${deviceName}</strong> permaneceu acesa por mais de ${timeStr} cont\u00EDnuos sem movimento no ambiente.`,
         adaptMsg: `O DOMUS identificou que a ${deviceName} permaneceu acesa por mais de ${timeStr} seguidos.`,
@@ -2761,7 +3457,7 @@
       const autoTitle = automationsData[index].title || 'Automa\u00E7\u00E3o';
       const msg = `Automa\u00E7\u00E3o "${autoTitle}" ${isActive ? 'ativada' : 'pausada'}.`;
       logActivity(msg, 'fa-solid fa-robot', 'var(--blue-accent)');
-      showToastNotification('âš¡ Automa\u00E7\u00E3o Inteligente', msg, 'fa-solid fa-robot', isActive ? 'var(--orange-bright)' : 'var(--blue-accent)');
+      showToastNotification('⚡ Automa\u00E7\u00E3o Inteligente', msg, 'fa-solid fa-robot', isActive ? 'var(--orange-bright)' : 'var(--blue-accent)');
     }
 
     function deleteAutomation(index) {
@@ -3003,7 +3699,7 @@
           if (iconBox) iconBox.classList.add('active-glow');
           if (roomCard) roomCard.classList.add('card-light-on');
           if (roomBadge) {
-            roomBadge.innerText = 'ðŸŸ¢ 1/1 ligada';
+            roomBadge.innerText = '🟢 1/1 ligada';
             roomBadge.classList.add('badge-on');
           }
 
@@ -3026,7 +3722,7 @@
           if (iconBox) iconBox.classList.remove('active-glow');
           if (roomCard) roomCard.classList.remove('card-light-on');
           if (roomBadge) {
-            roomBadge.innerText = 'âšª 0/1 ligada';
+            roomBadge.innerText = '⚪ 0/1 ligada';
             roomBadge.classList.remove('badge-on');
           }
           if (energyLabel) {
@@ -3132,7 +3828,7 @@
         logActivity(`${name} ${state}`, 'fa-solid fa-lightbulb', 'var(--orange-bright)');
 
         if (event.isTrusted) {
-          showToastNotification('ðŸ’¡ Ilumina\u00E7\u00E3o', `${name} foi ${state.toLowerCase()}.`, 'fa-solid fa-lightbulb', event.target.checked ? 'var(--orange-bright)' : 'var(--blue-accent)');
+          showToastNotification('💡 Ilumina\u00E7\u00E3o', `${name} foi ${state.toLowerCase()}.`, 'fa-solid fa-lightbulb', event.target.checked ? 'var(--orange-bright)' : 'var(--blue-accent)');
         }
 
         const iconId = event.target.getAttribute('data-icon');
@@ -3334,7 +4030,7 @@
         if (!dev.history || dev.history.length === 0) {
           histEl.innerHTML = '<li style="color: var(--text-muted);">Nenhum evento registrado</li>';
         } else {
-          histEl.innerHTML = dev.history.map(h => `<li><i class="fa-solid fa-clock" style="color: var(--blue-accent);"></i> <strong>${h.time}</strong> \u2014 ðŸ’¡ ${h.event}</li>`).join('');
+          histEl.innerHTML = dev.history.map(h => `<li><i class="fa-solid fa-clock" style="color: var(--blue-accent);"></i> <strong>${h.time}</strong> \u2014 💡 ${h.event}</li>`).join('');
         }
       }
 
@@ -3537,7 +4233,7 @@
       };
       const autoName = titles[autoId] || 'Automa\u00E7\u00E3o';
       const msg = isChecked ? `Automa\u00E7\u00E3o "${autoName}" ativada.` : `Automa\u00E7\u00E3o "${autoName}" pausada.`;
-      showToastNotification('âš¡ Automa\u00E7\u00E3o Inteligente', msg, 'fa-solid fa-bolt', isChecked ? 'var(--orange-bright)' : 'var(--blue-accent)');
+      showToastNotification('⚡ Automa\u00E7\u00E3o Inteligente', msg, 'fa-solid fa-bolt', isChecked ? 'var(--orange-bright)' : 'var(--blue-accent)');
       logActivity(msg, 'fa-solid fa-bolt', isChecked ? 'var(--orange-bright)' : 'var(--blue-accent)');
     }
 

@@ -663,31 +663,28 @@
         </div>
       </div>
 
+      <!-- BOTÃO DE ACESSO AOS CÓDIGOS PARA VS CODE -->
+      <div style="margin-top: 18px; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px;">
+        <a href="codigos.html" style="display: inline-flex; align-items: center; gap: 8px; color: var(--blue-accent); font-size: 0.82rem; text-decoration: none; padding: 8px 14px; background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0, 210, 255, 0.18)'" onmouseout="this.style.background='rgba(0, 210, 255, 0.08)'">
+          <i class="fa-solid fa-code"></i> <strong>Central de Códigos (Copiar para VS Code)</strong>
+        </a>
+      </div>
+
     </div>
   </div>
 
   <!-- JAVASCRIPT DE AUTENTICA&Ccedil;&Atilde;O E REDIRECIONAMENTO -->
   <script>
     // ==========================================================================
-    // CONFIGURA\u00C7\u00C3O DO SUPABASE AUTH
+    // CONFIGURAÇÃO DO SUPABASE AUTH
     // ==========================================================================
-    // Substitua abaixo com as credenciais do seu projeto Supabase:
-    const SUPABASE_URL = 'https://acbgoyubehzihuffsga.supabase.co';
+    // Substitua abaixo pelas credenciais do seu projeto Supabase:
+    // Painel Supabase: Project Settings -> API -> Project URL & Project API Keys (anon / publishable)
+    const RAW_SUPABASE_URL = 'https://acbgqfyubehzihuffsga.supabase.co/rest/v1/';
+    const SUPABASE_URL = RAW_SUPABASE_URL.replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '');
     const SUPABASE_ANON_KEY = 'sb_publishable_TMX2by3mFmYgmN3ZdETdrQ_qfkCJdju';
 
     let supabaseClient = null;
-
-    // BANCO DE DADOS LOCAL COMPAT\u00CDVEL (Permite testar mesmo antes de ligar o Supabase)
-    let localUsersDB = JSON.parse(localStorage.getItem('domus_users_db') || '{}');
-    if (Object.keys(localUsersDB).length === 0) {
-      localUsersDB['matheus@domus.com'] = {
-        id: 'usr_matheus',
-        email: 'matheus@domus.com',
-        full_name: 'Matheus D. Lucca',
-        password: '123'
-      };
-      localStorage.setItem('domus_users_db', JSON.stringify(localUsersDB));
-    }
 
     function isSupabaseConfigured() {
       return SUPABASE_URL && 
@@ -709,13 +706,12 @@
           }
         });
       } catch (e) {
-        console.warn('Erro ao inicializar Supabase:', e);
+        console.warn('Erro ao inicializar cliente Supabase:', e);
       }
     }
 
-    // REDIRECIONAMENTO INTELIGENTE PARA O SITE PRINCIPAL (INDEX.HTML)
+    // REDIRECIONAMENTO PARA O APLICATIVO PRINCIPAL (INDEX.HTML)
     function redirectToMainApp() {
-      // Se esta p\u00E1gina estiver em uma subpasta (ex: /auth/login.html ou /login/index.html)
       const currentPath = window.location.pathname;
       if (currentPath.includes('/auth') || currentPath.includes('/login')) {
         window.location.href = '../index.html';
@@ -724,7 +720,7 @@
       }
     }
 
-    // CONTROLE DE TELAS (LOGIN, CADASTRO, RECUPERA\u00C7\u00C3O)
+    // CONTROLE DE TELAS (LOGIN, CADASTRO, RECUPERAÇÃO)
     function showAuthView(viewName) {
       const views = ['login', 'register', 'forgot'];
       views.forEach(v => {
@@ -781,7 +777,7 @@
       }
     }
 
-    // 1. FLUXO DE LOGIN (H\u00CDBRIDO: SUPABASE + BANCO LOCAL INTELIGENTE)
+    // 1. FLUXO DE LOGIN COM SUPABASE AUTH
     async function handleAuthLogin(event) {
       event.preventDefault();
       clearAuthAlert();
@@ -805,90 +801,68 @@
       }
 
       setAuthButtonLoading(submitBtn, true, 'Autenticando...');
-      const emailKey = email.toLowerCase();
 
-      // 1. TENTA SUPABASE AUTH
-      if (isSupabaseConfigured() && supabaseClient) {
-        try {
-          const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-          });
-
-          if (!error && data && data.user) {
-            const fullName = data.user.user_metadata?.full_name || email.split('@')[0];
-            const sessionUser = {
-              id: data.user.id,
-              email: data.user.email,
-              user_metadata: { full_name: fullName }
-            };
-            localStorage.setItem('domus_demo_session', JSON.stringify(sessionUser));
-            setAuthButtonLoading(submitBtn, false);
-            showAuthAlert('success', `Bem-vindo de volta, ${fullName}! Entrando...`);
-            setTimeout(() => {
-              redirectToMainApp();
-            }, 500);
-            return;
-          } else if (error) {
-            console.warn('Supabase Auth aviso:', error.message);
-          }
-        } catch (err) {
-          console.warn('Erro na requisi\u00E7\u00E3o Supabase:', err);
-        }
-
-        // 2. TENTA CONSULTAR A TABELA NA NUVEM DOMUS_USERS (Permite logar de qualquer computador!)
-        try {
-          const { data: cloudUser, error: cloudErr } = await supabaseClient
-            .from('domus_users')
-            .select('*')
-            .eq('email', emailKey)
-            .maybeSingle();
-
-          if (cloudUser && cloudUser.password === password) {
-            const sessionUser = {
-              id: cloudUser.id,
-              email: cloudUser.email,
-              user_metadata: { full_name: cloudUser.full_name }
-            };
-            localStorage.setItem('domus_demo_session', JSON.stringify(sessionUser));
-            setAuthButtonLoading(submitBtn, false);
-            showAuthAlert('success', `Ol&aacute;, ${cloudUser.full_name}! Login realizado com sucesso. Entrando...`);
-            setTimeout(() => {
-              redirectToMainApp();
-            }, 500);
-            return;
-          }
-        } catch (cErr) {
-          console.warn('Aviso ao consultar tabela domus_users na nuvem:', cErr);
-        }
-      }
-
-      // 3. FALLBACK IMEDIATO: BANCO LOCAL COMPAT\u00CDVEL
-      const localUser = localUsersDB[emailKey];
-      if (localUser && localUser.password === password) {
-        const sessionUser = {
-          id: localUser.id,
-          email: localUser.email,
-          user_metadata: { full_name: localUser.full_name }
-        };
-        localStorage.setItem('domus_demo_session', JSON.stringify(sessionUser));
+      if (!isSupabaseConfigured() || !supabaseClient) {
         setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('success', `Ol&aacute;, ${localUser.full_name}! Login realizado com sucesso. Entrando...`);
-        setTimeout(() => {
-          redirectToMainApp();
-        }, 500);
+        showAuthAlert('error', 'Supabase não configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
         return;
       }
 
-      setAuthButtonLoading(submitBtn, false);
-      if (localUser && localUser.password !== password) {
-        showAuthAlert('error', 'Senha incorreta. Tente novamente.');
-      } else {
-        showAuthAlert('error', 'Usu&aacute;rio n&atilde;o encontrado ou credenciais incorretas.');
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+        if (error) {
+          setAuthButtonLoading(submitBtn, false);
+          const errLower = (error.message || '').toLowerCase();
+          if (errLower.includes('email not confirmed')) {
+            showAuthAlert('error', 'Por favor, confirme seu e-mail antes de entrar (ou desative a confirmação de e-mail no painel do Supabase).');
+          } else if (errLower.includes('invalid login credentials') || errLower.includes('invalid_grant')) {
+            showAuthAlert('error', 'E-mail ou senha incorretos.');
+          } else {
+            showAuthAlert('error', 'Não foi possível realizar o login. Tente novamente.');
+          }
+          return;
+        }
+
+        if (data && data.user) {
+          let fullName = data.user.user_metadata?.full_name || '';
+
+          // Busca perfil atualizado na tabela profiles
+          try {
+            const { data: prof } = await supabaseClient
+              .from('profiles')
+              .select('full_name')
+              .eq('id', data.user.id)
+              .maybeSingle();
+            if (prof && prof.full_name) {
+              fullName = prof.full_name;
+            }
+          } catch (pe) {
+            console.warn('Perfil carregado via metadata:', pe);
+          }
+
+          if (!fullName) {
+            fullName = email.split('@')[0];
+          }
+
+          const firstName = fullName.trim().split(' ')[0] || fullName;
+          setAuthButtonLoading(submitBtn, false);
+          showAuthAlert('success', `Bem-vindo de volta, ${firstName}! Entrando...`);
+          setTimeout(() => {
+            redirectToMainApp();
+          }, 500);
+        }
+      } catch (err) {
+        setAuthButtonLoading(submitBtn, false);
+        console.error('Erro no login Supabase:', err);
+        showAuthAlert('error', 'Não foi possível realizar o login. Tente novamente.');
       }
     }
 
-    // 2. FLUXO DE CADASTRO (H\u00CDBRIDO: SUPABASE + BANCO LOCAL INTELIGENTE)
+    // 2. FLUXO DE CADASTRO COM SUPABASE AUTH
     async function handleAuthRegister(event) {
       event.preventDefault();
       clearAuthAlert();
@@ -920,92 +894,73 @@
         return;
       }
       if (password.length < 6) {
-        showAuthAlert('error', 'A senha deve conter no m&iacute;nimo 6 caracteres.');
+        showAuthAlert('error', 'A senha deve conter no mínimo 6 caracteres.');
         if (passwordInput) passwordInput.focus();
         return;
       }
       if (password !== confirm) {
-        showAuthAlert('error', 'As senhas informadas n&atilde;o coincidem.');
+        showAuthAlert('error', 'As senhas informadas não coincidem.');
         if (confirmInput) confirmInput.focus();
         return;
       }
 
       setAuthButtonLoading(submitBtn, true, 'Criando conta...');
 
-      const emailKey = email.toLowerCase();
-      const localId = 'usr_' + Date.now();
-
-      // Sempre registra no banco local para que o usu\u00E1rio NUNCA fique bloqueado
-      localUsersDB[emailKey] = {
-        id: localId,
-        email: emailKey,
-        full_name: name,
-        password: password,
-        created_at: new Date().toISOString()
-      };
-      localStorage.setItem('domus_users_db', JSON.stringify(localUsersDB));
-
-      let finalUserId = localId;
-
-      // 1. TENTA SUPABASE AUTH
-      if (isSupabaseConfigured() && supabaseClient) {
-        try {
-          const { data, error } = await supabaseClient.auth.signUp({
-            email: email,
-            password: password,
-            options: {
-              data: {
-                full_name: name
-              }
-            }
-          });
-
-          if (error) {
-            console.warn('Aviso do Supabase no cadastro:', error);
-            // Se o e-mail j\u00E1 existe no Supabase, avisa o usu\u00E1rio
-            if (error.message && error.message.toLowerCase().includes('already registered')) {
-              setAuthButtonLoading(submitBtn, false);
-              showAuthAlert('error', 'Este e-mail j&aacute; possui conta cadastrada. Tente fazer login.');
-              return;
-            }
-            // Qualquer outro erro do Supabase (ex: formato de chave api, rate limit, confirma\u00E7\u00E3o pendente):
-            // N\u00E3o bloqueia o usu\u00E1rio! Prossegue com a conta criada localmente.
-          } else if (data && data.user) {
-            finalUserId = data.user.id;
-          }
-        } catch (err) {
-          console.warn('Erro ao conectar ao Supabase:', err);
-        }
-
-        // 2. SALVA NA TABELA NA NUVEM DOMUS_USERS (Permite que qualquer outro computador fa\u00E7a login!)
-        try {
-          await supabaseClient.from('domus_users').upsert({
-            email: emailKey,
-            full_name: name,
-            password: password,
-            created_at: new Date().toISOString()
-          }, { onConflict: 'email' });
-        } catch (uErr) {
-          console.warn('Grava\u00E7\u00E3o em domus_users:', uErr);
-        }
+      if (!isSupabaseConfigured() || !supabaseClient) {
+        setAuthButtonLoading(submitBtn, false);
+        showAuthAlert('error', 'Supabase não configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
+        return;
       }
 
-      // 3. CRIA SESS\u00C3O E ENTRA NO SISTEMA COM SUCESSO
-      const sessionUser = {
-        id: finalUserId,
-        email: emailKey,
-        user_metadata: { full_name: name }
-      };
-      localStorage.setItem('domus_demo_session', JSON.stringify(sessionUser));
+      try {
+        const { data, error } = await supabaseClient.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: {
+              full_name: name
+            }
+          }
+        });
 
-      setAuthButtonLoading(submitBtn, false);
-      showAuthAlert('success', `Conta criada com sucesso! Bem-vindo ao DOMUS, ${name}. Entrando...`);
-      setTimeout(() => {
-        redirectToMainApp();
-      }, 550);
+        setAuthButtonLoading(submitBtn, false);
+
+        if (error) {
+          const errLower = (error.message || '').toLowerCase();
+          if (errLower.includes('already registered') || errLower.includes('already in use') || errLower.includes('user already exists')) {
+            showAuthAlert('error', 'Este e-mail já possui conta cadastrada. Tente fazer login.');
+          } else if (errLower.includes('password')) {
+            showAuthAlert('error', 'A senha informada não atende aos requisitos de segurança.');
+          } else {
+            showAuthAlert('error', 'Não foi possível realizar o cadastro. Tente novamente.');
+          }
+          return;
+        }
+
+        // Se houver sessão imediata (Confirmação de e-mail desativada no Supabase)
+        if (data && data.session) {
+          const firstName = name.trim().split(' ')[0] || name;
+          showAuthAlert('success', `Conta criada com sucesso! Bem-vindo, ${firstName}. Entrando...`);
+          setTimeout(() => {
+            redirectToMainApp();
+          }, 600);
+          return;
+        }
+
+        // Se o Supabase exigir confirmação por e-mail
+        showAuthAlert('success', 'Conta criada com sucesso! Se a confirmação de e-mail estiver ativa no Supabase, confirme o link enviado antes de entrar.');
+        setTimeout(() => {
+          showAuthView('login');
+        }, 3500);
+
+      } catch (err) {
+        setAuthButtonLoading(submitBtn, false);
+        console.error('Erro ao cadastrar no Supabase:', err);
+        showAuthAlert('error', 'Não foi possível realizar o cadastro. Tente novamente.');
+      }
     }
 
-    // 3. FLUXO DE RECUPERA\u00C7\u00C3O DE SENHA
+    // 3. FLUXO DE RECUPERAÇÃO DE SENHA COM SUPABASE AUTH
     async function handleAuthForgotPassword(event) {
       event.preventDefault();
       clearAuthAlert();
@@ -1022,61 +977,63 @@
 
       setAuthButtonLoading(submitBtn, true, 'Enviando link...');
 
-      if (isSupabaseConfigured() && supabaseClient) {
-        try {
-          const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin
-          });
-          setAuthButtonLoading(submitBtn, false);
-
-          if (error) {
-            showAuthAlert('error', 'N&atilde;o foi poss&iacute;vel enviar o link de recupera&ccedil;&atilde;o. Tente novamente.');
-            return;
-          }
-
-          showAuthAlert('success', 'Link de recupera&ccedil;&atilde;o enviado! Verifique sua caixa de entrada.');
-          setTimeout(() => {
-            showAuthView('login');
-          }, 3500);
-        } catch (err) {
-          setAuthButtonLoading(submitBtn, false);
-          showAuthAlert('error', 'N&atilde;o foi poss&iacute;vel enviar o link de recupera&ccedil;&atilde;o.');
-        }
-      } else {
-        setTimeout(() => {
-          setAuthButtonLoading(submitBtn, false);
-          showAuthAlert('success', `Link de recupera&ccedil;&atilde;o simulado para ${email}. Verifique seu e-mail.`);
-          setTimeout(() => {
-            showAuthView('login');
-          }, 3500);
-        }, 600);
-      }
-    }
-
-    // VERIFICA\u00C7\u00C3O AUTOM\u00C1TICA DE SESS\u00C3O ATIVA AO ABRIR LOGIN.HTML
-    (function checkExistingSession() {
-      const urlParams = new URLSearchParams(window.location.search);
-      // Se tiver par\u00E2metro ?logout=true, for\u00E7a sa\u00EDda e limpa tudo
-      if (urlParams.get('logout') === 'true' || urlParams.get('action') === 'logout') {
-        localStorage.removeItem('domus_demo_session');
-        sessionStorage.removeItem('domus_demo_session');
-        showAuthAlert('info', 'Voc&ecirc; saiu do sistema com seguran&ccedil;a.');
+      if (!isSupabaseConfigured() || !supabaseClient) {
+        setAuthButtonLoading(submitBtn, false);
+        showAuthAlert('error', 'Supabase não configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
         return;
       }
 
-      // Se j\u00E1 houver sess\u00E3o ativa v\u00E1lida, pula direto para o painel
-      const savedSession = localStorage.getItem('domus_demo_session');
-      if (savedSession) {
+      try {
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + '/login.html'
+        });
+        setAuthButtonLoading(submitBtn, false);
+
+        if (error) {
+          showAuthAlert('error', 'Não foi possível enviar o link de recuperação. Tente novamente.');
+          return;
+        }
+
+        showAuthAlert('success', 'Link de recuperação enviado! Verifique sua caixa de entrada.');
+        setTimeout(() => {
+          showAuthView('login');
+        }, 3500);
+      } catch (err) {
+        setAuthButtonLoading(submitBtn, false);
+        showAuthAlert('error', 'Não foi possível enviar o link de recuperação.');
+      }
+    }
+
+    // VERIFICAÇÃO AUTOMÁTICA DE SESSÃO ATIVA AO ABRIR LOGIN.HTML
+    async function checkExistingSession() {
+      const urlParams = new URLSearchParams(window.location.search);
+      // Se parâmetro for ?logout=true, força logout no Supabase e limpa cookies/sessão
+      if (urlParams.get('logout') === 'true' || urlParams.get('action') === 'logout') {
+        if (isSupabaseConfigured() && supabaseClient) {
+          try {
+            await supabaseClient.auth.signOut();
+          } catch (e) {
+            console.warn('Logout signOut erro:', e);
+          }
+        }
+        showAuthAlert('info', 'Você saiu do sistema com segurança.');
+        return;
+      }
+
+      // Se já houver sessão ativa válida no Supabase, pula diretamente para o painel DOMUS
+      if (isSupabaseConfigured() && supabaseClient) {
         try {
-          const parsed = JSON.parse(savedSession);
-          if (parsed && (parsed.email || parsed.id)) {
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (session && session.user) {
             redirectToMainApp();
           }
         } catch (e) {
-          localStorage.removeItem('domus_demo_session');
+          console.warn('Erro ao verificar sessão existente:', e);
         }
       }
-    })();
+    }
+
+    checkExistingSession();
   </script>
 </body>
 </html>
