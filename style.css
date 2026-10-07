@@ -30,7 +30,7 @@ html.large-font {
 }
 
 /* ========================================================
-   REGRAS ESPECIFICAS PARA O TEMA CLARO (PROPORCIONAL & ELEGANTE)
+   REGRAS ESPECÃFICAS PARA O TEMA CLARO (PROPORCIONAL & ELEGANTE)
    ======================================================== */
 body.light-mode .card,
 body.light-mode .header-banner,
@@ -77,7 +77,7 @@ body.light-mode .badge-tech {
   border-color: rgba(0, 170, 230, 0.3);
 }
 
-/* 2. ACOES RAPIDAS NO TEMA CLARO */
+/* 2. AÃ‡Ã•ES RÃPIDAS NO TEMA CLARO */
 body.light-mode .profile-quick-actions-bar {
   background: rgba(255, 255, 255, 0.90);
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -101,7 +101,7 @@ body.light-mode .btn-quick-action:hover {
   color: #0077aa;
 }
 
-/* 3. RESIDENCIA E MORADORES NO TEMA CLARO */
+/* 3. RESIDÃŠNCIA E MORADORES NO TEMA CLARO */
 body.light-mode .residence-clean-box,
 body.light-mode .resident-item,
 body.light-mode .minimal-item,
@@ -131,7 +131,7 @@ body.light-mode .resident-avatar-mini {
   background: rgba(255, 122, 0, 0.1);
 }
 
-/* 4. ESTATISTICAS NO TEMA CLARO */
+/* 4. ESTATÃSTICAS NO TEMA CLARO */
 body.light-mode .stats-horizontal-strip {
   background: #f8fafc;
   border: 1px solid rgba(0, 0, 0, 0.06);
@@ -149,7 +149,7 @@ body.light-mode .stat-strip-sep {
   background: rgba(0, 0, 0, 0.08);
 }
 
-/* 5. BOTOES SECUNDARIOS / DE ACAO NO TEMA CLARO */
+/* 5. BOTÃ•ES SECUNDÃRIOS / DE AÃ‡ÃƒO NO TEMA CLARO */
 body.light-mode .btn-ai-secondary {
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.14);
@@ -167,7 +167,7 @@ body.light-mode .slider {
   background-color: #cbd5e1;
 }
 
-/* 7. CONFIGURACOES AVANCADAS NO TEMA CLARO */
+/* 7. CONFIGURAÃ‡Ã•ES AVANÃ‡ADAS NO TEMA CLARO */
 body.light-mode .advanced-settings-summary {
   color: #111827;
 }
@@ -176,7 +176,7 @@ body.light-mode .advanced-settings-content {
   border-top-color: rgba(0, 0, 0, 0.08);
 }
 
-/* 8. INTELIGENCIA ADAPTATIVA & AUTOMACOES NO TEMA CLARO */
+/* 8. INTELIGÃŠNCIA ADAPTATIVA & AUTOMAÃ‡Ã•ES NO TEMA CLARO */
 body.light-mode .ai-banner {
   background: linear-gradient(135deg, rgba(0, 210, 255, 0.12) 0%, rgba(255, 122, 0, 0.12) 100%), #ffffff;
   border-color: rgba(0, 0, 0, 0.08);
@@ -433,7 +433,7 @@ button, input, select, textarea, kbd {
   transform: translateY(-2px);
 }
 
-/* AREA PRINCIPAL DO DASHBOARD COM IMAGEM DE FUNDO NITIDA */
+/* ÃREA PRINCIPAL DO DASHBOARD COM IMAGEM DE FUNDO NÃTIDA */
 .main-content {
   flex: 1;
   padding: 30px;
@@ -754,7 +754,7 @@ body.light-mode .search-results-dropdown {
   display: block;
 }
 
-/* 5. TOP GRID: STATUS GERAL, CLIMATIZACAO, HISTORICO RECENTE (3 COLUNAS) */
+/* 5. TOP GRID: STATUS GERAL, CLIMATIZAÃ‡ÃƒO, HISTÃ“RICO RECENTE (3 COLUNAS) */
 .dashboard-top-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -842,7 +842,7 @@ body.light-mode .search-results-dropdown {
   flex-shrink: 0;
 }
 
-/* 6. CLIMATIZACAO CARD */
+/* 6. CLIMATIZAÃ‡ÃƒO CARD */
 .comfort-status-box {
   display: inline-flex;
   align-items: center;
@@ -857,7 +857,7 @@ body.light-mode .search-results-dropdown {
   font-weight: 500;
 }
 
-/* 7. HISTORICO RECENTE CARD */
+/* 7. HISTÃ“RICO RECENTE CARD */
 .history-summary-card {
   display: flex;
   flex-direction: column;
@@ -897,7 +897,7 @@ body.light-mode .search-results-dropdown {
 }
 
 /* ========================================================
-   4. ACOES RAPIDAS NO DASHBOARD
+   4. AÃ‡Ã•ES RÃPIDAS NO DASHBOARD
    ======================================================== */
 .quick-actions-card {
   margin-bottom: 20px;
@@ -989,7 +989,7 @@ body.light-mode .search-results-dropdown {
 }
 
 /* ========================================================
-   8. ENERGIA & 9. INTELIGENCIA ADAPTATIVA (2 COLUNAS)
+   8. ENERGIA & 9. INTELIGÃŠNCIA ADAPTATIVA (2 COLUNAS)
    ======================================================== */
 .dashboard-split-row {
   display: grid;
@@ -1068,7 +1068,7 @@ body.light-mode .search-results-dropdown {
   gap: 6px;
 }
 
-/* INTELIGENCIA ADAPTATIVA CARD */
+/* INTELIGÃŠNCIA ADAPTATIVA CARD */
 .adaptive-summary-card {
   display: flex;
   flex-direction: column;
@@ -1127,7 +1127,7 @@ body.light-mode .search-results-dropdown {
   line-height: 1.4;
 }
 
-/* MODAL DE HISTORICO COMPLETO */
+/* MODAL DE HISTÃ“RICO COMPLETO */
 .modal-history-content {
   max-width: 650px;
   max-height: 85vh;
@@ -1320,7 +1320,7 @@ input:checked + .slider:before {
   transform: translateX(20px);
 }
 
-/* SEGURANCA E CAMERAS */
+/* SEGURANÃ‡A E CÃ‚MERAS */
 .camera-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -1436,7 +1436,7 @@ input:checked + .slider:before {
   transition: height 0.5s;
 }
 
-/* INTELIGENCIA ADAPTATIVA */
+/* INTELIGÃŠNCIA ADAPTATIVA */
 .ai-banner {
   background: linear-gradient(135deg, rgba(0, 210, 255, 0.15) 0%, rgba(255, 122, 0, 0.15) 100%), var(--bg-card);
   border: 1px solid var(--border-color);
@@ -1592,7 +1592,7 @@ input:checked + .slider:before {
   margin-top: 2px;
 }
 
-/* AUTOMACOES */
+/* AUTOMAÃ‡Ã•ES */
 .automations-grid {
   display: flex;
   flex-direction: column;
@@ -1763,7 +1763,7 @@ input:checked + .slider:before {
   font-size: 0.82rem;
 }
 
-/* 2. ACOES RAPIDAS */
+/* 2. AÃ‡Ã•ES RÃPIDAS */
 .profile-quick-actions-bar {
   background: var(--item-bg);
   border: 1px solid var(--border-color);
@@ -1829,7 +1829,7 @@ input:checked + .slider:before {
   margin-bottom: 0;
 }
 
-/* 3. RESIDENCIA COMPACTO */
+/* 3. RESIDÃŠNCIA COMPACTO */
 .residence-clean-box {
   background: var(--item-bg);
   border: 1px solid var(--border-color);
@@ -1972,7 +1972,7 @@ input:checked + .slider:before {
   border-radius: 10px;
 }
 
-/* 4. ESTATISTICAS DE USO DO DOMUS */
+/* 4. ESTATÃSTICAS DE USO DO DOMUS */
 .profile-stats-card {
   margin-bottom: 20px;
   padding: 18px 20px;
@@ -2025,7 +2025,7 @@ input:checked + .slider:before {
   background: var(--border-color);
 }
 
-/* 5 & 6. LISTA MINIMALISTA (PREFERENCIAS & ACESSIBILIDADE) */
+/* 5 & 6. LISTA MINIMALISTA (PREFERÃŠNCIAS & ACESSIBILIDADE) */
 .minimal-list {
   display: flex;
   flex-direction: column;
@@ -2071,7 +2071,7 @@ input:checked + .slider:before {
   margin-top: 2px;
 }
 
-/* 7. SEGURANCA DA CONTA */
+/* 7. SEGURANÃ‡A DA CONTA */
 .profile-security-card {
   margin-bottom: 20px;
   padding: 18px 20px;
@@ -2133,7 +2133,7 @@ input:checked + .slider:before {
   align-self: flex-start;
 }
 
-/* 9. CONFIGURACOES AVANCADAS (ACCORDION RECOLHIVEL) */
+/* 9. CONFIGURAÃ‡Ã•ES AVANÃ‡ADAS (ACCORDION RECOLHÃVEL) */
 .advanced-settings-card {
   margin-bottom: 20px;
   padding: 16px 20px;
@@ -2327,7 +2327,7 @@ body.light-mode .form-group select option {
   margin-top: 20px;
 }
 
-/* NOTIFICACOES INTELLIGENTES FLUTUANTES (TOASTS) */
+/* NOTIFICAÃ‡Ã•ES INTELLIGENTES FLUTUANTES (TOASTS) */
 #toast-container {
   position: fixed;
   bottom: 25px;
@@ -2481,7 +2481,7 @@ body.light-mode .form-group select option {
 }
 
 /* ========================================================
-   ATUALIZACOES: CONTABILIZACAO DE TEMPO NA ABA DE ENERGIA
+   ATUALIZAÃ‡Ã•ES: CONTABILIZAÃ‡ÃƒO DE TEMPO NA ABA DE ENERGIA
    ======================================================== */
 
 .energy-item {
@@ -2605,7 +2605,7 @@ body.light-mode .form-group select option {
 }
 
 /* ========================================================
-   RODAPE (FOOTER)
+   RODAPÃ‰ (FOOTER)
    ======================================================== */
 .domus-footer {
   margin-top: 40px;
@@ -2718,7 +2718,7 @@ body.light-mode .domus-footer {
 
 
 /* ==========================================================================
-   ILUMINACAO INTELIGENTE (FUTURISTIC LIGHTING DASHBOARD)
+   ILUMINAÃ‡ÃƒO INTELIGENTE (FUTURISTIC LIGHTING DASHBOARD)
    ========================================================================== */
 
 .lighting-hero-banner {
@@ -3026,7 +3026,7 @@ body.light-mode .domus-footer {
   box-shadow: 0 0 16px var(--orange-bright);
 }
 
-/* 4. CENAS RAPIDAS */
+/* 4. CENAS RÃPIDAS */
 .lighting-section-wrap {
   margin-bottom: 24px;
 }
@@ -3191,7 +3191,7 @@ body.light-mode .domus-footer {
   transform: translateY(-1px);
 }
 
-/* SECAO INFERIOR: ESQUERDA (IA & AUTOMACOES) E DIREITA (GRAFICO) */
+/* SEÃ‡ÃƒO INFERIOR: ESQUERDA (IA & AUTOMAÃ‡Ã•ES) E DIREITA (GRÃFICO) */
 .lighting-left-col {
   flex: 1;
   display: flex;
@@ -3241,7 +3241,7 @@ body.light-mode .domus-footer {
   color: var(--text-muted);
 }
 
-/* 15. GRAFICO DE CONSUMO */
+/* 15. GRÃFICO DE CONSUMO */
 .lighting-chart-card {
   flex: 1.2;
   padding: 22px;
@@ -3323,7 +3323,7 @@ body.light-mode .domus-footer {
 }
 
 /* ==========================================================================
-   MODAL DE CONTROLE AVANCADO DA ILUMINACAO
+   MODAL DE CONTROLE AVANÃ‡ADO DA ILUMINAÃ‡ÃƒO
    ========================================================================== */
 .modal-light-content {
   max-width: 520px !important;
@@ -3839,7 +3839,7 @@ body.light-mode .domus-footer {
 }
 
 /* ==========================================================================
-   LIGHT MODE SUPPORTS FOR ILUMINACAO
+   LIGHT MODE SUPPORTS FOR ILUMINAÃ‡ÃƒO
    ========================================================================== */
 body.light-mode .lighting-hero-banner,
 body.light-mode .lighting-kpi-card,
@@ -3915,7 +3915,7 @@ body.light-mode .chart-filter-btn.active {
 }
 
 /* ==========================================================================
-   RESPONSIVIDADE DA ABA ILUMINACAO
+   RESPONSIVIDADE DA ABA ILUMINAÃ‡ÃƒO
    ========================================================================== */
 @media (max-width: 1100px) {
   .lighting-kpi-grid {
@@ -3972,7 +3972,7 @@ body.light-mode .chart-filter-btn.active {
 }
 
 /* ========================================================
-   TELA DE AUTENTICACAO DOMUS (LOGIN, CADASTRO & RECUPERACAO)
+   TELA DE AUTENTICAÃ‡ÃƒO DOMUS (LOGIN, CADASTRO & RECUPERAÃ‡ÃƒO)
    ======================================================== */
 .domus-app-wrapper {
   display: flex;
@@ -4370,7 +4370,7 @@ body.light-mode .chart-filter-btn.active {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* BANNER DE INSTRUCOES DE CONFIGURACAO DO SUPABASE */
+/* BANNER DE INSTRUÃ‡Ã•ES DE CONFIGURAÃ‡ÃƒO DO SUPABASE */
 .auth-setup-guide {
   margin-top: 16px;
   background: rgba(0, 210, 255, 0.06);
@@ -4383,6 +4383,7 @@ body.light-mode .chart-filter-btn.active {
   line-height: 1.4;
 }
 
+
 @media (max-width: 480px) {
   .auth-card {
     padding: 28px 20px;
@@ -4391,4 +4392,3 @@ body.light-mode .chart-filter-btn.active {
     font-size: 1.6rem;
   }
 }
-
