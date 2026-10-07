@@ -111,7 +111,7 @@
       100% { background-position: 200% 0%; }
     }
 
-    /* CabeÃ§alho de marca */
+    /* Cabe&ccedil;alho de marca */
     .auth-brand-area {
       text-align: center;
       margin-bottom: 22px;
@@ -157,7 +157,7 @@
       font-style: italic;
     }
 
-    /* Tabs de navegaÃ§Ã£o entre Login e Cadastro */
+    /* Tabs de navega&ccedil;&atilde;o entre Login e Cadastro */
     .auth-nav-tabs {
       display: flex;
       background: rgba(13, 17, 23, 0.7);
@@ -218,7 +218,7 @@
       line-height: 1.4;
     }
 
-    /* FormulÃ¡rios e campos */
+    /* Formul&aacute;rios e campos */
     .auth-form {
       display: flex;
       flex-direction: column;
@@ -322,7 +322,7 @@
       text-decoration: underline;
     }
 
-    /* BotÃ£o de envio */
+    /* Bot&atilde;o de envio */
     .btn-auth-submit {
       width: 100%;
       padding: 13px 18px;
@@ -399,7 +399,7 @@
       color: var(--blue-accent);
     }
 
-    /* Caixa de alertas amigÃ¡veis */
+    /* Caixa de alertas amig&aacute;veis */
     .auth-status-alert {
       padding: 11px 14px;
       border-radius: 10px;
@@ -455,7 +455,7 @@
   <div class="auth-container">
     <div class="auth-card">
       
-      <!-- CABEÃ‡ALHO DA MARCA DOMUS -->
+      <!-- CABE&Ccedil;ALHO DA MARCA DOMUS -->
       <div class="auth-brand-area">
         <div class="auth-logo-badge">
           <i class="fa-solid fa-house-signal"></i>
@@ -465,7 +465,7 @@
         <p class="auth-brand-slogan">Integrando a tecnologia ao seu modo de viver.</p>
       </div>
 
-      <!-- TABS DE NAVEGAÃ‡ÃƒO -->
+      <!-- TABS DE NAVEGA&Ccedil;&Atilde;O -->
       <div class="auth-nav-tabs">
         <button type="button" class="auth-tab-btn active" id="tab-btn-login" onclick="showAuthView('login')">
           <i class="fa-solid fa-right-to-bracket"></i> Entrar
@@ -475,7 +475,7 @@
         </button>
       </div>
 
-      <!-- CAIXA DE ALERTAS AMIGÃVEIS -->
+      <!-- CAIXA DE ALERTAS AMIG&Aacute;VEIS -->
       <div id="auth-status-box" class="auth-status-alert" style="display: none;"></div>
 
       <!-- ========================================================
@@ -626,7 +626,7 @@
       </div>
 
       <!-- ========================================================
-           3. VIEW DE RECUPERAÃ‡ÃƒO DE SENHA
+           3. VIEW DE RECUPERA&Ccedil;&Atilde;O DE SENHA
            ======================================================== -->
       <div id="auth-view-forgot" style="display: none;">
         <div class="auth-view-header">
@@ -666,10 +666,10 @@
     </div>
   </div>
 
-  <!-- JAVASCRIPT DE AUTENTICAÃ‡ÃƒO E REDIRECIONAMENTO -->
+  <!-- JAVASCRIPT DE AUTENTICA&Ccedil;&Atilde;O E REDIRECIONAMENTO -->
   <script>
     // ==========================================================================
-    // CONFIGURAÃ‡ÃƒO DO SUPABASE AUTH
+    // CONFIGURA\u00C7\u00C3O DO SUPABASE AUTH
     // ==========================================================================
     // Substitua abaixo com as credenciais do seu projeto Supabase:
     const SUPABASE_URL = 'https://acbgoyubehzihuffsga.supabase.co';
@@ -677,7 +677,7 @@
 
     let supabaseClient = null;
 
-    // BANCO DE DADOS LOCAL COMPATÃVEL (Permite testar mesmo antes de ligar o Supabase)
+    // BANCO DE DADOS LOCAL COMPAT\u00CDVEL (Permite testar mesmo antes de ligar o Supabase)
     let localUsersDB = JSON.parse(localStorage.getItem('domus_users_db') || '{}');
     if (Object.keys(localUsersDB).length === 0) {
       localUsersDB['matheus@domus.com'] = {
@@ -715,7 +715,7 @@
 
     // REDIRECIONAMENTO INTELIGENTE PARA O SITE PRINCIPAL (INDEX.HTML)
     function redirectToMainApp() {
-      // Se esta pÃ¡gina estiver em uma subpasta (ex: /auth/login.html ou /login/index.html)
+      // Se esta p\u00E1gina estiver em uma subpasta (ex: /auth/login.html ou /login/index.html)
       const currentPath = window.location.pathname;
       if (currentPath.includes('/auth') || currentPath.includes('/login')) {
         window.location.href = '../index.html';
@@ -724,7 +724,7 @@
       }
     }
 
-    // CONTROLE DE TELAS (LOGIN, CADASTRO, RECUPERAÃ‡ÃƒO)
+    // CONTROLE DE TELAS (LOGIN, CADASTRO, RECUPERA\u00C7\u00C3O)
     function showAuthView(viewName) {
       const views = ['login', 'register', 'forgot'];
       views.forEach(v => {
@@ -781,7 +781,7 @@
       }
     }
 
-    // 1. FLUXO DE LOGIN (HÃBRIDO: SUPABASE + BANCO LOCAL INTELIGENTE)
+    // 1. FLUXO DE LOGIN (H\u00CDBRIDO: SUPABASE + BANCO LOCAL INTELIGENTE)
     async function handleAuthLogin(event) {
       event.preventDefault();
       clearAuthAlert();
@@ -833,7 +833,7 @@
             console.warn('Supabase Auth aviso:', error.message);
           }
         } catch (err) {
-          console.warn('Erro na requisiÃ§Ã£o Supabase:', err);
+          console.warn('Erro na requisi\u00E7\u00E3o Supabase:', err);
         }
 
         // 2. TENTA CONSULTAR A TABELA NA NUVEM DOMUS_USERS (Permite logar de qualquer computador!)
@@ -863,7 +863,7 @@
         }
       }
 
-      // 3. FALLBACK IMEDIATO: BANCO LOCAL COMPATÃVEL
+      // 3. FALLBACK IMEDIATO: BANCO LOCAL COMPAT\u00CDVEL
       const localUser = localUsersDB[emailKey];
       if (localUser && localUser.password === password) {
         const sessionUser = {
@@ -888,7 +888,7 @@
       }
     }
 
-    // 2. FLUXO DE CADASTRO (HÃBRIDO: SUPABASE + BANCO LOCAL INTELIGENTE)
+    // 2. FLUXO DE CADASTRO (H\u00CDBRIDO: SUPABASE + BANCO LOCAL INTELIGENTE)
     async function handleAuthRegister(event) {
       event.preventDefault();
       clearAuthAlert();
@@ -935,7 +935,7 @@
       const emailKey = email.toLowerCase();
       const localId = 'usr_' + Date.now();
 
-      // Sempre registra no banco local para que o usuÃ¡rio NUNCA fique bloqueado
+      // Sempre registra no banco local para que o usu\u00E1rio NUNCA fique bloqueado
       localUsersDB[emailKey] = {
         id: localId,
         email: emailKey,
@@ -962,14 +962,14 @@
 
           if (error) {
             console.warn('Aviso do Supabase no cadastro:', error);
-            // Se o e-mail jÃ¡ existe no Supabase, avisa o usuÃ¡rio
+            // Se o e-mail j\u00E1 existe no Supabase, avisa o usu\u00E1rio
             if (error.message && error.message.toLowerCase().includes('already registered')) {
               setAuthButtonLoading(submitBtn, false);
               showAuthAlert('error', 'Este e-mail j&aacute; possui conta cadastrada. Tente fazer login.');
               return;
             }
-            // Qualquer outro erro do Supabase (ex: formato de chave api, rate limit, confirmaÃ§Ã£o pendente):
-            // NÃ£o bloqueia o usuÃ¡rio! Prossegue com a conta criada localmente.
+            // Qualquer outro erro do Supabase (ex: formato de chave api, rate limit, confirma\u00E7\u00E3o pendente):
+            // N\u00E3o bloqueia o usu\u00E1rio! Prossegue com a conta criada localmente.
           } else if (data && data.user) {
             finalUserId = data.user.id;
           }
@@ -977,7 +977,7 @@
           console.warn('Erro ao conectar ao Supabase:', err);
         }
 
-        // 2. SALVA NA TABELA NA NUVEM DOMUS_USERS (Permite que qualquer outro computador faÃ§a login!)
+        // 2. SALVA NA TABELA NA NUVEM DOMUS_USERS (Permite que qualquer outro computador fa\u00E7a login!)
         try {
           await supabaseClient.from('domus_users').upsert({
             email: emailKey,
@@ -986,11 +986,11 @@
             created_at: new Date().toISOString()
           }, { onConflict: 'email' });
         } catch (uErr) {
-          console.warn('GravaÃ§Ã£o em domus_users:', uErr);
+          console.warn('Grava\u00E7\u00E3o em domus_users:', uErr);
         }
       }
 
-      // 3. CRIA SESSÃƒO E ENTRA NO SISTEMA COM SUCESSO
+      // 3. CRIA SESS\u00C3O E ENTRA NO SISTEMA COM SUCESSO
       const sessionUser = {
         id: finalUserId,
         email: emailKey,
@@ -1005,7 +1005,7 @@
       }, 550);
     }
 
-    // 3. FLUXO DE RECUPERAÃ‡ÃƒO DE SENHA
+    // 3. FLUXO DE RECUPERA\u00C7\u00C3O DE SENHA
     async function handleAuthForgotPassword(event) {
       event.preventDefault();
       clearAuthAlert();
@@ -1053,10 +1053,10 @@
       }
     }
 
-    // VERIFICAÃ‡ÃƒO AUTOMÃTICA DE SESSÃƒO ATIVA AO ABRIR LOGIN.HTML
+    // VERIFICA\u00C7\u00C3O AUTOM\u00C1TICA DE SESS\u00C3O ATIVA AO ABRIR LOGIN.HTML
     (function checkExistingSession() {
       const urlParams = new URLSearchParams(window.location.search);
-      // Se tiver parÃ¢metro ?logout=true, forÃ§a saÃ­da e limpa tudo
+      // Se tiver par\u00E2metro ?logout=true, for\u00E7a sa\u00EDda e limpa tudo
       if (urlParams.get('logout') === 'true' || urlParams.get('action') === 'logout') {
         localStorage.removeItem('domus_demo_session');
         sessionStorage.removeItem('domus_demo_session');
@@ -1064,7 +1064,7 @@
         return;
       }
 
-      // Se jÃ¡ houver sessÃ£o ativa vÃ¡lida, pula direto para o painel
+      // Se j\u00E1 houver sess\u00E3o ativa v\u00E1lida, pula direto para o painel
       const savedSession = localStorage.getItem('domus_demo_session');
       if (savedSession) {
         try {
