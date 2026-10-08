@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -4393,7 +4394,7 @@ body.light-mode .chart-filter-btn.active {
 }
 
 /* ==========================================================================
-   NOVA ESTRUTURA DA SIDEBAR (ACCORDIONS EXPANSÍVEIS E ITENS LIMPOS)
+   NOVA ESTRUTURA DA SIDEBAR (ACCORDIONS EXPANSÃVEIS E ITENS LIMPOS)
    ========================================================================== */
 .nav-divider {
   height: 1px;
@@ -4487,7 +4488,7 @@ body.light-mode .chart-filter-btn.active {
 }
 
 /* ==========================================================================
-   ID DOMUS DE 9 DÍGITOS NO PERFIL
+   ID DOMUS DE 9 DÃGITOS NO PERFIL
    ========================================================================== */
 .domus-id-badge-container {
   display: inline-flex;
@@ -4540,7 +4541,7 @@ body.light-mode .chart-filter-btn.active {
 }
 
 /* ==========================================================================
-   ABA DE MORADORES & PERMISSÕES
+   ABA DE MORADORES & PERMISSÃ•ES
    ========================================================================== */
 .moradores-header-card {
   background: var(--bg-card);
@@ -4695,7 +4696,7 @@ body.light-mode .chart-filter-btn.active {
 }
 
 /* ==========================================================================
-   ABA DE CHAT MULTIUSUÁRIO EM TEMPO REAL
+   ABA DE CHAT MULTIUSUÃRIO EM TEMPO REAL
    ========================================================================== */
 .chat-layout-container {
   display: flex;
@@ -5001,7 +5002,7 @@ body.light-mode .chart-filter-btn.active {
   margin-bottom: 18px;
 }
 
-/* BALÕES DE MENSAGEM */
+/* BALÃ•ES DE MENSAGEM */
 .chat-bubble {
   max-width: 68%;
   padding: 10px 14px;
@@ -5112,7 +5113,7 @@ body.light-mode .chart-filter-btn.active {
   color: var(--text-main);
 }
 
-/* BARRAS DE PREVIEW (RESPOSTA, GRAVAÇÃO, ANEXO) */
+/* BARRAS DE PREVIEW (RESPOSTA, GRAVAÃ‡ÃƒO, ANEXO) */
 .chat-reply-preview-bar, .chat-attachment-preview-bar {
   padding: 8px 16px;
   background: rgba(13, 17, 23, 0.95);
@@ -5183,7 +5184,7 @@ body.light-mode .chart-filter-btn.active {
   font-size: 0.9rem;
 }
 
-/* RODAPÉ DO CHAT */
+/* RODAPÃ‰ DO CHAT */
 .chat-input-footer {
   padding: 12px 18px;
   background: rgba(13, 17, 23, 0.95);
@@ -5271,5 +5272,287 @@ body.light-mode .chart-filter-btn.active {
     display: inline-flex;
   }
 }
+
+/* ==========================================================================
+   ABA DE MAPA DA CASA & PLANTA BAIXA INTELIGENTE
+   ========================================================================== */
+.mapa-hero-banner {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.mapa-title-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+
+.mapa-title-badge-row h1 {
+  font-size: 1.55rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mapa-hero-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.map-blueprint-card {
+  padding: 24px;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.map-controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.map-view-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.map-filter-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.map-filter-btn:hover {
+  color: var(--text-main);
+  background: rgba(0, 210, 255, 0.08);
+}
+
+.map-filter-btn.active {
+  background: rgba(0, 210, 255, 0.15);
+  color: var(--blue-accent);
+  border-color: var(--blue-accent);
+  box-shadow: 0 0 12px rgba(0, 210, 255, 0.2);
+}
+
+.map-zoom-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* GRID DA PLANTA BAIXA */
+.house-blueprint-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.blueprint-room-zone {
+  background: rgba(13, 17, 23, 0.75);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.blueprint-room-zone::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--blue-accent), transparent);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.blueprint-room-zone:hover {
+  transform: translateY(-2px);
+  border-color: var(--blue-accent);
+  box-shadow: 0 8px 24px rgba(0, 210, 255, 0.15);
+}
+
+.blueprint-room-zone:hover::before {
+  opacity: 1;
+}
+
+.room-zone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.room-zone-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.room-zone-temp {
+  font-family: monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--orange-bright);
+  background: rgba(255, 122, 0, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 122, 0, 0.25);
+}
+
+.room-zone-nodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.node-pill {
+  font-size: 0.74rem;
+  padding: 4px 9px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+}
+
+.node-pill.node-light {
+  color: var(--orange-bright);
+  border-color: rgba(255, 122, 0, 0.25);
+  background: rgba(255, 122, 0, 0.08);
+}
+
+.node-pill.node-ac {
+  color: var(--blue-accent);
+  border-color: rgba(0, 210, 255, 0.25);
+  background: rgba(0, 210, 255, 0.08);
+}
+
+.node-pill.node-sensor {
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.map-future-expansion-banner {
+  background: rgba(0, 210, 255, 0.04);
+  border: 1px dashed rgba(0, 210, 255, 0.3);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.expansion-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(0, 210, 255, 0.1);
+  color: var(--blue-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.expansion-text {
+  flex: 1;
+  min-width: 250px;
+}
+
+.expansion-text strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.expansion-text p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* BADGE DO BOT DOMUS AGENT */
+.bot-badge-tag {
+  background: linear-gradient(135deg, var(--blue-accent), #0077ff);
+  color: #0b0f17;
+  font-weight: 700;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* TYPING INDICATOR */
+.bot-typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--blue-accent);
+  padding: 10px 14px;
+  background: rgba(0, 210, 255, 0.06);
+  border-radius: 12px;
+  max-width: 320px;
+  margin-bottom: 12px;
+  animation: pulseGlow 1.5s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
 
 
