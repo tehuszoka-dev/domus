@@ -262,6 +262,7 @@ function iniciarComandoVoz() {
   alert('Reconhecimento de voz ativado. Diga: "DOMUS, apagar luzes".');
 }
 
+
 // AUTOMAÇÃO
 function abrirModalAutomacao() {
   const nome = prompt('Digite o nome da nova automação:');

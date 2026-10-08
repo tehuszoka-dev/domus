@@ -12,6 +12,7 @@ const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 
+
 // INICIALIZAÇÃO SEGURA DO CLIENTE GEMINI COM USER-AGENT DE TELEMETRIA
 let geminiClient: GoogleGenAI | null = null;
 if (process.env.GEMINI_API_KEY) {

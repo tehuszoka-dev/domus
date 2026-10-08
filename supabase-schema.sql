@@ -39,6 +39,7 @@ create policy "Usuarios podem atualizar o proprio perfil"
   for update
   using (auth.uid() = id);
 
+
 -- 4. FunÃ§Ã£o e Trigger para criar automaticamente a linha do perfil quando um novo usuÃ¡rio se cadastrar
 create or replace function public.handle_new_user()
 returns trigger as $$
