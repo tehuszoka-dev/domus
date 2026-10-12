@@ -1,11 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DOMUS - Login &bull; Sistema Inteligente</title>
-  <meta name="description" content="Acesse o DOMUS para gerenciar sua resid&ecirc;ncia inteligente: ilumina&ccedil;&atilde;o, climatiza&ccedil;&atilde;o e seguran&ccedil;a.">
+  <meta name="description" content="Acesse o DOMUS para gerenciar sua residÃªncia inteligente: iluminaÃ§Ã£o, climatizaÃ§Ã£o e seguranÃ§a.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -446,7 +449,7 @@
       }
     }
   </style>
-<script src="/_aistudio-iframe.js?v=6634132a"></script></head>
+</head>
 <body>
 
   <!-- BRILHOS DE FUNDO AMBIENTAIS -->
@@ -664,10 +667,10 @@
         </div>
       </div>
 
-      <!-- BOTÃO DE ACESSO AOS CÓDIGOS PARA VS CODE -->
+      <!-- BOTÃƒO DE ACESSO AOS CÃ“DIGOS PARA VS CODE -->
       <div style="margin-top: 18px; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px;">
         <a href="codigos.html" style="display: inline-flex; align-items: center; gap: 8px; color: var(--blue-accent); font-size: 0.82rem; text-decoration: none; padding: 8px 14px; background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0, 210, 255, 0.18)'" onmouseout="this.style.background='rgba(0, 210, 255, 0.08)'">
-          <i class="fa-solid fa-code"></i> <strong>Central de Códigos (Copiar para VS Code)</strong>
+          <i class="fa-solid fa-code"></i> <strong>Central de CÃ³digos (Copiar para VS Code)</strong>
         </a>
       </div>
 
@@ -677,7 +680,7 @@
   <!-- JAVASCRIPT DE AUTENTICA&Ccedil;&Atilde;O E REDIRECIONAMENTO -->
   <script>
     // ==========================================================================
-    // CONFIGURAÇÃO DO SUPABASE AUTH
+    // CONFIGURAÃ‡ÃƒO DO SUPABASE AUTH
     // ==========================================================================
     // Substitua abaixo pelas credenciais do seu projeto Supabase:
     // Painel Supabase: Project Settings -> API -> Project URL & Project API Keys (anon / publishable)
@@ -721,7 +724,7 @@
       }
     }
 
-    // CONTROLE DE TELAS (LOGIN, CADASTRO, RECUPERAÇÃO)
+    // CONTROLE DE TELAS (LOGIN, CADASTRO, RECUPERAÃ‡ÃƒO)
     function showAuthView(viewName) {
       const views = ['login', 'register', 'forgot'];
       views.forEach(v => {
@@ -805,7 +808,7 @@
 
       if (!isSupabaseConfigured() || !supabaseClient) {
         setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Supabase não configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
+        showAuthAlert('error', 'Supabase nÃ£o configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
         return;
       }
 
@@ -819,11 +822,11 @@
           setAuthButtonLoading(submitBtn, false);
           const errLower = (error.message || '').toLowerCase();
           if (errLower.includes('email not confirmed')) {
-            showAuthAlert('error', 'Por favor, confirme seu e-mail antes de entrar (ou desative a confirmação de e-mail no painel do Supabase).');
+            showAuthAlert('error', 'Por favor, confirme seu e-mail antes de entrar (ou desative a confirmaÃ§Ã£o de e-mail no painel do Supabase).');
           } else if (errLower.includes('invalid login credentials') || errLower.includes('invalid_grant')) {
             showAuthAlert('error', 'E-mail ou senha incorretos.');
           } else {
-            showAuthAlert('error', 'Não foi possível realizar o login. Tente novamente.');
+            showAuthAlert('error', 'NÃ£o foi possÃ­vel realizar o login. Tente novamente.');
           }
           return;
         }
@@ -859,7 +862,7 @@
       } catch (err) {
         setAuthButtonLoading(submitBtn, false);
         console.error('Erro no login Supabase:', err);
-        showAuthAlert('error', 'Não foi possível realizar o login. Tente novamente.');
+        showAuthAlert('error', 'NÃ£o foi possÃ­vel realizar o login. Tente novamente.');
       }
     }
 
@@ -895,12 +898,12 @@
         return;
       }
       if (password.length < 6) {
-        showAuthAlert('error', 'A senha deve conter no mínimo 6 caracteres.');
+        showAuthAlert('error', 'A senha deve conter no mÃ­nimo 6 caracteres.');
         if (passwordInput) passwordInput.focus();
         return;
       }
       if (password !== confirm) {
-        showAuthAlert('error', 'As senhas informadas não coincidem.');
+        showAuthAlert('error', 'As senhas informadas nÃ£o coincidem.');
         if (confirmInput) confirmInput.focus();
         return;
       }
@@ -909,7 +912,7 @@
 
       if (!isSupabaseConfigured() || !supabaseClient) {
         setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Supabase não configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
+        showAuthAlert('error', 'Supabase nÃ£o configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
         return;
       }
 
@@ -929,16 +932,16 @@
         if (error) {
           const errLower = (error.message || '').toLowerCase();
           if (errLower.includes('already registered') || errLower.includes('already in use') || errLower.includes('user already exists')) {
-            showAuthAlert('error', 'Este e-mail já possui conta cadastrada. Tente fazer login.');
+            showAuthAlert('error', 'Este e-mail jÃ¡ possui conta cadastrada. Tente fazer login.');
           } else if (errLower.includes('password')) {
-            showAuthAlert('error', 'A senha informada não atende aos requisitos de segurança.');
+            showAuthAlert('error', 'A senha informada nÃ£o atende aos requisitos de seguranÃ§a.');
           } else {
-            showAuthAlert('error', 'Não foi possível realizar o cadastro. Tente novamente.');
+            showAuthAlert('error', 'NÃ£o foi possÃ­vel realizar o cadastro. Tente novamente.');
           }
           return;
         }
 
-        // Se houver sessão imediata (Confirmação de e-mail desativada no Supabase)
+        // Se houver sessÃ£o imediata (ConfirmaÃ§Ã£o de e-mail desativada no Supabase)
         if (data && data.session) {
           const firstName = name.trim().split(' ')[0] || name;
           showAuthAlert('success', `Conta criada com sucesso! Bem-vindo, ${firstName}. Entrando...`);
@@ -948,8 +951,8 @@
           return;
         }
 
-        // Se o Supabase exigir confirmação por e-mail
-        showAuthAlert('success', 'Conta criada com sucesso! Se a confirmação de e-mail estiver ativa no Supabase, confirme o link enviado antes de entrar.');
+        // Se o Supabase exigir confirmaÃ§Ã£o por e-mail
+        showAuthAlert('success', 'Conta criada com sucesso! Se a confirmaÃ§Ã£o de e-mail estiver ativa no Supabase, confirme o link enviado antes de entrar.');
         setTimeout(() => {
           showAuthView('login');
         }, 3500);
@@ -957,11 +960,11 @@
       } catch (err) {
         setAuthButtonLoading(submitBtn, false);
         console.error('Erro ao cadastrar no Supabase:', err);
-        showAuthAlert('error', 'Não foi possível realizar o cadastro. Tente novamente.');
+        showAuthAlert('error', 'NÃ£o foi possÃ­vel realizar o cadastro. Tente novamente.');
       }
     }
 
-    // 3. FLUXO DE RECUPERAÇÃO DE SENHA COM SUPABASE AUTH
+    // 3. FLUXO DE RECUPERAÃ‡ÃƒO DE SENHA COM SUPABASE AUTH
     async function handleAuthForgotPassword(event) {
       event.preventDefault();
       clearAuthAlert();
@@ -980,7 +983,7 @@
 
       if (!isSupabaseConfigured() || !supabaseClient) {
         setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Supabase não configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
+        showAuthAlert('error', 'Supabase nÃ£o configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
         return;
       }
 
@@ -991,24 +994,24 @@
         setAuthButtonLoading(submitBtn, false);
 
         if (error) {
-          showAuthAlert('error', 'Não foi possível enviar o link de recuperação. Tente novamente.');
+          showAuthAlert('error', 'NÃ£o foi possÃ­vel enviar o link de recuperaÃ§Ã£o. Tente novamente.');
           return;
         }
 
-        showAuthAlert('success', 'Link de recuperação enviado! Verifique sua caixa de entrada.');
+        showAuthAlert('success', 'Link de recuperaÃ§Ã£o enviado! Verifique sua caixa de entrada.');
         setTimeout(() => {
           showAuthView('login');
         }, 3500);
       } catch (err) {
         setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Não foi possível enviar o link de recuperação.');
+        showAuthAlert('error', 'NÃ£o foi possÃ­vel enviar o link de recuperaÃ§Ã£o.');
       }
     }
 
-    // VERIFICAÇÃO AUTOMÁTICA DE SESSÃO ATIVA AO ABRIR LOGIN.HTML
+    // VERIFICAÃ‡ÃƒO AUTOMÃTICA DE SESSÃƒO ATIVA AO ABRIR LOGIN.HTML
     async function checkExistingSession() {
       const urlParams = new URLSearchParams(window.location.search);
-      // Se parâmetro for ?logout=true, força logout no Supabase e limpa cookies/sessão
+      // Se parÃ¢metro for ?logout=true, forÃ§a logout no Supabase e limpa cookies/sessÃ£o
       if (urlParams.get('logout') === 'true' || urlParams.get('action') === 'logout') {
         if (isSupabaseConfigured() && supabaseClient) {
           try {
@@ -1017,12 +1020,11 @@
             console.warn('Logout signOut erro:', e);
           }
         }
-        showAuthAlert('info', 'Você saiu do sistema com segurança.');
+        showAuthAlert('info', 'VocÃª saiu do sistema com seguranÃ§a.');
         return;
       }
 
-      
-      // Se já houver sessão ativa válida no Supabase, pula diretamente para o painel DOMUS
+      // Se jÃ¡ houver sessÃ£o ativa vÃ¡lida no Supabase, pula diretamente para o painel DOMUS
       if (isSupabaseConfigured() && supabaseClient) {
         try {
           const { data: { session } } = await supabaseClient.auth.getSession();
@@ -1030,7 +1032,7 @@
             redirectToMainApp();
           }
         } catch (e) {
-          console.warn('Erro ao verificar sessão existente:', e);
+          console.warn('Erro ao verificar sessÃ£o existente:', e);
         }
       }
     }

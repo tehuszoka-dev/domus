@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -333,10 +332,17 @@ body.light-mode .history-card-footer {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html, body {
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background-color: var(--bg-dark);
   color: var(--text-main);
-  min-height: 100vh;
   display: flex;
   transition: background-color 0.3s, color 0.3s;
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -350,6 +356,11 @@ button, input, select, textarea, kbd {
 .sidebar {
   width: 275px;
   min-width: 275px;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
   background: 
     linear-gradient(135deg, rgba(0,210,255,0.08) 0%, rgba(255,122,0,0.08) 100%),
     radial-gradient(circle at 20% 20%, rgba(255,255,255,0.03) 0%, transparent 50%),
@@ -360,6 +371,18 @@ button, input, select, textarea, kbd {
   flex-direction: column;
   box-shadow: 4px 0 15px rgba(0,0,0,0.1);
   transition: background 0.3s;
+}
+
+/* Scrollbar discreto na sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
 }
 
 .brand {
@@ -434,12 +457,16 @@ button, input, select, textarea, kbd {
   transform: translateY(-2px);
 }
 
-/* AREA PRINCIPAL DO DASHBOARD COM IMAGEM DE FUNDO NITIDA */
+/* AREA PRINCIPAL DO DASHBOARD COM IMAGEM DE FUNDO NITIDA E CORREÃ‡ÃƒO DE EXTENSÃƒO */
 .main-content {
   flex: 1;
-  padding: 30px;
-  overflow-y: auto;
+  height: 100vh;
   max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 24px 30px;
+  display: flex;
+  flex-direction: column;
   position: relative;
   background-color: var(--bg-dark);
   background-image: 
@@ -448,6 +475,22 @@ button, input, select, textarea, kbd {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Scrollbar moderno e discreto no main-content */
+.main-content::-webkit-scrollbar {
+  width: 7px;
+}
+.main-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.15);
+}
+.main-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 210, 255, 0.25);
+  border-radius: 4px;
+}
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 210, 255, 0.5);
 }
 
 body.light-mode .main-content {
@@ -2609,13 +2652,15 @@ body.light-mode .form-group select option {
    RODAPE (FOOTER)
    ======================================================== */
 .domus-footer {
-  margin-top: 40px;
-  padding: 22px 20px;
+  margin-top: 35px;
+  margin-bottom: 8px;
+  padding: 18px 20px;
   border-top: 1px solid var(--border-color);
   background: linear-gradient(180deg, rgba(22, 27, 34, 0.4) 0%, rgba(13, 17, 23, 0.9) 100%);
   border-radius: 15px;
   backdrop-filter: blur(10px);
   transition: background 0.3s, border-color 0.3s;
+  flex-shrink: 0;
 }
 
 body.light-mode .domus-footer {
@@ -3978,7 +4023,9 @@ body.light-mode .chart-filter-btn.active {
 .domus-app-wrapper {
   display: flex;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
 }
 
 .domus-app-wrapper.auth-hidden {
@@ -4438,7 +4485,7 @@ body.light-mode .chart-filter-btn.active {
 
 .acc-arrow {
   font-size: 0.72rem;
-  transition: transform 0.25s ease;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-accordion-header.open .acc-arrow {
@@ -4447,15 +4494,21 @@ body.light-mode .chart-filter-btn.active {
 
 .nav-sublist {
   list-style: none;
-  display: none;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
   padding-left: 8px;
-  margin-top: 5px;
-  gap: 3px;
+  margin-top: 0;
+  display: flex;
   flex-direction: column;
+  gap: 3px;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, margin-top 0.25s ease;
 }
 
 .nav-sublist.open {
-  display: flex;
+  max-height: 380px;
+  opacity: 1;
+  margin-top: 5px;
 }
 
 .nav-subitem {
@@ -4700,13 +4753,20 @@ body.light-mode .chart-filter-btn.active {
    ========================================================================== */
 .chat-layout-container {
   display: flex;
-  height: calc(100vh - 120px);
-  min-height: 580px;
+  height: calc(100vh - 56px);
+  max-height: calc(100vh - 56px);
+  min-height: 480px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 15px 45px rgba(0,0,0,0.55);
+  margin-bottom: 0;
+}
+
+/* Oculta o rodapÃ© geral na aba do chat para que a conversa preencha o layout perfeitamente sem esticar o fundo */
+#tab-chat.active ~ .domus-footer {
+  display: none !important;
 }
 
 .chat-sidebar-conversations {
@@ -5521,39 +5581,203 @@ body.light-mode .chart-filter-btn.active {
   line-height: 1.5;
 }
 
-/* BADGE DO BOT DOMUS AGENT */
-.bot-badge-tag {
-  background: linear-gradient(135deg, var(--blue-accent), #0077ff);
-  color: #0b0f17;
-  font-weight: 700;
-  font-size: 0.65rem;
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-left: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+/* ==========================================================================
+   ANIMAÃ‡ÃƒO DE ENTRADA DO DOMUS (SISTEMA INTELIGENTE FUTURISTA)
+   ========================================================================== */
+.domus-intro-screen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999999;
+  background: #080c14;
+  background-image: 
+    radial-gradient(circle at 50% 38%, rgba(0, 210, 255, 0.15) 0%, transparent 60%),
+    radial-gradient(circle at 50% 62%, rgba(255, 122, 0, 0.10) 0%, transparent 55%),
+    linear-gradient(180deg, #05080e 0%, #0b111a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1), transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
 }
 
-/* TYPING INDICATOR */
-.bot-typing-indicator {
+.domus-intro-screen.fade-out {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+#intro-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.intro-content-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px;
+  max-width: 640px;
+}
+
+.intro-symbol-box {
+  width: 140px;
+  height: 140px;
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.intro-wireframe-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 16px rgba(0, 210, 255, 0.7));
+}
+
+.intro-core-pulse {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ff7a00;
+  box-shadow: 0 0 25px 8px rgba(255, 122, 0, 0.9);
+  animation: introCorePulse 1.8s infinite alternate ease-in-out;
+}
+
+@keyframes introCorePulse {
+  0% { transform: scale(0.85); opacity: 0.8; box-shadow: 0 0 16px 4px rgba(255, 122, 0, 0.7); }
+  100% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 30px 10px rgba(255, 122, 0, 1); }
+}
+
+.intro-brand-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: 6px;
+  background: linear-gradient(135deg, #ffffff 20%, #00d2ff 65%, #ff7a00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: introTitleIn 0.8s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.intro-brand-slogan {
+  font-size: 0.95rem;
+  color: #8b949e;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  margin-bottom: 26px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: introTitleIn 0.8s 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.intro-telemetry-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  background: rgba(0, 210, 255, 0.08);
+  border: 1px solid rgba(0, 210, 255, 0.35);
+  border-radius: 20px;
   font-size: 0.78rem;
+  color: #00d2ff;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.15);
+  opacity: 0;
+  animation: introTitleIn 0.6s 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.intro-telemetry-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00d2ff;
+  box-shadow: 0 0 8px #00d2ff;
+  animation: introBlink 1s infinite alternate;
+}
+
+@keyframes introBlink {
+  0% { opacity: 0.3; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes introTitleIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modo movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .domus-intro-screen {
+    transition: opacity 0.25s ease;
+  }
+  .intro-brand-title,
+  .intro-brand-slogan,
+  .intro-telemetry-badge {
+    animation-duration: 0.2s !important;
+    animation-delay: 0s !important;
+  }
+  .intro-core-pulse {
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   MELHORIAS DE CATEGORIA DA PESQUISA GLOBAL
+   ========================================================================== */
+.search-result-badge.badge-modulo {
+  background: rgba(0, 210, 255, 0.12);
   color: var(--blue-accent);
-  padding: 10px 14px;
-  background: rgba(0, 210, 255, 0.06);
-  border-radius: 12px;
-  max-width: 320px;
-  margin-bottom: 12px;
-  animation: pulseGlow 1.5s infinite ease-in-out;
+  border: 1px solid rgba(0, 210, 255, 0.3);
 }
-
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+.search-result-badge.badge-acao {
+  background: rgba(255, 122, 0, 0.12);
+  color: var(--orange-bright);
+  border: 1px solid rgba(255, 122, 0, 0.3);
 }
-
-
+.search-result-badge.badge-comodo {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.search-result-badge.badge-dispositivo {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+.search-result-badge.badge-morador {
+  background: rgba(168, 85, 247, 0.12);
+  color: #a855f7;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+.search-result-badge.badge-automacao {
+  background: rgba(236, 72, 153, 0.12);
+  color: #ec4899;
+  border: 1px solid rgba(236, 72, 153, 0.3);
+}
+.search-result-badge.badge-seguranca {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
 
 
