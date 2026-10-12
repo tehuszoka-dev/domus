@@ -457,7 +457,7 @@ button, input, select, textarea, kbd {
   transform: translateY(-2px);
 }
 
-/* AREA PRINCIPAL DO DASHBOARD COM IMAGEM DE FUNDO NITIDA E CORREÃ‡ÃƒO DE EXTENSÃƒO */
+/* AREA PRINCIPAL DO DASHBOARD COM IMAGEM DE FUNDO NITIDA E CORREÇÃO DE EXTENSÃO */
 .main-content {
   flex: 1;
   height: 100vh;
@@ -4441,7 +4441,7 @@ body.light-mode .chart-filter-btn.active {
 }
 
 /* ==========================================================================
-   NOVA ESTRUTURA DA SIDEBAR (ACCORDIONS EXPANSÃVEIS E ITENS LIMPOS)
+   NOVA ESTRUTURA DA SIDEBAR (ACCORDIONS EXPANSÍVEIS E ITENS LIMPOS)
    ========================================================================== */
 .nav-divider {
   height: 1px;
@@ -4541,7 +4541,7 @@ body.light-mode .chart-filter-btn.active {
 }
 
 /* ==========================================================================
-   ID DOMUS DE 9 DÃGITOS NO PERFIL
+   ID DOMUS DE 9 DÍGITOS NO PERFIL
    ========================================================================== */
 .domus-id-badge-container {
   display: inline-flex;
@@ -4594,7 +4594,7 @@ body.light-mode .chart-filter-btn.active {
 }
 
 /* ==========================================================================
-   ABA DE MORADORES & PERMISSÃ•ES
+   ABA DE MORADORES & PERMISSÕES
    ========================================================================== */
 .moradores-header-card {
   background: var(--bg-card);
@@ -4749,7 +4749,7 @@ body.light-mode .chart-filter-btn.active {
 }
 
 /* ==========================================================================
-   ABA DE CHAT MULTIUSUÃRIO EM TEMPO REAL
+   ABA DE CHAT MULTIUSUÁRIO EM TEMPO REAL
    ========================================================================== */
 .chat-layout-container {
   display: flex;
@@ -4764,7 +4764,7 @@ body.light-mode .chart-filter-btn.active {
   margin-bottom: 0;
 }
 
-/* Oculta o rodapÃ© geral na aba do chat para que a conversa preencha o layout perfeitamente sem esticar o fundo */
+/* Oculta o rodapé geral na aba do chat para que a conversa preencha o layout perfeitamente sem esticar o fundo */
 #tab-chat.active ~ .domus-footer {
   display: none !important;
 }
@@ -5062,7 +5062,7 @@ body.light-mode .chart-filter-btn.active {
   margin-bottom: 18px;
 }
 
-/* BALÃ•ES DE MENSAGEM */
+/* BALÕES DE MENSAGEM */
 .chat-bubble {
   max-width: 68%;
   padding: 10px 14px;
@@ -5173,7 +5173,7 @@ body.light-mode .chart-filter-btn.active {
   color: var(--text-main);
 }
 
-/* BARRAS DE PREVIEW (RESPOSTA, GRAVAÃ‡ÃƒO, ANEXO) */
+/* BARRAS DE PREVIEW (RESPOSTA, GRAVAÇÃO, ANEXO) */
 .chat-reply-preview-bar, .chat-attachment-preview-bar {
   padding: 8px 16px;
   background: rgba(13, 17, 23, 0.95);
@@ -5244,7 +5244,7 @@ body.light-mode .chart-filter-btn.active {
   font-size: 0.9rem;
 }
 
-/* RODAPÃ‰ DO CHAT */
+/* RODAPÉ DO CHAT */
 .chat-input-footer {
   padding: 12px 18px;
   background: rgba(13, 17, 23, 0.95);
@@ -5582,7 +5582,7 @@ body.light-mode .chart-filter-btn.active {
 }
 
 /* ==========================================================================
-   ANIMAÃ‡ÃƒO DE ENTRADA DO DOMUS (SISTEMA INTELIGENTE FUTURISTA)
+   ANIMAÇÃO DE ENTRADA DO DOMUS (SISTEMA INTELIGENTE FUTURISTA)
    ========================================================================== */
 .domus-intro-screen {
   position: fixed;
@@ -5779,5 +5779,6 @@ body.light-mode .chart-filter-btn.active {
   color: #ef4444;
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
+
 
 
