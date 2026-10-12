@@ -2,12 +2,13 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DOMUS</title>
-  <meta name="description" content="DOMUS — Sistema Inteligente de Automação Residencial. Integrando a tecnologia ao seu modo de viver.">
+  <meta name="description" content="DOMUS &mdash; Sistema Inteligente de Automa&ccedil;&atilde;o Residencial. Integrando a tecnologia ao seu modo de viver.">
   <meta property="og:title" content="DOMUS">
-  <meta property="og:description" content="DOMUS — Sistema Inteligente de Automação Residencial. Integrando a tecnologia ao seu modo de viver.">
-  <!-- ÍCONES OFICIAIS DOMUS -->
+  <meta property="og:description" content="DOMUS &mdash; Sistema Inteligente de Automa&ccedil;&atilde;o Residencial. Integrando a tecnologia ao seu modo de viver.">
+  <!-- &Iacute;CONES OFICIAIS DOMUS -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="favicon.ico">
@@ -23,40 +24,73 @@
 <body>
 
   <!-- ==========================================================================
-       ANIMAÇÃO DE ENTRADA DO DOMUS (SISTEMA INTELIGENTE FUTURISTA)
+       ANIMA&Ccedil;&Atilde;O DE ENTRADA DO DOMUS (SISTEMA INTELIGENTE FUTURISTA)
        ========================================================================== -->
-  <div id="domus-intro-screen" class="domus-intro-screen" aria-live="polite">
-    <canvas id="intro-canvas"></canvas>
-    <div class="intro-content-wrap">
-      <div class="intro-symbol-box">
-        <svg class="intro-wireframe-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Linhas de conexão e teto futurista -->
-          <path d="M 100 24 L 176 86 L 160 98 L 100 50 L 40 98 L 24 86 Z" fill="url(#introCyanGrad)" stroke="#00f0ff" stroke-width="2.5" />
-          <path d="M 44 102 L 100 54 L 156 102 L 156 168 C 156 174 150 178 142 178 L 58 178 C 50 178 44 174 44 168 Z" stroke="#00d2ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-          <polygon points="100,76 126,91 126,121 100,136 74,121 74,91" fill="#0d1420" stroke="#00d2ff" stroke-width="2.5" />
+  <!-- ==========================================================================
+       CAMADA DE TRANSI&Ccedil;&Atilde;O CINEMATOGR&Aacute;FICA DO DOMUS (AO CLICAR EM ENTRAR)
+       ========================================================================== -->
+  <div id="domus-cinematic-transition" class="domus-cinematic-transition" aria-hidden="true">
+    <canvas id="domus-cinematic-canvas"></canvas>
+    <div class="cinematic-ambient-glow glow-1"></div>
+    <div class="cinematic-ambient-glow glow-2"></div>
+
+    <div class="cinematic-content">
+      <!-- S&iacute;mbolo geom&eacute;trico residencial animado -->
+      <div class="cinematic-symbol-wrapper">
+        <svg class="cinematic-house-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="72" fill="url(#cinematicGlowGrad)" opacity="0.16" />
+          
+          <!-- Linhas geom&eacute;tricas do telhado e beirais -->
+          <path class="geo-line geo-roof" d="M 100 28 L 172 84 L 158 95 L 100 50 L 42 95 L 28 84 Z" 
+                stroke="#00E5FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          
+          <!-- Estrutura principal e alvenaria tecnol&oacute;gica -->
+          <path class="geo-line geo-body" d="M 45 98 L 100 54 L 155 98 L 155 166 C 155 172 150 176 142 176 L 58 176 C 50 176 45 172 45 166 Z" 
+                stroke="#00B4D8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+          
+          <!-- N&uacute;cleo inteligente central DOMUS -->
+          <polygon class="geo-line geo-core" points="100,74 126,89 126,119 100,134 74,119 74,89" 
+                   fill="#060B18" stroke="#00F0FF" stroke-width="2.5" />
+          
+          <!-- Barramentos e conex&otilde;es de sensores internos -->
+          <line class="geo-line geo-circuit" x1="100" y1="134" x2="100" y2="162" stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+          <line class="geo-line geo-circuit" x1="74" y1="104" x2="52" y2="124" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" />
+          <line class="geo-line geo-circuit" x1="126" y1="104" x2="148" y2="124" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" />
+          
+          <!-- N&oacute;s de telemetria luminosos -->
+          <circle class="geo-node" cx="100" cy="50" r="3" fill="#00E5FF" />
+          <circle class="geo-node" cx="100" cy="104" r="5" fill="#FF7A00" />
+          <circle class="geo-node" cx="100" cy="162" r="3" fill="#00E5FF" />
+          <circle class="geo-node" cx="52" cy="124" r="2.5" fill="#00E5FF" />
+          <circle class="geo-node" cx="148" cy="124" r="2.5" fill="#00E5FF" />
+          
           <defs>
-            <linearGradient id="introCyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#00f0ff" />
-              <stop offset="100%" stop-color="#0088ff" />
-            </linearGradient>
+            <radialGradient id="cinematicGlowGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#00E5FF" stop-opacity="0.8" />
+              <stop offset="50%" stop-color="#2563EB" stop-opacity="0.3" />
+              <stop offset="100%" stop-color="#060B18" stop-opacity="0" />
+            </radialGradient>
           </defs>
         </svg>
-        <div class="intro-core-pulse"></div>
+
+        <div class="cinematic-pulse-ring"></div>
       </div>
-      <h1 class="intro-brand-title">DOMUS</h1>
-      <p class="intro-brand-slogan">Integrando a tecnologia ao seu modo de viver.</p>
-      <div class="intro-telemetry-badge">
-        <span class="intro-telemetry-dot"></span>
-        <span id="intro-telemetry-text">Inicializando sistema...</span>
+
+      <h1 class="cinematic-brand-title">DOMUS</h1>
+      <p class="cinematic-brand-slogan">Conectando sua resid&ecirc;ncia inteligente...</p>
+
+      <div class="cinematic-telemetry">
+        <span class="cinematic-telemetry-dot"></span>
+        <span id="cinematic-telemetry-text">Autenticando credenciais...</span>
       </div>
     </div>
   </div>
 
-  <!-- CONTAINER DE NOTIFICAÇÕES FLUTUANTES (CANTO INFERIOR DIREITO) -->
+  <!-- CONTAINER DE NOTIFICA&Ccedil;&Otilde;ES FLUTUANTES (CANTO INFERIOR DIREITO) -->
   <div id="toast-container"></div>
 
   <!-- ==========================================================================
-       TELA DE LOGIN OBRIGATÓRIA DOMUS (APARECE ANTES DE QUALQUER ACESSO AO SISTEMA)
+       TELA DE LOGIN OBRIGAT&Oacute;RIA DOMUS (APARECE ANTES DE QUALQUER ACESSO AO SISTEMA)
        ========================================================================== -->
   <div id="domus-auth-screen" class="domus-auth-screen">
     <div class="auth-ambient-glow glow-cyan"></div>
@@ -64,7 +98,7 @@
 
     <div class="auth-card-container">
       <div class="auth-card">
-        <!-- ÁREA DA MARCA DOMUS -->
+        <!-- &Aacute;REA DA MARCA DOMUS -->
         <div class="auth-brand-area">
           <div class="auth-logo-badge">
             <i class="fa-solid fa-house-signal"></i>
@@ -74,7 +108,7 @@
           <p class="auth-brand-slogan">Integrando a tecnologia ao seu modo de viver.</p>
         </div>
 
-        <!-- TABS DE NAVEGAÇÃO -->
+        <!-- TABS DE NAVEGA&Ccedil;&Atilde;O -->
         <div class="auth-nav-tabs">
           <button type="button" class="auth-tab-btn active" id="tab-btn-login" onclick="showAuthView('login')">
             <i class="fa-solid fa-right-to-bracket"></i> Entrar
@@ -84,14 +118,14 @@
           </button>
         </div>
 
-        <!-- CAIXA DE ALERTAS AMIGÁVEIS -->
+        <!-- CAIXA DE ALERTAS AMIG&Aacute;VEIS -->
         <div id="auth-status-box" class="auth-status-alert" style="display: none;"></div>
 
         <!-- 1. VIEW DE LOGIN -->
         <div id="auth-view-login">
           <div class="auth-view-header">
             <h2 class="auth-view-title">Bem-vindo ao DOMUS</h2>
-            <p class="auth-view-desc">Entre para acessar sua residência inteligente</p>
+            <p class="auth-view-desc">Entre para acessar sua resid&ecirc;ncia inteligente</p>
           </div>
 
           <form id="auth-login-form" class="auth-form" onsubmit="handleAuthLogin(event)" novalidate>
@@ -117,7 +151,7 @@
                   type="password" 
                   id="auth-login-password" 
                   class="auth-input-field" 
-                  placeholder="••••••••" 
+                  placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" 
                   required 
                   autocomplete="current-password"
                 >
@@ -139,7 +173,7 @@
           </form>
 
           <div class="auth-switch-prompt">
-            Não tem uma conta? 
+            N&atilde;o tem uma conta? 
             <button type="button" onclick="showAuthView('register')">Criar conta</button>
           </div>
         </div>
@@ -148,7 +182,7 @@
         <div id="auth-view-register" style="display: none;">
           <div class="auth-view-header">
             <h2 class="auth-view-title">Criar Conta no DOMUS</h2>
-            <p class="auth-view-desc">Cadastre-se para gerenciar sua residência inteligente</p>
+            <p class="auth-view-desc">Cadastre-se para gerenciar sua resid&ecirc;ncia inteligente</p>
           </div>
 
           <form id="auth-register-form" class="auth-form" onsubmit="handleAuthRegister(event)" novalidate>
@@ -189,7 +223,7 @@
                   type="password" 
                   id="auth-reg-password" 
                   class="auth-input-field" 
-                  placeholder="Mínimo de 6 caracteres" 
+                  placeholder="M&iacute;nimo de 6 caracteres" 
                   required 
                   autocomplete="new-password"
                 >
@@ -225,16 +259,16 @@
           </form>
 
           <div class="auth-switch-prompt">
-            Já possui uma conta? 
+            J&aacute; possui uma conta? 
             <button type="button" onclick="showAuthView('login')">Entrar</button>
           </div>
         </div>
 
-        <!-- 3. VIEW DE RECUPERAÇÃO DE SENHA -->
+        <!-- 3. VIEW DE RECUPERA&Ccedil;&Atilde;O DE SENHA -->
         <div id="auth-view-forgot" style="display: none;">
           <div class="auth-view-header">
-            <h2 class="auth-view-title">Recuperação de Senha</h2>
-            <p class="auth-view-desc">Informe seu e-mail cadastrado para receber o link de redefinição.</p>
+            <h2 class="auth-view-title">Recupera&ccedil;&atilde;o de Senha</h2>
+            <p class="auth-view-desc">Informe seu e-mail cadastrado para receber o link de redefini&ccedil;&atilde;o.</p>
           </div>
 
           <form id="auth-forgot-form" class="auth-form" onsubmit="handleAuthForgotPassword(event)" novalidate>
@@ -254,7 +288,7 @@
             </div>
 
             <button type="submit" class="btn-auth-submit" id="btn-forgot-submit">
-              <span class="btn-auth-text"><i class="fa-solid fa-paper-plane"></i> Enviar Link de Recuperação</span>
+              <span class="btn-auth-text"><i class="fa-solid fa-paper-plane"></i> Enviar Link de Recupera&ccedil;&atilde;o</span>
               <span class="btn-auth-loading" style="display: none;"><i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...</span>
             </button>
           </form>
@@ -266,10 +300,10 @@
           </div>
         </div>
 
-        <!-- BOTÃO DE ACESSO AOS CÓDIGOS PARA VS CODE -->
+        <!-- BOT&Atilde;O DE ACESSO AOS C&Oacute;DIGOS PARA VS CODE -->
         <div style="margin-top: 18px; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px;">
           <a href="codigos.html" style="display: inline-flex; align-items: center; gap: 8px; color: var(--blue-accent); font-size: 0.82rem; text-decoration: none; padding: 8px 14px; background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0, 210, 255, 0.18)'" onmouseout="this.style.background='rgba(0, 210, 255, 0.08)'">
-            <i class="fa-solid fa-code"></i> <strong>Central de Códigos (Copiar para VS Code)</strong>
+            <i class="fa-solid fa-code"></i> <strong>Central de C&oacute;digos (Copiar para VS Code)</strong>
           </a>
         </div>
 
@@ -277,7 +311,7 @@
     </div>
   </div>
 
-  <!-- WRAPPER DO SISTEMA DOMUS PROTEGIDO POR AUTENTICAÇÃO -->
+  <!-- WRAPPER DO SISTEMA DOMUS PROTEGIDO POR AUTENTICA&Ccedil;&Atilde;O -->
   <div id="domus-app-wrapper" class="domus-app-wrapper auth-hidden">
 
     <!-- SIDEBAR -->
@@ -289,9 +323,9 @@
 
     <ul class="nav-list">
       <!-- 5 ITENS PRINCIPAIS FIXOS -->
-      <li class="nav-item active" data-tab="tab-inicio"><i class="fa-solid fa-house"></i> Início</li>
-      <li class="nav-item" data-tab="tab-inteligencia"><i class="fa-solid fa-brain"></i> Inteligência</li>
-      <li class="nav-item" data-tab="tab-seguranca"><i class="fa-solid fa-shield-halved"></i> Segurança</li>
+      <li class="nav-item active" data-tab="tab-inicio"><i class="fa-solid fa-house"></i> In&iacute;cio</li>
+      <li class="nav-item" data-tab="tab-inteligencia"><i class="fa-solid fa-brain"></i> Intelig&ecirc;ncia</li>
+      <li class="nav-item" data-tab="tab-seguranca"><i class="fa-solid fa-shield-halved"></i> Seguran&ccedil;a</li>
       <li class="nav-item" data-tab="tab-perfil"><i class="fa-solid fa-user"></i> Perfil</li>
       <li class="nav-item" data-tab="tab-chat" id="nav-item-chat">
         <i class="fa-solid fa-comments"></i> Chat
@@ -301,23 +335,23 @@
       <!-- SEPARADOR -->
       <li class="nav-divider"></li>
 
-      <!-- SEÇÃO EXPANSÍVEL 1: CONTROLE DA CASA -->
+      <!-- SE&Ccedil;&Atilde;O EXPANS&Iacute;VEL 1: CONTROLE DA CASA -->
       <li class="nav-accordion">
         <button type="button" class="nav-accordion-header" onclick="toggleNavAccordion('acc-controle')">
           <span><i class="fa-solid fa-sliders"></i> Controle da Casa</span>
           <i class="fa-solid fa-chevron-down acc-arrow"></i>
         </button>
         <ul class="nav-sublist" id="acc-controle">
-          <li class="nav-subitem" data-tab="tab-iluminacao"><i class="fa-solid fa-lightbulb"></i> Iluminação</li>
-          <li class="nav-subitem" data-tab="tab-climatizacao"><i class="fa-solid fa-snowflake"></i> Climatização</li>
+          <li class="nav-subitem" data-tab="tab-iluminacao"><i class="fa-solid fa-lightbulb"></i> Ilumina&ccedil;&atilde;o</li>
+          <li class="nav-subitem" data-tab="tab-climatizacao"><i class="fa-solid fa-snowflake"></i> Climatiza&ccedil;&atilde;o</li>
           <li class="nav-subitem" data-tab="tab-energia"><i class="fa-solid fa-bolt"></i> Energia</li>
-          <li class="nav-subitem" data-tab="tab-automacoes"><i class="fa-solid fa-robot"></i> Automações</li>
+          <li class="nav-subitem" data-tab="tab-automacoes"><i class="fa-solid fa-robot"></i> Automa&ccedil;&otilde;es</li>
           <li class="nav-subitem" onclick="openDevicesModal()"><i class="fa-solid fa-plug"></i> Dispositivos</li>
-          <li class="nav-subitem" onclick="openRoomsModal()"><i class="fa-solid fa-door-open"></i> Cômodos</li>
+          <li class="nav-subitem" onclick="openRoomsModal()"><i class="fa-solid fa-door-open"></i> C&ocirc;modos</li>
         </ul>
       </li>
 
-      <!-- SEÇÃO EXPANSÍVEL 2: MONITORAMENTO -->
+      <!-- SE&Ccedil;&Atilde;O EXPANS&Iacute;VEL 2: MONITORAMENTO -->
       <li class="nav-accordion">
         <button type="button" class="nav-accordion-header" onclick="toggleNavAccordion('acc-monitor')">
           <span><i class="fa-solid fa-chart-line"></i> Monitoramento</span>
@@ -325,13 +359,13 @@
         </button>
         <ul class="nav-sublist" id="acc-monitor">
           <li class="nav-subitem" data-tab="tab-energia"><i class="fa-solid fa-bolt"></i> Consumo de Energia</li>
-          <li class="nav-subitem" onclick="openSensorsModal()"><i class="fa-solid fa-gauge-high"></i> Análise dos Sensores</li>
-          <li class="nav-subitem" onclick="openFullHistoryModal()"><i class="fa-solid fa-clock-rotate-left"></i> Histórico</li>
-          <li class="nav-subitem" onclick="openNotificationsModal()"><i class="fa-solid fa-bell"></i> Notificações</li>
+          <li class="nav-subitem" onclick="openSensorsModal()"><i class="fa-solid fa-gauge-high"></i> An&aacute;lise dos Sensores</li>
+          <li class="nav-subitem" onclick="openFullHistoryModal()"><i class="fa-solid fa-clock-rotate-left"></i> Hist&oacute;rico</li>
+          <li class="nav-subitem" onclick="openNotificationsModal()"><i class="fa-solid fa-bell"></i> Notifica&ccedil;&otilde;es</li>
         </ul>
       </li>
 
-      <!-- SEÇÃO EXPANSÍVEL 3: CASA & MORADORES -->
+      <!-- SE&Ccedil;&Atilde;O EXPANS&Iacute;VEL 3: CASA & MORADORES -->
       <li class="nav-accordion">
         <button type="button" class="nav-accordion-header" onclick="toggleNavAccordion('acc-casa')">
           <span><i class="fa-solid fa-people-roof"></i> Casa</span>
@@ -340,8 +374,8 @@
         <ul class="nav-sublist" id="acc-casa">
           <li class="nav-subitem" data-tab="tab-moradores"><i class="fa-solid fa-users"></i> Moradores</li>
           <li class="nav-subitem" data-tab="tab-mapa"><i class="fa-solid fa-map-location-dot"></i> Mapa da Casa</li>
-          <li class="nav-subitem" onclick="openInvitationsModal()"><i class="fa-solid fa-envelope-open-text"></i> Convites &amp; Permissões</li>
-          <li class="nav-subitem" onclick="openResidenceSettingsModal()"><i class="fa-solid fa-gear"></i> Configurações da Residência</li>
+          <li class="nav-subitem" onclick="openInvitationsModal()"><i class="fa-solid fa-envelope-open-text"></i> Convites &amp; Permiss&otilde;es</li>
+          <li class="nav-subitem" onclick="openResidenceSettingsModal()"><i class="fa-solid fa-gear"></i> Configura&ccedil;&otilde;es da Resid&ecirc;ncia</li>
         </ul>
       </li>
     </ul>
@@ -680,7 +714,7 @@
             <div class="scene-card-icon" style="color: #f59e0b; background: rgba(245, 158, 11, 0.15);">
               <i class="fa-solid fa-sun"></i>
             </div>
-            <div class="scene-card-title">☀️ Dia</div>
+            <div class="scene-card-title">&#9728;&#65039; Dia</div>
             <p class="scene-card-desc">Ilumina&ccedil;&atilde;o geral em intensidade alta.</p>
           </div>
 
@@ -688,7 +722,7 @@
             <div class="scene-card-icon" style="color: #6366f1; background: rgba(99, 102, 241, 0.15);">
               <i class="fa-solid fa-moon"></i>
             </div>
-            <div class="scene-card-title">🌙 Noite</div>
+            <div class="scene-card-title">&#127769; Noite</div>
             <p class="scene-card-desc">Reduz ilumina&ccedil;&atilde;o e desliga ambientes desnecess&aacute;rios.</p>
           </div>
 
@@ -696,7 +730,7 @@
             <div class="scene-card-icon" style="color: #ec4899; background: rgba(236, 72, 153, 0.15);">
               <i class="fa-solid fa-film"></i>
             </div>
-            <div class="scene-card-title">🎬 Cinema</div>
+            <div class="scene-card-title">&#127916; Cinema</div>
             <p class="scene-card-desc">Sala com ilumina&ccedil;&atilde;o baixa e quente.</p>
           </div>
 
@@ -704,7 +738,7 @@
             <div class="scene-card-icon" style="color: #00d2ff; background: rgba(0, 210, 255, 0.15);">
               <i class="fa-solid fa-book-open"></i>
             </div>
-            <div class="scene-card-title">📚 Estudo</div>
+            <div class="scene-card-title">&#128218; Estudo</div>
             <p class="scene-card-desc">Ilumina&ccedil;&atilde;o forte e mais neutra/fria.</p>
           </div>
 
@@ -712,7 +746,7 @@
             <div class="scene-card-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.15);">
               <i class="fa-solid fa-house-user"></i>
             </div>
-            <div class="scene-card-title">🏠 Cheguei</div>
+            <div class="scene-card-title">&#127968; Cheguei</div>
             <p class="scene-card-desc">Ativa ilumina&ccedil;&atilde;o de boas-vindas.</p>
           </div>
 
@@ -720,7 +754,7 @@
             <div class="scene-card-icon" style="color: #a855f7; background: rgba(168, 85, 247, 0.15);">
               <i class="fa-solid fa-champagne-glasses"></i>
             </div>
-            <div class="scene-card-title">🎉 Festa</div>
+            <div class="scene-card-title">&#127881; Festa</div>
             <p class="scene-card-desc">Ativa ilumina&ccedil;&atilde;o configurada para festa.</p>
           </div>
         </div>
@@ -740,7 +774,7 @@
                 <i class="fa-solid fa-couch" style="color: var(--blue-accent);"></i>
                 <strong>Sala de Estar</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-1">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-1">&#9898; 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -770,7 +804,7 @@
                 <i class="fa-solid fa-utensils" style="color: var(--orange-bright);"></i>
                 <strong>Cozinha</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-2">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-2">&#9898; 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -800,7 +834,7 @@
                 <i class="fa-solid fa-bed" style="color: #a855f7;"></i>
                 <strong>Quarto Principal</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-3">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-3">&#9898; 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -830,7 +864,7 @@
                 <i class="fa-solid fa-child-reaching" style="color: #00d2ff;"></i>
                 <strong>Quarto 2</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-4">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-4">&#9898; 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -860,7 +894,7 @@
                 <i class="fa-solid fa-bath" style="color: #06b6d4;"></i>
                 <strong>Banheiro</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-5">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-5">&#9898; 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -890,7 +924,7 @@
                 <i class="fa-solid fa-warehouse" style="color: #f59e0b;"></i>
                 <strong>Garagem</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-6">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-6">&#9898; 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -920,7 +954,7 @@
                 <i class="fa-solid fa-tree" style="color: #10b981;"></i>
                 <strong>Refletor do Quintal</strong>
               </div>
-              <span class="room-status-badge" id="badge-bulb-icon-7">⚪ 0/1 ligada</span>
+              <span class="room-status-badge" id="badge-bulb-icon-7">&#9898; 0/1 ligada</span>
             </div>
             <div class="device-item room-device-inner">
               <div class="device-info">
@@ -990,7 +1024,7 @@
             <div class="lighting-automations-list">
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>🌇 Ao anoitecer</strong>
+                  <strong>&#127751; Ao anoitecer</strong>
                   <span>Ligar ilumina&ccedil;&atilde;o externa (Refletor do Quintal)</span>
                 </div>
                 <label class="switch">
@@ -1001,7 +1035,7 @@
 
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>🚶 Ao detectar movimento</strong>
+                  <strong>&#128694; Ao detectar movimento</strong>
                   <span>Ligar ilumina&ccedil;&atilde;o da garagem</span>
                 </div>
                 <label class="switch">
@@ -1012,7 +1046,7 @@
 
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>🏠 Ao chegar</strong>
+                  <strong>&#127968; Ao chegar</strong>
                   <span>Ativar ilumina&ccedil;&atilde;o de boas-vindas</span>
                 </div>
                 <label class="switch">
@@ -1023,7 +1057,7 @@
 
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>🌙 Hor&aacute;rio de dormir</strong>
+                  <strong>&#127769; Hor&aacute;rio de dormir</strong>
                   <span>Reduzir ilumina&ccedil;&atilde;o geral da casa &agrave;s 23h30</span>
                 </div>
                 <label class="switch">
@@ -1034,7 +1068,7 @@
 
               <div class="lighting-auto-item">
                 <div class="auto-item-info">
-                  <strong>⏰ Hor&aacute;rio programado</strong>
+                  <strong>&#9200; Hor&aacute;rio programado</strong>
                   <span>Ligar/desligar dispositivos em hor&aacute;rios definidos</span>
                 </div>
                 <label class="switch">
@@ -1477,7 +1511,7 @@
       <div class="dashboard-grid">
         <div class="card" style="grid-column: span 2;">
           <div class="card-title">
-            <span>🧠 Sugest&otilde;es Identificadas</span>
+            <span>&#129504; Sugest&otilde;es Identificadas</span>
             <i class="fa-solid fa-brain" style="color: var(--orange-bright);"></i>
           </div>
 
@@ -1580,12 +1614,12 @@
             <div class="domus-id-badge-container">
               <span class="domus-id-label">ID DOMUS:</span>
               <span class="domus-id-number" id="profile-display-public-id">--- --- ---</span>
-              <button type="button" class="btn-copy-id" onclick="copyDomusId()" title="Copiar ID DOMUS de 9 dígitos">
+              <button type="button" class="btn-copy-id" onclick="copyDomusId()" title="Copiar ID DOMUS de 9 d&iacute;gitos">
                 <i class="fa-solid fa-copy"></i> Copiar ID
               </button>
             </div>
             <div class="profile-badges" style="margin-top: 6px;">
-              <span class="badge badge-admin" id="profile-residence-role-badge"><i class="fa-solid fa-shield-halved"></i> Dono da Residência</span>
+              <span class="badge badge-admin" id="profile-residence-role-badge"><i class="fa-solid fa-shield-halved"></i> Dono da Resid&ecirc;ncia</span>
               <span class="badge badge-tech"><i class="fa-solid fa-microchip"></i> DOMUS Pro Connect</span>
             </div>
           </div>
@@ -1886,7 +1920,7 @@
 
     </div>
 
-    <!-- ABA 9: CHAT EM TEMPO REAL MULTIUSUÁRIO -->
+    <!-- ABA 9: CHAT EM TEMPO REAL MULTIUSU&Aacute;RIO -->
     <div id="tab-chat" class="tab-content">
       <div class="chat-layout-container">
         <!-- BARRA LATERAL DE CONVERSAS -->
@@ -1894,7 +1928,7 @@
           <div class="chat-sidebar-header">
             <div class="chat-header-title">
               <h3><i class="fa-solid fa-comments"></i> Mensagens</h3>
-              <span class="chat-user-id-chip" title="Seu ID Público">ID: <strong id="chat-my-public-id">---</strong></span>
+              <span class="chat-user-id-chip" title="Seu ID P&uacute;blico">ID: <strong id="chat-my-public-id">---</strong></span>
             </div>
             <button type="button" class="btn-new-chat" onclick="openNewChatModal()">
               <i class="fa-solid fa-plus"></i> Nova conversa por ID
@@ -1909,14 +1943,14 @@
           <div class="conversations-scroll-list" id="conversations-list-container">
             <div style="padding: 24px; text-align: center; color: var(--text-muted); font-size: 0.85rem;">
               <i class="fa-solid fa-comment-dots" style="font-size: 1.8rem; margin-bottom: 8px; color: var(--blue-accent); display: block;"></i>
-              Nenhuma conversa iniciada.<br>Clique em "+ Nova conversa" e digite o ID DOMUS de 9 dígitos de outro usuário.
+              Nenhuma conversa iniciada.<br>Clique em "+ Nova conversa" e digite o ID DOMUS de 9 d&iacute;gitos de outro usu&aacute;rio.
             </div>
           </div>
         </aside>
 
         <!-- JANELA PRINCIPAL DA CONVERSA -->
         <section class="chat-main-window" id="chat-main-window">
-          <!-- CABEÇALHO DA CONVERSA ATIVA -->
+          <!-- CABE&Ccedil;ALHO DA CONVERSA ATIVA -->
           <div class="chat-active-header" id="chat-active-header">
             <div class="chat-header-user">
               <button type="button" class="btn-chat-back-mobile" onclick="closeMobileChatWindow()"><i class="fa-solid fa-arrow-left"></i></button>
@@ -1938,7 +1972,7 @@
             <div class="chat-empty-state" id="chat-empty-state">
               <i class="fa-solid fa-comments"></i>
               <h4>Nenhuma conversa selecionada</h4>
-              <p>Adicione um contato informando o ID DOMUS de 9 dígitos ou selecione uma conversa existente ao lado para começar.</p>
+              <p>Adicione um contato informando o ID DOMUS de 9 d&iacute;gitos ou selecione uma conversa existente ao lado para come&ccedil;ar.</p>
               <button type="button" class="btn-ai-action btn-ai-primary" onclick="openNewChatModal()">
                 <i class="fa-solid fa-user-plus"></i> Iniciar conversa por ID
               </button>
@@ -1957,12 +1991,12 @@
             <button type="button" class="btn-cancel-reply" onclick="cancelReply()"><i class="fa-solid fa-xmark"></i></button>
           </div>
 
-          <!-- BARRA DE GRAVAÇÃO DE ÁUDIO -->
+          <!-- BARRA DE GRAVA&Ccedil;&Atilde;O DE &Aacute;UDIO -->
           <div class="chat-audio-record-bar" id="chat-audio-record-bar" style="display: none;">
             <div class="audio-recording-indicator">
               <span class="record-pulse-dot"></span>
               <span id="audio-record-timer" style="font-weight: 700; color: #ef4444; font-family: monospace;">00:00</span>
-              <span style="font-size: 0.78rem; color: var(--text-muted); margin-left: 8px;">Gravando áudio...</span>
+              <span style="font-size: 0.78rem; color: var(--text-muted); margin-left: 8px;">Gravando &aacute;udio...</span>
             </div>
             <div class="audio-record-controls">
               <button type="button" class="btn-audio-control btn-audio-cancel" onclick="cancelAudioRecording()"><i class="fa-solid fa-trash"></i> Cancelar</button>
@@ -1970,7 +2004,7 @@
             </div>
           </div>
 
-          <!-- BARRA DE PREVIEW DO ÁUDIO PRONTO -->
+          <!-- BARRA DE PREVIEW DO &Aacute;UDIO PRONTO -->
           <div class="chat-audio-preview-bar" id="chat-audio-preview-bar" style="display: none;">
             <audio id="audio-preview-player" controls style="height: 36px; max-width: 280px;"></audio>
             <div class="audio-preview-controls" style="display: flex; gap: 8px;">
@@ -1991,7 +2025,7 @@
             <button type="button" class="btn-cancel-reply" onclick="clearAttachmentPreview()"><i class="fa-solid fa-xmark"></i></button>
           </div>
 
-          <!-- RODAPÉ DE ENVIO DE MENSAGENS -->
+          <!-- RODAP&Eacute; DE ENVIO DE MENSAGENS -->
           <div class="chat-input-footer" id="chat-input-footer">
             <input type="file" id="chat-file-input" style="display: none;" onchange="handleChatFileSelect(this)">
             <button type="button" class="btn-chat-media" onclick="document.getElementById('chat-file-input').click()" title="Anexar imagem ou arquivo">
@@ -2011,19 +2045,19 @@
       </div>
     </div>
 
-    <!-- ABA 10: GESTÃO DE MORADORES E RESIDÊNCIA -->
+    <!-- ABA 10: GEST&Atilde;O DE MORADORES E RESID&Ecirc;NCIA -->
     <div id="tab-moradores" class="tab-content">
       <div class="moradores-header-card">
         <div class="moradores-title-area">
-          <h2 id="moradores-residence-name">Residência Principal</h2>
-          <p>Gerencie quem tem acesso à sua casa inteligente e defina permissões granulares para cada morador.</p>
+          <h2 id="moradores-residence-name">Resid&ecirc;ncia Principal</h2>
+          <p>Gerencie quem tem acesso &agrave; sua casa inteligente e defina permiss&otilde;es granulares para cada morador.</p>
         </div>
         <div class="moradores-actions">
           <button type="button" class="btn-ai-action btn-ai-primary" id="btn-owner-add-resident" onclick="openAddResidentModal()">
             <i class="fa-solid fa-user-plus"></i> Convidar Morador por ID
           </button>
           <button type="button" class="btn-ai-action btn-ai-secondary" onclick="openResidenceSettingsModal()">
-            <i class="fa-solid fa-gear"></i> Configurações da Residência
+            <i class="fa-solid fa-gear"></i> Configura&ccedil;&otilde;es da Resid&ecirc;ncia
           </button>
         </div>
       </div>
@@ -2031,11 +2065,11 @@
       <!-- BANNER DE CONVITES PENDENTES -->
       <div id="pending-invitations-banner" style="display: none; margin-bottom: 20px;"></div>
 
-      <!-- GRID DE MORADORES DA RESIDÊNCIA -->
+      <!-- GRID DE MORADORES DA RESID&Ecirc;NCIA -->
       <div class="card">
         <div class="card-title">
-          <span>Moradores da Residência (<span id="residents-total-count">1</span>)</span>
-          <span class="badge badge-tech" id="my-residence-role-badge">Você é o Dono</span>
+          <span>Moradores da Resid&ecirc;ncia (<span id="residents-total-count">1</span>)</span>
+          <span class="badge badge-tech" id="my-residence-role-badge">Voc&ecirc; &eacute; o Dono</span>
         </div>
 
         <div class="residents-grid" id="residents-full-grid">
@@ -2054,7 +2088,7 @@
               <span class="online-indicator-dot"></span> Planta Sincronizada
             </div>
           </div>
-          <p class="mapa-hero-desc">Visualização interativa da residência com status em tempo real de iluminação, climatização e sensores.</p>
+          <p class="mapa-hero-desc">Visualiza&ccedil;&atilde;o interativa da resid&ecirc;ncia com status em tempo real de ilumina&ccedil;&atilde;o, climatiza&ccedil;&atilde;o e sensores.</p>
         </div>
         <div class="mapa-hero-actions">
           <button type="button" class="btn-ai-action btn-ai-primary" onclick="openUploadMapModal()">
@@ -2068,24 +2102,24 @@
         <div class="map-controls-bar">
           <div class="map-view-filters">
             <button type="button" class="map-filter-btn active" onclick="setMapFilter('all', this)"><i class="fa-solid fa-layer-group"></i> Todos os Ambientes</button>
-            <button type="button" class="map-filter-btn" onclick="setMapFilter('lights', this)"><i class="fa-solid fa-lightbulb"></i> Iluminação</button>
-            <button type="button" class="map-filter-btn" onclick="setMapFilter('climate', this)"><i class="fa-solid fa-snowflake"></i> Climatização</button>
+            <button type="button" class="map-filter-btn" onclick="setMapFilter('lights', this)"><i class="fa-solid fa-lightbulb"></i> Ilumina&ccedil;&atilde;o</button>
+            <button type="button" class="map-filter-btn" onclick="setMapFilter('climate', this)"><i class="fa-solid fa-snowflake"></i> Climatiza&ccedil;&atilde;o</button>
             <button type="button" class="map-filter-btn" onclick="setMapFilter('security', this)"><i class="fa-solid fa-shield-halved"></i> Sensores</button>
           </div>
           <span class="map-zoom-hint"><i class="fa-solid fa-circle-info"></i> Clique no ambiente para abrir os controles</span>
         </div>
 
-        <!-- BLUEPRINT INTERATIVO DOS CÔMODOS -->
+        <!-- BLUEPRINT INTERATIVO DOS C&Ocirc;MODOS -->
         <div class="house-blueprint-grid" id="house-blueprint-grid">
           <!-- Sala de Estar -->
           <div class="blueprint-room-zone" onclick="switchTab('tab-iluminacao', '#room-card-bulb-icon-1')">
             <div class="room-zone-header">
               <span class="room-zone-name"><i class="fa-solid fa-couch" style="color: var(--blue-accent);"></i> Sala de Estar</span>
-              <span class="room-zone-temp">22°C</span>
+              <span class="room-zone-temp">22&deg;C</span>
             </div>
             <div class="room-zone-nodes">
               <span class="node-pill node-light"><i class="fa-solid fa-lightbulb"></i> Luz 72%</span>
-              <span class="node-pill node-ac"><i class="fa-solid fa-snowflake"></i> AC 22°C</span>
+              <span class="node-pill node-ac"><i class="fa-solid fa-snowflake"></i> AC 22&deg;C</span>
               <span class="node-pill node-sensor"><i class="fa-solid fa-person-walking"></i> Sensor Ativo</span>
             </div>
           </div>
@@ -2094,11 +2128,11 @@
           <div class="blueprint-room-zone" onclick="switchTab('tab-iluminacao', '#room-card-bulb-icon-2')">
             <div class="room-zone-header">
               <span class="room-zone-name"><i class="fa-solid fa-utensils" style="color: var(--orange-bright);"></i> Cozinha</span>
-              <span class="room-zone-temp">23°C</span>
+              <span class="room-zone-temp">23&deg;C</span>
             </div>
             <div class="room-zone-nodes">
               <span class="node-pill node-light"><i class="fa-solid fa-lightbulb"></i> Fita LED 80%</span>
-              <span class="node-pill node-sensor"><i class="fa-solid fa-fire-burner"></i> Gás / Fumaça OK</span>
+              <span class="node-pill node-sensor"><i class="fa-solid fa-fire-burner"></i> G&aacute;s / Fuma&ccedil;a OK</span>
             </div>
           </div>
 
@@ -2106,11 +2140,11 @@
           <div class="blueprint-room-zone" onclick="switchTab('tab-iluminacao', '#room-card-bulb-icon-3')">
             <div class="room-zone-header">
               <span class="room-zone-name"><i class="fa-solid fa-bed" style="color: #a855f7;"></i> Quarto Principal</span>
-              <span class="room-zone-temp">21°C</span>
+              <span class="room-zone-temp">21&deg;C</span>
             </div>
             <div class="room-zone-nodes">
               <span class="node-pill node-light"><i class="fa-solid fa-lightbulb"></i> Luz 60%</span>
-              <span class="node-pill node-ac"><i class="fa-solid fa-snowflake"></i> AC 21°C</span>
+              <span class="node-pill node-ac"><i class="fa-solid fa-snowflake"></i> AC 21&deg;C</span>
             </div>
           </div>
 
@@ -2118,7 +2152,7 @@
           <div class="blueprint-room-zone" onclick="switchTab('tab-iluminacao', '#room-card-bulb-icon-4')">
             <div class="room-zone-header">
               <span class="room-zone-name"><i class="fa-solid fa-child-reaching" style="color: #00d2ff;"></i> Quarto 2</span>
-              <span class="room-zone-temp">22°C</span>
+              <span class="room-zone-temp">22&deg;C</span>
             </div>
             <div class="room-zone-nodes">
               <span class="node-pill node-light"><i class="fa-solid fa-lightbulb"></i> Luz 50%</span>
@@ -2129,7 +2163,7 @@
           <div class="blueprint-room-zone" onclick="switchTab('tab-iluminacao', '#room-card-bulb-icon-5')">
             <div class="room-zone-header">
               <span class="room-zone-name"><i class="fa-solid fa-bath" style="color: #06b6d4;"></i> Banheiro</span>
-              <span class="room-zone-temp">24°C</span>
+              <span class="room-zone-temp">24&deg;C</span>
             </div>
             <div class="room-zone-nodes">
               <span class="node-pill node-light"><i class="fa-solid fa-lightbulb"></i> LED Embutido</span>
@@ -2141,11 +2175,11 @@
           <div class="blueprint-room-zone" onclick="switchTab('tab-iluminacao', '#room-card-bulb-icon-6')">
             <div class="room-zone-header">
               <span class="room-zone-name"><i class="fa-solid fa-warehouse" style="color: #f59e0b;"></i> Garagem</span>
-              <span class="room-zone-temp">25°C</span>
+              <span class="room-zone-temp">25&deg;C</span>
             </div>
             <div class="room-zone-nodes">
               <span class="node-pill node-light"><i class="fa-solid fa-lightbulb"></i> Tubular LED</span>
-              <span class="node-pill node-sensor"><i class="fa-solid fa-shield-halved"></i> Portão Fechado</span>
+              <span class="node-pill node-sensor"><i class="fa-solid fa-shield-halved"></i> Port&atilde;o Fechado</span>
             </div>
           </div>
 
@@ -2153,23 +2187,23 @@
           <div class="blueprint-room-zone" onclick="switchTab('tab-iluminacao', '#room-card-bulb-icon-7')">
             <div class="room-zone-header">
               <span class="room-zone-name"><i class="fa-solid fa-tree" style="color: #10b981;"></i> Refletor do Quintal</span>
-              <span class="room-zone-temp">24°C</span>
+              <span class="room-zone-temp">24&deg;C</span>
             </div>
             <div class="room-zone-nodes">
               <span class="node-pill node-light"><i class="fa-solid fa-lightbulb"></i> Refletor 50W</span>
-              <span class="node-pill node-sensor"><i class="fa-solid fa-video"></i> Câmera Ativa</span>
+              <span class="node-pill node-sensor"><i class="fa-solid fa-video"></i> C&acirc;mera Ativa</span>
             </div>
           </div>
         </div>
 
-        <!-- BANNER DE EXPANSÃO FUTURA PARA PLANTA PERSONALIZADA -->
+        <!-- BANNER DE EXPANS&Atilde;O FUTURA PARA PLANTA PERSONALIZADA -->
         <div class="map-future-expansion-banner">
           <div class="expansion-icon-wrap">
             <i class="fa-solid fa-compass-drafting"></i>
           </div>
           <div class="expansion-text">
-            <strong>Módulo de Planta Personalizada Preparado para Expansão</strong>
-            <p>Esta área está estruturada para receber a planta arquitetônica personalizada (arquivo SVG, 3D interativo ou upload de imagem da sua casa) com posicionamento dinâmico de lâmpadas e sensores.</p>
+            <strong>M&oacute;dulo de Planta Personalizada Preparado para Expans&atilde;o</strong>
+            <p>Esta &aacute;rea est&aacute; estruturada para receber a planta arquitet&ocirc;nica personalizada (arquivo SVG, 3D interativo ou upload de imagem da sua casa) com posicionamento din&acirc;mico de l&acirc;mpadas e sensores.</p>
           </div>
           <button type="button" class="btn-ai-action btn-ai-secondary" onclick="openUploadMapModal()">
             <i class="fa-solid fa-sliders"></i> Configurar Planta
@@ -2185,7 +2219,7 @@
           <span class="footer-logo">DOMUS</span>
           <p class="footer-copy">&copy; 2026 DOMUS &mdash; Sistema Inteligente de Automa&ccedil;&atilde;o Residencial</p>
         </div>
-        <p class="footer-quote">&ldquo;Integrando a tecnologia ao seu modo de viver.&rdquo;</p>
+        <p class="footer-quote">"Integrando a tecnologia ao seu modo de viver."</p>
         <div class="footer-credits">
           <span>Desenvolvido por <strong>Matheus &amp; Arthur</strong></span>
         </div>
@@ -2311,9 +2345,9 @@
       <div class="history-filter-row">
         <div class="history-filter-pills">
           <button type="button" class="history-pill active" onclick="filterHistoryLogs('all', this)">Todos</button>
-          <button type="button" class="history-pill" onclick="filterHistoryLogs('luz', this)">💡 Ilumina&ccedil;&atilde;o</button>
-          <button type="button" class="history-pill" onclick="filterHistoryLogs('clima', this)">❄️ Clima</button>
-          <button type="button" class="history-pill" onclick="filterHistoryLogs('seguranca', this)">🛡️ Seguran&ccedil;a</button>
+          <button type="button" class="history-pill" onclick="filterHistoryLogs('luz', this)">&#128161; Ilumina&ccedil;&atilde;o</button>
+          <button type="button" class="history-pill" onclick="filterHistoryLogs('clima', this)">&#10052;&#65039; Clima</button>
+          <button type="button" class="history-pill" onclick="filterHistoryLogs('seguranca', this)">&#128737;&#65039; Seguran&ccedil;a</button>
         </div>
         <button type="button" class="btn-ai-action btn-ai-secondary" style="font-size: 0.75rem; padding: 5px 12px;" onclick="clearActivityHistory()">
           <i class="fa-solid fa-trash-can"></i> Limpar logs
@@ -2379,9 +2413,9 @@
             <strong id="modal-temp-display">3000K</strong>
           </div>
           <div class="temp-slider-container">
-            <span class="temp-label-icon">🌅 Quente</span>
+            <span class="temp-label-icon">&#127749; Quente</span>
             <input type="range" id="modal-temp-slider" min="2700" max="6500" step="100" value="3000" oninput="onModalTempChange(this.value)">
-            <span class="temp-label-icon">Fria ❄️</span>
+            <span class="temp-label-icon">Fria &#10052;&#65039;</span>
           </div>
           <div class="temp-preset-pills">
             <button type="button" class="btn-preset-pill" onclick="setModalTempPreset(2700)">2700K (Quente)</button>
@@ -2411,7 +2445,7 @@
         <div class="modal-control-block" id="modal-motion-block">
           <div class="control-header-row">
             <span><i class="fa-solid fa-person-walking"></i> Sensor de movimento</span>
-            <span class="motion-status-pill" id="modal-motion-status">🟢 Ativo</span>
+            <span class="motion-status-pill" id="modal-motion-status">&#128994; Ativo</span>
           </div>
           <div class="motion-last-seen" id="modal-motion-last">&Uacute;ltimo movimento: h&aacute; 2 min</div>
           <div class="motion-options">
@@ -2530,26 +2564,26 @@
     </div>
   </div>
 
-  <!-- MODAL DE ALTERAÇÃO SEGURA DE SENHA (CONCEITO DOMUS & SUPABASE) -->
+  <!-- MODAL DE ALTERA&Ccedil;&Atilde;O SEGURA DE SENHA (CONCEITO DOMUS & SUPABASE) -->
   <div id="modal-change-password" class="modal-overlay">
     <div class="modal-content" style="max-width: 480px;">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-key" style="color: var(--orange-bright);"></i> Alteração Segura de Senha</h3>
+        <h3><i class="fa-solid fa-key" style="color: var(--orange-bright);"></i> Altera&ccedil;&atilde;o Segura de Senha</h3>
         <button type="button" class="btn-close-modal" onclick="closeChangePasswordModal()">&times;</button>
       </div>
       <div id="pwd-modal-alert" class="auth-status-alert" style="display: none; margin-bottom: 14px;"></div>
       
-      <!-- ETAPA 1: SOLICITAR CÓDIGO POR E-MAIL -->
+      <!-- ETAPA 1: SOLICITAR C&Oacute;DIGO POR E-MAIL -->
       <div id="pwd-step-request" class="pwd-flow-step">
         <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
-          Para garantir a proteção da sua residência inteligente, enviaremos uma solicitação oficial de redefinição com link e código para o seu e-mail cadastrado.
+          Para garantir a prote&ccedil;&atilde;o da sua resid&ecirc;ncia inteligente, enviaremos uma solicita&ccedil;&atilde;o oficial de redefini&ccedil;&atilde;o com link e c&oacute;digo para o seu e-mail cadastrado.
         </p>
         <div class="form-group">
           <label><i class="fa-solid fa-envelope"></i> E-mail Cadastrado</label>
           <input type="email" id="pwd-reset-email" placeholder="seu.email@exemplo.com" required readonly style="background: rgba(255, 255, 255, 0.04); cursor: not-allowed;">
         </div>
         <button type="button" class="btn-ai-action btn-ai-primary" id="btn-send-pwd-code" style="width: 100%; margin-top: 10px;" onclick="sendPasswordResetCode()">
-          <i class="fa-solid fa-paper-plane"></i> Enviar Solicitação para o E-mail
+          <i class="fa-solid fa-paper-plane"></i> Enviar Solicita&ccedil;&atilde;o para o E-mail
         </button>
       </div>
 
@@ -2559,13 +2593,13 @@
           <i class="fa-solid fa-circle-check"></i> E-mail enviado! Agora defina sua nova senha de acesso abaixo:
         </p>
         <div class="form-group">
-          <label><i class="fa-solid fa-shield-halved"></i> Código de Confirmação (Opcional / Se recebido)</label>
+          <label><i class="fa-solid fa-shield-halved"></i> C&oacute;digo de Confirma&ccedil;&atilde;o (Opcional / Se recebido)</label>
           <input type="text" id="pwd-reset-code" placeholder="Ex: 849201 ou token">
         </div>
         <div class="form-group">
           <label><i class="fa-solid fa-lock"></i> Nova Senha</label>
           <div style="position: relative;">
-            <input type="password" id="pwd-new-password" placeholder="Mínimo 6 caracteres" required>
+            <input type="password" id="pwd-new-password" placeholder="M&iacute;nimo 6 caracteres" required>
             <button type="button" class="auth-pwd-toggle" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer;" onclick="toggleAuthPasswordVisibility('pwd-new-password', this)">
               <i class="fa-solid fa-eye"></i>
             </button>
@@ -2598,7 +2632,7 @@
         <button type="button" class="btn-close-modal" onclick="closeDevicesModal()">&times;</button>
       </div>
       <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 15px;">
-        13 dispositivos integrados à rede DOMUS Mesh com protocolo Matter &amp; Zigbee.
+        13 dispositivos integrados &agrave; rede DOMUS Mesh com protocolo Matter &amp; Zigbee.
       </p>
       <div class="devices-active-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto;">
         <div class="card" style="padding: 12px 16px; margin: 0; display: flex; justify-content: space-between; align-items: center;">
@@ -2606,7 +2640,7 @@
             <div class="icon-box active-glow-blue" style="width: 38px; height: 38px;"><i class="fa-solid fa-laptop"></i></div>
             <div>
               <strong>Painel Web DOMUS (Este dispositivo)</strong>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Sessão ativa agora &middot; Google Chrome</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Sess&atilde;o ativa agora &middot; Google Chrome</div>
             </div>
           </div>
           <span class="badge badge-tech"><i class="fa-solid fa-circle" style="color: #10b981; font-size: 0.6rem;"></i> Ativo</span>
@@ -2616,7 +2650,7 @@
             <div class="icon-box active-glow" style="width: 38px; height: 38px;"><i class="fa-solid fa-mobile-screen"></i></div>
             <div>
               <strong>DOMUS Mobile (iPhone 15 Pro)</strong>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Último acesso há 12 min &middot; App iOS</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">&Uacute;ltimo acesso h&aacute; 12 min &middot; App iOS</div>
             </div>
           </div>
           <span class="badge badge-tech"><i class="fa-solid fa-circle" style="color: #10b981; font-size: 0.6rem;"></i> Sincronizado</span>
@@ -2626,7 +2660,7 @@
             <div class="icon-box" style="width: 38px; height: 38px; color: var(--orange-bright); background: rgba(255, 122, 0, 0.1);"><i class="fa-solid fa-network-wired"></i></div>
             <div>
               <strong>Gateway Central DOMUS Hub</strong>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Firmware v2.4.1 &middot; Latência 8ms</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Firmware v2.4.1 &middot; Lat&ecirc;ncia 8ms</div>
             </div>
           </div>
           <span class="badge badge-admin">Online</span>
@@ -2638,55 +2672,55 @@
     </div>
   </div>
 
-  <!-- MODAL DE CÔMODOS DA RESIDÊNCIA -->
+  <!-- MODAL DE C&Ocirc;MODOS DA RESID&Ecirc;NCIA -->
   <div id="modal-rooms" class="modal-overlay">
     <div class="modal-content" style="max-width: 540px;">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-door-open" style="color: var(--orange-bright);"></i> Cômodos da Residência</h3>
+        <h3><i class="fa-solid fa-door-open" style="color: var(--orange-bright);"></i> C&ocirc;modos da Resid&ecirc;ncia</h3>
         <button type="button" class="btn-close-modal" onclick="closeRoomsModal()">&times;</button>
       </div>
       <div class="rooms-overview-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; max-height: 380px; overflow-y: auto;">
         <div class="card" style="padding: 14px; margin: 0; cursor: pointer;" onclick="switchTab('tab-iluminacao', '#room-card-bulb-icon-1'); closeRoomsModal();">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <strong style="color: var(--blue-accent);"><i class="fa-solid fa-couch"></i> Sala de Estar</strong>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">22°C</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">22&deg;C</span>
           </div>
-          <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">1 Lâmpada &bull; 1 AC &bull; Sensor Presença</p>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">1 L&acirc;mpada &bull; 1 AC &bull; Sensor Presen&ccedil;a</p>
         </div>
         <div class="card" style="padding: 14px; margin: 0; cursor: pointer;" onclick="switchTab('tab-iluminacao', '#room-card-bulb-icon-2'); closeRoomsModal();">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <strong style="color: var(--orange-bright);"><i class="fa-solid fa-utensils"></i> Cozinha</strong>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">23°C</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">23&deg;C</span>
           </div>
-          <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">Fita LED &bull; Sensor Fumaça</p>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">Fita LED &bull; Sensor Fuma&ccedil;a</p>
         </div>
         <div class="card" style="padding: 14px; margin: 0; cursor: pointer;" onclick="switchTab('tab-iluminacao', '#room-card-bulb-icon-3'); closeRoomsModal();">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <strong style="color: #a855f7;"><i class="fa-solid fa-bed"></i> Quarto Principal</strong>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">21°C</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">21&deg;C</span>
           </div>
-          <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">Lâmpada RGB &bull; 1 AC</p>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">L&acirc;mpada RGB &bull; 1 AC</p>
         </div>
         <div class="card" style="padding: 14px; margin: 0; cursor: pointer;" onclick="switchTab('tab-iluminacao', '#room-card-bulb-icon-4'); closeRoomsModal();">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <strong style="color: #00d2ff;"><i class="fa-solid fa-child-reaching"></i> Quarto 2</strong>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">22°C</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">22&deg;C</span>
           </div>
-          <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">Lâmpada Inteligente</p>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">L&acirc;mpada Inteligente</p>
         </div>
         <div class="card" style="padding: 14px; margin: 0; cursor: pointer;" onclick="switchTab('tab-iluminacao', '#room-card-bulb-icon-5'); closeRoomsModal();">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <strong style="color: #06b6d4;"><i class="fa-solid fa-bath"></i> Banheiro</strong>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">24°C</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">24&deg;C</span>
           </div>
           <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">LED Embutido &bull; Sensor Umidade</p>
         </div>
         <div class="card" style="padding: 14px; margin: 0; cursor: pointer;" onclick="switchTab('tab-iluminacao', '#room-card-bulb-icon-6'); closeRoomsModal();">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <strong style="color: #f59e0b;"><i class="fa-solid fa-warehouse"></i> Garagem</strong>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">25°C</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">25&deg;C</span>
           </div>
-          <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">Tubular LED &bull; Portão Automático</p>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">Tubular LED &bull; Port&atilde;o Autom&aacute;tico</p>
         </div>
       </div>
       <div class="modal-footer" style="margin-top: 15px; display: flex; justify-content: flex-end;">
@@ -2695,11 +2729,11 @@
     </div>
   </div>
 
-  <!-- MODAL DE ANÁLISE DOS SENSORES -->
+  <!-- MODAL DE AN&Aacute;LISE DOS SENSORES -->
   <div id="modal-sensors" class="modal-overlay">
     <div class="modal-content" style="max-width: 580px;">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-gauge-high" style="color: #10b981;"></i> Análise dos Sensores DOMUS</h3>
+        <h3><i class="fa-solid fa-gauge-high" style="color: #10b981;"></i> An&aacute;lise dos Sensores DOMUS</h3>
         <button type="button" class="btn-close-modal" onclick="closeSensorsModal()">&times;</button>
       </div>
       <div class="sensors-grid" style="display: flex; flex-direction: column; gap: 10px; max-height: 400px; overflow-y: auto;">
@@ -2707,7 +2741,7 @@
           <div style="display: flex; gap: 12px; align-items: center;">
             <div class="icon-box active-glow-blue" style="width: 36px; height: 36px;"><i class="fa-solid fa-person-walking"></i></div>
             <div>
-              <strong>Sensor de Presença (Sala de Estar)</strong>
+              <strong>Sensor de Presen&ccedil;a (Sala de Estar)</strong>
               <div style="font-size: 0.75rem; color: var(--text-muted);">Infravermelho passivo &middot; Bateria 94%</div>
             </div>
           </div>
@@ -2718,7 +2752,7 @@
             <div class="icon-box" style="width: 36px; height: 36px; color: var(--blue-accent); background: rgba(0, 210, 255, 0.1);"><i class="fa-solid fa-door-closed"></i></div>
             <div>
               <strong>Sensor de Abertura (Porta Principal)</strong>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Magnético Reed &middot; Fechada com trinco ativo</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Magn&eacute;tico Reed &middot; Fechada com trinco ativo</div>
             </div>
           </div>
           <span class="badge badge-tech" style="color: #10b981; background: rgba(16, 185, 129, 0.12);">Seguro</span>
@@ -2727,8 +2761,8 @@
           <div style="display: flex; gap: 12px; align-items: center;">
             <div class="icon-box" style="width: 36px; height: 36px; color: var(--orange-bright); background: rgba(255, 122, 0, 0.1);"><i class="fa-solid fa-fire-burner"></i></div>
             <div>
-              <strong>Detector de Fumaça &amp; Gás (Cozinha)</strong>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Fotoelétrico &middot; Nível 0 ppm (Ar puro)</div>
+              <strong>Detector de Fuma&ccedil;a &amp; G&aacute;s (Cozinha)</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Fotoel&eacute;trico &middot; N&iacute;vel 0 ppm (Ar puro)</div>
             </div>
           </div>
           <span class="badge badge-tech" style="color: #10b981; background: rgba(16, 185, 129, 0.12);">Normal</span>
@@ -2737,18 +2771,18 @@
           <div style="display: flex; gap: 12px; align-items: center;">
             <div class="icon-box" style="width: 36px; height: 36px; color: #a855f7; background: rgba(168, 85, 247, 0.1);"><i class="fa-solid fa-temperature-half"></i></div>
             <div>
-              <strong>Sensor Térmico &amp; Umidade (Suíte)</strong>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Temperatura: 21.8°C &middot; Umidade: 52%</div>
+              <strong>Sensor T&eacute;rmico &amp; Umidade (Su&iacute;te)</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Temperatura: 21.8&deg;C &middot; Umidade: 52%</div>
             </div>
           </div>
-          <span class="badge badge-tech" style="color: var(--blue-accent); background: rgba(0, 210, 255, 0.12);">Confortável</span>
+          <span class="badge badge-tech" style="color: var(--blue-accent); background: rgba(0, 210, 255, 0.12);">Confort&aacute;vel</span>
         </div>
         <div class="card" style="padding: 12px 16px; margin: 0; display: flex; justify-content: space-between; align-items: center;">
           <div style="display: flex; gap: 12px; align-items: center;">
             <div class="icon-box" style="width: 36px; height: 36px; color: #f1c40f; background: rgba(241, 196, 15, 0.1);"><i class="fa-solid fa-video"></i></div>
             <div>
-              <strong>Sensor Perimetral &amp; Câmera (Quintal)</strong>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Feixe duplo IV &middot; Gravação contínua 1080p</div>
+              <strong>Sensor Perimetral &amp; C&acirc;mera (Quintal)</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Feixe duplo IV &middot; Grava&ccedil;&atilde;o cont&iacute;nua 1080p</div>
             </div>
           </div>
           <span class="badge badge-tech" style="color: #10b981; background: rgba(16, 185, 129, 0.12);">Monitorando</span>
@@ -2760,24 +2794,24 @@
     </div>
   </div>
 
-  <!-- MODAL DE CONVITES & PERMISSÕES -->
+  <!-- MODAL DE CONVITES & PERMISS&Otilde;ES -->
   <div id="modal-invitations" class="modal-overlay">
     <div class="modal-content" style="max-width: 480px;">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-envelope-open-text" style="color: var(--blue-accent);"></i> Convites &amp; Permissões</h3>
+        <h3><i class="fa-solid fa-envelope-open-text" style="color: var(--blue-accent);"></i> Convites &amp; Permiss&otilde;es</h3>
         <button type="button" class="btn-close-modal" onclick="closeInvitationsModal()">&times;</button>
       </div>
       <form onsubmit="handleSendInvitation(event)">
         <div class="form-group">
-          <label><i class="fa-solid fa-id-card"></i> ID DOMUS do Usuário (9 Dígitos)</label>
+          <label><i class="fa-solid fa-id-card"></i> ID DOMUS do Usu&aacute;rio (9 D&iacute;gitos)</label>
           <input type="text" id="invite-public-id" maxlength="9" placeholder="Ex: 918374205" required pattern="\d{9}">
-          <small style="color: var(--text-muted); font-size: 0.75rem;">Digite exatamente os 9 dígitos numéricos do perfil do convidado.</small>
+          <small style="color: var(--text-muted); font-size: 0.75rem;">Digite exatamente os 9 d&iacute;gitos num&eacute;ricos do perfil do convidado.</small>
         </div>
         <div class="form-group">
           <label>Papel Residencial</label>
           <select id="invite-role" class="custom-select">
-            <option value="resident" selected>Morador (Acesso Completo às Luzes e Clima)</option>
-            <option value="guest">Convidado (Acesso Limitado aos Cômodos Sociais)</option>
+            <option value="resident" selected>Morador (Acesso Completo &agrave;s Luzes e Clima)</option>
+            <option value="guest">Convidado (Acesso Limitado aos C&ocirc;modos Sociais)</option>
           </select>
         </div>
         <div class="modal-actions" style="margin-top: 20px;">
@@ -2797,7 +2831,7 @@
       </div>
       <form onsubmit="handleStartNewChat(event)">
         <div class="form-group">
-          <label><i class="fa-solid fa-id-card"></i> ID DOMUS (9 Dígitos)</label>
+          <label><i class="fa-solid fa-id-card"></i> ID DOMUS (9 D&iacute;gitos)</label>
           <input type="text" id="new-chat-target-id" maxlength="9" placeholder="Ex: 483729615" required pattern="\d{9}">
         </div>
         <div class="form-group">
@@ -2820,7 +2854,7 @@
         <button type="button" class="btn-close-modal" onclick="closeUploadMapModal()">&times;</button>
       </div>
       <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 15px;">
-        Selecione uma imagem ou arquivo vetorial (PNG, SVG, JPG) com o desenho da sua residência para mapeamento interativo no DOMUS.
+        Selecione uma imagem ou arquivo vetorial (PNG, SVG, JPG) com o desenho da sua resid&ecirc;ncia para mapeamento interativo no DOMUS.
       </p>
       <div class="form-group">
         <label>Arquivo da Planta (SVG, PNG ou JPG)</label>
@@ -2833,15 +2867,15 @@
     </div>
   </div>
 
-  <!-- MODAL DE NOTIFICAÇÕES COMPLETAS -->
+  <!-- MODAL DE NOTIFICA&Ccedil;&Otilde;ES COMPLETAS -->
   <div id="modal-notifications" class="modal-overlay">
     <div class="modal-content" style="max-width: 520px;">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-bell" style="color: var(--orange-bright);"></i> Central de Notificações</h3>
+        <h3><i class="fa-solid fa-bell" style="color: var(--orange-bright);"></i> Central de Notifica&ccedil;&otilde;es</h3>
         <button type="button" class="btn-close-modal" onclick="closeNotificationsModal()">&times;</button>
       </div>
       <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 15px;">
-        Alertas recentes do sistema de segurança, energia e sensores residenciais.
+        Alertas recentes do sistema de seguran&ccedil;a, energia e sensores residenciais.
       </p>
       <div id="notifications-modal-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto;">
         <!-- Preenchido dinamicamente -->
@@ -2853,33 +2887,33 @@
     </div>
   </div>
 
-  <!-- MODAL DE CONFIGURAÇÕES DA RESIDÊNCIA -->
+  <!-- MODAL DE CONFIGURA&Ccedil;&Otilde;ES DA RESID&Ecirc;NCIA -->
   <div id="modal-residence-settings" class="modal-overlay">
     <div class="modal-content" style="max-width: 500px;">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-gear" style="color: var(--blue-accent);"></i> Configurações da Residência</h3>
+        <h3><i class="fa-solid fa-gear" style="color: var(--blue-accent);"></i> Configura&ccedil;&otilde;es da Resid&ecirc;ncia</h3>
         <button type="button" class="btn-close-modal" onclick="closeResidenceSettingsModal()">&times;</button>
       </div>
       <form onsubmit="handleSaveResidenceSettings(event)">
         <div class="form-group">
-          <label><i class="fa-solid fa-house"></i> Nome da Residência</label>
-          <input type="text" id="setting-residence-name" value="Residência Principal" required>
+          <label><i class="fa-solid fa-house"></i> Nome da Resid&ecirc;ncia</label>
+          <input type="text" id="setting-residence-name" value="Resid&ecirc;ncia Principal" required>
         </div>
         <div class="form-group">
-          <label><i class="fa-solid fa-location-dot"></i> Endereço / Unidade</label>
+          <label><i class="fa-solid fa-location-dot"></i> Endere&ccedil;o / Unidade</label>
           <input type="text" id="setting-residence-unit" value="Bloco A &middot; Unidade 402">
         </div>
         <div class="form-group">
-          <label><i class="fa-solid fa-leaf"></i> Modo de Otimização</label>
+          <label><i class="fa-solid fa-leaf"></i> Modo de Otimiza&ccedil;&atilde;o</label>
           <select id="setting-energy-mode" class="custom-select">
-            <option value="eco" selected>Ecológico Inteligente (IA Adaptativa)</option>
+            <option value="eco" selected>Ecol&oacute;gico Inteligente (IA Adaptativa)</option>
             <option value="balanced">Balanceado</option>
             <option value="performance">Alto Desempenho</option>
           </select>
         </div>
         <div class="modal-actions" style="margin-top: 20px;">
           <button type="button" class="btn-ai-action btn-ai-secondary" onclick="closeResidenceSettingsModal()">Cancelar</button>
-          <button type="submit" class="btn-ai-action btn-ai-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar Alterações</button>
+          <button type="submit" class="btn-ai-action btn-ai-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar Altera&ccedil;&otilde;es</button>
         </div>
       </form>
     </div>
@@ -2887,10 +2921,12 @@
 
   <!-- JAVASCRIPT INTEGRADO -->
   <script>
+    function escapeHtml(str) { if (!str) return ""; const d = document.createElement("div"); d.textContent = str; return d.innerHTML; }
+
     // @ts-nocheck
 
     // ==========================================================================
-    // CONTROLE DE ACESSO & AUTENTICAÇÃO DOMUS COM SUPABASE AUTH
+    // CONTROLE DE ACESSO & AUTENTICA\u00C7\u00C3O DOMUS COM SUPABASE AUTH
     // ==========================================================================
     // Chaves configuradas para o seu projeto Supabase:
     const RAW_SUPABASE_URL = 'https://acbgqfyubehzihuffsga.supabase.co/rest/v1/';
@@ -2915,7 +2951,7 @@
       return Boolean(currentAuthUser);
     }
 
-    // ALTERNÂNCIA VISUAL: MOSTRAR TELA DE LOGIN VS MOSTRAR SISTEMA DOMUS
+    // ALTERN\u00C2NCIA VISUAL: MOSTRAR TELA DE LOGIN VS MOSTRAR SISTEMA DOMUS
     function showAuthScreen() {
       const authScreen = document.getElementById('domus-auth-screen');
       const appWrapper = document.getElementById('domus-app-wrapper');
@@ -2934,7 +2970,7 @@
       }
     }
 
-    // CONTROLE DE TELAS DO CARD DE AUTENTICAÇÃO (LOGIN, CADASTRO, RECUPERAÇÃO)
+    // CONTROLE DE TELAS DO CARD DE AUTENTICA\u00C7\u00C3O (LOGIN, CADASTRO, RECUPERA\u00C7\u00C3O)
     function showAuthView(viewName) {
       const views = ['login', 'register', 'forgot'];
       views.forEach(v => {
@@ -2991,15 +3027,15 @@
       }
     }
 
-    // APLICAÇÃO DOS DADOS DO USUÁRIO LOGADO NO CABEÇALHO E NO PERFIL
+    // APLICA\u00C7\u00C3O DOS DADOS DO USU\u00C1RIO LOGADO NO CABE\u00C7ALHO E NO PERFIL
     function applyUserDataToUI(fullName, email) {
-      if (!fullName) fullName = 'Usuário';
+      if (!fullName) fullName = 'Usu\u00E1rio';
       const firstName = fullName.trim().split(' ')[0] || fullName;
 
-      // Saudação principal no topo do dashboard: "Olá, Matheus!" / "Olá, Arthur!"
+      // Sauda\u00E7\u00E3o principal no topo do dashboard: "Ol\u00E1, Matheus!" / "Ol\u00E1, Arthur!"
       const greetingEl = document.getElementById('user-greeting-name');
       if (greetingEl) {
-        greetingEl.innerText = `Olá, ${firstName}!`;
+        greetingEl.innerHTML = `Ol&aacute;, ${escapeHtml(firstName)}!`;
       }
 
       // Nome e identificador na aba de Perfil
@@ -3025,7 +3061,7 @@
         profEmailEl.innerText = email;
       }
 
-      // ID DOMUS de 9 dígitos público
+      // ID DOMUS de 9 d\u00EDgitos p\u00FAblico
       let publicId = currentAuthProfile?.public_id;
       if (!publicId) {
         publicId = localStorage.getItem('domus_cached_public_id');
@@ -3070,13 +3106,193 @@
       }
 
       if (!fullName) {
-        fullName = email ? email.split('@')[0] : 'Usuário';
+        fullName = email ? email.split('@')[0] : 'Usu\u00E1rio';
       }
 
       applyUserDataToUI(fullName, email);
     }
 
-    // 1. FLUXO DE LOGIN COM SUPABASE AUTH
+    
+    // ==========================================================================
+    // SISTEMA DE PART\u00CDCULAS E CONEX\u00D5ES DIGITAIS (CANVAS)
+    // ==========================================================================
+    let cinematicCanvasAnimId = null;
+    let stopCanvasFn = null;
+
+    function startCinematicCanvas(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return null;
+      const ctx = canvas.getContext('2d');
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      const onResize = () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      };
+      window.addEventListener('resize', onResize);
+
+      const count = window.innerWidth < 768 ? 22 : 36;
+      const particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.7,
+          vy: (Math.random() - 0.5) * 0.7,
+          radius: Math.random() * 2 + 1,
+          color: Math.random() > 0.25 ? 'rgba(0, 229, 255, ' : 'rgba(37, 99, 235, ',
+          alpha: Math.random() * 0.55 + 0.25
+        });
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0) p.x = width;
+          if (p.x > width) p.x = 0;
+          if (p.y < 0) p.y = height;
+          if (p.y > height) p.y = 0;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color + p.alpha + ')';
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = '#00e5ff';
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const maxDist = 110;
+            if (dist < maxDist) {
+              const lineAlpha = (1 - dist / maxDist) * 0.25;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(0, 229, 255, ${lineAlpha})`;
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
+          }
+        }
+
+        cinematicCanvasAnimId = requestAnimationFrame(render);
+      }
+
+      render();
+
+      return () => {
+        window.removeEventListener('resize', onResize);
+        if (cinematicCanvasAnimId) {
+          cancelAnimationFrame(cinematicCanvasAnimId);
+          cinematicCanvasAnimId = null;
+        }
+      };
+    }
+
+    // ==========================================================================
+    // TRANSI\u00C7\u00C3O CINEMATOGR\u00C1FICA DO DOMUS (ETAPAS 1, 2, 3 E 4)
+    // ==========================================================================
+    function triggerCinematicTransition(onFinish) {
+      const overlay = document.getElementById('domus-cinematic-transition');
+      if (!overlay) {
+        if (typeof onFinish === 'function') onFinish();
+        return;
+      }
+
+      const isReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (isReduced) {
+        if (typeof onFinish === 'function') onFinish();
+        return;
+      }
+
+      overlay.classList.remove('stage-connected', 'stage-exit');
+      overlay.classList.add('active');
+      overlay.setAttribute('aria-hidden', 'false');
+
+      if (!stopCanvasFn) {
+        stopCanvasFn = startCinematicCanvas('domus-cinematic-canvas');
+      }
+
+      const lines = overlay.querySelectorAll('.geo-line');
+      lines.forEach(l => {
+        l.style.animation = 'none';
+        l.offsetHeight;
+        l.style.animation = '';
+      });
+
+      const telemText = document.getElementById('cinematic-telemetry-text');
+      if (telemText) telemText.textContent = 'Autentica\u00E7\u00E3o verificada \u2022 Inicializando DOMUS...';
+
+      setTimeout(() => {
+        if (telemText) telemText.textContent = 'Conectando sistemas e barramentos da resid\u00EAncia...';
+      }, 650);
+
+      setTimeout(() => {
+        if (telemText) telemText.textContent = 'Resid\u00EAncia inteligente conectada com sucesso';
+      }, 1300);
+
+      // Etapa 4: Expans\u00E3o do s\u00EDmbolo em luz azul-ciano suave (~1.8s)
+      setTimeout(() => {
+        overlay.classList.add('stage-connected');
+      }, 1800);
+
+      // Revela\u00E7\u00E3o e transi\u00E7\u00E3o para o dashboard (~2.2s)
+      setTimeout(() => {
+        overlay.classList.add('stage-exit');
+        setTimeout(() => {
+          overlay.classList.remove('active', 'stage-connected', 'stage-exit');
+          overlay.setAttribute('aria-hidden', 'true');
+          if (stopCanvasFn) {
+            stopCanvasFn();
+            stopCanvasFn = null;
+          }
+          if (typeof onFinish === 'function') onFinish();
+        }, 400);
+      }, 2200);
+    }
+
+    function cancelCinematicTransition() {
+      const overlay = document.getElementById('domus-cinematic-transition');
+      if (overlay) {
+        overlay.classList.remove('active', 'stage-connected', 'stage-exit');
+        overlay.setAttribute('aria-hidden', 'true');
+      }
+      if (stopCanvasFn) {
+        stopCanvasFn();
+        stopCanvasFn = null;
+      }
+    }
+
+    // ==========================================================================
+    // REVELA\u00C7\u00C3O ESCALONADA DO DASHBOARD (SIDEBAR & CARDS EM CASCATA)
+    // ==========================================================================
+    function revealDashboardWithStagger() {
+      const sidebar = document.querySelector('.sidebar');
+      if (sidebar) {
+        sidebar.classList.remove('sidebar-stagger');
+        sidebar.offsetHeight;
+        sidebar.classList.add('sidebar-stagger');
+      }
+
+      const cards = document.querySelectorAll('#tab-visao-geral .card, #tab-visao-geral .dashboard-top-grid > div, #tab-visao-geral .status-card, #tab-visao-geral .dashboard-grid > div');
+      cards.forEach((card, idx) => {
+        card.classList.remove('dashboard-card-stagger');
+        card.style.animationDelay = (idx * 45) + 'ms';
+        card.offsetHeight;
+        card.classList.add('dashboard-card-stagger');
+      });
+    }
+
+    // 1. FLUXO DE LOGIN COM SUPABASE AUTH & TRANSI\u00C7\u00C3O CINEMATOGR\u00C1FICA
     async function handleAuthLogin(event) {
       event.preventDefault();
       clearAuthAlert();
@@ -3093,18 +3309,33 @@
         if (emailInput) emailInput.focus();
         return;
       }
+
       if (!password) {
         showAuthAlert('error', 'Digite sua senha.');
         if (passwordInput) passwordInput.focus();
         return;
       }
 
+      // ETAPA 1 \u2014 Resposta imediata: micro-press\u00E3o, brilho ciano discreto e bloqueio de cliques
+      submitBtn.classList.add('btn-pressed');
       setAuthButtonLoading(submitBtn, true, 'Autenticando...');
 
       if (!isSupabaseConfigured() || !supabaseClient) {
+        submitBtn.classList.remove('btn-pressed');
         setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Supabase não configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
+        showAuthAlert('error', 'Supabase n\u00E3o configurado. Verifique as credenciais no sistema.');
         return;
+      }
+
+      // ETAPA 2 \u2014 Conex\u00E3o digital: inicia camada de transi\u00E7\u00E3o com n\u00F3s de rede cibern\u00E9tica
+      const overlay = document.getElementById('domus-cinematic-transition');
+      if (overlay) {
+        overlay.classList.remove('stage-connected', 'stage-exit');
+        overlay.classList.add('active');
+        const telemText = document.getElementById('cinematic-telemetry-text');
+        if (telemText) telemText.textContent = 'Autenticando credenciais...';
+        if (stopCanvasFn) stopCanvasFn();
+        stopCanvasFn = startCinematicCanvas('domus-cinematic-canvas');
       }
 
       try {
@@ -3114,35 +3345,38 @@
         });
 
         if (error) {
+          // Em caso de falha: encerra imediatamente a anima\u00E7\u00E3o e restaura o bot\u00E3o
+          cancelCinematicTransition();
+          submitBtn.classList.remove('btn-pressed');
           setAuthButtonLoading(submitBtn, false);
+
           const errLower = (error.message || '').toLowerCase();
           if (errLower.includes('email not confirmed')) {
-            showAuthAlert('error', 'Por favor, confirme seu e-mail antes de entrar (ou desative a confirmação de e-mail no painel do Supabase).');
+            showAuthAlert('error', 'Por favor, confirme seu e-mail antes de entrar (ou desative a confirma\u00E7\u00E3o de e-mail no painel do Supabase).');
           } else if (errLower.includes('invalid login credentials') || errLower.includes('invalid_grant')) {
             showAuthAlert('error', 'E-mail ou senha incorretos.');
           } else {
-            showAuthAlert('error', 'Não foi possível realizar o login. Tente novamente.');
+            showAuthAlert('error', 'N\u00E3o foi poss\u00EDvel realizar o login. Verifique seus dados e tente novamente.');
           }
           return;
         }
 
         if (data && data.user) {
-          setAuthButtonLoading(submitBtn, false);
-          const name = data.user.user_metadata?.full_name || email.split('@')[0];
-          const firstName = name.trim().split(' ')[0] || name;
-          showAuthAlert('success', `Bem-vindo de volta, ${firstName}! Entrando...`);
-          setTimeout(() => {
+          // ETAPA 3 & 4 \u2014 Login bem-sucedido: inicializa\u00E7\u00E3o do s\u00EDmbolo DOMUS e revela\u00E7\u00E3o suave do dashboard
+          triggerCinematicTransition(() => {
             showAppScreen(data.user);
-          }, 450);
+            revealDashboardWithStagger();
+          });
         }
       } catch (err) {
+        cancelCinematicTransition();
+        submitBtn.classList.remove('btn-pressed');
         setAuthButtonLoading(submitBtn, false);
-        console.error('Erro no login Supabase:', err);
-        showAuthAlert('error', 'Não foi possível realizar o login. Tente novamente.');
+        console.error('Erro de conex\u00E3o no login:', err);
+        showAuthAlert('error', 'Falha de conex\u00E3o com os servidores DOMUS. Verifique sua rede e tente novamente.');
       }
     }
-
-    // 2. FLUXO DE CADASTRO COM SUPABASE AUTH
+// 2. FLUXO DE CADASTRO COM SUPABASE AUTH
     async function handleAuthRegister(event) {
       event.preventDefault();
       clearAuthAlert();
@@ -3174,12 +3408,12 @@
         return;
       }
       if (password.length < 6) {
-        showAuthAlert('error', 'A senha deve conter no mínimo 6 caracteres.');
+        showAuthAlert('error', 'A senha deve conter no m\u00EDnimo 6 caracteres.');
         if (passwordInput) passwordInput.focus();
         return;
       }
       if (password !== confirm) {
-        showAuthAlert('error', 'As senhas informadas não coincidem.');
+        showAuthAlert('error', 'As senhas informadas n\u00E3o coincidem.');
         if (confirmInput) confirmInput.focus();
         return;
       }
@@ -3188,7 +3422,7 @@
 
       if (!isSupabaseConfigured() || !supabaseClient) {
         setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Supabase não configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
+        showAuthAlert('error', 'Supabase n\u00E3o configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
         return;
       }
 
@@ -3208,16 +3442,16 @@
         if (error) {
           const errLower = (error.message || '').toLowerCase();
           if (errLower.includes('already registered') || errLower.includes('already in use') || errLower.includes('user already exists')) {
-            showAuthAlert('error', 'Este e-mail já possui conta cadastrada. Tente fazer login.');
+            showAuthAlert('error', 'Este e-mail j\u00E1 possui conta cadastrada. Tente fazer login.');
           } else if (errLower.includes('password')) {
-            showAuthAlert('error', 'A senha informada não atende aos requisitos de segurança.');
+            showAuthAlert('error', 'A senha informada n\u00E3o atende aos requisitos de seguran\u00E7a.');
           } else {
-            showAuthAlert('error', 'Não foi possível realizar o cadastro. Tente novamente.');
+            showAuthAlert('error', 'N\u00E3o foi poss\u00EDvel realizar o cadastro. Tente novamente.');
           }
           return;
         }
 
-        // Se o Supabase permitir login imediato (Confirmação de e-mail desligada):
+        // Se o Supabase permitir login imediato (Confirma\u00E7\u00E3o de e-mail desligada):
         if (data && data.session) {
           const firstName = name.trim().split(' ')[0] || name;
           showAuthAlert('success', `Conta criada com sucesso! Bem-vindo, ${firstName}. Entrando...`);
@@ -3227,8 +3461,8 @@
           return;
         }
 
-        // Se o Supabase exigir confirmação por link de e-mail:
-        showAuthAlert('success', 'Conta criada com sucesso! Se a confirmação de e-mail estiver ativa no Supabase, confirme o link enviado antes de entrar.');
+        // Se o Supabase exigir confirma\u00E7\u00E3o por link de e-mail:
+        showAuthAlert('success', 'Conta criada com sucesso! Se a confirma\u00E7\u00E3o de e-mail estiver ativa no Supabase, confirme o link enviado antes de entrar.');
         setTimeout(() => {
           showAuthView('login');
         }, 3500);
@@ -3236,11 +3470,11 @@
       } catch (err) {
         setAuthButtonLoading(submitBtn, false);
         console.error('Erro ao cadastrar no Supabase:', err);
-        showAuthAlert('error', 'Não foi possível realizar o cadastro. Tente novamente.');
+        showAuthAlert('error', 'N\u00E3o foi poss\u00EDvel realizar o cadastro. Tente novamente.');
       }
     }
 
-    // 3. FLUXO DE RECUPERAÇÃO DE SENHA COM SUPABASE AUTH
+    // 3. FLUXO DE RECUPERA\u00C7\u00C3O DE SENHA COM SUPABASE AUTH
     async function handleAuthForgotPassword(event) {
       event.preventDefault();
       clearAuthAlert();
@@ -3259,7 +3493,7 @@
 
       if (!isSupabaseConfigured() || !supabaseClient) {
         setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Supabase não configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
+        showAuthAlert('error', 'Supabase n\u00E3o configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
         return;
       }
 
@@ -3270,21 +3504,21 @@
         setAuthButtonLoading(submitBtn, false);
 
         if (error) {
-          showAuthAlert('error', 'Não foi possível enviar o link de recuperação. Tente novamente.');
+          showAuthAlert('error', 'N\u00E3o foi poss\u00EDvel enviar o link de recupera\u00E7\u00E3o. Tente novamente.');
           return;
         }
 
-        showAuthAlert('success', 'Link de recuperação enviado! Verifique sua caixa de entrada.');
+        showAuthAlert('success', 'Link de recupera\u00E7\u00E3o enviado! Verifique sua caixa de entrada.');
         setTimeout(() => {
           showAuthView('login');
         }, 3500);
       } catch (err) {
         setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Não foi possível enviar o link de recuperação.');
+        showAuthAlert('error', 'N\u00E3o foi poss\u00EDvel enviar o link de recupera\u00E7\u00E3o.');
       }
     }
 
-    // SAIR DO SISTEMA (LOGOUT SUPABASE E RETORNO OBRIGATÓRIO À TELA DE LOGIN)
+    // SAIR DO SISTEMA (LOGOUT SUPABASE E RETORNO OBRIGAT\u00D3RIO \u00C0 TELA DE LOGIN)
     async function domusSignOut() {
       if (isSupabaseConfigured() && supabaseClient) {
         try {
@@ -3296,10 +3530,10 @@
       currentAuthUser = null;
       currentAuthProfile = null;
       showAuthScreen();
-      showAuthAlert('info', 'Você saiu do sistema com segurança.');
+      showAuthAlert('info', 'Voc\u00EA saiu do sistema com seguran\u00E7a.');
     }
 
-    // VERIFICAÇÃO OBRIGATÓRIA DE SESSÃO AO ABRIR O DOMUS
+    // VERIFICA\u00C7\u00C3O OBRIGAT\u00D3RIA DE SESS\u00C3O AO ABRIR O DOMUS
     async function checkAuthSession() {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('logout') === 'true' || urlParams.get('action') === 'logout') {
@@ -3334,6 +3568,11 @@
             if (session && session.user) {
               currentAuthUser = session.user;
               showAppScreen(session.user);
+              const urlParams = new URLSearchParams(window.location.search);
+              if (urlParams.get('from_login') === 'true') {
+                window.history.replaceState({}, document.title, window.location.pathname);
+                setTimeout(revealDashboardWithStagger, 80);
+              }
               return;
             }
           }
@@ -3342,15 +3581,15 @@
         }
       }
 
-      // Se NÃO houver sessão autenticada: MOSTRA OBRIGATORIAMENTE A TELA DE LOGIN!
+      // Se N\u00C3O houver sess\u00E3o autenticada: MOSTRA OBRIGATORIAMENTE A TELA DE LOGIN!
       showAuthScreen();
     }
 
-    // DISPARO IMEDIATO DA PROTEÇÃO DE ACESSO
+    // DISPARO IMEDIATO DA PROTE\u00C7\u00C3O DE ACESSO
     try {
       checkAuthSession();
     } catch (authErr) {
-      console.warn('Erro na guarda de autenticação:', authErr);
+      console.warn('Erro na guarda de autentica\u00E7\u00E3o:', authErr);
       showAuthScreen();
     }
 
@@ -3425,7 +3664,7 @@
       }
     }
 
-    // NAVEGAÇÃO DE ABAS & ACCORDIONS (EXPANSÃO E RETRAÇÃO SUAVE)
+    // NAVEGA\u00C7\u00C3O DE ABAS & ACCORDIONS (EXPANS\u00C3O E RETRA\u00C7\u00C3O SUAVE)
     const navItems = document.querySelectorAll('.nav-item');
     const navSubItems = document.querySelectorAll('.nav-subitem');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -3962,7 +4201,7 @@
         id: situationId,
         type: 'suggestion',
         icon: 'fa-solid fa-lightbulb',
-        title: `💡 Desperd\u00EDcio: ${deviceName}`,
+        title: `\uD83D\uDCA1 Desperd\u00EDcio: ${deviceName}`,
         badgeText: 'Sugest\u00E3o do DOMUS',
         toastMsg: `A <strong>${deviceName}</strong> permaneceu acesa por mais de ${timeStr} cont\u00EDnuos sem movimento no ambiente.`,
         adaptMsg: `O DOMUS identificou que a ${deviceName} permaneceu acesa por mais de ${timeStr} seguidos.`,
@@ -4043,7 +4282,7 @@
       const autoTitle = automationsData[index].title || 'Automa\u00E7\u00E3o';
       const msg = `Automa\u00E7\u00E3o "${autoTitle}" ${isActive ? 'ativada' : 'pausada'}.`;
       logActivity(msg, 'fa-solid fa-robot', 'var(--blue-accent)');
-      showToastNotification('⚡ Automa\u00E7\u00E3o Inteligente', msg, 'fa-solid fa-robot', isActive ? 'var(--orange-bright)' : 'var(--blue-accent)');
+      showToastNotification('\u26A1 Automa\u00E7\u00E3o Inteligente', msg, 'fa-solid fa-robot', isActive ? 'var(--orange-bright)' : 'var(--blue-accent)');
     }
 
     function deleteAutomation(index) {
@@ -4285,7 +4524,7 @@
           if (iconBox) iconBox.classList.add('active-glow');
           if (roomCard) roomCard.classList.add('card-light-on');
           if (roomBadge) {
-            roomBadge.innerText = '🟢 1/1 ligada';
+            roomBadge.innerText = '\uD83D\uDFE2 1/1 ligada';
             roomBadge.classList.add('badge-on');
           }
 
@@ -4308,7 +4547,7 @@
           if (iconBox) iconBox.classList.remove('active-glow');
           if (roomCard) roomCard.classList.remove('card-light-on');
           if (roomBadge) {
-            roomBadge.innerText = '⚪ 0/1 ligada';
+            roomBadge.innerText = '\u26AA 0/1 ligada';
             roomBadge.classList.remove('badge-on');
           }
           if (energyLabel) {
@@ -4414,7 +4653,7 @@
         logActivity(`${name} ${state}`, 'fa-solid fa-lightbulb', 'var(--orange-bright)');
 
         if (event.isTrusted) {
-          showToastNotification('💡 Ilumina\u00E7\u00E3o', `${name} foi ${state.toLowerCase()}.`, 'fa-solid fa-lightbulb', event.target.checked ? 'var(--orange-bright)' : 'var(--blue-accent)');
+          showToastNotification('\uD83D\uDCA1 Ilumina\u00E7\u00E3o', `${name} foi ${state.toLowerCase()}.`, 'fa-solid fa-lightbulb', event.target.checked ? 'var(--orange-bright)' : 'var(--blue-accent)');
         }
 
         const iconId = event.target.getAttribute('data-icon');
@@ -4616,7 +4855,7 @@
         if (!dev.history || dev.history.length === 0) {
           histEl.innerHTML = '<li style="color: var(--text-muted);">Nenhum evento registrado</li>';
         } else {
-          histEl.innerHTML = dev.history.map(h => `<li><i class="fa-solid fa-clock" style="color: var(--blue-accent);"></i> <strong>${h.time}</strong> \u2014 💡 ${h.event}</li>`).join('');
+          histEl.innerHTML = dev.history.map(h => `<li><i class="fa-solid fa-clock" style="color: var(--blue-accent);"></i> <strong>${h.time}</strong> \u2014 \uD83D\uDCA1 ${h.event}</li>`).join('');
         }
       }
 
@@ -4819,7 +5058,7 @@
       };
       const autoName = titles[autoId] || 'Automa\u00E7\u00E3o';
       const msg = isChecked ? `Automa\u00E7\u00E3o "${autoName}" ativada.` : `Automa\u00E7\u00E3o "${autoName}" pausada.`;
-      showToastNotification('⚡ Automa\u00E7\u00E3o Inteligente', msg, 'fa-solid fa-bolt', isChecked ? 'var(--orange-bright)' : 'var(--blue-accent)');
+      showToastNotification('\u26A1 Automa\u00E7\u00E3o Inteligente', msg, 'fa-solid fa-bolt', isChecked ? 'var(--orange-bright)' : 'var(--blue-accent)');
       logActivity(msg, 'fa-solid fa-bolt', isChecked ? 'var(--orange-bright)' : 'var(--blue-accent)');
     }
 
@@ -5030,14 +5269,14 @@
     }
 
     // ==========================================================================
-    // ID DOMUS DE 9 DÍGITOS & COPIAR ID NO PERFIL E NO CHAT
+    // ID DOMUS DE 9 D\u00CDGITOS & COPIAR ID NO PERFIL E NO CHAT
     // ==========================================================================
     function copyDomusId() {
       let rawId = currentAuthProfile?.public_id || localStorage.getItem('domus_cached_public_id') || '483729615';
       const cleanId = rawId.toString().replace(/\s+/g, '');
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(cleanId).then(() => {
-          showSmartToast('ID DOMUS Copiado', `ID ${cleanId} copiado para a área de transferência!`, 'fa-solid fa-copy', 'var(--blue-accent)');
+          showSmartToast('ID DOMUS Copiado', `ID ${cleanId} copiado para a \u00E1rea de transfer\u00EAncia!`, 'fa-solid fa-copy', 'var(--blue-accent)');
         }).catch(() => {
           fallbackCopyText(cleanId);
         });
@@ -5055,9 +5294,9 @@
       ta.select();
       try {
         document.execCommand('copy');
-        showSmartToast('ID DOMUS Copiado', `ID ${text} copiado para a área de transferência!`, 'fa-solid fa-copy', 'var(--blue-accent)');
+        showSmartToast('ID DOMUS Copiado', `ID ${text} copiado para a \u00E1rea de transfer\u00EAncia!`, 'fa-solid fa-copy', 'var(--blue-accent)');
       } catch (e) {
-        showSmartToast('ID DOMUS', `Seu ID é: ${text}`, 'fa-solid fa-id-card', 'var(--orange-bright)');
+        showSmartToast('ID DOMUS', `Seu ID \u00E9: ${text}`, 'fa-solid fa-id-card', 'var(--orange-bright)');
       }
       document.body.removeChild(ta);
     }
@@ -5071,7 +5310,7 @@
     }
 
     // ==========================================================================
-    // FLUXO DE TROCA DE SENHA COM CÓDIGO (OTP) E MODAL DOMUS FUNCIONAL
+    // FLUXO DE TROCA DE SENHA COM C\u00D3DIGO (OTP) E MODAL DOMUS FUNCIONAL
     // ==========================================================================
     function openChangePasswordModal(prefillEmail) {
       const emailInput = document.getElementById('pwd-reset-email');
@@ -5117,7 +5356,7 @@
 
       if (btn) {
         btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Enviando solicitação...';
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Enviando solicita\u00E7\u00E3o...';
       }
 
       try {
@@ -5129,10 +5368,10 @@
 
         if (alertBox) {
           alertBox.className = 'auth-status-alert success';
-          alertBox.innerHTML = '<i class="fa-solid fa-circle-check"></i> Solicitação enviada! Verifique o código em seu e-mail.';
+          alertBox.innerHTML = '<i class="fa-solid fa-circle-check"></i> Solicita\u00E7\u00E3o enviada! Verifique o c\u00F3digo em seu e-mail.';
           alertBox.style.display = 'flex';
         }
-        showSmartToast('Recuperação de Senha', `Código de verificação enviado para ${email}.`, 'fa-solid fa-paper-plane', 'var(--orange-bright)');
+        showSmartToast('Recupera\u00E7\u00E3o de Senha', `C\u00F3digo de verifica\u00E7\u00E3o enviado para ${email}.`, 'fa-solid fa-paper-plane', 'var(--orange-bright)');
 
         setTimeout(() => {
           const stepReq = document.getElementById('pwd-step-request');
@@ -5144,16 +5383,16 @@
           if (codeInput) codeInput.focus();
         }, 900);
       } catch (err) {
-        console.error('Erro ao enviar solicitação de senha:', err);
+        console.error('Erro ao enviar solicita\u00E7\u00E3o de senha:', err);
         if (alertBox) {
           alertBox.className = 'auth-status-alert error';
-          alertBox.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Não foi possível enviar a solicitação. Tente novamente.';
+          alertBox.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> N\u00E3o foi poss\u00EDvel enviar a solicita\u00E7\u00E3o. Tente novamente.';
           alertBox.style.display = 'flex';
         }
       } finally {
         if (btn) {
           btn.disabled = false;
-          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar Solicitação para o E-mail';
+          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar Solicita\u00E7\u00E3o para o E-mail';
         }
       }
     }
@@ -5173,7 +5412,7 @@
       if (!newPwd || newPwd.length < 6) {
         if (alertBox) {
           alertBox.className = 'auth-status-alert error';
-          alertBox.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> A nova senha deve ter no mínimo 6 caracteres.';
+          alertBox.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> A nova senha deve ter no m\u00EDnimo 6 caracteres.';
           alertBox.style.display = 'flex';
         }
         return;
@@ -5182,7 +5421,7 @@
       if (newPwd !== confPwd) {
         if (alertBox) {
           alertBox.className = 'auth-status-alert error';
-          alertBox.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> As senhas digitadas não coincidem.';
+          alertBox.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> As senhas digitadas n\u00E3o coincidem.';
           alertBox.style.display = 'flex';
         }
         return;
@@ -5214,7 +5453,7 @@
           alertBox.style.display = 'flex';
         }
 
-        showSmartToast('Segurança DOMUS', 'Sua senha foi redefinida com sucesso no sistema.', 'fa-solid fa-key', 'var(--orange-bright)');
+        showSmartToast('Seguran\u00E7a DOMUS', 'Sua senha foi redefinida com sucesso no sistema.', 'fa-solid fa-key', 'var(--orange-bright)');
         logActivity('Senha de acesso redefinida com sucesso', 'fa-solid fa-key', 'var(--orange-bright)');
 
         setTimeout(() => {
@@ -5227,7 +5466,7 @@
         console.error('Erro ao redefinir senha:', err);
         if (alertBox) {
           alertBox.className = 'auth-status-alert error';
-          alertBox.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Não foi possível alterar a senha. Verifique o código informado.';
+          alertBox.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> N\u00E3o foi poss\u00EDvel alterar a senha. Verifique o c\u00F3digo informado.';
           alertBox.style.display = 'flex';
         }
       } finally {
@@ -5239,7 +5478,7 @@
     }
 
     // ==========================================================================
-    // MODAIS DE CONTROLE, MONITORAMENTO & CASA (DISPOSITIVOS, CÔMODOS, SENSORES, NOTIFICAÇÕES)
+    // MODAIS DE CONTROLE, MONITORAMENTO & CASA (DISPOSITIVOS, C\u00D4MODOS, SENSORES, NOTIFICA\u00C7\u00D5ES)
     // ==========================================================================
     function openDevicesModal() {
       const modal = document.getElementById('modal-devices');
@@ -5254,7 +5493,7 @@
     function openRoomsModal() {
       const modal = document.getElementById('modal-rooms');
       if (modal) modal.classList.add('active');
-      logActivity('Visão de cômodos da residência aberta', 'fa-solid fa-door-open', 'var(--orange-bright)');
+      logActivity('Vis\u00E3o de c\u00F4modos da resid\u00EAncia aberta', 'fa-solid fa-door-open', 'var(--orange-bright)');
     }
     function closeRoomsModal() {
       const modal = document.getElementById('modal-rooms');
@@ -5264,7 +5503,7 @@
     function openSensorsModal() {
       const modal = document.getElementById('modal-sensors');
       if (modal) modal.classList.add('active');
-      logActivity('Análise dos sensores inspecionada', 'fa-solid fa-gauge-high', '#10b981');
+      logActivity('An\u00E1lise dos sensores inspecionada', 'fa-solid fa-gauge-high', '#10b981');
     }
     function closeSensorsModal() {
       const modal = document.getElementById('modal-sensors');
@@ -5291,7 +5530,7 @@
           <div style="display: flex; gap: 12px; align-items: center;">
             <div class="icon-box active-glow-blue" style="width: 36px; height: 36px;"><i class="fa-solid fa-shield-halved"></i></div>
             <div>
-              <strong>Segurança Perimetral Ativa</strong>
+              <strong>Seguran\u00E7a Perimetral Ativa</strong>
               <div style="font-size: 0.75rem; color: var(--text-muted);">8 sensores operando sem incidentes &middot; Hoje</div>
             </div>
           </div>
@@ -5301,7 +5540,7 @@
           <div style="display: flex; gap: 12px; align-items: center;">
             <div class="icon-box" style="width: 36px; height: 36px; color: var(--orange-bright); background: rgba(255, 122, 0, 0.1);"><i class="fa-solid fa-bolt"></i></div>
             <div>
-              <strong>Economia Energética Ativa</strong>
+              <strong>Economia Energ\u00E9tica Ativa</strong>
               <div style="font-size: 0.75rem; color: var(--text-muted);">Consumo dentro da meta inteligente mensal &middot; Ontem</div>
             </div>
           </div>
@@ -5311,11 +5550,11 @@
           <div style="display: flex; gap: 12px; align-items: center;">
             <div class="icon-box" style="width: 36px; height: 36px; color: var(--blue-accent); background: rgba(0, 210, 255, 0.1);"><i class="fa-solid fa-robot"></i></div>
             <div>
-              <strong>Rotina Modo Noite Concluída</strong>
+              <strong>Rotina Modo Noite Conclu\u00EDda</strong>
               <div style="font-size: 0.75rem; color: var(--text-muted);">Luzes desligadas e alarme armado com sucesso</div>
             </div>
           </div>
-          <span class="badge badge-admin">Automação</span>
+          <span class="badge badge-admin">Automa\u00E7\u00E3o</span>
         </div>
       `;
     }
@@ -5323,7 +5562,7 @@
     function clearAllNotificationsModal() {
       const container = document.getElementById('notifications-modal-list');
       if (container) {
-        container.innerHTML = '<div style="text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.85rem;"><i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 1.6rem; display: block; margin-bottom: 8px;"></i>Todas as notificações recentes foram limpas.</div>';
+        container.innerHTML = '<div style="text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.85rem;"><i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 1.6rem; display: block; margin-bottom: 8px;"></i>Todas as notifica\u00E7\u00F5es recentes foram limpas.</div>';
       }
     }
 
@@ -5359,12 +5598,12 @@
     function handleSaveResidenceSettings(event) {
       event.preventDefault();
       const nameInput = document.getElementById('setting-residence-name');
-      const newName = nameInput ? nameInput.value.trim() : 'Residência Principal';
+      const newName = nameInput ? nameInput.value.trim() : 'Resid\u00EAncia Principal';
       const morNameEl = document.getElementById('moradores-residence-name');
       if (morNameEl) morNameEl.innerText = newName;
 
       closeResidenceSettingsModal();
-      showSmartToast('Configurações Atualizadas', `Nome da residência atualizado para "${newName}".`, 'fa-solid fa-house-chimney', 'var(--blue-accent)');
+      showSmartToast('Configura\u00E7\u00F5es Atualizadas', `Nome da resid\u00EAncia atualizado para "${newName}".`, 'fa-solid fa-house-chimney', 'var(--blue-accent)');
     }
 
     function openUploadMapModal() {
@@ -5377,7 +5616,7 @@
     }
     function handleSaveCustomMap() {
       closeUploadMapModal();
-      showSmartToast('Planta Baixa Vinculada', 'A nova planta arquitetônica foi associada à residência com sucesso!', 'fa-solid fa-map-location-dot', 'var(--blue-accent)');
+      showSmartToast('Planta Baixa Vinculada', 'A nova planta arquitet\u00F4nica foi associada \u00E0 resid\u00EAncia com sucesso!', 'fa-solid fa-map-location-dot', 'var(--blue-accent)');
     }
 
     function openNewChatModal() {
@@ -5390,12 +5629,12 @@
     }
 
     // ==========================================================================
-    // SISTEMA DE CHAT MULTIUSUÁRIO ENTRE MORADORES
+    // SISTEMA DE CHAT MULTIUSU\u00C1RIO ENTRE MORADORES
     // ==========================================================================
     let activeChatContactId = null;
     let chatConversations = JSON.parse(localStorage.getItem('domus_chat_conversations_v4') || 'null') || {};
 
-    // Remove resquício de bot antigo salvo no localStorage
+    // Remove resqu\u00EDcio de bot antigo salvo no localStorage
     if (chatConversations['domus-agent']) {
       delete chatConversations['domus-agent'];
       try {
@@ -5483,7 +5722,7 @@
           <div class="chat-empty-state" id="chat-empty-state">
             <i class="fa-solid fa-comments"></i>
             <h4>Nenhuma conversa selecionada</h4>
-            <p>Adicione um contato informando o ID DOMUS de 9 dígitos ou selecione uma conversa ao lado para começar.</p>
+            <p>Adicione um contato informando o ID DOMUS de 9 d\u00EDgitos ou selecione uma conversa ao lado para come\u00E7ar.</p>
             <button type="button" class="btn-ai-action btn-ai-primary" onclick="openNewChatModal()">
               <i class="fa-solid fa-user-plus"></i> Iniciar conversa por ID
             </button>
@@ -5498,7 +5737,7 @@
           <div class="chat-empty-state">
             <i class="${conv.avatarIcon || 'fa-solid fa-comments'}"></i>
             <h4>Conversa com ${escapeChatHtml(conv.name)}</h4>
-            <p>Envie uma mensagem abaixo para começar a interagir.</p>
+            <p>Envie uma mensagem abaixo para come\u00E7ar a interagir.</p>
           </div>
         `;
         return;
@@ -5598,8 +5837,8 @@
 
       if (!targetId || targetId.length !== 9 || !/^\d{9}$/.test(targetId)) {
         createSmartToast({
-          title: 'ID Inválido',
-          message: 'O ID DOMUS deve conter exatamente 9 dígitos numéricos.',
+          title: 'ID Inv\u00E1lido',
+          message: 'O ID DOMUS deve conter exatamente 9 d\u00EDgitos num\u00E9ricos.',
           icon: 'fa-solid fa-triangle-exclamation',
           type: 'warning'
         });
@@ -5644,18 +5883,18 @@
       if (log) log.innerHTML = '';
       const fullLog = document.getElementById('full-history-log');
       if (fullLog) fullLog.innerHTML = '';
-      logActivity('Histórico de atividades limpo', 'fa-solid fa-broom', 'var(--blue-accent)');
-      showSmartToast('Histórico Limpo', 'O histórico de atividades recente foi redefinido com sucesso.', 'fa-solid fa-broom', 'var(--blue-accent)');
+      logActivity('Hist\u00F3rico de atividades limpo', 'fa-solid fa-broom', 'var(--blue-accent)');
+      showSmartToast('Hist\u00F3rico Limpo', 'O hist\u00F3rico de atividades recente foi redefinido com sucesso.', 'fa-solid fa-broom', 'var(--blue-accent)');
     }
 
     function runNetworkDiagnostics() {
-      showSmartToast('Diagnóstico DOMUS Mesh', 'Gateway Zigbee/Matter: 100% online • Sensores: 3/3 operando (14ms) • Câmeras: 2/2 transmitindo 1080p', 'fa-solid fa-network-wired', 'var(--blue-accent)');
-      logActivity('Diagnóstico de rede Matter/Zigbee concluído', 'fa-solid fa-network-wired', 'var(--blue-accent)');
+      showSmartToast('Diagn\u00F3stico DOMUS Mesh', 'Gateway Zigbee/Matter: 100% online \u2022 Sensores: 3/3 operando (14ms) \u2022 C\u00E2meras: 2/2 transmitindo 1080p', 'fa-solid fa-network-wired', 'var(--blue-accent)');
+      logActivity('Diagn\u00F3stico de rede Matter/Zigbee conclu\u00EDdo', 'fa-solid fa-network-wired', 'var(--blue-accent)');
     }
 
     function exportMonthlyReport() {
-      showSmartToast('Relatório Mensal', 'Download do arquivo DOMUS-Relatorio-Mensal.csv iniciado com sucesso!', 'fa-solid fa-file-arrow-down', 'var(--orange-bright)');
-      logActivity('Relatório mensal de energia exportado', 'fa-solid fa-file-arrow-down', 'var(--orange-bright)');
+      showSmartToast('Relat\u00F3rio Mensal', 'Download do arquivo DOMUS-Relatorio-Mensal.csv iniciado com sucesso!', 'fa-solid fa-file-arrow-down', 'var(--orange-bright)');
+      logActivity('Relat\u00F3rio mensal de energia exportado', 'fa-solid fa-file-arrow-down', 'var(--orange-bright)');
     }
 
     function openAddResidentModal() {
@@ -5747,7 +5986,7 @@
               all.push(...dynamicList);
             }
           } catch (err) {
-            console.warn('Erro ao consultar provedor dinâmico de busca:', err);
+            console.warn('Erro ao consultar provedor din\u00E2mico de busca:', err);
           }
         }
 
@@ -5761,45 +6000,45 @@
 
     window.DomusSearchRegistry = DomusSearchRegistry;
 
-    // REGISTRO DOS RECURSOS, MÓDULOS E AÇÕES DO SISTEMA DOMUS
+    // REGISTRO DOS RECURSOS, M\u00D3DULOS E A\u00C7\u00D5ES DO SISTEMA DOMUS
     DomusSearchRegistry.register([
-      // 1. PÁGINAS PRINCIPAIS
+      // 1. P\u00C1GINAS PRINCIPAIS
       {
-        title: 'Início',
-        subtitle: 'Visão geral e status operacional do DOMUS',
-        category: 'Página',
+        title: 'In\u00EDcio',
+        subtitle: 'Vis\u00E3o geral e status operacional do DOMUS',
+        category: 'P\u00E1gina',
         icon: 'fa-solid fa-house',
         keywords: ['inicio', 'home', 'painel', 'dashboard', 'geral', 'status', 'resumo'],
         action: () => switchTab('tab-inicio')
       },
       {
-        title: 'Inteligência Adaptativa',
-        subtitle: 'Sugestões automáticas e otimização energética',
-        category: 'Página',
+        title: 'Intelig\u00EAncia Adaptativa',
+        subtitle: 'Sugest\u00F5es autom\u00E1ticas e otimiza\u00E7\u00E3o energ\u00E9tica',
+        category: 'P\u00E1gina',
         icon: 'fa-solid fa-brain',
         keywords: ['inteligencia', 'inteligencia adaptativa', 'ia', 'adaptativa', 'sugestoes', 'aprendizado', 'otimizacao'],
         action: () => switchTab('tab-inteligencia')
       },
       {
-        title: 'Segurança',
-        subtitle: 'Alarme residencial, sensores e câmeras',
-        category: 'Página',
+        title: 'Seguran\u00E7a',
+        subtitle: 'Alarme residencial, sensores e c\u00E2meras',
+        category: 'P\u00E1gina',
         icon: 'fa-solid fa-shield-halved',
         keywords: ['seguranca', 'alarme', 'sensores', 'portas', 'janelas', 'cameras', 'presenca', 'protecao'],
         action: () => switchTab('tab-seguranca')
       },
       {
         title: 'Perfil',
-        subtitle: 'Gerenciar conta, avatar, tema e segurança',
-        category: 'Página',
+        subtitle: 'Gerenciar conta, avatar, tema e seguran\u00E7a',
+        category: 'P\u00E1gina',
         icon: 'fa-solid fa-user',
         keywords: ['perfil', 'conta', 'usuario', 'residencia', 'matheus', 'admin', 'dados'],
         action: () => switchTab('tab-perfil')
       },
       {
         title: 'Mensagens e Chat',
-        subtitle: 'Comunicação e avisos entre moradores',
-        category: 'Página',
+        subtitle: 'Comunica\u00E7\u00E3o e avisos entre moradores',
+        category: 'P\u00E1gina',
         icon: 'fa-solid fa-comments',
         keywords: ['chat', 'mensagens', 'conversa', 'comunicacao', 'moradores', 'recados', 'avisos'],
         action: () => switchTab('tab-chat')
@@ -5807,15 +6046,15 @@
 
       // 2. SUBMENUS CONTROLE DA CASA
       {
-        title: 'Iluminação',
-        subtitle: 'Controle de lâmpadas, brilho e cenas',
+        title: 'Ilumina\u00E7\u00E3o',
+        subtitle: 'Controle de l\u00E2mpadas, brilho e cenas',
         category: 'Controle',
         icon: 'fa-solid fa-lightbulb',
         keywords: ['iluminacao', 'luz', 'luzes', 'lampadas', 'sala', 'quarto', 'cozinha', 'led', 'brilho'],
         action: () => switchTab('tab-iluminacao')
       },
       {
-        title: 'Climatização',
+        title: 'Climatiza\u00E7\u00E3o',
         subtitle: 'Controle de temperatura e ar-condicionado',
         category: 'Controle',
         icon: 'fa-solid fa-snowflake',
@@ -5831,7 +6070,7 @@
         action: () => switchTab('tab-energia')
       },
       {
-        title: 'Automações',
+        title: 'Automa\u00E7\u00F5es',
         subtitle: 'Gerenciar rotinas inteligentes e agendamentos',
         category: 'Controle',
         icon: 'fa-solid fa-robot',
@@ -5840,15 +6079,15 @@
       },
       {
         title: 'Dispositivos',
-        subtitle: 'Visualizar aparelhos e sessões conectadas',
+        subtitle: 'Visualizar aparelhos e sess\u00F5es conectadas',
         category: 'Controle',
         icon: 'fa-solid fa-plug',
         keywords: ['dispositivos', 'aparelhos', 'conexoes', 'equipamentos', 'sessoes', 'celulares', 'online'],
         action: () => openDevicesModal()
       },
       {
-        title: 'Cômodos',
-        subtitle: 'Gerenciar ambientes da residência',
+        title: 'C\u00F4modos',
+        subtitle: 'Gerenciar ambientes da resid\u00EAncia',
         category: 'Controle',
         icon: 'fa-solid fa-door-open',
         keywords: ['comodos', 'ambientes', 'quartos', 'sala', 'cozinha', 'banheiro', 'divisoes'],
@@ -5858,22 +6097,22 @@
       // 3. SUBMENUS MONITORAMENTO
       {
         title: 'Consumo de Energia',
-        subtitle: 'Gráficos de eficiência energética e relatórios',
+        subtitle: 'Gr\u00E1ficos de efici\u00EAncia energ\u00E9tica e relat\u00F3rios',
         category: 'Monitoramento',
         icon: 'fa-solid fa-chart-line',
         keywords: ['consumo de energia', 'kwh', 'eficiencia', 'graficos de energia', 'historico de consumo'],
         action: () => switchTab('tab-energia')
       },
       {
-        title: 'Análise dos Sensores',
-        subtitle: 'Diagnóstico de sensores de presença e temperatura',
+        title: 'An\u00E1lise dos Sensores',
+        subtitle: 'Diagn\u00F3stico de sensores de presen\u00E7a e temperatura',
         category: 'Monitoramento',
         icon: 'fa-solid fa-gauge-high',
         keywords: ['sensores', 'analise dos sensores', 'presenca', 'termometro', 'deteccao', 'hardware'],
         action: () => openSensorsModal()
       },
       {
-        title: 'Histórico',
+        title: 'Hist\u00F3rico',
         subtitle: 'Registro completo de atividades e acionamentos',
         category: 'Monitoramento',
         icon: 'fa-solid fa-clock-rotate-left',
@@ -5881,8 +6120,8 @@
         action: () => openFullHistoryModal()
       },
       {
-        title: 'Notificações',
-        subtitle: 'Histórico e configuração de alertas em tempo real',
+        title: 'Notifica\u00E7\u00F5es',
+        subtitle: 'Hist\u00F3rico e configura\u00E7\u00E3o de alertas em tempo real',
         category: 'Monitoramento',
         icon: 'fa-solid fa-bell',
         keywords: ['notificacoes', 'alertas', 'avisos', 'popups', 'toasts', 'central de avisos'],
@@ -5892,7 +6131,7 @@
       // 4. SUBMENUS CASA & MORADORES
       {
         title: 'Moradores',
-        subtitle: 'Gerenciamento de residentes, convites e permissões',
+        subtitle: 'Gerenciamento de residentes, convites e permiss\u00F5es',
         category: 'Casa',
         icon: 'fa-solid fa-users',
         keywords: ['moradores', 'residentes', 'familia', 'pessoas', 'usuarios', 'gerenciar moradores', 'membros'],
@@ -5907,7 +6146,7 @@
         action: () => switchTab('tab-mapa')
       },
       {
-        title: 'Convites & Permissões',
+        title: 'Convites & Permiss\u00F5es',
         subtitle: 'Convidar novos membros por ID e configurar acessos',
         category: 'Casa',
         icon: 'fa-solid fa-envelope-open-text',
@@ -5915,67 +6154,67 @@
         action: () => openInvitationsModal()
       },
       {
-        title: 'Configurações da Residência',
-        subtitle: 'Nome da residência, fuso horário e segurança Wi-Fi',
+        title: 'Configura\u00E7\u00F5es da Resid\u00EAncia',
+        subtitle: 'Nome da resid\u00EAncia, fuso hor\u00E1rio e seguran\u00E7a Wi-Fi',
         category: 'Casa',
         icon: 'fa-solid fa-gear',
         keywords: ['configuracoes da residencia', 'residencia', 'ajustes da casa', 'wifi', 'propriedade'],
         action: () => openResidenceSettingsModal()
       },
 
-      // 5. CÔMODOS INDIVIDUAIS
+      // 5. C\u00D4MODOS INDIVIDUAIS
       {
         title: 'Sala de Estar',
-        subtitle: 'Lâmpada principal, ar-condicionado e sensor de presença',
-        category: 'Cômodo',
+        subtitle: 'L\u00E2mpada principal, ar-condicionado e sensor de presen\u00E7a',
+        category: 'C\u00F4modo',
         icon: 'fa-solid fa-couch',
         keywords: ['sala', 'sala de estar', 'comodo sala', 'estar'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-1'); }
       },
       {
         title: 'Cozinha',
-        subtitle: 'Fita LED e iluminação da bancada',
-        category: 'Cômodo',
+        subtitle: 'Fita LED e ilumina\u00E7\u00E3o da bancada',
+        category: 'C\u00F4modo',
         icon: 'fa-solid fa-utensils',
         keywords: ['cozinha', 'comodo cozinha', 'bancada'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-2'); }
       },
       {
         title: 'Quarto Principal',
-        subtitle: 'Lâmpada inteligente RGB e ar-condicionado de 22°C',
-        category: 'Cômodo',
+        subtitle: 'L\u00E2mpada inteligente RGB e ar-condicionado de 22\u00B0C',
+        category: 'C\u00F4modo',
         icon: 'fa-solid fa-bed',
         keywords: ['quarto', 'quarto principal', 'suite', 'dormitorio casal'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-3'); }
       },
       {
         title: 'Quarto 2',
-        subtitle: 'Lâmpada inteligente e climatização independente',
-        category: 'Cômodo',
+        subtitle: 'L\u00E2mpada inteligente e climatiza\u00E7\u00E3o independente',
+        category: 'C\u00F4modo',
         icon: 'fa-solid fa-child-reaching',
         keywords: ['quarto 2', 'quarto hospedes', 'quarto infantil', 'segundo quarto'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-4'); }
       },
       {
         title: 'Banheiro',
-        subtitle: 'LED embutido com sensor de presença',
-        category: 'Cômodo',
+        subtitle: 'LED embutido com sensor de presen\u00E7a',
+        category: 'C\u00F4modo',
         icon: 'fa-solid fa-bath',
         keywords: ['banheiro', 'lavabo', 'comodo banheiro'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-5'); }
       },
       {
         title: 'Garagem',
-        subtitle: 'Lâmpada tubular LED de alta potência',
-        category: 'Cômodo',
+        subtitle: 'L\u00E2mpada tubular LED de alta pot\u00EAncia',
+        category: 'C\u00F4modo',
         icon: 'fa-solid fa-warehouse',
         keywords: ['garagem', 'estacionamento', 'vaga'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-6'); }
       },
       {
         title: 'Quintal',
-        subtitle: 'Refletor externo e monitoramento de perímetro',
-        category: 'Cômodo',
+        subtitle: 'Refletor externo e monitoramento de per\u00EDmetro',
+        category: 'C\u00F4modo',
         icon: 'fa-solid fa-tree',
         keywords: ['quintal', 'jardim', 'area externa', 'refletor externo'],
         action: () => { switchTab('tab-iluminacao'); openLightDetailModal('bulb-icon-7'); }
@@ -5983,8 +6222,8 @@
 
       // 6. DISPOSITIVOS INDIVIDUAIS
       {
-        title: 'Lâmpada da Sala de Estar',
-        subtitle: 'Luminosidade ajustável e temporizador',
+        title: 'L\u00E2mpada da Sala de Estar',
+        subtitle: 'Luminosidade ajust\u00E1vel e temporizador',
         category: 'Dispositivo',
         icon: 'fa-solid fa-lightbulb',
         keywords: ['lampada sala', 'luz da sala', 'iluminacao sala'],
@@ -6016,7 +6255,7 @@
       },
       {
         title: 'Sensores de Movimento',
-        subtitle: 'Detectores PIR infravermelho de presença',
+        subtitle: 'Detectores PIR infravermelho de presen\u00E7a',
         category: 'Dispositivo',
         icon: 'fa-solid fa-radar',
         keywords: ['sensor presenca', 'sensor movimento', 'pir', 'sensores'],
@@ -6024,26 +6263,26 @@
       },
       {
         title: 'Fechadura Inteligente',
-        subtitle: 'Travamento biométrico e remoto da porta principal',
+        subtitle: 'Travamento biom\u00E9trico e remoto da porta principal',
         category: 'Dispositivo',
         icon: 'fa-solid fa-lock',
         keywords: ['fechadura', 'fechadura inteligente', 'tranca', 'porta', 'biometria'],
         action: () => switchTab('tab-seguranca')
       },
 
-      // 7. AÇÕES E COMANDOS RÁPIDOS
+      // 7. A\u00C7\u00D5ES E COMANDOS R\u00C1PIDOS
       {
-        title: 'Ligar todas as lâmpadas',
-        subtitle: 'Acende todas as luzes da residência imediatamente',
-        category: 'Ação',
+        title: 'Ligar todas as l\u00E2mpadas',
+        subtitle: 'Acende todas as luzes da resid\u00EAncia imediatamente',
+        category: 'A\u00E7\u00E3o',
         icon: 'fa-solid fa-power-off',
         keywords: ['ligar todas', 'ligar luzes', 'acender tudo', 'acender todas as luzes'],
         action: () => { switchTab('tab-iluminacao'); turnOnAllLights(); }
       },
       {
-        title: 'Desligar todas as lâmpadas',
-        subtitle: 'Apaga todas as luzes da residência',
-        category: 'Ação',
+        title: 'Desligar todas as l\u00E2mpadas',
+        subtitle: 'Apaga todas as luzes da resid\u00EAncia',
+        category: 'A\u00E7\u00E3o',
         icon: 'fa-regular fa-lightbulb',
         keywords: ['desligar todas', 'apagar luzes', 'apagar tudo', 'desligar luzes'],
         action: () => { switchTab('tab-iluminacao'); turnOffAllLights(); }
@@ -6051,7 +6290,7 @@
       {
         title: 'Alterar Senha de Acesso',
         subtitle: 'Redefinir senha da conta no Supabase Auth',
-        category: 'Configuração',
+        category: 'Configura\u00E7\u00E3o',
         icon: 'fa-solid fa-key',
         keywords: ['senha', 'alterar senha', 'mudar senha', 'password', 'redefinir senha', 'trocar senha'],
         action: () => openChangePasswordAlert()
@@ -6059,31 +6298,31 @@
       {
         title: 'Editar Perfil e Avatar',
         subtitle: 'Atualizar nome, identificador e avatar do perfil',
-        category: 'Configuração',
+        category: 'Configura\u00E7\u00E3o',
         icon: 'fa-solid fa-user-pen',
         keywords: ['avatar', 'foto', 'icone', 'editar perfil', 'nome', 'usuario', 'handle'],
         action: () => openEditProfileModal()
       },
       {
         title: 'Convidar Morador por ID',
-        subtitle: 'Adicionar residente à casa com permissão personalizada',
-        category: 'Configuração',
+        subtitle: 'Adicionar residente \u00E0 casa com permiss\u00E3o personalizada',
+        category: 'Configura\u00E7\u00E3o',
         icon: 'fa-solid fa-user-plus',
         keywords: ['convidar morador', 'adicionar morador', 'novo morador', 'cadastrar morador'],
         action: () => openAddResidentModal()
       },
       {
-        title: 'Criar Nova Automação',
-        subtitle: 'Configurar gatilho e ação inteligente',
-        category: 'Ação',
+        title: 'Criar Nova Automa\u00E7\u00E3o',
+        subtitle: 'Configurar gatilho e a\u00E7\u00E3o inteligente',
+        category: 'A\u00E7\u00E3o',
         icon: 'fa-solid fa-plus',
         keywords: ['criar automacao', 'nova automacao', 'adicionar rotina', 'criar rotina'],
         action: () => openAutomationModal()
       },
       {
         title: 'Alternar Tema Claro / Escuro',
-        subtitle: 'Mudar aparência visual do painel',
-        category: 'Configuração',
+        subtitle: 'Mudar apar\u00EAncia visual do painel',
+        category: 'Configura\u00E7\u00E3o',
         icon: 'fa-solid fa-circle-half-stroke',
         keywords: ['modo claro', 'modo escuro', 'tema', 'light', 'dark', 'cor', 'tema claro', 'tema escuro'],
         action: () => {
@@ -6093,26 +6332,26 @@
         }
       },
       {
-        title: 'Diagnóstico de Rede',
-        subtitle: 'Executar teste de latência e comunicação dos módulos',
-        category: 'Ação',
+        title: 'Diagn\u00F3stico de Rede',
+        subtitle: 'Executar teste de lat\u00EAncia e comunica\u00E7\u00E3o dos m\u00F3dulos',
+        category: 'A\u00E7\u00E3o',
         icon: 'fa-solid fa-network-wired',
         keywords: ['diagnostico de rede', 'teste de rede', 'ping', 'conectividade', 'diagnostico'],
         action: () => { switchTab('tab-inteligencia'); runNetworkDiagnostics(); }
       },
       {
-        title: 'Exportar Relatório Mensal',
-        subtitle: 'Baixar arquivo .CSV com histórico de consumo',
-        category: 'Ação',
+        title: 'Exportar Relat\u00F3rio Mensal',
+        subtitle: 'Baixar arquivo .CSV com hist\u00F3rico de consumo',
+        category: 'A\u00E7\u00E3o',
         icon: 'fa-solid fa-file-csv',
         keywords: ['exportar relatorio', 'csv', 'baixar dados', 'consumo csv', 'planilha'],
         action: () => exportMonthlyReport()
       },
 
-      // 8. CENAS DE ILUMINAÇÃO
+      // 8. CENAS DE ILUMINA\u00C7\u00C3O
       {
         title: 'Cena Dia',
-        subtitle: 'Ativa iluminação geral com alta intensidade',
+        subtitle: 'Ativa ilumina\u00E7\u00E3o geral com alta intensidade',
         category: 'Cena',
         icon: 'fa-solid fa-sun',
         keywords: ['cena dia', 'modo dia', 'iluminacao dia'],
@@ -6128,7 +6367,7 @@
       },
       {
         title: 'Cena Cinema',
-        subtitle: 'Sala com iluminação indireta quente',
+        subtitle: 'Sala com ilumina\u00E7\u00E3o indireta quente',
         category: 'Cena',
         icon: 'fa-solid fa-film',
         keywords: ['cena cinema', 'modo cinema', 'filme'],
@@ -6136,7 +6375,7 @@
       },
       {
         title: 'Cena Estudo',
-        subtitle: 'Luz neutra/fria para alta concentração',
+        subtitle: 'Luz neutra/fria para alta concentra\u00E7\u00E3o',
         category: 'Cena',
         icon: 'fa-solid fa-book-open',
         keywords: ['cena estudo', 'modo estudo', 'trabalho', 'foco'],
@@ -6144,7 +6383,7 @@
       },
       {
         title: 'Cena Cheguei',
-        subtitle: 'Iluminação de boas-vindas na entrada e sala',
+        subtitle: 'Ilumina\u00E7\u00E3o de boas-vindas na entrada e sala',
         category: 'Cena',
         icon: 'fa-solid fa-house-user',
         keywords: ['cena cheguei', 'chegando em casa', 'boas vindas'],
@@ -6160,7 +6399,7 @@
       }
     ]);
 
-    // PROVEDOR DINÂMICO DE DADOS REAIS SUPABASE (MORADORES & AUTOMAÇÕES)
+    // PROVEDOR DIN\u00C2MICO DE DADOS REAIS SUPABASE (MORADORES & AUTOMA\u00C7\u00D5ES)
     DomusSearchRegistry.registerDynamicProvider(() => {
       const dynamicItems = [];
 
@@ -6168,7 +6407,7 @@
         residentsData.forEach(res => {
           dynamicItems.push({
             title: `Morador: ${res.name}`,
-            subtitle: `Nível de acesso: ${res.role || 'Morador'}`,
+            subtitle: `N\u00EDvel de acesso: ${res.role || 'Morador'}`,
             category: 'Morador',
             icon: res.role === 'Administrador' ? 'fa-solid fa-user-shield' : 'fa-solid fa-user',
             keywords: ['morador', 'residente', normalizeSearchStr(res.name), res.role ? normalizeSearchStr(res.role) : ''],
@@ -6180,9 +6419,9 @@
       if (Array.isArray(automationsData) && automationsData.length > 0) {
         automationsData.forEach(auto => {
           dynamicItems.push({
-            title: `Automação: ${auto.title}`,
-            subtitle: `Gatilho: ${auto.trigger || 'Horário'} • Ação: ${auto.action || 'Rotina'}`,
-            category: 'Automação',
+            title: `Automa\u00E7\u00E3o: ${auto.title}`,
+            subtitle: `Gatilho: ${auto.trigger || 'Hor\u00E1rio'} \u2022 A\u00E7\u00E3o: ${auto.action || 'Rotina'}`,
+            category: 'Automa\u00E7\u00E3o',
             icon: 'fa-solid fa-robot',
             keywords: ['automacao', normalizeSearchStr(auto.title), 'rotina inteligente'],
             action: () => switchTab('tab-automacoes')
@@ -6216,7 +6455,7 @@
 
       if (searchClearBtn) searchClearBtn.style.display = 'flex';
 
-      // Consulta todos os itens registrados e dinâmicos através do Registry
+      // Consulta todos os itens registrados e din\u00E2micos atrav\u00E9s do Registry
       const allItems = DomusSearchRegistry.getAllItems();
 
       // Filtra com busca parcial e insensibilidade a acentos
@@ -6228,7 +6467,7 @@
         return titleNorm.includes(normQ) || subNorm.includes(normQ) || catNorm.includes(normQ) || inKeywords;
       });
 
-      // Ordena por relevância: quem começa com a busca primeiro
+      // Ordena por relev\u00E2ncia: quem come\u00E7a com a busca primeiro
       matches.sort((a, b) => {
         const aTitle = normalizeSearchStr(a.title);
         const bTitle = normalizeSearchStr(b.title);
@@ -6247,7 +6486,7 @@
           <div class="search-empty-state">
             <i class="fa-solid fa-magnifying-glass search-empty-icon"></i>
             <div class="search-empty-title">Nenhum resultado encontrado.</div>
-            <p class="search-empty-hint">Tente pesquisar por <em>mapa da casa</em>, <em>iluminação</em>, <em>segurança</em>, <em>energia</em>, <em>senha</em>...</p>
+            <p class="search-empty-hint">Tente pesquisar por <em>mapa da casa</em>, <em>ilumina\u00E7\u00E3o</em>, <em>seguran\u00E7a</em>, <em>energia</em>, <em>senha</em>...</p>
           </div>
         `;
         searchDropdown.style.display = 'block';
@@ -6285,11 +6524,11 @@
       try {
         const escaped = cleanQ.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const pattern = escaped
-          .replace(/[a\u00E1\u00E0\u00E3\u00E2&auml;]/gi, '[a\u00E1\u00E0\u00E3\u00E2&auml;]')
-          .replace(/[e\u00E9&egrave;\u00EA&euml;]/gi, '[e\u00E9&egrave;\u00EA&euml;]')
-          .replace(/[i\u00ED&igrave;&icirc;&iuml;]/gi, '[i\u00ED&igrave;&icirc;&iuml;]')
-          .replace(/[o\u00F3&ograve;\u00F5\u00F4&ouml;]/gi, '[o\u00F3&ograve;\u00F5\u00F4&ouml;]')
-          .replace(/[u\u00FA&ugrave;&ucirc;&uuml;]/gi, '[u\u00FA&ugrave;&ucirc;&uuml;]')
+          .replace(/[a\u00E1\u00E0\u00E3\u00E2\u00E4]/gi, '[a\u00E1\u00E0\u00E3\u00E2\u00E4]')
+          .replace(/[e\u00E9\u00E8\u00EA\u00EB]/gi, '[e\u00E9\u00E8\u00EA\u00EB]')
+          .replace(/[i\u00ED\u00EC\u00EE\u00EF]/gi, '[i\u00ED\u00EC\u00EE\u00EF]')
+          .replace(/[o\u00F3\u00F2\u00F5\u00F4\u00F6]/gi, '[o\u00F3\u00F2\u00F5\u00F4\u00F6]')
+          .replace(/[u\u00FA\u00F9\u00FB\u00FC]/gi, '[u\u00FA\u00F9\u00FB\u00FC]')
           .replace(/[c\u00E7]/gi, '[c\u00E7]');
         const regex = new RegExp(`(${pattern})`, 'gi');
         return text.replace(regex, '<mark>$1</mark>');
@@ -6442,7 +6681,7 @@
     }
 
     // ==========================================================================
-    // 2. CONTROLE DO ACCORDION POR PADRÃO (CONTROLE DA CASA FECHADO)
+    // 2. CONTROLE DO ACCORDION POR PADR\u00C3O (CONTROLE DA CASA FECHADO)
     // ==========================================================================
     function ensureAccordionsDefaultClosed() {
       ['acc-controle', 'acc-monitor', 'acc-casa'].forEach(id => {
@@ -6456,7 +6695,7 @@
     }
 
     // ==========================================================================
-    // 3. ANIMAÇÃO DE ENTRADA DO DOMUS (CANVAS & SISTEMA DE PARTÍCULAS FUTURISTA)
+    // 3. ANIMA\u00C7\u00C3O DE ENTRADA DO DOMUS (CANVAS & SISTEMA DE PART\u00CDCULAS FUTURISTA)
     // ==========================================================================
     function initDomusIntroAnimation() {
       const introScreen = document.getElementById('domus-intro-screen');
@@ -6471,7 +6710,7 @@
       const isReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const alreadyPlayed = sessionStorage.getItem('domus_intro_played') === 'true';
 
-      // Se o usuário preferir movimento reduzido ou já tiver visualizado na sessão atual
+      // Se o usu\u00E1rio preferir movimento reduzido ou j\u00E1 tiver visualizado na sess\u00E3o atual
       if (isReduced || alreadyPlayed) {
         introScreen.classList.add('fade-out');
         setTimeout(() => {
@@ -6481,12 +6720,12 @@
         return;
       }
 
-      // Mensagens de inicialização em sequência tecnológica
+      // Mensagens de inicializa\u00E7\u00E3o em sequ\u00EAncia tecnol\u00F3gica
       const steps = [
         { t: 0, text: 'CALIBRANDO SENSORES INTELIGENTES...' },
-        { t: 600, text: 'VERIFICANDO PROTOCOLOS DE SEGURANÇA...' },
+        { t: 600, text: 'VERIFICANDO PROTOCOLOS DE SEGURAN\u00C7A...' },
         { t: 1200, text: 'INICIALIZANDO SISTEMA DOMUS...' },
-        { t: 1800, text: 'CONEXÃO RESIDENCIAL ESTABELECIDA' }
+        { t: 1800, text: 'CONEX\u00C3O RESIDENCIAL ESTABELECIDA' }
       ];
 
       steps.forEach(s => {
@@ -6495,7 +6734,7 @@
         }, s.t);
       });
 
-      // Canvas animado com partículas flutuantes e circuitos de conexão
+      // Canvas animado com part\u00EDculas flutuantes e circuitos de conex\u00E3o
       if (canvas && canvas.getContext) {
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
@@ -6527,7 +6766,7 @@
         function draw(now) {
           ctx.clearRect(0, 0, width, height);
 
-          // Linhas conectadas entre nós próximos (laser digital)
+          // Linhas conectadas entre n\u00F3s pr\u00F3ximos (laser digital)
           for (let i = 0; i < particles.length; i++) {
             for (let j = i + 1; j < particles.length; j++) {
               const dx = particles[i].x - particles[j].x;
@@ -6544,7 +6783,7 @@
             }
           }
 
-          // Partículas
+          // Part\u00EDculas
           for (const p of particles) {
             p.x += p.vx;
             p.y += p.vy;
@@ -6569,7 +6808,7 @@
         animFrame = requestAnimationFrame(draw);
       }
 
-      // Conclusão elegante e revelação da tela apropriada após ~2.2s
+      // Conclus\u00E3o elegante e revela\u00E7\u00E3o da tela apropriada ap\u00F3s ~2.2s
       setTimeout(async () => {
         sessionStorage.setItem('domus_intro_played', 'true');
         introScreen.classList.add('fade-out');
@@ -6580,7 +6819,7 @@
       }, 2200);
     }
 
-    // INICIALIZAÇÃO
+    // INICIALIZA\u00C7\u00C3O
     const notifToggleElem = document.getElementById('notifications-toggle');
     if (notifToggleElem) notifToggleElem.checked = isNotificationsEnabled;
 
@@ -6605,8 +6844,8 @@
       selectChatContact(existingChatKeys[0]);
     }
 
-    // DISPARO DA ANIMAÇÃO DE ENTRADA DO DOMUS E VERIFICAÇÃO OBRIGATÓRIA DA SESSÃO SUPABASE AUTH
-    initDomusIntroAnimation();
+    // DISPARO DA ANIMA\u00C7\u00C3O DE ENTRADA DO DOMUS E VERIFICA\u00C7\u00C3O OBRIGAT\u00D3RIA DA SESS\u00C3O SUPABASE AUTH
+    checkAuthSession();
   </script>
 
 </body>
