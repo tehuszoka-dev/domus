@@ -3028,7 +3028,64 @@
     }
 
     // APLICA\u00C7\u00C3O DOS DADOS DO USU\u00C1RIO LOGADO NO CABE\u00C7ALHO E NO PERFIL
+    function fixMojibake(text) {
+      if (typeof text !== 'string' || !text) return text;
+      try {
+        // Correção rápida via decodificação de UTF-8 em Latin-1
+        if (/[\u00C2\u00C3\u00E2]/.test(text)) {
+          const decoded = decodeURIComponent(escape(text));
+          if (decoded && !/[\u00C2\u00C3\u00E2]/.test(decoded)) {
+            text = decoded;
+          }
+        }
+      } catch (e) {
+        // Fallback se sequência URI for inválida
+      }
+
+      return text
+        .replace(/Ol[\u00C3][\u00A1\u00A3]/g, 'Olá')
+        .replace(/\bOlã\b/g, 'Olá')
+        .replace(/informa[\u00C3]\u00A7[\u00C3]\u00A3o/gi, 'informação')
+        .replace(/configura[\u00C3]\u00A7[\u00C3]\u00A3o/gi, 'configuração')
+        .replace(/configura[\u00C3]\u00A7[\u00C3]\u00B5es/gi, 'configurações')
+        .replace(/usu[\u00C3]\u00A1rio/gi, 'usuário')
+        .replace(/ilumina[\u00C3]\u00A7[\u00C3]\u00A3o/gi, 'iluminação')
+        .replace(/seguran[\u00C3]\u00A7a/gi, 'segurança')
+        .replace(/aten[\u00C3]\u00A7[\u00C3]\u00A3o/gi, 'atenção')
+        .replace(/automa[\u00C3]\u00A7[\u00C3]\u00A3o/gi, 'automação')
+        .replace(/intelig[\u00C3]\u00AAncia/gi, 'inteligência')
+        .replace(/climatiza[\u00C3]\u00A7[\u00C3]\u00A3o/gi, 'climatização')
+        .replace(/notifica[\u00C3]\u00A7[\u00C3]\u00B5es/gi, 'notificações')
+        .replace(/in[\u00C3]\u00ADcio/gi, 'início')
+        .replace(/conex[\u00C3]\u00A3o/gi, 'conexão')
+        .replace(/c[\u00C3]\u00A2meras/gi, 'câmeras')
+        .replace(/port[\u00C3]\u00A3o/gi, 'portão')
+        .replace(/prote[\u00C3]\u00A7[\u00C3]\u00A3o/gi, 'proteção')
+        .replace(/hist[\u00C3]\u00B3rico/gi, 'histórico')
+        .replace(/relat[\u00C3]\u00B3rio/gi, 'relatório')
+        .replace(/dura[\u00C3]\u00A7[\u00C3]\u00A3o/gi, 'duração')
+        .replace(/hor[\u00C3]\u00A1rio/gi, 'horário')
+        .replace(/sess[\u00C3]\u00A3o/gi, 'sessão')
+        .replace(/permiss[\u00C3]\u00A3o/gi, 'permissão')
+        .replace(/presen[\u00C3]\u00A7a/gi, 'presença')
+        .replace(/padr[\u00C3]\u00A3o/gi, 'padrão')
+        .replace(/n[\u00C3]\u00ADvel/gi, 'nível')
+        .replace(/m[\u00C3]\u00BAsica/gi, 'música')
+        .replace(/vis[\u00C3]\u00A3o/gi, 'visão')
+        .replace(/[\u00C3]\u00A1/g, 'á').replace(/[\u00C3]\u00A9/g, 'é').replace(/[\u00C3]\u00AD/g, 'í').replace(/[\u00C3]\u00B3/g, 'ó').replace(/[\u00C3]\u00BA/g, 'ú')
+        .replace(/[\u00C3]\u00A3/g, 'ã').replace(/[\u00C3]\u00B5/g, 'õ').replace(/[\u00C3]\u00A2/g, 'â').replace(/[\u00C3]\u00AA/g, 'ê').replace(/[\u00C3]\u00B4/g, 'ô')
+        .replace(/[\u00C3]\u00A7/g, 'ç')
+        .replace(/[\u00C3]\u0081/g, 'Á').replace(/[\u00C3]\u0089/g, 'É').replace(/[\u00C3]\u008D/g, 'Í').replace(/[\u00C3]\u0093/g, 'Ó').replace(/[\u00C3]\u009A/g, 'Ú')
+        .replace(/[\u00C3]\u0083/g, 'Ã').replace(/[\u00C3]\u0095/g, 'Õ').replace(/[\u00C3]\u0082/g, 'Â').replace(/[\u00C3]\u008A/g, 'Ê').replace(/[\u00C3]\u0094/g, 'Ô')
+        .replace(/[\u00C3]\u0087/g, 'Ç')
+        .replace(/[\u00C2]\u00B0/g, '°').replace(/[\u00C2]\u00BA/g, 'º').replace(/[\u00C2]\u00AA/g, 'ª')
+        .replace(/[\u00E2]\u0080\u0094/g, '—').replace(/[\u00E2]\u0080\u0093/g, '–').replace(/[\u00E2]\u0080\u009C/g, '“').replace(/[\u00E2]\u0080\u009D/g, '”')
+        .replace(/[\u00E2]\u0080\u0098/g, '‘').replace(/[\u00E2]\u0080\u0099/g, '’').replace(/[\u00E2]\u0080\u00A6/g, '…');
+    }
+
     function applyUserDataToUI(fullName, email) {
+      if (!fullName) fullName = 'Usuário';
+      fullName = fixMojibake(fullName);
       if (!fullName) fullName = 'Usu\u00E1rio';
       const firstName = fullName.trim().split(' ')[0] || fullName;
 
@@ -5252,7 +5309,7 @@
 
     function handleSaveProfile(event) {
       event.preventDefault();
-      const newName = document.getElementById('edit-profile-name').value;
+      const newName = fixMojibake(document.getElementById('edit-profile-name').value);
       const newHandle = document.getElementById('edit-profile-handle').value;
       const newAvatar = document.getElementById('edit-profile-avatar-select').value;
 
