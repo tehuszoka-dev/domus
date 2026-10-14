@@ -19,6 +19,7 @@
 
   <!-- SUPABASE JS SDK V2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>if(!window.supabase){document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>');}</script>
 
   <style>
     :root {
@@ -1010,18 +1011,46 @@
              Boolean(window.supabase);
     }
 
-    try {
-      if (isSupabaseConfigured()) {
-        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-          auth: {
-            persistSession: true,
-            autoRefreshToken: true,
-            detectSessionInUrl: true
-          }
-        });
+    function getSupabaseClient() {
+      if (supabaseClient) return supabaseClient;
+      if (typeof window !== 'undefined' && window.supabase && isSupabaseConfigured()) {
+        try {
+          supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: {
+              persistSession: true,
+              autoRefreshToken: true,
+              detectSessionInUrl: true
+            }
+          });
+        } catch (e) {
+          console.error('Falha ao inicializar Supabase Client no Login:', e);
+        }
       }
-    } catch (e) {
-      console.error('Falha ao inicializar Supabase Client no Login:', e);
+      return supabaseClient;
+    }
+
+    function fixMojibake(text) {
+      if (typeof text !== 'string' || !text) return text;
+      try {
+        if (/[\u00C2\u00C3\u00E2]/.test(text)) {
+          const decoded = decodeURIComponent(escape(text));
+          if (decoded && !/[\u00C2\u00C3\u00E2]/.test(decoded)) {
+            return decoded;
+          }
+        }
+      } catch (e) {}
+      return text
+        .replace(/[\u00C3][\u0081\u00A1]/g, 'Á').replace(/[\u00C3]\u00A1/g, 'á')
+        .replace(/[\u00C3][\u0089\u00A9]/g, 'É').replace(/[\u00C3]\u00A9/g, 'é')
+        .replace(/[\u00C3][\u008D\u00AD]/g, 'Í').replace(/[\u00C3]\u00AD/g, 'í')
+        .replace(/[\u00C3][\u0093\u00B3]/g, 'Ó').replace(/[\u00C3]\u00B3/g, 'ó')
+        .replace(/[\u00C3][\u009A\u00BA]/g, 'Ú').replace(/[\u00C3]\u00BA/g, 'ú')
+        .replace(/[\u00C3][\u0083\u00A3]/g, 'Ã').replace(/[\u00C3]\u00A3/g, 'ã')
+        .replace(/[\u00C3][\u0095\u00B5]/g, 'Õ').replace(/[\u00C3]\u00B5/g, 'õ')
+        .replace(/[\u00C3][\u0082\u00A2]/g, 'Â').replace(/[\u00C3]\u00A2/g, 'â')
+        .replace(/[\u00C3][\u008A\u00AA]/g, 'Ê').replace(/[\u00C3]\u00AA/g, 'ê')
+        .replace(/[\u00C3][\u0094\u00B4]/g, 'Ô').replace(/[\u00C3]\u00B4/g, 'ô')
+        .replace(/[\u00C3][\u0087\u00A7]/g, 'Ç').replace(/[\u00C3]\u00A7/g, 'ç');
     }
 
     function redirectToMainApp() {
@@ -1143,7 +1172,6 @@
         stopCanvasFn = startCinematicCanvas('domus-cinematic-canvas');
       }
 
-      // Reseta tra\u00E7ado das linhas do SVG para desenharem novamente
       const lines = overlay.querySelectorAll('.geo-line');
       lines.forEach(l => {
         l.style.animation = 'none';
@@ -1152,42 +1180,58 @@
       });
 
       const telemText = document.getElementById('cinematic-telemetry-text');
-      if (telemText) telemText.textContent = 'Autentica\u00E7\u00E3o verificada \u2022 Inicializando DOMUS...';
+      if (telemText) telemText.textContent = 'Autenticação verificada • Inicializando DOMUS...';
 
-      // Etapa 3: Inicializa\u00E7\u00E3o do DOMUS e telemetria sincronizada
+      let finished = false;
+      function completeTransition() {
+        if (finished) return;
+        finished = true;
+        clearTimeout(safetyTimer);
+        overlay.classList.remove('active', 'stage-connected', 'stage-exit');
+        overlay.setAttribute('aria-hidden', 'true');
+        if (stopCanvasFn) {
+          stopCanvasFn();
+          stopCanvasFn = null;
+        }
+        if (typeof onFinish === 'function') {
+          onFinish();
+        }
+      }
+
+      // Salvaguarda garantida (máximo 3.2s)
+      const safetyTimer = setTimeout(() => {
+        completeTransition();
+      }, 3200);
+
       setTimeout(() => {
-        if (telemText) telemText.textContent = 'Conectando sistemas e barramentos da resid\u00EAncia...';
+        if (!finished && telemText) telemText.textContent = 'Conectando sistemas e barramentos da residência...';
       }, 650);
 
       setTimeout(() => {
-        if (telemText) telemText.textContent = 'Resid\u00EAncia inteligente conectada com sucesso';
+        if (!finished && telemText) telemText.textContent = 'Residência inteligente conectada com sucesso';
       }, 1300);
 
-      // Etapa 4: Expans\u00E3o do s\u00EDmbolo em luz azul-ciano suave (~1.8s)
       setTimeout(() => {
-        overlay.classList.add('stage-connected');
+        if (!finished) overlay.classList.add('stage-connected');
       }, 1800);
 
-      // Revela\u00E7\u00E3o e transi\u00E7\u00E3o final (~2.2s)
       setTimeout(() => {
-        overlay.classList.add('stage-exit');
-        setTimeout(() => {
-          overlay.classList.remove('active', 'stage-connected', 'stage-exit');
-          overlay.setAttribute('aria-hidden', 'true');
-          if (stopCanvasFn) {
-            stopCanvasFn();
-            stopCanvasFn = null;
-          }
-          if (typeof onFinish === 'function') onFinish();
-        }, 400);
+        if (!finished) {
+          overlay.classList.add('stage-exit');
+          setTimeout(() => {
+            completeTransition();
+          }, 400);
+        }
       }, 2200);
     }
 
-    function cancelCinematicTransition() {
+        function cancelCinematicTransition() {
       const overlay = document.getElementById('domus-cinematic-transition');
       if (overlay) {
         overlay.classList.remove('active', 'stage-connected', 'stage-exit');
         overlay.setAttribute('aria-hidden', 'true');
+        const telemText = document.getElementById('cinematic-telemetry-text');
+        if (telemText) telemText.textContent = 'Autenticando credenciais...';
       }
       if (stopCanvasFn) {
         stopCanvasFn();
@@ -1261,7 +1305,7 @@
     // 1. FLUXO DE LOGIN COM SUPABASE AUTH & TRANSI\u00C7\u00C3O CINEMATOGR\u00C1FICA
     // ==========================================================================
     async function handleAuthLogin(event) {
-      event.preventDefault();
+      if (event) event.preventDefault();
       clearAuthAlert();
 
       const emailInput = document.getElementById('auth-login-email');
@@ -1283,66 +1327,93 @@
         return;
       }
 
-      // ETAPA 1 \u2014 Resposta imediata: micro-press\u00E3o, brilho ciano discreto e bloqueio de cliques
-      submitBtn.classList.add('btn-pressed');
-      setAuthButtonLoading(submitBtn, true, 'Autenticando...');
-
-      if (!isSupabaseConfigured() || !supabaseClient) {
-        submitBtn.classList.remove('btn-pressed');
-        setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Supabase n\u00E3o configurado. Verifique as credenciais no sistema.');
+      if (submitBtn && submitBtn.classList.contains('btn-pressed')) {
         return;
       }
 
-      // ETAPA 2 \u2014 Conex\u00E3o digital: inicia camada de transi\u00E7\u00E3o com n\u00F3s de rede cibern\u00E9tica
+      if (submitBtn) {
+        submitBtn.classList.add('btn-pressed');
+        setAuthButtonLoading(submitBtn, true, 'Autenticando...');
+      }
+
+      const client = getSupabaseClient();
+      if (!client) {
+        if (submitBtn) {
+          submitBtn.classList.remove('btn-pressed');
+          setAuthButtonLoading(submitBtn, false);
+        }
+        showAuthAlert('error', 'Supabase não inicializado. Verifique as credenciais no sistema.');
+        return;
+      }
+
       const overlay = document.getElementById('domus-cinematic-transition');
       if (overlay) {
         overlay.classList.remove('stage-connected', 'stage-exit');
         overlay.classList.add('active');
+        overlay.setAttribute('aria-hidden', 'false');
         const telemText = document.getElementById('cinematic-telemetry-text');
         if (telemText) telemText.textContent = 'Autenticando credenciais...';
         if (stopCanvasFn) stopCanvasFn();
         stopCanvasFn = startCinematicCanvas('domus-cinematic-canvas');
       }
 
+      let authSafetyTimer = setTimeout(() => {
+        cancelCinematicTransition();
+        if (submitBtn) {
+          submitBtn.classList.remove('btn-pressed');
+          setAuthButtonLoading(submitBtn, false);
+        }
+        showAuthAlert('error', 'Tempo limite de conexão excedido. Verifique sua rede e tente novamente.');
+      }, 9000);
+
       try {
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
+        const { data, error } = await client.auth.signInWithPassword({
           email: email,
           password: password
         });
+        clearTimeout(authSafetyTimer);
 
         if (error) {
-          // Em caso de falha: encerra imediatamente a anima\u00E7\u00E3o e restaura o bot\u00E3o
           cancelCinematicTransition();
-          submitBtn.classList.remove('btn-pressed');
-          setAuthButtonLoading(submitBtn, false);
+          if (submitBtn) {
+            submitBtn.classList.remove('btn-pressed');
+            setAuthButtonLoading(submitBtn, false);
+          }
 
           const errLower = (error.message || '').toLowerCase();
           if (errLower.includes('email not confirmed')) {
-            showAuthAlert('error', 'Por favor, confirme seu e-mail antes de entrar (ou desative a confirma\u00E7\u00E3o de e-mail no painel do Supabase).');
+            showAuthAlert('error', 'Por favor, confirme seu e-mail antes de entrar (ou desative a confirmação de e-mail no painel do Supabase).');
           } else if (errLower.includes('invalid login credentials') || errLower.includes('invalid_grant')) {
             showAuthAlert('error', 'E-mail ou senha incorretos.');
           } else {
-            showAuthAlert('error', 'N\u00E3o foi poss\u00EDvel realizar o login. Verifique seus dados e tente novamente.');
+            showAuthAlert('error', error.message || 'Não foi possível realizar o login. Verifique seus dados e tente novamente.');
           }
           return;
         }
 
         if (data && data.user) {
-          // ETAPA 3 & 4 \u2014 Login bem-sucedido: inicializa\u00E7\u00E3o do s\u00EDmbolo DOMUS e transi\u00E7\u00E3o fluida
           triggerCinematicTransition(() => {
             redirectToMainApp();
           });
+        } else {
+          cancelCinematicTransition();
+          if (submitBtn) {
+            submitBtn.classList.remove('btn-pressed');
+            setAuthButtonLoading(submitBtn, false);
+          }
+          showAuthAlert('error', 'Resposta de autenticação vazia. Tente novamente.');
         }
       } catch (err) {
+        clearTimeout(authSafetyTimer);
         cancelCinematicTransition();
-        submitBtn.classList.remove('btn-pressed');
-        setAuthButtonLoading(submitBtn, false);
-        console.error('Erro de conex\u00E3o no login:', err);
-        showAuthAlert('error', 'Falha de conex\u00E3o com os servidores DOMUS. Verifique sua rede e tente novamente.');
+        if (submitBtn) {
+          submitBtn.classList.remove('btn-pressed');
+          setAuthButtonLoading(submitBtn, false);
+        }
+        console.error('Erro de conexão no login:', err);
+        showAuthAlert('error', 'Falha de conexão com os servidores DOMUS. Verifique sua rede e tente novamente.');
       }
     }
-
     // ==========================================================================
     // 2. FLUXO DE CADASTRO COM SUPABASE AUTH
     // ==========================================================================

@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- SUPABASE JS SDK V2 (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>if(!window.supabase){document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>');}</script>
   <link rel="stylesheet" href="style.css?v=2.3">
 </head>
 <body>
@@ -2934,6 +2935,7 @@
     const SUPABASE_ANON_KEY = 'sb_publishable_TMX2by3mFmYgmN3ZdETdrQ_qfkCJdju';
 
     let supabaseClient = null;
+    let authListenerSub = null;
     let currentAuthUser = null;
     let currentAuthProfile = null;
 
@@ -2945,6 +2947,24 @@
              SUPABASE_ANON_KEY !== 'SUPABASE_ANON_KEY' &&
              !SUPABASE_ANON_KEY.includes('SUA_CHAVE_PUBLICA_ANON') &&
              Boolean(window.supabase);
+    }
+
+    function getSupabaseClient() {
+      if (supabaseClient) return supabaseClient;
+      if (typeof window !== 'undefined' && window.supabase && isSupabaseConfigured()) {
+        try {
+          supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: {
+              persistSession: true,
+              autoRefreshToken: true,
+              detectSessionInUrl: true
+            }
+          });
+        } catch (e) {
+          console.error('Falha ao inicializar Supabase Client:', e);
+        }
+      }
+      return supabaseClient;
     }
 
     function isUserAuthenticated() {
@@ -3287,33 +3307,50 @@
       });
 
       const telemText = document.getElementById('cinematic-telemetry-text');
-      if (telemText) telemText.textContent = 'Autentica\u00E7\u00E3o verificada \u2022 Inicializando DOMUS...';
+      if (telemText) telemText.textContent = 'Autenticação verificada • Inicializando DOMUS...';
+
+      let finished = false;
+      function completeTransition() {
+        if (finished) return;
+        finished = true;
+        clearTimeout(safetyTimer);
+        overlay.classList.remove('active', 'stage-connected', 'stage-exit');
+        overlay.setAttribute('aria-hidden', 'true');
+        if (stopCanvasFn) {
+          stopCanvasFn();
+          stopCanvasFn = null;
+        }
+        if (typeof onFinish === 'function') {
+          onFinish();
+        }
+      }
+
+      // Salvaguarda absoluta contra bloqueio da interface (máximo 3.2s)
+      const safetyTimer = setTimeout(() => {
+        completeTransition();
+      }, 3200);
 
       setTimeout(() => {
-        if (telemText) telemText.textContent = 'Conectando sistemas e barramentos da resid\u00EAncia...';
+        if (!finished && telemText) telemText.textContent = 'Conectando sistemas e barramentos da residência...';
       }, 650);
 
       setTimeout(() => {
-        if (telemText) telemText.textContent = 'Resid\u00EAncia inteligente conectada com sucesso';
+        if (!finished && telemText) telemText.textContent = 'Residência inteligente conectada com sucesso';
       }, 1300);
 
-      // Etapa 4: Expans\u00E3o do s\u00EDmbolo em luz azul-ciano suave (~1.8s)
+      // Etapa 4: Expansão do símbolo em luz azul-ciano suave (~1.8s)
       setTimeout(() => {
-        overlay.classList.add('stage-connected');
+        if (!finished) overlay.classList.add('stage-connected');
       }, 1800);
 
-      // Revela\u00E7\u00E3o e transi\u00E7\u00E3o para o dashboard (~2.2s)
+      // Revelação e transição para o dashboard (~2.2s)
       setTimeout(() => {
-        overlay.classList.add('stage-exit');
-        setTimeout(() => {
-          overlay.classList.remove('active', 'stage-connected', 'stage-exit');
-          overlay.setAttribute('aria-hidden', 'true');
-          if (stopCanvasFn) {
-            stopCanvasFn();
-            stopCanvasFn = null;
-          }
-          if (typeof onFinish === 'function') onFinish();
-        }, 400);
+        if (!finished) {
+          overlay.classList.add('stage-exit');
+          setTimeout(() => {
+            completeTransition();
+          }, 400);
+        }
       }, 2200);
     }
 
@@ -3322,6 +3359,8 @@
       if (overlay) {
         overlay.classList.remove('active', 'stage-connected', 'stage-exit');
         overlay.setAttribute('aria-hidden', 'true');
+        const telemText = document.getElementById('cinematic-telemetry-text');
+        if (telemText) telemText.textContent = 'Autenticando credenciais...';
       }
       if (stopCanvasFn) {
         stopCanvasFn();
@@ -3330,7 +3369,7 @@
     }
 
     // ==========================================================================
-    // REVELA\u00C7\u00C3O ESCALONADA DO DASHBOARD (SIDEBAR & CARDS EM CASCATA)
+    // REVELAÇÃO ESCALONADA DO DASHBOARD (SIDEBAR & CARDS EM CASCATA)
     // ==========================================================================
     function revealDashboardWithStagger() {
       const sidebar = document.querySelector('.sidebar');
@@ -3349,9 +3388,9 @@
       });
     }
 
-    // 1. FLUXO DE LOGIN COM SUPABASE AUTH & TRANSI\u00C7\u00C3O CINEMATOGR\u00C1FICA
+    // 1. FLUXO DE LOGIN COM SUPABASE AUTH & TRANSIÇÃO CINEMATOGRÁFICA
     async function handleAuthLogin(event) {
-      event.preventDefault();
+      if (event) event.preventDefault();
       clearAuthAlert();
 
       const emailInput = document.getElementById('auth-login-email');
@@ -3373,69 +3412,109 @@
         return;
       }
 
-      // ETAPA 1 \u2014 Resposta imediata: micro-press\u00E3o, brilho ciano discreto e bloqueio de cliques
-      submitBtn.classList.add('btn-pressed');
-      setAuthButtonLoading(submitBtn, true, 'Autenticando...');
-
-      if (!isSupabaseConfigured() || !supabaseClient) {
-        submitBtn.classList.remove('btn-pressed');
-        setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Supabase n\u00E3o configurado. Verifique as credenciais no sistema.');
+      // Prevenção de cliques múltiplos simultâneos
+      if (submitBtn && submitBtn.classList.contains('btn-pressed')) {
         return;
       }
 
-      // ETAPA 2 \u2014 Conex\u00E3o digital: inicia camada de transi\u00E7\u00E3o com n\u00F3s de rede cibern\u00E9tica
+      if (submitBtn) {
+        submitBtn.classList.add('btn-pressed');
+        setAuthButtonLoading(submitBtn, true, 'Autenticando...');
+      }
+
+      const client = getSupabaseClient();
+      if (!client) {
+        if (submitBtn) {
+          submitBtn.classList.remove('btn-pressed');
+          setAuthButtonLoading(submitBtn, false);
+        }
+        showAuthAlert('error', 'Supabase não inicializado. Verifique sua conexão com a internet.');
+        return;
+      }
+
+      // ETAPA 2 — Conexão digital: inicia camada de transição com nós de rede cibernética
       const overlay = document.getElementById('domus-cinematic-transition');
       if (overlay) {
         overlay.classList.remove('stage-connected', 'stage-exit');
         overlay.classList.add('active');
+        overlay.setAttribute('aria-hidden', 'false');
         const telemText = document.getElementById('cinematic-telemetry-text');
         if (telemText) telemText.textContent = 'Autenticando credenciais...';
         if (stopCanvasFn) stopCanvasFn();
         stopCanvasFn = startCinematicCanvas('domus-cinematic-canvas');
       }
 
+      // Temporizador de salvaguarda inquebrável (9 segundos)
+      let authSafetyTimer = setTimeout(() => {
+        cancelCinematicTransition();
+        if (submitBtn) {
+          submitBtn.classList.remove('btn-pressed');
+          setAuthButtonLoading(submitBtn, false);
+        }
+        showAuthAlert('error', 'Tempo limite de conexão excedido. Verifique sua rede e tente novamente.');
+      }, 9000);
+
       try {
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
+        const { data, error } = await client.auth.signInWithPassword({
           email: email,
           password: password
         });
+        clearTimeout(authSafetyTimer);
 
         if (error) {
-          // Em caso de falha: encerra imediatamente a anima\u00E7\u00E3o e restaura o bot\u00E3o
+          // Em caso de falha: encerra imediatamente a animação e restaura o botão
           cancelCinematicTransition();
-          submitBtn.classList.remove('btn-pressed');
-          setAuthButtonLoading(submitBtn, false);
+          if (submitBtn) {
+            submitBtn.classList.remove('btn-pressed');
+            setAuthButtonLoading(submitBtn, false);
+          }
 
           const errLower = (error.message || '').toLowerCase();
           if (errLower.includes('email not confirmed')) {
-            showAuthAlert('error', 'Por favor, confirme seu e-mail antes de entrar (ou desative a confirma\u00E7\u00E3o de e-mail no painel do Supabase).');
+            showAuthAlert('error', 'Por favor, confirme seu e-mail antes de entrar (ou desative a confirmação de e-mail no painel do Supabase).');
           } else if (errLower.includes('invalid login credentials') || errLower.includes('invalid_grant')) {
             showAuthAlert('error', 'E-mail ou senha incorretos.');
           } else {
-            showAuthAlert('error', 'N\u00E3o foi poss\u00EDvel realizar o login. Verifique seus dados e tente novamente.');
+            showAuthAlert('error', error.message || 'Não foi possível realizar o login. Verifique seus dados e tente novamente.');
           }
           return;
         }
 
         if (data && data.user) {
-          // ETAPA 3 & 4 \u2014 Login bem-sucedido: inicializa\u00E7\u00E3o do s\u00EDmbolo DOMUS e revela\u00E7\u00E3o suave do dashboard
-          triggerCinematicTransition(() => {
+          currentAuthUser = data.user;
+          // ETAPA 3 & 4 — Login bem-sucedido: inicialização do símbolo DOMUS e revelação suave do dashboard
+          triggerCinematicTransition(async () => {
+            await fetchAndApplyUserProfile(data.user);
             showAppScreen(data.user);
+            if (submitBtn) {
+              submitBtn.classList.remove('btn-pressed');
+              setAuthButtonLoading(submitBtn, false);
+            }
             revealDashboardWithStagger();
           });
+        } else {
+          cancelCinematicTransition();
+          if (submitBtn) {
+            submitBtn.classList.remove('btn-pressed');
+            setAuthButtonLoading(submitBtn, false);
+          }
+          showAuthAlert('error', 'Resposta de autenticação vazia. Tente novamente.');
         }
       } catch (err) {
+        clearTimeout(authSafetyTimer);
         cancelCinematicTransition();
-        submitBtn.classList.remove('btn-pressed');
-        setAuthButtonLoading(submitBtn, false);
-        console.error('Erro de conex\u00E3o no login:', err);
-        showAuthAlert('error', 'Falha de conex\u00E3o com os servidores DOMUS. Verifique sua rede e tente novamente.');
+        if (submitBtn) {
+          submitBtn.classList.remove('btn-pressed');
+          setAuthButtonLoading(submitBtn, false);
+        }
+        console.error('Erro de conexão no login:', err);
+        showAuthAlert('error', 'Falha de conexão com os servidores DOMUS. Verifique sua rede e tente novamente.');
       }
     }
-// 2. FLUXO DE CADASTRO COM SUPABASE AUTH
+
+    // 2. FLUXO DE CADASTRO COM SUPABASE AUTH
     async function handleAuthRegister(event) {
-      event.preventDefault();
+      if (event) event.preventDefault();
       clearAuthAlert();
 
       const nameInput = document.getElementById('auth-reg-name');
@@ -3465,26 +3544,27 @@
         return;
       }
       if (password.length < 6) {
-        showAuthAlert('error', 'A senha deve conter no m\u00EDnimo 6 caracteres.');
+        showAuthAlert('error', 'A senha deve conter no mínimo 6 caracteres.');
         if (passwordInput) passwordInput.focus();
         return;
       }
       if (password !== confirm) {
-        showAuthAlert('error', 'As senhas informadas n\u00E3o coincidem.');
+        showAuthAlert('error', 'As senhas informadas não coincidem.');
         if (confirmInput) confirmInput.focus();
         return;
       }
 
-      setAuthButtonLoading(submitBtn, true, 'Criando conta...');
+      if (submitBtn) setAuthButtonLoading(submitBtn, true, 'Criando conta...');
 
-      if (!isSupabaseConfigured() || !supabaseClient) {
-        setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Supabase n\u00E3o configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
+      const client = getSupabaseClient();
+      if (!client) {
+        if (submitBtn) setAuthButtonLoading(submitBtn, false);
+        showAuthAlert('error', 'Supabase não inicializado. Verifique a conexão com a internet.');
         return;
       }
 
       try {
-        const { data, error } = await supabaseClient.auth.signUp({
+        const { data, error } = await client.auth.signUp({
           email: email,
           password: password,
           options: {
@@ -3494,46 +3574,49 @@
           }
         });
 
-        setAuthButtonLoading(submitBtn, false);
+        if (submitBtn) setAuthButtonLoading(submitBtn, false);
 
         if (error) {
           const errLower = (error.message || '').toLowerCase();
           if (errLower.includes('already registered') || errLower.includes('already in use') || errLower.includes('user already exists')) {
-            showAuthAlert('error', 'Este e-mail j\u00E1 possui conta cadastrada. Tente fazer login.');
+            showAuthAlert('error', 'Este e-mail já possui conta cadastrada. Tente fazer login.');
           } else if (errLower.includes('password')) {
-            showAuthAlert('error', 'A senha informada n\u00E3o atende aos requisitos de seguran\u00E7a.');
+            showAuthAlert('error', 'A senha informada não atende aos requisitos de segurança.');
           } else {
-            showAuthAlert('error', 'N\u00E3o foi poss\u00EDvel realizar o cadastro. Tente novamente.');
+            showAuthAlert('error', error.message || 'Não foi possível realizar o cadastro. Tente novamente.');
           }
           return;
         }
 
-        // Se o Supabase permitir login imediato (Confirma\u00E7\u00E3o de e-mail desligada):
+        // Se o Supabase permitir login imediato (Confirmação de e-mail desligada):
         if (data && data.session) {
           const firstName = name.trim().split(' ')[0] || name;
-          showAuthAlert('success', `Conta criada com sucesso! Bem-vindo, ${firstName}. Entrando...`);
-          setTimeout(() => {
+          showAuthAlert('success', );
+          setTimeout(async () => {
+            currentAuthUser = data.user;
+            await fetchAndApplyUserProfile(data.user);
             showAppScreen(data.user);
-          }, 500);
+            revealDashboardWithStagger();
+          }, 600);
           return;
         }
 
-        // Se o Supabase exigir confirma\u00E7\u00E3o por link de e-mail:
-        showAuthAlert('success', 'Conta criada com sucesso! Se a confirma\u00E7\u00E3o de e-mail estiver ativa no Supabase, confirme o link enviado antes de entrar.');
+        // Se o Supabase exigir confirmação por link de e-mail:
+        showAuthAlert('success', 'Conta criada com sucesso! Verifique sua caixa de entrada para confirmar o e-mail se necessário.');
         setTimeout(() => {
           showAuthView('login');
         }, 3500);
 
       } catch (err) {
-        setAuthButtonLoading(submitBtn, false);
+        if (submitBtn) setAuthButtonLoading(submitBtn, false);
         console.error('Erro ao cadastrar no Supabase:', err);
-        showAuthAlert('error', 'N\u00E3o foi poss\u00EDvel realizar o cadastro. Tente novamente.');
+        showAuthAlert('error', 'Não foi possível realizar o cadastro. Tente novamente.');
       }
     }
 
-    // 3. FLUXO DE RECUPERA\u00C7\u00C3O DE SENHA COM SUPABASE AUTH
+    // 3. FLUXO DE RECUPERAÇÃO DE SENHA COM SUPABASE AUTH
     async function handleAuthForgotPassword(event) {
-      event.preventDefault();
+      if (event) event.preventDefault();
       clearAuthAlert();
 
       const emailInput = document.getElementById('auth-forgot-email');
@@ -3546,40 +3629,42 @@
         return;
       }
 
-      setAuthButtonLoading(submitBtn, true, 'Enviando link...');
+      if (submitBtn) setAuthButtonLoading(submitBtn, true, 'Enviando link...');
 
-      if (!isSupabaseConfigured() || !supabaseClient) {
-        setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Supabase n\u00E3o configurado. Verifique as chaves SUPABASE_URL e SUPABASE_ANON_KEY.');
+      const client = getSupabaseClient();
+      if (!client) {
+        if (submitBtn) setAuthButtonLoading(submitBtn, false);
+        showAuthAlert('error', 'Supabase não inicializado. Verifique a conexão com a internet.');
         return;
       }
 
       try {
-        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+        const { error } = await client.auth.resetPasswordForEmail(email, {
           redirectTo: window.location.origin
         });
-        setAuthButtonLoading(submitBtn, false);
+        if (submitBtn) setAuthButtonLoading(submitBtn, false);
 
         if (error) {
-          showAuthAlert('error', 'N\u00E3o foi poss\u00EDvel enviar o link de recupera\u00E7\u00E3o. Tente novamente.');
+          showAuthAlert('error', error.message || 'Não foi possível enviar o link de recuperação. Tente novamente.');
           return;
         }
 
-        showAuthAlert('success', 'Link de recupera\u00E7\u00E3o enviado! Verifique sua caixa de entrada.');
+        showAuthAlert('success', 'Link de recuperação enviado! Verifique sua caixa de entrada.');
         setTimeout(() => {
           showAuthView('login');
         }, 3500);
       } catch (err) {
-        setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'N\u00E3o foi poss\u00EDvel enviar o link de recupera\u00E7\u00E3o.');
+        if (submitBtn) setAuthButtonLoading(submitBtn, false);
+        showAuthAlert('error', 'Não foi possível enviar o link de recuperação.');
       }
     }
 
-    // SAIR DO SISTEMA (LOGOUT SUPABASE E RETORNO OBRIGAT\u00D3RIO \u00C0 TELA DE LOGIN)
+    // SAIR DO SISTEMA (LOGOUT SUPABASE E RETORNO OBRIGATÓRIO À TELA DE LOGIN)
     async function domusSignOut() {
-      if (isSupabaseConfigured() && supabaseClient) {
+      const client = getSupabaseClient();
+      if (client) {
         try {
-          await supabaseClient.auth.signOut();
+          await client.auth.signOut();
         } catch (e) {
           console.warn('Erro ao sair do Supabase:', e);
         }
@@ -3587,10 +3672,10 @@
       currentAuthUser = null;
       currentAuthProfile = null;
       showAuthScreen();
-      showAuthAlert('info', 'Voc\u00EA saiu do sistema com seguran\u00E7a.');
+      showAuthAlert('info', 'Você saiu do sistema com segurança.');
     }
 
-    // VERIFICA\u00C7\u00C3O OBRIGAT\u00D3RIA DE SESS\u00C3O AO ABRIR O DOMUS
+    // VERIFICAÇÃO OBRIGATÓRIA DE SESSÃO AO ABRIR O DOMUS
     async function checkAuthSession() {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('logout') === 'true' || urlParams.get('action') === 'logout') {
@@ -3598,58 +3683,43 @@
         return;
       }
 
-      if (isSupabaseConfigured()) {
+      const client = getSupabaseClient();
+      if (client) {
         try {
-          if (!supabaseClient && window.supabase) {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-              auth: {
-                persistSession: true,
-                autoRefreshToken: true,
-                detectSessionInUrl: true
-              }
-            });
-          }
-
-          if (supabaseClient) {
-            supabaseClient.auth.onAuthStateChange(async (event, session) => {
+          if (!authListenerSub) {
+            const { data: sub } = client.auth.onAuthStateChange(async (event, session) => {
               if (session && session.user) {
                 currentAuthUser = session.user;
+                await fetchAndApplyUserProfile(session.user);
                 showAppScreen(session.user);
               } else if (event === 'SIGNED_OUT') {
                 currentAuthUser = null;
+                currentAuthProfile = null;
                 showAuthScreen();
               }
             });
+            authListenerSub = sub;
+          }
 
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (session && session.user) {
-              currentAuthUser = session.user;
-              showAppScreen(session.user);
-              const urlParams = new URLSearchParams(window.location.search);
-              if (urlParams.get('from_login') === 'true') {
-                window.history.replaceState({}, document.title, window.location.pathname);
-                setTimeout(revealDashboardWithStagger, 80);
-              }
-              return;
+          const { data, error } = await client.auth.getSession();
+          if (data && data.session && data.session.user && !error) {
+            currentAuthUser = data.session.user;
+            await fetchAndApplyUserProfile(data.session.user);
+            showAppScreen(data.session.user);
+            if (urlParams.get('from_login') === 'true') {
+              window.history.replaceState({}, document.title, window.location.pathname);
+              setTimeout(revealDashboardWithStagger, 80);
             }
+            return;
           }
         } catch (e) {
-          console.error('Falha ao inicializar Supabase Client:', e);
+          console.error('Falha ao verificar sessão Supabase:', e);
         }
       }
 
-      // Se N\u00C3O houver sess\u00E3o autenticada: MOSTRA OBRIGATORIAMENTE A TELA DE LOGIN!
+      // Se NÃO houver sessão autenticada: MOSTRA OBRIGATORIAMENTE A TELA DE LOGIN!
       showAuthScreen();
     }
-
-    // DISPARO IMEDIATO DA PROTE\u00C7\u00C3O DE ACESSO
-    try {
-      checkAuthSession();
-    } catch (authErr) {
-      console.warn('Erro na guarda de autentica\u00E7\u00E3o:', authErr);
-      showAuthScreen();
-    }
-
     // ESTADO E LOCALSTORAGE
     let isNotificationsEnabled = localStorage.getItem('domus_notif_enabled') !== 'false';
     let handledSituations = JSON.parse(localStorage.getItem('domus_handled_situations') || '{}');
@@ -5417,8 +5487,9 @@
       }
 
       try {
-        if (isSupabaseConfigured() && supabaseClient) {
-          await supabaseClient.auth.resetPasswordForEmail(email, {
+        const client = getSupabaseClient();
+        if (client) {
+          await client.auth.resetPasswordForEmail(email, {
             redirectTo: window.location.origin
           });
         }
@@ -5490,17 +5561,18 @@
       }
 
       try {
-        if (isSupabaseConfigured() && supabaseClient) {
+        const client = getSupabaseClient();
+        if (client) {
           if (code) {
             try {
-              await supabaseClient.auth.verifyOtp({ email, token: code, type: 'recovery' });
+              await client.auth.verifyOtp({ email, token: code, type: 'recovery' });
             } catch (e1) {
               try {
-                await supabaseClient.auth.verifyOtp({ email, token: code, type: 'email' });
+                await client.auth.verifyOtp({ email, token: code, type: 'email' });
               } catch (e2) {}
             }
           }
-          const { error } = await supabaseClient.auth.updateUser({ password: newPwd });
+          const { error } = await client.auth.updateUser({ password: newPwd });
           if (error) throw error;
         }
 
@@ -5824,6 +5896,7 @@
 
     function escapeChatHtml(str) {
       if (!str) return '';
+      str = fixMojibake(str);
       return str
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
