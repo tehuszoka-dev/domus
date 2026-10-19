@@ -993,7 +993,7 @@
     function escapeHtml(str) { if (!str) return ""; const d = document.createElement("div"); d.textContent = str; return d.innerHTML; }
 
     // ==========================================================================
-    // CONFIGURA\u00C7\u00C3O DO SUPABASE AUTH
+    // CONFIGURAÇÃO DO SUPABASE AUTH
     // ==========================================================================
     const RAW_SUPABASE_URL = 'https://acbgqfyubehzihuffsga.supabase.co/rest/v1/';
     const SUPABASE_URL = RAW_SUPABASE_URL.replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '');
@@ -1040,17 +1040,17 @@
         }
       } catch (e) {}
       return text
-        .replace(/[\u00C3][\u0081\u00A1]/g, 'Á').replace(/[\u00C3]\u00A1/g, 'á')
-        .replace(/[\u00C3][\u0089\u00A9]/g, 'É').replace(/[\u00C3]\u00A9/g, 'é')
-        .replace(/[\u00C3][\u008D\u00AD]/g, 'Í').replace(/[\u00C3]\u00AD/g, 'í')
-        .replace(/[\u00C3][\u0093\u00B3]/g, 'Ó').replace(/[\u00C3]\u00B3/g, 'ó')
-        .replace(/[\u00C3][\u009A\u00BA]/g, 'Ú').replace(/[\u00C3]\u00BA/g, 'ú')
-        .replace(/[\u00C3][\u0083\u00A3]/g, 'Ã').replace(/[\u00C3]\u00A3/g, 'ã')
-        .replace(/[\u00C3][\u0095\u00B5]/g, 'Õ').replace(/[\u00C3]\u00B5/g, 'õ')
-        .replace(/[\u00C3][\u0082\u00A2]/g, 'Â').replace(/[\u00C3]\u00A2/g, 'â')
-        .replace(/[\u00C3][\u008A\u00AA]/g, 'Ê').replace(/[\u00C3]\u00AA/g, 'ê')
-        .replace(/[\u00C3][\u0094\u00B4]/g, 'Ô').replace(/[\u00C3]\u00B4/g, 'ô')
-        .replace(/[\u00C3][\u0087\u00A7]/g, 'Ç').replace(/[\u00C3]\u00A7/g, 'ç');
+        .replace(/[Ã][\u0081\u00A1]/g, 'Á').replace(/[Ã]\u00A1/g, 'á')
+        .replace(/[Ã][\u0089\u00A9]/g, 'É').replace(/[Ã]\u00A9/g, 'é')
+        .replace(/[Ã][\u008D\u00AD]/g, 'Í').replace(/[Ã]\u00AD/g, 'í')
+        .replace(/[Ã][\u0093\u00B3]/g, 'Ó').replace(/[Ã]\u00B3/g, 'ó')
+        .replace(/[Ã][\u009Aº]/g, 'Ú').replace(/[Ã]º/g, 'ú')
+        .replace(/[Ã][\u0083\u00A3]/g, 'Ã').replace(/[Ã]\u00A3/g, 'ã')
+        .replace(/[Ã][\u0095\u00B5]/g, 'Õ').replace(/[Ã]\u00B5/g, 'õ')
+        .replace(/[Ã][\u0082\u00A2]/g, 'Â').replace(/[Ã]\u00A2/g, 'â')
+        .replace(/[Ã][\u008Aª]/g, 'Ê').replace(/[Ã]ª/g, 'ê')
+        .replace(/[Ã][\u0094\u00B4]/g, 'Ô').replace(/[Ã]\u00B4/g, 'ô')
+        .replace(/[Ã][\u0087\u00A7]/g, 'Ç').replace(/[Ã]\u00A7/g, 'ç');
     }
 
     function redirectToMainApp() {
@@ -1063,7 +1063,7 @@
     }
 
     // ==========================================================================
-    // SISTEMA DE PART\u00CDCULAS E CONEX\u00D5ES DIGITAIS (CANVAS)
+    // SISTEMA DE PARTÍCULAS E CONEXÕES DIGITAIS (CANVAS)
     // ==========================================================================
     let cinematicCanvasAnimId = null;
 
@@ -1147,7 +1147,7 @@
     }
 
     // ==========================================================================
-    // TRANSI\u00C7\u00C3O CINEMATOGR\u00C1FICA DO DOMUS (ETAPAS 1, 2, 3 E 4)
+    // TRANSIÇÃO CINEMATOGRÁFICA DO DOMUS (ETAPAS 1, 2, 3 E 4)
     // ==========================================================================
     let stopCanvasFn = null;
 
@@ -1240,7 +1240,7 @@
     }
 
     // ==========================================================================
-    // CONTROLE DE TELAS (LOGIN, CADASTRO, RECUPERA\u00C7\u00C3O)
+    // CONTROLE DE TELAS (LOGIN, CADASTRO, RECUPERAÇÃO)
     // ==========================================================================
     function showAuthView(viewName) {
       const views = ['login', 'register', 'forgot'];
@@ -1302,7 +1302,7 @@
     }
 
     // ==========================================================================
-    // 1. FLUXO DE LOGIN COM SUPABASE AUTH & TRANSI\u00C7\u00C3O CINEMATOGR\u00C1FICA
+    // 1. FLUXO DE LOGIN COM SUPABASE AUTH & TRANSIÇÃO CINEMATOGRÁFICA
     // ==========================================================================
     async function handleAuthLogin(event) {
       if (event) event.preventDefault();
@@ -1451,13 +1451,13 @@
       }
 
       if (password.length < 6) {
-        showAuthAlert('error', 'A senha deve conter no m\u00EDnimo 6 caracteres.');
+        showAuthAlert('error', 'A senha deve conter no mínimo 6 caracteres.');
         if (passwordInput) passwordInput.focus();
         return;
       }
 
       if (password !== confirm) {
-        showAuthAlert('error', 'As senhas informadas n\u00E3o coincidem.');
+        showAuthAlert('error', 'As senhas informadas não coincidem.');
         if (confirmInput) confirmInput.focus();
         return;
       }
@@ -1466,7 +1466,7 @@
 
       if (!isSupabaseConfigured() || !supabaseClient) {
         setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Supabase n\u00E3o configurado. Verifique as credenciais no sistema.');
+        showAuthAlert('error', 'Supabase não configurado. Verifique as credenciais no sistema.');
         return;
       }
 
@@ -1486,24 +1486,24 @@
         if (error) {
           const errLower = (error.message || '').toLowerCase();
           if (errLower.includes('already registered') || errLower.includes('already in use') || errLower.includes('user already exists')) {
-            showAuthAlert('error', 'Este e-mail j\u00E1 possui conta cadastrada. Tente fazer login.');
+            showAuthAlert('error', 'Este e-mail já possui conta cadastrada. Tente fazer login.');
           } else if (errLower.includes('password')) {
-            showAuthAlert('error', 'A senha informada n\u00E3o atende aos requisitos de seguran\u00E7a.');
+            showAuthAlert('error', 'A senha informada não atende aos requisitos de segurança.');
           } else {
-            showAuthAlert('error', 'N\u00E3o foi poss\u00EDvel realizar o cadastro. Tente novamente.');
+            showAuthAlert('error', 'Não foi possível realizar o cadastro. Tente novamente.');
           }
           return;
         }
 
         if (data && data.session) {
-          showAuthAlert('success', `Conta criada com sucesso! Conectando sua resid\u00EAncia inteligente...`);
+          showAuthAlert('success', `Conta criada com sucesso! Conectando sua residência inteligente...`);
           triggerCinematicTransition(() => {
             redirectToMainApp();
           });
           return;
         }
 
-        showAuthAlert('success', 'Conta criada com sucesso! Se a confirma\u00E7\u00E3o de e-mail estiver ativa no Supabase, confirme o link enviado antes de entrar.');
+        showAuthAlert('success', 'Conta criada com sucesso! Se a confirmação de e-mail estiver ativa no Supabase, confirme o link enviado antes de entrar.');
         setTimeout(() => {
           showAuthView('login');
         }, 3000);
@@ -1511,12 +1511,12 @@
       } catch (err) {
         setAuthButtonLoading(submitBtn, false);
         console.error('Erro no cadastro:', err);
-        showAuthAlert('error', 'Falha de conex\u00E3o. Tente novamente.');
+        showAuthAlert('error', 'Falha de conexão. Tente novamente.');
       }
     }
 
     // ==========================================================================
-    // 3. FLUXO DE RECUPERA\u00C7\u00C3O DE SENHA COM SUPABASE AUTH
+    // 3. FLUXO DE RECUPERAÇÃO DE SENHA COM SUPABASE AUTH
     // ==========================================================================
     async function handleAuthForgot(event) {
       event.preventDefault();
@@ -1536,7 +1536,7 @@
 
       if (!isSupabaseConfigured() || !supabaseClient) {
         setAuthButtonLoading(submitBtn, false);
-        showAuthAlert('error', 'Supabase n\u00E3o configurado. Verifique as credenciais no sistema.');
+        showAuthAlert('error', 'Supabase não configurado. Verifique as credenciais no sistema.');
         return;
       }
 
@@ -1548,11 +1548,11 @@
         setAuthButtonLoading(submitBtn, false);
 
         if (error) {
-          showAuthAlert('error', 'N\u00E3o foi poss\u00EDvel enviar o e-mail de recupera\u00E7\u00E3o. Verifique o endere\u00E7o informado.');
+          showAuthAlert('error', 'Não foi possível enviar o e-mail de recuperação. Verifique o endereço informado.');
           return;
         }
 
-        showAuthAlert('success', 'Link de recupera\u00E7\u00E3o enviado! Verifique sua caixa de entrada e siga as instru\u00E7\u00F5es.');
+        showAuthAlert('success', 'Link de recuperação enviado! Verifique sua caixa de entrada e siga as instruções.');
         if (emailInput) emailInput.value = '';
 
         setTimeout(() => {
@@ -1561,14 +1561,14 @@
 
       } catch (err) {
         setAuthButtonLoading(submitBtn, false);
-        console.error('Erro na recupera\u00E7\u00E3o:', err);
-        showAuthAlert('error', 'Falha de conex\u00E3o. Tente novamente.');
+        console.error('Erro na recuperação:', err);
+        showAuthAlert('error', 'Falha de conexão. Tente novamente.');
       }
     }
 
     // ==========================================================================
-    // VERIFICA\u00C7\u00C3O AUTOM\u00C1TICA DE SESS\u00C3O ATIVA AO ABRIR LOGIN.HTML
-    // (N\u00E3o solicita login se j\u00E1 houver uma sess\u00E3o v\u00E1lida)
+    // VERIFICAÇÃO AUTOMÁTICA DE SESSÃO ATIVA AO ABRIR LOGIN.HTML
+    // (Não solicita login se já houver uma sessão válida)
     // ==========================================================================
     async function checkExistingSession() {
       if (!isSupabaseConfigured() || !supabaseClient) return;
@@ -1579,7 +1579,7 @@
           redirectToMainApp();
         }
       } catch (err) {
-        console.warn('Verifica\u00E7\u00E3o de sess\u00E3o existente:', err);
+        console.warn('Verificação de sessão existente:', err);
       }
     }
 

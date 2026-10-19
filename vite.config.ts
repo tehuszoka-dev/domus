@@ -5,15 +5,12 @@ import { defineConfig } from 'vite';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, '.'),
     },
   },
-  // CONFIGURAÇÃO MULTI-PÁGINA OBRIGATÓRIA PARA O VERCEL:
-  // Faz o Vite compilar index.html, login.html e codigos.html na pasta dist/
   build: {
     rollupOptions: {
       input: {

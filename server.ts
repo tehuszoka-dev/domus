@@ -31,6 +31,7 @@ const allowedFiles = [
   'supabase-schema.sql',
   'vercel.json',
   'vite.config.ts',
+  'domus-projeto-completo.zip',
 ];
 
 app.get('/download/:filename', (req, res) => {
