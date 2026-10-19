@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DOMUS - Login &bull; Sistema Inteligente</title>
-  <meta name="description" content="Acesse o DOMUS para gerenciar sua resid&ecirc;ncia inteligente: ilumina&ccedil;&atilde;o, climatiza&ccedil;&atilde;o e seguran&ccedil;a.">
+  <title>DOMUS - Login • Sistema Inteligente</title>
+  <meta name="description" content="Acesse o DOMUS para gerenciar sua residência inteligente: iluminação, climatização e segurança.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="favicon.ico">
@@ -140,7 +140,7 @@
       100% { background-position: 200% 0%; }
     }
 
-    /* Cabe&ccedil;alho da marca */
+    /* Cabeçalho da marca */
     .auth-brand-area {
       text-align: center;
       margin-bottom: 28px;
@@ -187,7 +187,7 @@
       font-weight: 400;
     }
 
-    /* Tabs de navega&ccedil;&atilde;o (Entrar / Criar Conta) */
+    /* Tabs de navegação (Entrar / Criar Conta) */
     .auth-nav-tabs {
       display: flex;
       background: var(--input-bg);
@@ -226,7 +226,7 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
-    /* T&iacute;tulos das Views */
+    /* Títulos das Views */
     .auth-view-header {
       margin-bottom: 20px;
       text-align: center;
@@ -244,7 +244,7 @@
       color: var(--text-muted);
     }
 
-    /* Formul&aacute;rio */
+    /* Formulário */
     .auth-form {
       display: flex;
       flex-direction: column;
@@ -347,7 +347,7 @@
       text-decoration: underline;
     }
 
-    /* Bot&atilde;o Principal de Submiss&atilde;o */
+    /* Botão Principal de Submissão */
     .btn-auth-submit {
       width: 100%;
       padding: 13px 20px;
@@ -374,7 +374,7 @@
       filter: brightness(1.06);
     }
 
-    /* Microintera&ccedil;&atilde;o ao clicar (Etapa 1) */
+    /* Microinteração ao clicar (Etapa 1) */
     .btn-auth-submit:active,
     .btn-auth-submit.btn-pressed {
       transform: scale(0.97);
@@ -423,7 +423,7 @@
       color: #7dd3fc;
     }
 
-    /* Altern&acirc;ncia de telas */
+    /* Alternância de telas */
     .auth-switch-prompt {
       text-align: center;
       margin-top: 18px;
@@ -449,7 +449,7 @@
     }
 
     /* ==========================================================================
-       TRANSI&Ccedil;&Atilde;O CINEMATOGR&Aacute;FICA DE LOGIN DO DOMUS (ETAPAS 2, 3 E 4)
+       TRANSIÇÃO CINEMATOGRÁFICA DE LOGIN DO DOMUS (ETAPAS 2, 3 E 4)
        ========================================================================== */
     .domus-cinematic-transition {
       position: fixed;
@@ -488,7 +488,7 @@
       pointer-events: none;
     }
 
-    /* Canvas de part&iacute;culas digitais e linhas conectadas */
+    /* Canvas de partículas digitais e linhas conectadas */
     #domus-cinematic-canvas {
       position: absolute;
       inset: 0;
@@ -550,7 +550,7 @@
       filter: drop-shadow(0 0 18px rgba(0, 229, 255, 0.7));
     }
 
-    /* Anima&ccedil;&atilde;o do tra&ccedil;ado das linhas geom&eacute;tricas (Etapa 3) */
+    /* Animação do traçado das linhas geométricas (Etapa 3) */
     .geo-line {
       stroke-dasharray: 450;
       stroke-dashoffset: 450;
@@ -601,7 +601,7 @@
       100% { transform: scale(2.9); opacity: 0; }
     }
 
-    /* Expans&atilde;o e bloom de luz do s&iacute;mbolo (Etapa 4) */
+    /* Expansão e bloom de luz do símbolo (Etapa 4) */
     @keyframes cinematicSymbolBloom {
       0% { transform: scale(1); filter: drop-shadow(0 0 18px rgba(0, 229, 255, 0.7)); }
       50% { transform: scale(1.12); filter: drop-shadow(0 0 35px rgba(0, 229, 255, 0.95)); }
@@ -710,7 +710,7 @@
   <div class="ambient-glow glow-orange"></div>
 
   <!-- ==========================================================================
-       CAMADA DE TRANSI&Ccedil;&Atilde;O CINEMATOGR&Aacute;FICA DO DOMUS
+       CAMADA DE TRANSIÇÃO CINEMATOGRÁFICA DO DOMUS
        ========================================================================== -->
   <div id="domus-cinematic-transition" class="domus-cinematic-transition" aria-hidden="true">
     <canvas id="domus-cinematic-canvas"></canvas>
@@ -718,29 +718,29 @@
     <div class="cinematic-ambient-glow glow-2"></div>
 
     <div class="cinematic-content">
-      <!-- S&iacute;mbolo geom&eacute;trico residencial animado -->
+      <!-- Símbolo geométrico residencial animado -->
       <div class="cinematic-symbol-wrapper">
         <svg class="cinematic-house-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="100" cy="100" r="72" fill="url(#cinematicGlowGrad)" opacity="0.16" />
           
-          <!-- Linhas geom&eacute;tricas do telhado e beirais -->
+          <!-- Linhas geométricas do telhado e beirais -->
           <path class="geo-line geo-roof" d="M 100 28 L 172 84 L 158 95 L 100 50 L 42 95 L 28 84 Z" 
                 stroke="#00E5FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
           
-          <!-- Estrutura principal e alvenaria tecnol&oacute;gica -->
+          <!-- Estrutura principal e alvenaria tecnológica -->
           <path class="geo-line geo-body" d="M 45 98 L 100 54 L 155 98 L 155 166 C 155 172 150 176 142 176 L 58 176 C 50 176 45 172 45 166 Z" 
                 stroke="#00B4D8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
           
-          <!-- N&uacute;cleo inteligente central DOMUS -->
+          <!-- Núcleo inteligente central DOMUS -->
           <polygon class="geo-line geo-core" points="100,74 126,89 126,119 100,134 74,119 74,89" 
                    fill="#060B18" stroke="#00F0FF" stroke-width="2.5" />
           
-          <!-- Barramentos e conex&otilde;es de sensores internos -->
+          <!-- Barramentos e conexões de sensores internos -->
           <line class="geo-line geo-circuit" x1="100" y1="134" x2="100" y2="162" stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
           <line class="geo-line geo-circuit" x1="74" y1="104" x2="52" y2="124" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" />
           <line class="geo-line geo-circuit" x1="126" y1="104" x2="148" y2="124" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" />
           
-          <!-- N&oacute;s de telemetria luminosos -->
+          <!-- Nós de telemetria luminosos -->
           <circle class="geo-node" cx="100" cy="50" r="3" fill="#00E5FF" />
           <circle class="geo-node" cx="100" cy="104" r="5" fill="#FF7A00" />
           <circle class="geo-node" cx="100" cy="162" r="3" fill="#00E5FF" />
@@ -760,7 +760,7 @@
       </div>
 
       <h1 class="cinematic-brand-title">DOMUS</h1>
-      <p class="cinematic-brand-slogan">Conectando sua resid&ecirc;ncia inteligente...</p>
+      <p class="cinematic-brand-slogan">Conectando sua residência inteligente...</p>
 
       <div class="cinematic-telemetry">
         <span class="cinematic-telemetry-dot"></span>
@@ -772,7 +772,7 @@
   <div class="auth-container">
     <div class="auth-card">
       
-      <!-- CABE&Ccedil;ALHO DA MARCA DOMUS -->
+      <!-- CABEÇALHO DA MARCA DOMUS -->
       <div class="auth-brand-area">
         <div class="auth-logo-badge">
           <i class="fa-solid fa-house-signal"></i>
@@ -782,7 +782,7 @@
         <p class="auth-brand-slogan">Integrando a tecnologia ao seu modo de viver.</p>
       </div>
 
-      <!-- TABS DE NAVEGA&Ccedil;&Atilde;O -->
+      <!-- TABS DE NAVEGAÇÃO -->
       <div class="auth-nav-tabs">
         <button type="button" class="auth-tab-btn active" id="tab-btn-login" onclick="showAuthView('login')">
           <i class="fa-solid fa-right-to-bracket"></i> Entrar
@@ -792,7 +792,7 @@
         </button>
       </div>
 
-      <!-- CAIXA DE ALERTAS AMIG&Aacute;VEIS -->
+      <!-- CAIXA DE ALERTAS AMIGÁVEIS -->
       <div id="auth-status-box" class="auth-status-alert" style="display: none;"></div>
 
       <!-- ========================================================
@@ -801,7 +801,7 @@
       <div id="auth-view-login">
         <div class="auth-view-header">
           <h2 class="auth-view-title">Bem-vindo ao DOMUS</h2>
-          <p class="auth-view-desc">Entre para acessar sua resid&ecirc;ncia inteligente</p>
+          <p class="auth-view-desc">Entre para acessar sua residência inteligente</p>
         </div>
 
         <form id="auth-login-form" class="auth-form" onsubmit="handleAuthLogin(event)" novalidate>
@@ -827,7 +827,7 @@
                 type="password" 
                 id="auth-login-password" 
                 class="auth-input-field" 
-                placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" 
+                placeholder="••••••••" 
                 required 
                 autocomplete="current-password"
               >
@@ -849,7 +849,7 @@
         </form>
 
         <div class="auth-switch-prompt">
-          N&atilde;o tem uma conta? 
+          Não tem uma conta? 
           <button type="button" onclick="showAuthView('register')">Criar conta</button>
         </div>
       </div>
@@ -860,7 +860,7 @@
       <div id="auth-view-register" style="display: none;">
         <div class="auth-view-header">
           <h2 class="auth-view-title">Criar Conta no DOMUS</h2>
-          <p class="auth-view-desc">Cadastre-se para gerenciar sua resid&ecirc;ncia inteligente</p>
+          <p class="auth-view-desc">Cadastre-se para gerenciar sua residência inteligente</p>
         </div>
 
         <form id="auth-register-form" class="auth-form" onsubmit="handleAuthRegister(event)" novalidate>
@@ -901,7 +901,7 @@
                 type="password" 
                 id="auth-reg-password" 
                 class="auth-input-field" 
-                placeholder="M&iacute;nimo de 6 caracteres" 
+                placeholder="Mínimo de 6 caracteres" 
                 required 
                 autocomplete="new-password"
               >
@@ -937,18 +937,18 @@
         </form>
 
         <div class="auth-switch-prompt">
-          J&aacute; possui uma conta? 
+          Já possui uma conta? 
           <button type="button" onclick="showAuthView('login')">Entrar</button>
         </div>
       </div>
 
       <!-- ========================================================
-           3. VIEW DE RECUPERA&Ccedil;&Atilde;O DE SENHA
+           3. VIEW DE RECUPERAÇÃO DE SENHA
            ======================================================== -->
       <div id="auth-view-forgot" style="display: none;">
         <div class="auth-view-header">
-          <h2 class="auth-view-title">Recupera&ccedil;&atilde;o de Senha</h2>
-          <p class="auth-view-desc">Informe seu e-mail cadastrado para receber o link de redefini&ccedil;&atilde;o.</p>
+          <h2 class="auth-view-title">Recuperação de Senha</h2>
+          <p class="auth-view-desc">Informe seu e-mail cadastrado para receber o link de redefinição.</p>
         </div>
 
         <form id="auth-forgot-form" class="auth-form" onsubmit="handleAuthForgot(event)" novalidate>
@@ -968,7 +968,7 @@
           </div>
 
           <button type="submit" class="btn-auth-submit" id="btn-forgot-submit">
-            <span class="btn-auth-text"><i class="fa-solid fa-paper-plane"></i> Enviar Link de Recupera&ccedil;&atilde;o</span>
+            <span class="btn-auth-text"><i class="fa-solid fa-paper-plane"></i> Enviar Link de Recuperação</span>
             <span class="btn-auth-loading" style="display: none;"><i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...</span>
           </button>
         </form>
@@ -979,10 +979,10 @@
         </div>
       </div>
 
-      <!-- BOT&Atilde;O DE ACESSO AOS C&Oacute;DIGOS PARA VS CODE -->
+      <!-- BOTÃO DE ACESSO AOS CÓDIGOS PARA VS CODE -->
       <div style="margin-top: 26px; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: center;">
         <a href="codigos.html" style="display: inline-flex; align-items: center; gap: 8px; color: var(--blue-accent); font-size: 0.8rem; text-decoration: none; padding: 7px 12px; background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.25); border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0, 229, 255, 0.18)'" onmouseout="this.style.background='rgba(0, 229, 255, 0.08)'">
-          <i class="fa-solid fa-code"></i> Ver / Copiar C&oacute;digos do Projeto (VS Code)
+          <i class="fa-solid fa-code"></i> Ver / Copiar Códigos do Projeto (VS Code)
         </a>
       </div>
 
