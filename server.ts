@@ -40,7 +40,7 @@ app.get('/download/:filename', (req, res) => {
     return res.status(404).send('Arquivo não encontrado');
   }
   const filePath = path.resolve(__dirname, filename);
-  res.setHeader('Content-Type', filename.endsWith('.css') ? 'text/css; charset=utf-8' : filename.endsWith('.json') ? 'application/json; charset=utf-8' : 'text/html; charset=utf-8');
+  res.setHeader('Content-Type', filename.endsWith('.css') ? 'text/css; charset=utf-8' : filename.endsWith('.json') ? 'application/json; charset=utf-8' : filename.endsWith('.zip') ? 'application/zip' : 'text/html; charset=utf-8');
   res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
   return res.sendFile(filePath);
 });

@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DOMUS</title>
-  <meta name="description" content="DOMUS — Sistema Inteligente de Automação Residencial. Integrando a tecnologia ao seu modo de viver.">
-  <meta property="og:title" content="DOMUS">
-  <meta property="og:description" content="DOMUS — Sistema Inteligente de Automação Residencial. Integrando a tecnologia ao seu modo de viver.">
+  <title>DOMUS - Smart Home</title>
+  <meta name="description" content="Painel inteligente DOMUS com controle de iluminação, climatização, segurança e monitoramento de tempo e consumo de energia.">
+  <meta property="og:title" content="DOMUS - Smart Home">
+  <meta property="og:description" content="Painel inteligente DOMUS com controle de iluminação, climatização, segurança e monitoramento de tempo e consumo de energia.">
   <!-- ÍCONES OFICIAIS DOMUS -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" type="image/png" href="favicon.png">
@@ -177,6 +177,11 @@
             Não tem uma conta? 
             <button type="button" onclick="showAuthView('register')">Criar conta</button>
           </div>
+          <div style="margin-top: 14px; text-align: center;">
+            <button type="button" class="btn-demo-guest" onclick="enterDemoGuestMode()" style="background: rgba(0, 229, 255, 0.08); border: 1px dashed rgba(0, 229, 255, 0.45); color: #00e5ff; border-radius: 8px; padding: 8px 16px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(0, 229, 255, 0.18)'" onmouseout="this.style.background='rgba(0, 229, 255, 0.08)'">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Acesso Rápido / Modo Demonstração
+            </button>
+          </div>
         </div>
 
         <!-- 2. VIEW DE CADASTRO -->
@@ -323,6 +328,12 @@
       </div>
 
     <ul class="nav-list">
+      <!-- ABA INTERATIVA DE PESQUISA DEDICADA -->
+      <li class="nav-item nav-search-item" onclick="openSearchDrawer()" title="Buscar no DOMUS (Ctrl + K)">
+        <span><i class="fa-solid fa-magnifying-glass"></i> Pesquisa</span>
+        <kbd class="nav-kbd">Ctrl+K</kbd>
+      </li>
+
       <!-- 5 ITENS PRINCIPAIS FIXOS -->
       <li class="nav-item active" data-tab="tab-inicio"><i class="fa-solid fa-house"></i> Início</li>
       <li class="nav-item" data-tab="tab-inteligencia"><i class="fa-solid fa-brain"></i> Inteligência</li>
@@ -387,220 +398,233 @@
   <!-- ÁREA PRINCIPAL DO DASHBOARD -->
   <main class="main-content">
 
-    <!-- ABA 1: INÍCIO -->
-    <div id="tab-inicio" class="tab-content active">
-      <!-- HEADER BANNER COM SAUDAÇÃO E PESQUISA GLOBAL -->
-      <header class="header-banner">
-        <div class="header-banner-main">
-          <div class="header-greeting-col">
-            <h1 id="user-greeting-name">Olá, matheusdlucca!</h1>
-            <p>Sua residência está segura e operando normalmente.</p>
-          </div>
-          <div class="status-badge status-ativo">
-            <i class="fa-solid fa-check"></i> Sistema Online
-          </div>
+    <!-- ==========================================================================
+         BARRA SUPERIOR (HEADER) FIXA/FLUIDA COM PERFIL E SUPORTE
+         ========================================================================== -->
+    <header class="domus-top-header">
+      <div class="top-header-left">
+        <div class="top-system-badge" title="Status dos barramentos e sensores da residência">
+          <span class="system-pulse-dot"></span>
+          <span class="system-name-text">DOMUS OS</span>
+          <span class="system-version-tag">v2.4</span>
         </div>
-
-        <!-- 1. BARRA DE PESQUISA GLOBAL -->
-        <div class="global-search-container" id="global-search-container">
-          <div class="search-input-wrapper">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input 
-              type="text" 
-              id="global-search-input" 
-              class="global-search-input" 
-              placeholder="Pesquisar no DOMUS..." 
-              autocomplete="off"
-              spellcheck="false"
-              aria-label="Pesquisar no DOMUS"
-            >
-            <div class="search-shortcut-badge" title="Pressione Ctrl + K para focar na pesquisa">
-              <kbd>Ctrl</kbd> + <kbd>K</kbd>
-            </div>
-            <button type="button" class="search-clear-btn" id="search-clear-btn" style="display:none;" title="Limpar pesquisa">
-              <i class="fa-solid fa-xmark"></i>
-            </button>
-          </div>
-          <!-- 2. RESULTADOS DA PESQUISA -->
-          <div class="search-results-dropdown" id="search-results-dropdown" style="display: none;"></div>
-        </div>
-      </header>
-
-      <!-- 3 COLUNAS PRINCIPAIS: STATUS GERAL, CLIMATIZAÇÃO, HISTÓRICO RECENTE -->
-      <div class="dashboard-grid dashboard-top-grid">
-        <!-- 5. STATUS GERAL -->
-        <div class="card status-card">
-          <div class="card-title">
-            <span>Status Geral</span>
-            <div class="icon-box active-glow-blue"><i class="fa-solid fa-house-signal"></i></div>
-          </div>
-          <h3>Todos os sistemas normais</h3>
-          <p class="status-subtext">
-            <span id="lights-count-status">0 luzes acesas</span> • Alarme ativo
-          </p>
-          <div class="status-indicators-mini">
-            <div class="status-indicator-pill">
-              <span class="indicator-dot dot-green"></span>
-              <span class="indicator-name">Segurança</span>
-              <span class="indicator-val">Normal</span>
-            </div>
-            <div class="status-indicator-pill">
-              <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright); font-size: 0.75rem;"></i>
-              <span class="indicator-name">Iluminação</span>
-              <span class="indicator-val" id="dash-indicator-lights">0 ligadas</span>
-            </div>
-            <div class="status-indicator-pill">
-              <i class="fa-solid fa-snowflake" style="color: var(--blue-accent); font-size: 0.75rem;"></i>
-              <span class="indicator-name">Climatização</span>
-              <span class="indicator-val" id="dash-indicator-ac">Normal</span>
-            </div>
-            <div class="status-indicator-pill">
-              <i class="fa-solid fa-bolt" style="color: #f1c40f; font-size: 0.75rem;"></i>
-              <span class="indicator-name">Energia</span>
-              <span class="indicator-val">Normal</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 6. CLIMATIZAÇÃO -->
-        <div class="card status-card">
-          <div class="card-title">
-            <span>Climatização</span>
-            <div class="icon-box active-glow"><i class="fa-solid fa-temperature-half"></i></div>
-          </div>
-          <h3 id="ac-count-status">0 aparelhos ligados</h3>
-          <p class="status-subtext">Temperatura média de conforto: 22°C</p>
-          <div class="comfort-status-box" id="climate-comfort-box">
-            <i class="fa-solid fa-leaf" style="color: #2ecc71;"></i>
-            <span id="climate-comfort-text">Conforto térmico normal</span>
-          </div>
-        </div>
-
-        <!-- 7. HISTÓRICO RECENTE -->
-        <div class="card history-summary-card">
-          <div class="card-title">
-            <span>Histórico Recente</span>
-            <i class="fa-solid fa-clock-rotate-left"></i>
-          </div>
-
-          <ul class="activity-list activity-list-compact" id="activity-log">
-            <!-- Eventos recentes inseridos dinamicamente -->
-          </ul>
-
-          <div class="history-card-footer">
-            <button type="button" class="btn-history-link" onclick="openFullHistoryModal()">
-              Ver histórico <i class="fa-solid fa-arrow-right"></i>
-            </button>
-          </div>
+        <div class="top-breadcrumb" id="top-breadcrumb">
+          <i class="fa-solid fa-house"></i> <span id="top-breadcrumb-text">Início</span>
         </div>
       </div>
 
-      <!-- 4. AÇÕES RÁPIDAS NO DASHBOARD -->
-      <div class="card quick-actions-card">
+      <div class="top-header-center">
+        <button type="button" class="top-search-trigger-btn" onclick="openSearchDrawer()" title="Buscar no DOMUS (Atalho Ctrl + K)">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span class="search-placeholder-text">Buscar comandos, cômodos, rotinas...</span>
+          <kbd>Ctrl + K</kbd>
+        </button>
+      </div>
+
+      <div class="top-header-right">
+        <!-- ÍCONE DE SUPORTE INTERATIVO E DISCRETO -->
+        <button type="button" class="top-support-btn" onclick="openSupportModal()" title="Central de Suporte &amp; Reporte de Erros">
+          <i class="fa-solid fa-headset"></i>
+          <span class="support-status-indicator" title="Suporte Online"></span>
+        </button>
+
+        <!-- LINHA DE IDENTIFICAÇÃO DO PERFIL DO USUÁRIO LOGADO -->
+        <div class="top-profile-badge" onclick="switchTab('tab-perfil')" title="Acessar Meu Perfil">
+          <div class="top-avatar-wrap">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar" id="top-profile-avatar" class="top-profile-avatar" referrerpolicy="no-referrer" onerror="handleAvatarError(this)"><rect width="40" height="40" rx="20" fill="%2300e5ff" opacity="0.2"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="15" fill="%2300e5ff" font-family="sans-serif" font-weight="bold">MD</text></svg>'">
+            <span class="top-avatar-status-dot"></span>
+          </div>
+          <div class="top-profile-info">
+            <strong id="top-profile-name" class="top-profile-name">matheusdlucca</strong>
+            <span id="top-profile-role" class="top-profile-role">
+              <i class="fa-solid fa-shield-halved"></i> Administrador
+            </span>
+          </div>
+          <i class="fa-solid fa-chevron-right top-profile-chevron"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- ABA 1: INÍCIO (REESTRUTURADA: APENAS AÇÕES RÁPIDAS & CONCEITO DOMUS) -->
+    <div id="tab-inicio" class="tab-content active">
+      <!-- HERO DE BOAS-VINDAS E STATUS MINIMALISTA -->
+      <div class="dashboard-hero-minimal">
+        <div>
+          <h1 id="user-greeting-name">Olá, matheusdlucca!</h1>
+          <p>Sua residência inteligente está segura, conectada e operando com eficiência máxima.</p>
+        </div>
+        <div class="dashboard-live-status-pill">
+          <i class="fa-solid fa-circle-check"></i> Barramento Ativo • 0 Alertas
+        </div>
+      </div>
+
+      <!-- SEÇÃO 1: AÇÕES RÁPIDAS ESSENCIAIS -->
+      <div class="card quick-actions-card" style="margin-bottom: 28px;">
         <div class="quick-actions-bar-header">
           <div class="quick-title-group">
             <i class="fa-solid fa-bolt" style="color: var(--orange-bright);"></i>
-            <span>Ações rápidas</span>
+            <span>Ações Rápidas Essenciais</span>
           </div>
-          <span class="quick-subtitle">Acesso direto aos controles principais</span>
+          <span class="quick-subtitle">Comandos de alta prioridade com acionamento instantâneo</span>
         </div>
-        <div class="quick-action-grid">
-          <button type="button" class="btn-dash-action" onclick="switchTab('tab-iluminacao')">
-            <span class="dash-action-icon" style="color: var(--orange-bright); background: rgba(255, 122, 0, 0.12);">
+
+        <div class="quick-actions-essential-grid">
+          <!-- Ação 1: Iluminação Geral -->
+          <button type="button" class="quick-action-card-btn" onclick="toggleAllLightsMaster(this)">
+            <div class="quick-card-icon-wrap" style="color: var(--orange-bright); background: rgba(255, 122, 0, 0.14);">
               <i class="fa-solid fa-lightbulb"></i>
-            </span>
-            <span class="dash-action-text">
-              <strong>Iluminação</strong>
-              <span>Lâmpadas e cenas</span>
-            </span>
+            </div>
+            <div class="quick-card-text">
+              <strong>Iluminação Total</strong>
+              <span id="qa-lights-status">Alternar todas as lâmpadas</span>
+            </div>
+            <span class="quick-card-status-badge" id="qa-lights-badge" style="background: rgba(255, 122, 0, 0.15); color: var(--orange-bright);">Controle</span>
           </button>
 
-          <button type="button" class="btn-dash-action" onclick="switchTab('tab-climatizacao')">
-            <span class="dash-action-icon" style="color: var(--blue-accent); background: rgba(0, 210, 255, 0.12);">
+          <!-- Ação 2: Climatização Conforto Eco -->
+          <button type="button" class="quick-action-card-btn" onclick="toggleEcoClimate(this)">
+            <div class="quick-card-icon-wrap" style="color: var(--blue-accent); background: rgba(0, 210, 255, 0.14);">
               <i class="fa-solid fa-snowflake"></i>
-            </span>
-            <span class="dash-action-text">
-              <strong>Climatização</strong>
-              <span>Temperatura e AC</span>
-            </span>
+            </div>
+            <div class="quick-card-text">
+              <strong>Climatização Eco</strong>
+              <span id="qa-climate-status">Modo Conforto 22°C</span>
+            </div>
+            <span class="quick-card-status-badge" style="background: rgba(0, 210, 255, 0.15); color: #00e5ff;">Ativo</span>
           </button>
 
-          <button type="button" class="btn-dash-action" onclick="switchTab('tab-seguranca')">
-            <span class="dash-action-icon" style="color: #2ecc71; background: rgba(46, 204, 113, 0.12);">
+          <!-- Ação 3: Travar Residência / Segurança Máxima -->
+          <button type="button" class="quick-action-card-btn" onclick="triggerPerimeterLockdown(this)">
+            <div class="quick-card-icon-wrap" style="color: #2ecc71; background: rgba(46, 204, 113, 0.14);">
               <i class="fa-solid fa-shield-halved"></i>
-            </span>
-            <span class="dash-action-text">
-              <strong>Segurança</strong>
-              <span>Alarme e sensores</span>
-            </span>
+            </div>
+            <div class="quick-card-text">
+              <strong>Segurança Máxima</strong>
+              <span>Trancar todas as fechaduras</span>
+            </div>
+            <span class="quick-card-status-badge" style="background: rgba(46, 204, 113, 0.15); color: #2ecc71;">Armado</span>
           </button>
 
-          <button type="button" class="btn-dash-action" onclick="switchTab('tab-automacoes')">
-            <span class="dash-action-icon" style="color: #e056fd; background: rgba(224, 86, 253, 0.12);">
-              <i class="fa-solid fa-robot"></i>
-            </span>
-            <span class="dash-action-text">
-              <strong>Automações</strong>
-              <span>Rotinas inteligentes</span>
-            </span>
+          <!-- Ação 4: Cena Cinema -->
+          <button type="button" class="quick-action-card-btn" onclick="triggerCinemaScene(this)">
+            <div class="quick-card-icon-wrap" style="color: #a855f7; background: rgba(168, 85, 247, 0.14);">
+              <i class="fa-solid fa-film"></i>
+            </div>
+            <div class="quick-card-text">
+              <strong>Modo Cinema</strong>
+              <span>Luz a 15% e cortinas fechadas</span>
+            </div>
+            <span class="quick-card-status-badge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">Cena</span>
+          </button>
+
+          <!-- Ação 5: Cena Boa Noite -->
+          <button type="button" class="quick-action-card-btn" onclick="triggerNightScene(this)">
+            <div class="quick-card-icon-wrap" style="color: #6366f1; background: rgba(99, 102, 241, 0.14);">
+              <i class="fa-solid fa-moon"></i>
+            </div>
+            <div class="quick-card-text">
+              <strong>Modo Boa Noite</strong>
+              <span>Desligar circuitos e armar</span>
+            </div>
+            <span class="quick-card-status-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">Rotina</span>
+          </button>
+
+          <!-- Ação 6: Portão &amp; Garagem -->
+          <button type="button" class="quick-action-card-btn" onclick="toggleGateAccess(this)">
+            <div class="quick-card-icon-wrap" style="color: #f59e0b; background: rgba(245, 158, 11, 0.14);">
+              <i class="fa-solid fa-warehouse"></i>
+            </div>
+            <div class="quick-card-text">
+              <strong>Portão &amp; Garagem</strong>
+              <span id="qa-gate-status">Portão fechado</span>
+            </div>
+            <span class="quick-card-status-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">Acesso</span>
+          </button>
+
+          <!-- Ação 7: Otimização Energética -->
+          <button type="button" class="quick-action-card-btn" onclick="triggerEnergyOptimizer(this)">
+            <div class="quick-card-icon-wrap" style="color: #eab308; background: rgba(234, 179, 8, 0.14);">
+              <i class="fa-solid fa-leaf"></i>
+            </div>
+            <div class="quick-card-text">
+              <strong>Eficiência Verde</strong>
+              <span>Cortar consumo em espera</span>
+            </div>
+            <span class="quick-card-status-badge" style="background: rgba(234, 179, 8, 0.15); color: #fde047;">Economia</span>
+          </button>
+
+          <!-- Ação 8: Central de Busca &amp; Comandos -->
+          <button type="button" class="quick-action-card-btn" onclick="openSearchDrawer()">
+            <div class="quick-card-icon-wrap" style="color: #00e5ff; background: rgba(0, 229, 255, 0.14);">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="quick-card-text">
+              <strong>Todos os Comandos</strong>
+              <span>Abrir drawer de pesquisa</span>
+            </div>
+            <span class="quick-card-status-badge" style="background: rgba(0, 229, 255, 0.15); color: #00e5ff;">Ctrl + K</span>
           </button>
         </div>
       </div>
 
-      <!-- 8. RESUMO DE ENERGIA & 9. INTELIGÊNCIA ADAPTATIVA (2 COLUNAS) -->
-      <div class="dashboard-split-row">
-        <!-- 8. RESUMO DE ENERGIA -->
-        <div class="card energy-summary-card" onclick="switchTab('tab-energia')">
-          <div class="card-title">
-            <span>Consumo de Energia</span>
-            <div class="icon-box active-glow" style="color: #f1c40f !important; background: rgba(241, 196, 15, 0.15) !important;">
-              <i class="fa-solid fa-bolt"></i>
+      <!-- SEÇÃO 2: CONCEITO, TECNOLOGIA & IDENTIDADE DO DOMUS -->
+      <section class="domus-concept-section">
+        <div class="concept-section-header">
+          <h2><i class="fa-solid fa-brain"></i> DOMUS • Arquitetura &amp; Inteligência Residencial</h2>
+          <p>Uma nova experiência de moradia unificando automação preditiva, segurança neural e controle em tempo real.</p>
+        </div>
+
+        <div class="concept-grid">
+          <!-- Pilar 1 -->
+          <div class="concept-card">
+            <div class="concept-card-icon">
+              <i class="fa-solid fa-microchip"></i>
             </div>
+            <h3>Inteligência Adaptativa Neural</h3>
+            <p>O DOMUS monitora o padrão de presença e o ciclo solar para ajustar luminosidade natural e climatização sem necessidade de comandos manuais contínuos.</p>
           </div>
-          <div class="energy-summary-content">
-            <div class="energy-kwh-display">
-              <span class="energy-number" id="dash-energy-kwh">128</span>
-              <span class="energy-unit">kWh</span>
+
+          <!-- Pilar 2 -->
+          <div class="concept-card">
+            <div class="concept-card-icon" style="color: #00e5ff; border-color: rgba(0, 229, 255, 0.3);">
+              <i class="fa-solid fa-bolt-lightning"></i>
             </div>
-            <p class="energy-period-label">Consumo neste mês</p>
-            <div class="energy-trend-badge trend-down">
-              <i class="fa-solid fa-arrow-trend-down"></i>
-              <span>&darr; 8% em relação ao período anterior</span>
-            </div>
+            <h3>Processamento Local-First</h3>
+            <p>Arquitetura orientada a barramentos de borda com tempo de resposta inferior a 15ms. Sua residência opera com total soberania mesmo durante oscilações de internet.</p>
           </div>
-          <div class="card-inline-action">
-            <span>Ver consumo detalhado <i class="fa-solid fa-chevron-right"></i></span>
+
+          <!-- Pilar 3 -->
+          <div class="concept-card">
+            <div class="concept-card-icon" style="color: #2ecc71; border-color: rgba(46, 204, 113, 0.3); background: rgba(46, 204, 113, 0.12);">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3>Segurança Criptografada</h3>
+            <p>Sincronização em nuvem com Supabase Auth e criptografia ponta a ponta. Acesso individualizado por perfil com auditoria completa de acessos e eventos.</p>
+          </div>
+
+          <!-- Pilar 4 -->
+          <div class="concept-card">
+            <div class="concept-card-icon" style="color: var(--orange-bright); border-color: rgba(255, 122, 0, 0.3); background: rgba(255, 122, 0, 0.12);">
+              <i class="fa-solid fa-leaf"></i>
+            </div>
+            <h3>Sustentabilidade &amp; Energia</h3>
+            <p>Gestão dinâmica de carga por circuito com previsão meteorológica que desliga cargas ociosas e economiza até 28% no consumo elétrico mensal.</p>
           </div>
         </div>
 
-        <!-- 9. INTELIGÊNCIA ADAPTATIVA -->
-        <div class="card adaptive-summary-card" id="dash-adaptive-card">
-          <div class="card-title">
-            <span>Inteligência Adaptativa</span>
-            <div class="icon-box active-glow-blue"><i class="fa-solid fa-brain"></i></div>
+        <!-- Manifesto de Identidade da Marca -->
+        <div class="concept-manifesto-banner">
+          <div class="manifesto-quote">
+            <h4><i class="fa-solid fa-quote-left"></i> A Essência do DOMUS</h4>
+            <p>"O DOMUS não é apenas um painel de interruptores conectados, mas o sistema operacional invisível da sua residência — projetado para cuidar da sua casa enquanto você aproveita o que realmente importa."</p>
           </div>
-          <div id="dash-adaptive-body">
-            <div class="adaptive-status-empty" id="dash-adaptive-empty">
-              <div class="adaptive-empty-icon">
-                <i class="fa-solid fa-circle-check"></i>
-              </div>
-              <div class="adaptive-empty-text">
-                <strong>Nenhuma ação necessária no momento.</strong>
-                <p>O DOMUS está operando com eficiência máxima.</p>
-              </div>
-            </div>
-            <div class="adaptive-status-active" id="dash-adaptive-active" style="display: none;">
-              <div class="adaptive-active-alert">
-                <i class="fa-solid fa-lightbulb" style="color: var(--orange-bright); font-size: 1.1rem;"></i>
-                <span id="dash-adaptive-msg">A luz da sala está ligada há 12 minutos sem movimento detectado.</span>
-              </div>
-              <button type="button" class="btn-ai-action btn-ai-primary" onclick="switchTab('tab-inteligencia')">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> Ver sugestão
-              </button>
-            </div>
+          <div class="manifesto-badge-group">
+            <span class="manifesto-tech-badge"><i class="fa-solid fa-circle-nodes"></i> Rede Neural Local</span>
+            <span class="manifesto-tech-badge"><i class="fa-solid fa-lock"></i> AES-256 Zero-Knowledge</span>
+            <span class="manifesto-tech-badge"><i class="fa-solid fa-house-signal"></i> 100% Responsivo</span>
           </div>
         </div>
-      </div>
+      </section>
     </div>
 
     <!-- ABA 2: ILUMINAÇÃO -->
@@ -2920,6 +2944,152 @@
     </div>
   </div>
 
+  <!-- ==========================================================================
+       DRAWER / MODAL FLUTUANTE DE PESQUISA DEDICADA DO DOMUS (ABA INTERATIVA)
+       ========================================================================== -->
+  <div id="domus-search-drawer" class="search-drawer-overlay" aria-hidden="true" onclick="handleSearchOverlayClick(event)">
+    <div class="search-drawer-panel" onclick="event.stopPropagation()">
+      <!-- Header do Drawer com Campo de Busca -->
+      <div class="search-drawer-header">
+        <div class="search-drawer-input-wrap">
+          <i class="fa-solid fa-magnifying-glass search-drawer-icon"></i>
+          <input 
+            type="text" 
+            id="drawer-search-input" 
+            class="drawer-search-input" 
+            placeholder="O que você deseja controlar no DOMUS? (ex: luz, ar condicionado, alarme, sala...)"
+            autocomplete="off"
+            spellcheck="false"
+            oninput="handleDrawerSearchInput(this.value)"
+          >
+          <button type="button" class="drawer-search-clear" id="drawer-search-clear" onclick="clearDrawerSearch()" style="display: none;" title="Limpar busca">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <button type="button" class="drawer-close-btn" onclick="closeSearchDrawer()" title="Fechar (Esc)">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Filtros Rápidos (Categorias do Sistema) -->
+      <div class="search-filter-chips">
+        <button type="button" class="search-chip active" data-filter="all" onclick="filterDrawerCategory('all', this)">
+          <i class="fa-solid fa-border-all"></i> Todas as Opções (<span id="chip-count-all">0</span>)
+        </button>
+        <button type="button" class="search-chip" data-filter="Dispositivo" onclick="filterDrawerCategory('Dispositivo', this)">
+          <i class="fa-solid fa-plug"></i> Dispositivos
+        </button>
+        <button type="button" class="search-chip" data-filter="Iluminação" onclick="filterDrawerCategory('Iluminação', this)">
+          <i class="fa-solid fa-lightbulb"></i> Iluminação
+        </button>
+        <button type="button" class="search-chip" data-filter="Climatização" onclick="filterDrawerCategory('Climatização', this)">
+          <i class="fa-solid fa-snowflake"></i> Climatização
+        </button>
+        <button type="button" class="search-chip" data-filter="Segurança" onclick="filterDrawerCategory('Segurança', this)">
+          <i class="fa-solid fa-shield-halved"></i> Segurança
+        </button>
+        <button type="button" class="search-chip" data-filter="Automação" onclick="filterDrawerCategory('Automação', this)">
+          <i class="fa-solid fa-robot"></i> Automações
+        </button>
+        <button type="button" class="search-chip" data-filter="Cômodo" onclick="filterDrawerCategory('Cômodo', this)">
+          <i class="fa-solid fa-door-open"></i> Cômodos
+        </button>
+        <button type="button" class="search-chip" data-filter="Configuração" onclick="filterDrawerCategory('Configuração', this)">
+          <i class="fa-solid fa-gear"></i> Configurações &amp; Suporte
+        </button>
+      </div>
+
+      <!-- Corpo do Drawer: Exibição Inicial de Todas as Opções Brutas e Filtros Dinâmicos -->
+      <div class="search-drawer-body">
+        <div class="search-drawer-results-meta" id="drawer-results-meta">
+          <span id="drawer-results-count">Exibindo todas as opções disponíveis no sistema</span>
+          <span class="drawer-results-tip"><kbd>↑</kbd> <kbd>↓</kbd> navegar • <kbd>Enter</kbd> executar • <kbd>Esc</kbd> fechar</span>
+        </div>
+        <div class="search-drawer-items-list" id="drawer-items-list">
+          <!-- Renderizado dinamicamente via JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL DE SUPORTE & REPORTE TÉCNICO DO SISTEMA DOMUS
+       ========================================================================== -->
+  <div id="domus-support-modal" class="modal-overlay" style="display: none;" onclick="closeSupportModal(event)">
+    <div class="modal-card modal-support-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i class="fa-solid fa-headset support-icon-glow"></i>
+          <div>
+            <h3>Suporte &amp; Diagnóstico DOMUS</h3>
+            <p>Canais diretos de atendimento e reporte técnico da residência</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" onclick="closeSupportModal()">&times;</button>
+      </div>
+
+      <!-- Telemetria de Conexão -->
+      <div class="support-telemetry-grid">
+        <div class="telemetry-pill">
+          <i class="fa-solid fa-signal" style="color: #2ecc71;"></i>
+          <div>
+            <span class="telem-label">Barramento IoT</span>
+            <strong class="telem-val">Online (12ms)</strong>
+          </div>
+        </div>
+        <div class="telemetry-pill">
+          <i class="fa-solid fa-database" style="color: var(--blue-accent);"></i>
+          <div>
+            <span class="telem-label">Banco Supabase</span>
+            <strong class="telem-val">Sincronizado</strong>
+          </div>
+        </div>
+        <div class="telemetry-pill">
+          <i class="fa-solid fa-shield-check" style="color: var(--orange-bright);"></i>
+          <div>
+            <span class="telem-label">Criptografia</span>
+            <strong class="telem-val">AES-256 / SSL</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulário Rápido de Reporte -->
+      <div class="support-form-section">
+        <h4><i class="fa-solid fa-bug"></i> Reportar Inconsistência ou Solicitar Ajuste</h4>
+        <form onsubmit="handleSupportSubmit(event)" id="support-ticket-form">
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="support-category" style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 5px;">Categoria</label>
+            <select id="support-category" class="custom-select" required style="width: 100%; padding: 8px 12px; background: rgba(13, 21, 37, 0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff;">
+              <option value="duvida">Dúvida Operacional de Automação</option>
+              <option value="erro">Reporte de Falha / Bug no Sistema</option>
+              <option value="dispositivo">Adição de Novo Dispositivo IoT</option>
+              <option value="melhoria">Sugestão de Nova Funcionalidade</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label for="support-message" style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 5px;">Descrição da Solicitação</label>
+            <textarea id="support-message" class="custom-textarea" rows="3" placeholder="Explique o que ocorreu ou descreva sua sugestão técnica..." required style="width: 100%; padding: 10px 12px; background: rgba(13, 21, 37, 0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; resize: vertical;"></textarea>
+          </div>
+          <div class="modal-actions" style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" class="btn-ai-action btn-ai-secondary" onclick="closeSupportModal()">Cancelar</button>
+            <button type="submit" class="btn-ai-action btn-ai-primary" id="btn-submit-support">
+              <i class="fa-solid fa-paper-plane"></i> Enviar Mensagem
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Canais de Contato Direto -->
+      <div class="support-channels-footer">
+        <span>Canais de Atendimento Imediato:</span>
+        <div class="support-channel-links">
+          <a href="mailto:suporte@domus.smart" class="support-link-pill"><i class="fa-solid fa-envelope"></i> suporte@domus.smart</a>
+          <a href="https://wa.me/" target="_blank" rel="noopener" class="support-link-pill"><i class="fa-brands fa-whatsapp"></i> WhatsApp Suporte</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- JAVASCRIPT INTEGRADO -->
   <script>
     function escapeHtml(str) { if (!str) return ""; const d = document.createElement("div"); d.textContent = str; return d.innerHTML; }
@@ -2973,6 +3143,32 @@
     }
 
     // ALTERNÂNCIA VISUAL: MOSTRAR TELA DE LOGIN VS MOSTRAR SISTEMA DOMUS
+        function enterDemoGuestMode() {
+      const demoUser = {
+        id: 'demo-user-guest',
+        email: 'matheusdlucca30099@gmail.com',
+        user_metadata: { full_name: 'Matheus D. Lucca' }
+      };
+      triggerCinematicTransition(() => {
+        currentAuthUser = demoUser;
+        currentAuthProfile = { full_name: 'Matheus D. Lucca', role: 'Administrador' };
+        applyUserDataToUI('Matheus D. Lucca', 'matheusdlucca30099@gmail.com');
+        showAppScreen(demoUser);
+        revealDashboardWithStagger();
+        if (typeof showSystemToast === 'function') {
+          showSystemToast('Modo Demonstração ativado: Bem-vindo ao painel DOMUS!', 'success');
+        }
+      });
+    }
+    window.enterDemoGuestMode = enterDemoGuestMode;
+
+        function handleAvatarError(img) {
+      if (!img) return;
+      img.onerror = null;
+      img.src = "favicon.svg";
+    }
+    window.handleAvatarError = handleAvatarError;
+
     function showAuthScreen() {
       const authScreen = document.getElementById('domus-auth-screen');
       const appWrapper = document.getElementById('domus-app-wrapper');
@@ -2988,6 +3184,14 @@
       if (user) {
         currentAuthUser = user;
         fetchAndApplyUserProfile(user);
+      }
+
+      // ANIMAÇÃO DE SLIDE-IN DA BARRA LATERAL (SIDEBAR) NO CARREGAMENTO
+      const sidebarEl = document.querySelector('.sidebar');
+      if (sidebarEl) {
+        sidebarEl.classList.remove('sidebar-slide-active');
+        void sidebarEl.offsetWidth; // Reflow forçando gatilho de animação CSS
+        sidebarEl.classList.add('sidebar-slide-active');
       }
     }
 
@@ -3114,6 +3318,17 @@
       const greetingEl = document.getElementById('user-greeting-name');
       if (greetingEl) {
         greetingEl.innerHTML = `Olá, ${escapeHtml(firstName)}!`;
+      }
+
+      // Atualização do Cabeçalho Superior (Top Header): Nome, Cargo e Avatar
+      const topNameEl = document.getElementById('top-profile-name');
+      if (topNameEl) {
+        topNameEl.innerText = firstName;
+      }
+      const topRoleEl = document.getElementById('top-profile-role');
+      if (topRoleEl) {
+        const userRole = (currentAuthProfile && currentAuthProfile.role) || 'Administrador';
+        topRoleEl.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${escapeHtml(userRole)}`;
       }
 
       // Nome e identificador na aba de Perfil
@@ -3292,6 +3507,8 @@
         return;
       }
 
+      // DURAÇÃO EXATA DE 2 SEGUNDOS:
+      overlay.style.display = 'flex';
       overlay.classList.remove('stage-connected', 'stage-exit');
       overlay.classList.add('active');
       overlay.setAttribute('aria-hidden', 'false');
@@ -3308,7 +3525,7 @@
       });
 
       const telemText = document.getElementById('cinematic-telemetry-text');
-      if (telemText) telemText.textContent = 'Autenticação verificada • Inicializando DOMUS...';
+      if (telemText) telemText.textContent = 'Autenticando credenciais...';
 
       let finished = false;
       function completeTransition() {
@@ -3327,33 +3544,35 @@
         }
       }
 
-      // Salvaguarda absoluta contra bloqueio da interface (máximo 3.2s)
+      // Salvaguarda rígida garantida em exatamente 2000ms (2.0s)
       const safetyTimer = setTimeout(() => {
         completeTransition();
-      }, 3200);
+      }, 2000);
 
+      // 0.5s: Conexão de barramentos
       setTimeout(() => {
         if (!finished && telemText) telemText.textContent = 'Conectando sistemas e barramentos da residência...';
-      }, 650);
+      }, 500);
 
+      // 1.1s: Residência conectada
       setTimeout(() => {
         if (!finished && telemText) telemText.textContent = 'Residência inteligente conectada com sucesso';
-      }, 1300);
+      }, 1100);
 
-      // Etapa 4: Expansão do símbolo em luz azul-ciano suave (~1.8s)
+      // 1.5s: Pulso de luz azul-ciano no símbolo DOMUS
       setTimeout(() => {
         if (!finished) overlay.classList.add('stage-connected');
-      }, 1800);
+      }, 1500);
 
-      // Revelação e transição para o dashboard (~2.2s)
+      // 1.75s: Fade out suave e revelação
       setTimeout(() => {
         if (!finished) {
           overlay.classList.add('stage-exit');
           setTimeout(() => {
             completeTransition();
-          }, 400);
+          }, 250);
         }
-      }, 2200);
+      }, 1750);
     }
 
     function cancelCinematicTransition() {
@@ -3434,9 +3653,18 @@
         return;
       }
 
+      // DISPARA A TRANSIÇÃO CINEMATOGRÁFICA COM DURAÇÃO EXATA DE 2 SEGUNDOS
+      let transitionDone = false;
+      const animationPromise = new Promise(resolve => {
+        triggerCinematicTransition(() => {
+          transitionDone = true;
+          resolve();
+        });
+      });
+
       try {
         const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('TIMEOUT_CONEXAO')), 8000)
+          setTimeout(() => reject(new Error('TIMEOUT_CONEXAO')), 6000)
         );
 
         const authPromise = client.auth.signInWithPassword({
@@ -3444,7 +3672,13 @@
           password: password
         });
 
-        const { data, error } = await Promise.race([authPromise, timeoutPromise]);
+        // Executa em paralelo: garante que a animação dure exatamente 2 segundos
+        const [authResult] = await Promise.all([
+          Promise.race([authPromise, timeoutPromise]),
+          animationPromise
+        ]);
+
+        const { data, error } = authResult || {};
 
         if (error) {
           if (submitBtn) {
@@ -3464,16 +3698,13 @@
 
         if (data && data.user) {
           currentAuthUser = data.user;
-          // SUCESSO: Agora sim inicia a transição cinematográfica para o dashboard!
-          triggerCinematicTransition(async () => {
-            await fetchAndApplyUserProfile(data.user);
-            showAppScreen(data.user);
-            if (submitBtn) {
-              submitBtn.classList.remove('btn-pressed');
-              setAuthButtonLoading(submitBtn, false);
-            }
-            revealDashboardWithStagger();
-          });
+          await fetchAndApplyUserProfile(data.user);
+          showAppScreen(data.user);
+          if (submitBtn) {
+            submitBtn.classList.remove('btn-pressed');
+            setAuthButtonLoading(submitBtn, false);
+          }
+          revealDashboardWithStagger();
         } else {
           if (submitBtn) {
             submitBtn.classList.remove('btn-pressed');
@@ -3482,6 +3713,9 @@
           showAuthAlert('error', 'Resposta de autenticação vazia do servidor.');
         }
       } catch (err) {
+        if (!transitionDone) {
+          await animationPromise;
+        }
         if (submitBtn) {
           submitBtn.classList.remove('btn-pressed');
           setAuthButtonLoading(submitBtn, false);
@@ -3661,6 +3895,11 @@
     // VERIFICAÇÃO OBRIGATÓRIA DE SESSÃO AO ABRIR O DOMUS
     async function checkAuthSession() {
       const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('demo') === 'true') {
+        window.history.replaceState({}, document.title, window.location.pathname);
+        enterDemoGuestMode();
+        return;
+      }
       if (urlParams.get('logout') === 'true' || urlParams.get('action') === 'logout') {
         await domusSignOut();
         return;
@@ -6958,6 +7197,365 @@
     }
 
     // DISPARO DA ANIMAÇÃO DE ENTRADA DO DOMUS E VERIFICAÇÃO OBRIGATÓRIA DA SESSÃO SUPABASE AUTH
+
+    // ==========================================================================
+    // NOVA ARQUITETURA: DRAWER FLUTUANTE DE BUSCA, SUPORTE & AÇÕES RÁPIDAS
+    // ==========================================================================
+    let currentDrawerCategory = 'all';
+    let currentDrawerQuery = '';
+    let currentDrawerItemsList = [];
+
+    function openSearchDrawer() {
+      const drawer = document.getElementById('domus-search-drawer');
+      if (!drawer) return;
+      drawer.classList.add('active');
+      drawer.setAttribute('aria-hidden', 'false');
+
+      const input = document.getElementById('drawer-search-input');
+      if (input) {
+        input.value = '';
+        currentDrawerQuery = '';
+        setTimeout(() => input.focus(), 80);
+      }
+      currentDrawerCategory = 'all';
+      updateChipActiveState('all');
+
+      // Exibe inicialmente TODAS as opções brutas disponíveis no sistema
+      const allItems = DomusSearchRegistry.getAllItems();
+      const allCountEl = document.getElementById('chip-count-all');
+      if (allCountEl) allCountEl.innerText = allItems.length;
+
+      renderDrawerItems(allItems);
+    }
+
+    function closeSearchDrawer() {
+      const drawer = document.getElementById('domus-search-drawer');
+      if (!drawer) return;
+      drawer.classList.remove('active');
+      drawer.setAttribute('aria-hidden', 'true');
+    }
+
+    function handleSearchOverlayClick(e) {
+      if (e.target && e.target.id === 'domus-search-drawer') {
+        closeSearchDrawer();
+      }
+    }
+
+    function clearDrawerSearch() {
+      const input = document.getElementById('drawer-search-input');
+      const clearBtn = document.getElementById('drawer-search-clear');
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+      if (clearBtn) clearBtn.style.display = 'none';
+      currentDrawerQuery = '';
+      applyDrawerFilters();
+    }
+
+    function filterDrawerCategory(category, chipEl) {
+      currentDrawerCategory = category;
+      updateChipActiveState(category);
+      applyDrawerFilters();
+    }
+
+    function updateChipActiveState(category) {
+      const chips = document.querySelectorAll('.search-chip');
+      chips.forEach(c => {
+        const cat = c.getAttribute('data-filter');
+        c.classList.toggle('active', cat === category);
+      });
+    }
+
+    function handleDrawerSearchInput(query) {
+      currentDrawerQuery = query || '';
+      const clearBtn = document.getElementById('drawer-search-clear');
+      if (clearBtn) {
+        clearBtn.style.display = currentDrawerQuery.trim() ? 'block' : 'none';
+      }
+      applyDrawerFilters();
+    }
+
+    function applyDrawerFilters() {
+      const allItems = DomusSearchRegistry.getAllItems();
+      const normQ = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(currentDrawerQuery) : currentDrawerQuery.toLowerCase().trim();
+
+      let filtered = allItems;
+
+      // Filtro por Categoria se selecionada
+      if (currentDrawerCategory !== 'all') {
+        filtered = filtered.filter(item => {
+          const itemCat = item.category || '';
+          if (currentDrawerCategory === 'Configuração') {
+            return itemCat === 'Configuração' || itemCat === 'Suporte' || itemCat === 'Perfil';
+          }
+          return itemCat.toLowerCase().includes(currentDrawerCategory.toLowerCase());
+        });
+      }
+
+      // Filtro dinâmico por Texto Digitado
+      if (normQ) {
+        filtered = filtered.filter(item => {
+          const titleNorm = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(item.title) : item.title.toLowerCase();
+          const subNorm = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(item.subtitle) : (item.subtitle || '').toLowerCase();
+          const catNorm = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(item.category) : (item.category || '').toLowerCase();
+          const inKeywords = Array.isArray(item.keywords) && item.keywords.some(k => {
+            const kn = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(k) : k.toLowerCase();
+            return kn.includes(normQ);
+          });
+          return titleNorm.includes(normQ) || subNorm.includes(normQ) || catNorm.includes(normQ) || inKeywords;
+        });
+      }
+
+      renderDrawerItems(filtered);
+    }
+
+    function renderDrawerItems(items) {
+      const container = document.getElementById('drawer-items-list');
+      const countEl = document.getElementById('drawer-results-count');
+      if (!container) return;
+
+      currentDrawerItemsList = items || [];
+
+      if (countEl) {
+        if (!currentDrawerQuery.trim() && currentDrawerCategory === 'all') {
+          countEl.innerHTML = `<strong>${items.length} opções disponíveis</strong> em todo o ecossistema DOMUS`;
+        } else {
+          countEl.innerHTML = `<strong>${items.length} resultado(s)</strong> para "${escapeHtml(currentDrawerQuery || currentDrawerCategory)}"`;
+        }
+      }
+
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="search-drawer-empty">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <h4>Nenhuma opção encontrada</h4>
+            <p>Tente buscar por outro termo, como <em>luz</em>, <em>quarto</em>, <em>ar condicionado</em>, <em>alarme</em> ou <em>senha</em>.</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      items.forEach((item, idx) => {
+        const titleHighlight = typeof highlightSearchMatch === 'function' && currentDrawerQuery.trim()
+          ? highlightSearchMatch(item.title, currentDrawerQuery)
+          : escapeHtml(item.title);
+
+        html += `
+          <div class="drawer-result-card" onclick="executeDrawerItemAction(${idx})">
+            <div class="drawer-item-icon-wrap">
+              <i class="${escapeHtml(item.icon || 'fa-solid fa-cube')}"></i>
+            </div>
+            <div class="drawer-item-info">
+              <div class="drawer-item-header-row">
+                <span class="drawer-item-title">${titleHighlight}</span>
+                <span class="drawer-item-badge">${escapeHtml(item.category || 'Geral')}</span>
+              </div>
+              <div class="drawer-item-sub">${escapeHtml(item.subtitle || '')}</div>
+            </div>
+            <i class="fa-solid fa-chevron-right drawer-item-arrow"></i>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function executeDrawerItemAction(index) {
+      const item = currentDrawerItemsList[index];
+      if (!item) return;
+      closeSearchDrawer();
+      if (typeof item.action === 'function') {
+        item.action();
+      }
+    }
+
+    // ==========================================================================
+    // MODAL DE SUPORTE & DIAGNÓSTICO DO SISTEMA
+    // ==========================================================================
+    function openSupportModal() {
+      const modal = document.getElementById('domus-support-modal');
+      if (modal) {
+        modal.style.display = 'flex';
+      }
+    }
+
+    function closeSupportModal(e) {
+      if (e && e.target && e.target.id !== 'domus-support-modal' && !e.target.classList.contains('btn-close-modal') && !e.target.classList.contains('btn-outline-cancel')) {
+        return;
+      }
+      const modal = document.getElementById('domus-support-modal');
+      if (modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    function handleSupportSubmit(e) {
+      if (e) e.preventDefault();
+      const catSelect = document.getElementById('support-category');
+      const msgArea = document.getElementById('support-message');
+      const submitBtn = document.getElementById('btn-submit-support');
+
+      const cat = catSelect ? catSelect.value : 'suporte';
+      const msg = msgArea ? msgArea.value.trim() : '';
+
+      if (!msg) {
+        alert('Por favor, informe uma descrição para o suporte.');
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...';
+      }
+
+      setTimeout(() => {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar Mensagem';
+        }
+        if (msgArea) msgArea.value = '';
+        closeSupportModal();
+
+        // Alerta de sucesso na interface
+        if (typeof showSystemToast === 'function') {
+          showSystemToast('Solicitação enviada com sucesso! Protocolo #' + Math.floor(100000 + Math.random() * 900000) + ' aberto.', 'success');
+        } else {
+          alert('Sua solicitação de suporte foi enviada com sucesso ao time de engenharia do DOMUS!');
+        }
+      }, 700);
+    }
+
+    // ==========================================================================
+    // AÇÕES RÁPIDAS DO NOVO DASHBOARD
+    // ==========================================================================
+    let masterLightsState = false;
+    function toggleAllLightsMaster(btn) {
+      masterLightsState = !masterLightsState;
+      // Alterna luzes no sistema
+      const lightsList = [
+        'luz-sala-teto', 'luz-sala-pendente', 'luz-sala-led',
+        'luz-quarto-teto', 'luz-quarto-fita', 'luz-quarto-abajur',
+        'luz-cozinha-teto', 'luz-cozinha-bancada', 'luz-cozinha-ilha',
+        'luz-banheiro-teto', 'luz-escritorio-teto'
+      ];
+      lightsList.forEach(id => {
+        const sw = document.getElementById(id);
+        if (sw) sw.checked = masterLightsState;
+      });
+      if (typeof updateLightingSystem === 'function') updateLightingSystem();
+
+      const statusEl = document.getElementById('qa-lights-status');
+      const badgeEl = document.getElementById('qa-lights-badge');
+      if (statusEl) statusEl.innerText = masterLightsState ? 'Todas ligadas' : 'Todas desligadas';
+      if (badgeEl) {
+        badgeEl.innerText = masterLightsState ? 'Ligado' : 'Desligado';
+        badgeEl.style.color = masterLightsState ? '#00e5ff' : 'var(--orange-bright)';
+      }
+      if (typeof showSystemToast === 'function') {
+        showSystemToast(masterLightsState ? 'Todas as lâmpadas da residência foram acesas.' : 'Todas as lâmpadas da residência foram apagadas.', 'info');
+      }
+    }
+
+    let ecoClimateState = true;
+    function toggleEcoClimate(btn) {
+      ecoClimateState = !ecoClimateState;
+      const statusEl = document.getElementById('qa-climate-status');
+      if (statusEl) statusEl.innerText = ecoClimateState ? 'Modo Conforto 22°C' : 'Modo Eco 24°C';
+      if (typeof showSystemToast === 'function') {
+        showSystemToast(ecoClimateState ? 'Climatização ajustada para Conforto (22°C).' : 'Climatização ajustada para Máxima Economia (24°C).', 'info');
+      }
+    }
+
+    function triggerPerimeterLockdown(btn) {
+      if (typeof showSystemToast === 'function') {
+        showSystemToast('Segurança Máxima: Todas as fechaduras digitais trancadas e sensores perimetrais armados.', 'success');
+      } else {
+        alert('Residência trancada e sistema perimetral armado com sucesso.');
+      }
+    }
+
+    function triggerCinemaScene(btn) {
+      if (typeof switchTab === 'function') switchTab('tab-iluminacao');
+      if (typeof applyScenePreset === 'function') applyScenePreset('cinema');
+      if (typeof showSystemToast === 'function') {
+        showSystemToast('Cena Cinema acionada: Luzes dimerizadas para 15% e cortinas fechadas.', 'info');
+      }
+    }
+
+    function triggerNightScene(btn) {
+      if (typeof switchTab === 'function') switchTab('tab-iluminacao');
+      if (typeof applyScenePreset === 'function') applyScenePreset('noite');
+      if (typeof showSystemToast === 'function') {
+        showSystemToast('Modo Boa Noite acionado: Iluminação secundária desligada e sensores ativados.', 'info');
+      }
+    }
+
+    let gateAccessState = false;
+    function toggleGateAccess(btn) {
+      gateAccessState = !gateAccessState;
+      const statusEl = document.getElementById('qa-gate-status');
+      if (statusEl) statusEl.innerText = gateAccessState ? 'Portão aberto' : 'Portão fechado';
+      if (typeof showSystemToast === 'function') {
+        showSystemToast(gateAccessState ? 'Aviso: Portão da garagem aberto.' : 'Portão da garagem trancado com segurança.', 'warning');
+      }
+    }
+
+    function triggerEnergyOptimizer(btn) {
+      if (typeof showSystemToast === 'function') {
+        showSystemToast('Eficiência Verde: 3 circuitos em espera foram desligados. Economia de ~140W ativa.', 'success');
+      }
+    }
+
+    // ==========================================================================
+    // ATALHOS GLOBAIS DE TECLADO (CTRL + K / ESC)
+    // ==========================================================================
+    document.addEventListener('keydown', (e) => {
+      // Ctrl + K ou Cmd + K abre o Drawer de Busca
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        const drawer = document.getElementById('domus-search-drawer');
+        if (drawer && drawer.classList.contains('active')) {
+          closeSearchDrawer();
+        } else {
+          openSearchDrawer();
+        }
+        return;
+      }
+
+      // Tecla Escape fecha Drawer de Busca e Modal de Suporte
+      if (e.key === 'Escape') {
+        closeSearchDrawer();
+        closeSupportModal();
+      }
+    });
+
+    // Sincroniza breadcrumb do Top Header na troca de abas
+    const originalSwitchTab = window.switchTab;
+    window.switchTab = function(tabId) {
+      if (typeof originalSwitchTab === 'function') {
+        originalSwitchTab(tabId);
+      }
+      const breadcrumbText = document.getElementById('top-breadcrumb-text');
+      if (breadcrumbText) {
+        const titles = {
+          'tab-inicio': 'Início',
+          'tab-iluminacao': 'Iluminação',
+          'tab-climatizacao': 'Climatização',
+          'tab-seguranca': 'Segurança',
+          'tab-energia': 'Energia',
+          'tab-automacoes': 'Automações',
+          'tab-inteligencia': 'Inteligência Adaptativa',
+          'tab-perfil': 'Perfil',
+          'tab-chat': 'Chat',
+          'tab-moradores': 'Moradores',
+          'tab-mapa': 'Mapa da Casa'
+        };
+        breadcrumbText.innerText = titles[tabId] || 'Início';
+      }
+    };
+
     checkAuthSession();
   </script>
 

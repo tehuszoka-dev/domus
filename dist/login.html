@@ -172,6 +172,11 @@
           Não tem uma conta? 
           <button type="button" onclick="showAuthView('register')">Criar conta</button>
         </div>
+        <div style="margin-top: 14px; text-align: center;">
+          <button type="button" class="btn-demo-guest" onclick="enterDemoGuestMode()" style="background: rgba(0, 229, 255, 0.08); border: 1px dashed rgba(0, 229, 255, 0.45); color: #00e5ff; border-radius: 8px; padding: 8px 16px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(0, 229, 255, 0.18)'" onmouseout="this.style.background='rgba(0, 229, 255, 0.08)'">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Acesso Rápido / Modo Demonstração
+          </button>
+        </div>
       </div>
 
       <!-- ========================================================
@@ -339,7 +344,8 @@
             auth: {
               persistSession: true,
               autoRefreshToken: true,
-              detectSessionInUrl: true
+              detectSessionInUrl: true,
+              lock: (name, acquireTimeout, fn) => fn()
             }
           });
         } catch (e) {
@@ -484,6 +490,8 @@
         return;
       }
 
+      // DURAÇÃO EXATA DE 2 SEGUNDOS:
+      overlay.style.display = 'flex';
       overlay.classList.remove('stage-connected', 'stage-exit');
       overlay.classList.add('active');
       overlay.setAttribute('aria-hidden', 'false');
@@ -500,7 +508,7 @@
       });
 
       const telemText = document.getElementById('cinematic-telemetry-text');
-      if (telemText) telemText.textContent = 'Autenticação verificada • Inicializando DOMUS...';
+      if (telemText) telemText.textContent = 'Autenticando credenciais...';
 
       let finished = false;
       function completeTransition() {
@@ -509,6 +517,7 @@
         clearTimeout(safetyTimer);
         overlay.classList.remove('active', 'stage-connected', 'stage-exit');
         overlay.setAttribute('aria-hidden', 'true');
+        overlay.style.display = 'none';
         if (stopCanvasFn) {
           stopCanvasFn();
           stopCanvasFn = null;
@@ -518,34 +527,33 @@
         }
       }
 
-      // Salvaguarda garantida (máximo 3.2s)
       const safetyTimer = setTimeout(() => {
         completeTransition();
-      }, 3200);
+      }, 2000);
 
       setTimeout(() => {
         if (!finished && telemText) telemText.textContent = 'Conectando sistemas e barramentos da residência...';
-      }, 650);
+      }, 500);
 
       setTimeout(() => {
         if (!finished && telemText) telemText.textContent = 'Residência inteligente conectada com sucesso';
-      }, 1300);
+      }, 1100);
 
       setTimeout(() => {
         if (!finished) overlay.classList.add('stage-connected');
-      }, 1800);
+      }, 1500);
 
       setTimeout(() => {
         if (!finished) {
           overlay.classList.add('stage-exit');
           setTimeout(() => {
             completeTransition();
-          }, 400);
+          }, 250);
         }
-      }, 2200);
+      }, 1750);
     }
 
-        function cancelCinematicTransition() {
+    function cancelCinematicTransition() {
       const overlay = document.getElementById('domus-cinematic-transition');
       if (overlay) {
         overlay.classList.remove('active', 'stage-connected', 'stage-exit');
@@ -563,6 +571,13 @@
     // ==========================================================================
     // CONTROLE DE TELAS (LOGIN, CADASTRO, RECUPERAÇÃO)
     // ==========================================================================
+        function enterDemoGuestMode() {
+      triggerCinematicTransition(() => {
+        window.location.href = "./index.html?demo=true";
+      });
+    }
+    window.enterDemoGuestMode = enterDemoGuestMode;
+
     function showAuthView(viewName) {
       const views = ['login', 'register', 'forgot'];
       views.forEach(v => {
@@ -667,35 +682,33 @@
         return;
       }
 
-      const overlay = document.getElementById('domus-cinematic-transition');
-      if (overlay) {
-        overlay.classList.remove('stage-connected', 'stage-exit');
-        overlay.classList.add('active');
-        overlay.setAttribute('aria-hidden', 'false');
-        const telemText = document.getElementById('cinematic-telemetry-text');
-        if (telemText) telemText.textContent = 'Autenticando credenciais...';
-        if (stopCanvasFn) stopCanvasFn();
-        stopCanvasFn = startCinematicCanvas('domus-cinematic-canvas');
-      }
-
-      let authSafetyTimer = setTimeout(() => {
-        cancelCinematicTransition();
-        if (submitBtn) {
-          submitBtn.classList.remove('btn-pressed');
-          setAuthButtonLoading(submitBtn, false);
-        }
-        showAuthAlert('error', 'Tempo limite de conexão excedido. Verifique sua rede e tente novamente.');
-      }, 9000);
+      // DISPARA A ANIMAÇÃO DE EXATAMENTE 2 SEGUNDOS
+      let transitionDone = false;
+      const animationPromise = new Promise(resolve => {
+        triggerCinematicTransition(() => {
+          transitionDone = true;
+          resolve();
+        });
+      });
 
       try {
-        const { data, error } = await client.auth.signInWithPassword({
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('TIMEOUT_CONEXAO')), 6000)
+        );
+
+        const authPromise = client.auth.signInWithPassword({
           email: email,
           password: password
         });
-        clearTimeout(authSafetyTimer);
+
+        const [authResult] = await Promise.all([
+          Promise.race([authPromise, timeoutPromise]),
+          animationPromise
+        ]);
+
+        const { data, error } = authResult || {};
 
         if (error) {
-          cancelCinematicTransition();
           if (submitBtn) {
             submitBtn.classList.remove('btn-pressed');
             setAuthButtonLoading(submitBtn, false);
@@ -705,19 +718,16 @@
           if (errLower.includes('email not confirmed')) {
             showAuthAlert('error', 'Por favor, confirme seu e-mail antes de entrar (ou desative a confirmação de e-mail no painel do Supabase).');
           } else if (errLower.includes('invalid login credentials') || errLower.includes('invalid_grant')) {
-            showAuthAlert('error', 'E-mail ou senha incorretos.');
+            showAuthAlert('error', 'E-mail ou senha incorretos. Verifique os dados ou crie uma conta na aba "Criar Conta".');
           } else {
-            showAuthAlert('error', error.message || 'Não foi possível realizar o login. Verifique seus dados e tente novamente.');
+            showAuthAlert('error', error.message || 'Não foi possível realizar o login. Verifique seus dados.');
           }
           return;
         }
 
         if (data && data.user) {
-          triggerCinematicTransition(() => {
-            redirectToMainApp();
-          });
+          window.location.href = './index.html?from_login=true';
         } else {
-          cancelCinematicTransition();
           if (submitBtn) {
             submitBtn.classList.remove('btn-pressed');
             setAuthButtonLoading(submitBtn, false);
@@ -725,14 +735,19 @@
           showAuthAlert('error', 'Resposta de autenticação vazia. Tente novamente.');
         }
       } catch (err) {
-        clearTimeout(authSafetyTimer);
-        cancelCinematicTransition();
+        if (!transitionDone) {
+          await animationPromise;
+        }
         if (submitBtn) {
           submitBtn.classList.remove('btn-pressed');
           setAuthButtonLoading(submitBtn, false);
         }
         console.error('Erro de conexão no login:', err);
-        showAuthAlert('error', 'Falha de conexão com os servidores DOMUS. Verifique sua rede e tente novamente.');
+        if (err && err.message === 'TIMEOUT_CONEXAO') {
+          showAuthAlert('error', 'Tempo limite de conexão excedido. Verifique sua rede e tente novamente.');
+        } else {
+          showAuthAlert('error', 'Falha de conexão com os servidores DOMUS. Verifique sua rede e tente novamente.');
+        }
       }
     }
     // ==========================================================================
