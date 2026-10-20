@@ -1056,7 +1056,7 @@
     function redirectToMainApp() {
       const currentPath = window.location.pathname;
       if (currentPath.includes('/auth') || currentPath.includes('/login')) {
-        window.location.href = '../index.html?from_login=true';
+        window.location.href = './index.html?from_login=true';
       } else {
         window.location.href = 'index.html?from_login=true';
       }
@@ -1230,6 +1230,7 @@
       if (overlay) {
         overlay.classList.remove('active', 'stage-connected', 'stage-exit');
         overlay.setAttribute('aria-hidden', 'true');
+        overlay.style.display = 'none';
         const telemText = document.getElementById('cinematic-telemetry-text');
         if (telemText) telemText.textContent = 'Autenticando credenciais...';
       }

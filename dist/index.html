@@ -3316,6 +3316,7 @@
         clearTimeout(safetyTimer);
         overlay.classList.remove('active', 'stage-connected', 'stage-exit');
         overlay.setAttribute('aria-hidden', 'true');
+        overlay.style.display = 'none';
         if (stopCanvasFn) {
           stopCanvasFn();
           stopCanvasFn = null;
@@ -3359,6 +3360,7 @@
       if (overlay) {
         overlay.classList.remove('active', 'stage-connected', 'stage-exit');
         overlay.setAttribute('aria-hidden', 'true');
+        overlay.style.display = 'none';
         const telemText = document.getElementById('cinematic-telemetry-text');
         if (telemText) telemText.textContent = 'Autenticando credenciais...';
       }
