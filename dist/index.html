@@ -3292,8 +3292,6 @@
         return;
       }
 
-      // DURAÇÃO EXATA DE 2 SEGUNDOS:
-      overlay.style.display = 'flex';
       overlay.classList.remove('stage-connected', 'stage-exit');
       overlay.classList.add('active');
       overlay.setAttribute('aria-hidden', 'false');
@@ -3310,7 +3308,7 @@
       });
 
       const telemText = document.getElementById('cinematic-telemetry-text');
-      if (telemText) telemText.textContent = 'Autenticando credenciais...';
+      if (telemText) telemText.textContent = 'Autenticação verificada • Inicializando DOMUS...';
 
       let finished = false;
       function completeTransition() {
@@ -3329,35 +3327,33 @@
         }
       }
 
-      // Salvaguarda rígida garantida em exatamente 2000ms (2.0s)
+      // Salvaguarda absoluta contra bloqueio da interface (máximo 3.2s)
       const safetyTimer = setTimeout(() => {
         completeTransition();
-      }, 2000);
+      }, 3200);
 
-      // 0.5s: Conexão de barramentos
       setTimeout(() => {
         if (!finished && telemText) telemText.textContent = 'Conectando sistemas e barramentos da residência...';
-      }, 500);
+      }, 650);
 
-      // 1.1s: Residência conectada
       setTimeout(() => {
         if (!finished && telemText) telemText.textContent = 'Residência inteligente conectada com sucesso';
-      }, 1100);
+      }, 1300);
 
-      // 1.5s: Pulso de luz azul-ciano no símbolo DOMUS
+      // Etapa 4: Expansão do símbolo em luz azul-ciano suave (~1.8s)
       setTimeout(() => {
         if (!finished) overlay.classList.add('stage-connected');
-      }, 1500);
+      }, 1800);
 
-      // 1.75s: Fade out suave e revelação
+      // Revelação e transição para o dashboard (~2.2s)
       setTimeout(() => {
         if (!finished) {
           overlay.classList.add('stage-exit');
           setTimeout(() => {
             completeTransition();
-          }, 250);
+          }, 400);
         }
-      }, 1750);
+      }, 2200);
     }
 
     function cancelCinematicTransition() {
@@ -3438,18 +3434,9 @@
         return;
       }
 
-      // DISPARA A TRANSIÇÃO CINEMATOGRÁFICA COM DURAÇÃO EXATA DE 2 SEGUNDOS
-      let transitionDone = false;
-      const animationPromise = new Promise(resolve => {
-        triggerCinematicTransition(() => {
-          transitionDone = true;
-          resolve();
-        });
-      });
-
       try {
         const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('TIMEOUT_CONEXAO')), 6000)
+          setTimeout(() => reject(new Error('TIMEOUT_CONEXAO')), 8000)
         );
 
         const authPromise = client.auth.signInWithPassword({
@@ -3457,13 +3444,7 @@
           password: password
         });
 
-        // Executa em paralelo: garante que a animação dure exatamente 2 segundos
-        const [authResult] = await Promise.all([
-          Promise.race([authPromise, timeoutPromise]),
-          animationPromise
-        ]);
-
-        const { data, error } = authResult || {};
+        const { data, error } = await Promise.race([authPromise, timeoutPromise]);
 
         if (error) {
           if (submitBtn) {
@@ -3483,13 +3464,16 @@
 
         if (data && data.user) {
           currentAuthUser = data.user;
-          await fetchAndApplyUserProfile(data.user);
-          showAppScreen(data.user);
-          if (submitBtn) {
-            submitBtn.classList.remove('btn-pressed');
-            setAuthButtonLoading(submitBtn, false);
-          }
-          revealDashboardWithStagger();
+          // SUCESSO: Agora sim inicia a transição cinematográfica para o dashboard!
+          triggerCinematicTransition(async () => {
+            await fetchAndApplyUserProfile(data.user);
+            showAppScreen(data.user);
+            if (submitBtn) {
+              submitBtn.classList.remove('btn-pressed');
+              setAuthButtonLoading(submitBtn, false);
+            }
+            revealDashboardWithStagger();
+          });
         } else {
           if (submitBtn) {
             submitBtn.classList.remove('btn-pressed');
@@ -3498,9 +3482,6 @@
           showAuthAlert('error', 'Resposta de autenticação vazia do servidor.');
         }
       } catch (err) {
-        if (!transitionDone) {
-          await animationPromise;
-        }
         if (submitBtn) {
           submitBtn.classList.remove('btn-pressed');
           setAuthButtonLoading(submitBtn, false);
