@@ -2957,7 +2957,8 @@
             auth: {
               persistSession: true,
               autoRefreshToken: true,
-              detectSessionInUrl: true
+              detectSessionInUrl: true,
+              lock: (name, acquireTimeout, fn) => fn()
             }
           });
         } catch (e) {
@@ -3414,7 +3415,6 @@
         return;
       }
 
-      // Prevenção de cliques múltiplos simultâneos
       if (submitBtn && submitBtn.classList.contains('btn-pressed')) {
         return;
       }
@@ -3434,57 +3434,37 @@
         return;
       }
 
-      // ETAPA 2 — Conexão digital: inicia camada de transição com nós de rede cibernética
-      const overlay = document.getElementById('domus-cinematic-transition');
-      if (overlay) {
-        overlay.classList.remove('stage-connected', 'stage-exit');
-        overlay.classList.add('active');
-        overlay.setAttribute('aria-hidden', 'false');
-        const telemText = document.getElementById('cinematic-telemetry-text');
-        if (telemText) telemText.textContent = 'Autenticando credenciais...';
-        if (stopCanvasFn) stopCanvasFn();
-        stopCanvasFn = startCinematicCanvas('domus-cinematic-canvas');
-      }
-
-      // Temporizador de salvaguarda inquebrável (9 segundos)
-      let authSafetyTimer = setTimeout(() => {
-        cancelCinematicTransition();
-        if (submitBtn) {
-          submitBtn.classList.remove('btn-pressed');
-          setAuthButtonLoading(submitBtn, false);
-        }
-        showAuthAlert('error', 'Tempo limite de conexão excedido. Verifique sua rede e tente novamente.');
-      }, 9000);
-
       try {
-        const { data, error } = await client.auth.signInWithPassword({
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('TIMEOUT_CONEXAO')), 8000)
+        );
+
+        const authPromise = client.auth.signInWithPassword({
           email: email,
           password: password
         });
-        clearTimeout(authSafetyTimer);
+
+        const { data, error } = await Promise.race([authPromise, timeoutPromise]);
 
         if (error) {
-          // Em caso de falha: encerra imediatamente a animação e restaura o botão
-          cancelCinematicTransition();
           if (submitBtn) {
             submitBtn.classList.remove('btn-pressed');
             setAuthButtonLoading(submitBtn, false);
           }
-
           const errLower = (error.message || '').toLowerCase();
           if (errLower.includes('email not confirmed')) {
             showAuthAlert('error', 'Por favor, confirme seu e-mail antes de entrar (ou desative a confirmação de e-mail no painel do Supabase).');
           } else if (errLower.includes('invalid login credentials') || errLower.includes('invalid_grant')) {
-            showAuthAlert('error', 'E-mail ou senha incorretos.');
+            showAuthAlert('error', 'E-mail ou senha incorretos. Verifique os dados ou crie uma conta na aba "Criar Conta".');
           } else {
-            showAuthAlert('error', error.message || 'Não foi possível realizar o login. Verifique seus dados e tente novamente.');
+            showAuthAlert('error', error.message || 'Não foi possível realizar o login. Verifique seus dados.');
           }
           return;
         }
 
         if (data && data.user) {
           currentAuthUser = data.user;
-          // ETAPA 3 & 4 — Login bem-sucedido: inicialização do símbolo DOMUS e revelação suave do dashboard
+          // SUCESSO: Agora sim inicia a transição cinematográfica para o dashboard!
           triggerCinematicTransition(async () => {
             await fetchAndApplyUserProfile(data.user);
             showAppScreen(data.user);
@@ -3495,22 +3475,23 @@
             revealDashboardWithStagger();
           });
         } else {
-          cancelCinematicTransition();
           if (submitBtn) {
             submitBtn.classList.remove('btn-pressed');
             setAuthButtonLoading(submitBtn, false);
           }
-          showAuthAlert('error', 'Resposta de autenticação vazia. Tente novamente.');
+          showAuthAlert('error', 'Resposta de autenticação vazia do servidor.');
         }
       } catch (err) {
-        clearTimeout(authSafetyTimer);
-        cancelCinematicTransition();
         if (submitBtn) {
           submitBtn.classList.remove('btn-pressed');
           setAuthButtonLoading(submitBtn, false);
         }
-        console.error('Erro de conexão no login:', err);
-        showAuthAlert('error', 'Falha de conexão com os servidores DOMUS. Verifique sua rede e tente novamente.');
+        console.error('Erro no login:', err);
+        if (err && err.message === 'TIMEOUT_CONEXAO') {
+          showAuthAlert('error', 'Tempo limite de resposta excedido. Verifique sua rede e tente novamente.');
+        } else {
+          showAuthAlert('error', 'Falha de conexão com os servidores DOMUS. Verifique sua rede.');
+        }
       }
     }
 
@@ -3593,7 +3574,7 @@
         // Se o Supabase permitir login imediato (Confirmação de e-mail desligada):
         if (data && data.session) {
           const firstName = name.trim().split(' ')[0] || name;
-          showAuthAlert('success', );
+          showAuthAlert('success', 'Cadastro realizado com sucesso! Inicializando o DOMUS...');
           setTimeout(async () => {
             currentAuthUser = data.user;
             await fetchAndApplyUserProfile(data.user);
