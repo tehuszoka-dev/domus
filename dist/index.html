@@ -20,7 +20,7 @@
   <!-- SUPABASE JS SDK V2 (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>if(!window.supabase){document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>');}</script>
-  <link rel="stylesheet" crossorigin href="/assets/main-BDnDVzP1.css">
+  <link rel="stylesheet" crossorigin href="/assets/main-CZqEiszd.css">
 </head>
 <body>
 
@@ -401,12 +401,18 @@
     <!-- ==========================================================================
          BARRA SUPERIOR (HEADER) FIXA/FLUIDA COM PERFIL E SUPORTE
          ========================================================================== -->
+        <!-- ==========================================================================
+         BARRA SUPERIOR (HEADER) SÓLIDA, ELEGANTE E PERFEITAMENTE ENQUADRADA
+         ========================================================================== -->
     <header class="domus-top-header">
       <div class="top-header-left">
-        <div class="top-system-badge" title="Status dos barramentos e sensores da residência">
-          <span class="system-pulse-dot"></span>
-          <span class="system-name-text">DOMUS OS</span>
-          <span class="system-version-tag">v2.4</span>
+        <div class="top-greeting-box">
+          <span class="top-greeting-label" id="top-user-greeting">Olá, Matheus</span>
+          <div class="top-system-badge" title="Status dos barramentos e sensores da residência">
+            <span class="system-pulse-dot"></span>
+            <span class="system-name-text">DOMUS</span>
+            <span class="system-version-tag">Online</span>
+          </div>
         </div>
         <div class="top-breadcrumb" id="top-breadcrumb">
           <i class="fa-solid fa-house"></i> <span id="top-breadcrumb-text">Início</span>
@@ -414,7 +420,7 @@
       </div>
 
       <div class="top-header-center">
-        <button type="button" class="top-search-trigger-btn" onclick="openSearchDrawer()" title="Buscar no DOMUS (Atalho Ctrl + K)">
+        <button type="button" class="top-search-trigger-btn" onclick="openSearchDrawer()" title="Buscar comandos, cômodos, rotinas... (Atalho Ctrl + K)">
           <i class="fa-solid fa-magnifying-glass"></i>
           <span class="search-placeholder-text">Buscar comandos, cômodos, rotinas...</span>
           <kbd>Ctrl + K</kbd>
@@ -431,7 +437,7 @@
         <!-- LINHA DE IDENTIFICAÇÃO DO PERFIL DO USUÁRIO LOGADO -->
         <div class="top-profile-badge" onclick="switchTab('tab-perfil')" title="Acessar Meu Perfil">
           <div class="top-avatar-wrap">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar" id="top-profile-avatar" class="top-profile-avatar" referrerpolicy="no-referrer" onerror="handleAvatarError(this)"><rect width="40" height="40" rx="20" fill="%2300e5ff" opacity="0.2"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="15" fill="%2300e5ff" font-family="sans-serif" font-weight="bold">MD</text></svg>'">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar" id="top-profile-avatar" class="top-profile-avatar" referrerpolicy="no-referrer" onerror="handleAvatarError(this)">
             <span class="top-avatar-status-dot"></span>
           </div>
           <div class="top-profile-info">
@@ -465,109 +471,164 @@
             <i class="fa-solid fa-bolt" style="color: var(--orange-bright);"></i>
             <span>Ações Rápidas Essenciais</span>
           </div>
-          <span class="quick-subtitle">Comandos de alta prioridade com acionamento instantâneo</span>
+          <span class="quick-subtitle">Comandos prioritários • Clique no card para executar ou no atalho para abrir o painel</span>
         </div>
 
         <div class="quick-actions-essential-grid">
-          <!-- Ação 1: Iluminação Geral -->
-          <button type="button" class="quick-action-card-btn" onclick="toggleAllLightsMaster(this)">
-            <div class="quick-card-icon-wrap" style="color: var(--orange-bright); background: rgba(255, 122, 0, 0.14);">
-              <i class="fa-solid fa-lightbulb"></i>
+          <!-- Ação 1: Iluminação Total -->
+          <div class="quick-action-card" onclick="toggleAllLightsMaster(this)" role="button" tabindex="0" title="Clique para alternar todas as luzes ou na seta para abrir Iluminação">
+            <div class="quick-card-top-row">
+              <div class="quick-card-icon-wrap" onclick="event.stopPropagation(); switchTab('tab-iluminacao')" title="Ir direto para aba Iluminação" aria-label="Ir direto para aba Iluminação">
+                <i class="fa-solid fa-lightbulb"></i>
+              </div>
+              <div class="quick-card-actions-cluster">
+                <span class="quick-card-status-badge" id="qa-lights-badge">Controle</span>
+                <button type="button" class="quick-card-shortcut-btn" onclick="event.stopPropagation(); switchTab('tab-iluminacao')" title="Abrir painel de Iluminação" aria-label="Abrir painel de Iluminação">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+              </div>
             </div>
-            <div class="quick-card-text">
+            <div class="quick-card-info">
               <strong>Iluminação Total</strong>
               <span id="qa-lights-status">Alternar todas as lâmpadas</span>
             </div>
-            <span class="quick-card-status-badge" id="qa-lights-badge" style="background: rgba(255, 122, 0, 0.15); color: var(--orange-bright);">Controle</span>
-          </button>
+          </div>
 
-          <!-- Ação 2: Climatização Conforto Eco -->
-          <button type="button" class="quick-action-card-btn" onclick="toggleEcoClimate(this)">
-            <div class="quick-card-icon-wrap" style="color: var(--blue-accent); background: rgba(0, 210, 255, 0.14);">
-              <i class="fa-solid fa-snowflake"></i>
+          <!-- Ação 2: Climatização Eco -->
+          <div class="quick-action-card" onclick="toggleEcoClimate(this)" role="button" tabindex="0" title="Clique para alternar modo ou na seta para abrir Climatização">
+            <div class="quick-card-top-row">
+              <div class="quick-card-icon-wrap" style="color: #00e5ff; background: rgba(0, 229, 255, 0.12);" onclick="event.stopPropagation(); switchTab('tab-climatizacao')" title="Ir direto para aba Climatização" aria-label="Ir direto para aba Climatização">
+                <i class="fa-solid fa-snowflake"></i>
+              </div>
+              <div class="quick-card-actions-cluster">
+                <span class="quick-card-status-badge" style="color: #00e5ff; background: rgba(0, 229, 255, 0.12); border-color: rgba(0, 229, 255, 0.25);">Ativo</span>
+                <button type="button" class="quick-card-shortcut-btn" onclick="event.stopPropagation(); switchTab('tab-climatizacao')" title="Abrir painel de Climatização" aria-label="Abrir painel de Climatização">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+              </div>
             </div>
-            <div class="quick-card-text">
+            <div class="quick-card-info">
               <strong>Climatização Eco</strong>
               <span id="qa-climate-status">Modo Conforto 22°C</span>
             </div>
-            <span class="quick-card-status-badge" style="background: rgba(0, 210, 255, 0.15); color: #00e5ff;">Ativo</span>
-          </button>
+          </div>
 
           <!-- Ação 3: Travar Residência / Segurança Máxima -->
-          <button type="button" class="quick-action-card-btn" onclick="triggerPerimeterLockdown(this)">
-            <div class="quick-card-icon-wrap" style="color: #2ecc71; background: rgba(46, 204, 113, 0.14);">
-              <i class="fa-solid fa-shield-halved"></i>
+          <div class="quick-action-card" onclick="triggerPerimeterLockdown(this)" role="button" tabindex="0" title="Clique para trancar tudo ou na seta para abrir Segurança">
+            <div class="quick-card-top-row">
+              <div class="quick-card-icon-wrap" style="color: #2ecc71; background: rgba(46, 204, 113, 0.12); border-color: rgba(46, 204, 113, 0.25);" onclick="event.stopPropagation(); switchTab('tab-seguranca')" title="Ir direto para aba Segurança" aria-label="Ir direto para aba Segurança">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div class="quick-card-actions-cluster">
+                <span class="quick-card-status-badge" style="color: #2ecc71; background: rgba(46, 204, 113, 0.12); border-color: rgba(46, 204, 113, 0.25);">Armado</span>
+                <button type="button" class="quick-card-shortcut-btn" onclick="event.stopPropagation(); switchTab('tab-seguranca')" title="Abrir painel de Segurança" aria-label="Abrir painel de Segurança">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+              </div>
             </div>
-            <div class="quick-card-text">
+            <div class="quick-card-info">
               <strong>Segurança Máxima</strong>
               <span>Trancar todas as fechaduras</span>
             </div>
-            <span class="quick-card-status-badge" style="background: rgba(46, 204, 113, 0.15); color: #2ecc71;">Armado</span>
-          </button>
+          </div>
 
           <!-- Ação 4: Cena Cinema -->
-          <button type="button" class="quick-action-card-btn" onclick="triggerCinemaScene(this)">
-            <div class="quick-card-icon-wrap" style="color: #a855f7; background: rgba(168, 85, 247, 0.14);">
-              <i class="fa-solid fa-film"></i>
+          <div class="quick-action-card" onclick="triggerCinemaScene(this)" role="button" tabindex="0" title="Clique para ativar modo cinema ou na seta para abrir Cenas">
+            <div class="quick-card-top-row">
+              <div class="quick-card-icon-wrap" style="color: #c084fc; background: rgba(168, 85, 247, 0.12); border-color: rgba(168, 85, 247, 0.25);" onclick="event.stopPropagation(); switchTab('tab-iluminacao')" title="Ir direto para Cenas de Iluminação" aria-label="Ir direto para Cenas de Iluminação">
+                <i class="fa-solid fa-film"></i>
+              </div>
+              <div class="quick-card-actions-cluster">
+                <span class="quick-card-status-badge" style="color: #c084fc; background: rgba(168, 85, 247, 0.12); border-color: rgba(168, 85, 247, 0.25);">Cena</span>
+                <button type="button" class="quick-card-shortcut-btn" onclick="event.stopPropagation(); switchTab('tab-iluminacao')" title="Abrir Cenas de Iluminação" aria-label="Abrir Cenas de Iluminação">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+              </div>
             </div>
-            <div class="quick-card-text">
+            <div class="quick-card-info">
               <strong>Modo Cinema</strong>
               <span>Luz a 15% e cortinas fechadas</span>
             </div>
-            <span class="quick-card-status-badge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">Cena</span>
-          </button>
+          </div>
 
           <!-- Ação 5: Cena Boa Noite -->
-          <button type="button" class="quick-action-card-btn" onclick="triggerNightScene(this)">
-            <div class="quick-card-icon-wrap" style="color: #6366f1; background: rgba(99, 102, 241, 0.14);">
-              <i class="fa-solid fa-moon"></i>
+          <div class="quick-action-card" onclick="triggerNightScene(this)" role="button" tabindex="0" title="Clique para ativar rotina ou na seta para abrir Automações">
+            <div class="quick-card-top-row">
+              <div class="quick-card-icon-wrap" style="color: #818cf8; background: rgba(99, 102, 241, 0.12); border-color: rgba(99, 102, 241, 0.25);" onclick="event.stopPropagation(); switchTab('tab-automacoes')" title="Ir direto para aba Automações" aria-label="Ir direto para aba Automações">
+                <i class="fa-solid fa-moon"></i>
+              </div>
+              <div class="quick-card-actions-cluster">
+                <span class="quick-card-status-badge" style="color: #818cf8; background: rgba(99, 102, 241, 0.12); border-color: rgba(99, 102, 241, 0.25);">Rotina</span>
+                <button type="button" class="quick-card-shortcut-btn" onclick="event.stopPropagation(); switchTab('tab-automacoes')" title="Abrir painel de Automações" aria-label="Abrir painel de Automações">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+              </div>
             </div>
-            <div class="quick-card-text">
+            <div class="quick-card-info">
               <strong>Modo Boa Noite</strong>
               <span>Desligar circuitos e armar</span>
             </div>
-            <span class="quick-card-status-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">Rotina</span>
-          </button>
+          </div>
 
-          <!-- Ação 6: Portão &amp; Garagem -->
-          <button type="button" class="quick-action-card-btn" onclick="toggleGateAccess(this)">
-            <div class="quick-card-icon-wrap" style="color: #f59e0b; background: rgba(245, 158, 11, 0.14);">
-              <i class="fa-solid fa-warehouse"></i>
+          <!-- Ação 6: Portão & Garagem -->
+          <div class="quick-action-card" onclick="toggleGateAccess(this)" role="button" tabindex="0" title="Clique para alternar portão ou na seta para abrir Acessos">
+            <div class="quick-card-top-row">
+              <div class="quick-card-icon-wrap" style="color: #fbbf24; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.25);" onclick="event.stopPropagation(); switchTab('tab-seguranca')" title="Ir direto para Segurança / Acessos" aria-label="Ir direto para Segurança / Acessos">
+                <i class="fa-solid fa-warehouse"></i>
+              </div>
+              <div class="quick-card-actions-cluster">
+                <span class="quick-card-status-badge" style="color: #fbbf24; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.25);">Acesso</span>
+                <button type="button" class="quick-card-shortcut-btn" onclick="event.stopPropagation(); switchTab('tab-seguranca')" title="Abrir controles de Acesso" aria-label="Abrir controles de Acesso">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+              </div>
             </div>
-            <div class="quick-card-text">
+            <div class="quick-card-info">
               <strong>Portão &amp; Garagem</strong>
               <span id="qa-gate-status">Portão fechado</span>
             </div>
-            <span class="quick-card-status-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">Acesso</span>
-          </button>
+          </div>
 
           <!-- Ação 7: Otimização Energética -->
-          <button type="button" class="quick-action-card-btn" onclick="triggerEnergyOptimizer(this)">
-            <div class="quick-card-icon-wrap" style="color: #eab308; background: rgba(234, 179, 8, 0.14);">
-              <i class="fa-solid fa-leaf"></i>
+          <div class="quick-action-card" onclick="triggerEnergyOptimizer(this)" role="button" tabindex="0" title="Clique para cortar espera ou na seta para abrir Energia">
+            <div class="quick-card-top-row">
+              <div class="quick-card-icon-wrap" style="color: #00e5ff; background: rgba(0, 229, 255, 0.12); border-color: rgba(0, 229, 255, 0.25);" onclick="event.stopPropagation(); switchTab('tab-energia')" title="Ir direto para aba Energia" aria-label="Ir direto para aba Energia">
+                <i class="fa-solid fa-leaf"></i>
+              </div>
+              <div class="quick-card-actions-cluster">
+                <span class="quick-card-status-badge" style="color: #00e5ff; background: rgba(0, 229, 255, 0.12); border-color: rgba(0, 229, 255, 0.25);">Economia</span>
+                <button type="button" class="quick-card-shortcut-btn" onclick="event.stopPropagation(); switchTab('tab-energia')" title="Abrir painel de Energia" aria-label="Abrir painel de Energia">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+              </div>
             </div>
-            <div class="quick-card-text">
+            <div class="quick-card-info">
               <strong>Eficiência Verde</strong>
               <span>Cortar consumo em espera</span>
             </div>
-            <span class="quick-card-status-badge" style="background: rgba(234, 179, 8, 0.15); color: #fde047;">Economia</span>
-          </button>
+          </div>
 
-          <!-- Ação 8: Central de Busca &amp; Comandos -->
-          <button type="button" class="quick-action-card-btn" onclick="openSearchDrawer()">
-            <div class="quick-card-icon-wrap" style="color: #00e5ff; background: rgba(0, 229, 255, 0.14);">
-              <i class="fa-solid fa-magnifying-glass"></i>
+          <!-- Ação 8: Central de Busca & Comandos -->
+          <div class="quick-action-card" onclick="openSearchDrawer()" role="button" tabindex="0" title="Clique para abrir Drawer de Busca (Ctrl+K)">
+            <div class="quick-card-top-row">
+              <div class="quick-card-icon-wrap" style="color: #00e5ff; background: rgba(0, 229, 255, 0.15); border-color: rgba(0, 229, 255, 0.35);" onclick="event.stopPropagation(); openSearchDrawer()" title="Abrir Drawer de Busca" aria-label="Abrir Drawer de Busca">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </div>
+              <div class="quick-card-actions-cluster">
+                <span class="quick-card-status-badge" style="color: #00e5ff; background: rgba(0, 229, 255, 0.12); border-color: rgba(0, 229, 255, 0.25);">Ctrl + K</span>
+                <button type="button" class="quick-card-shortcut-btn" onclick="event.stopPropagation(); openSearchDrawer()" title="Abrir Drawer de Busca" aria-label="Abrir Drawer de Busca">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+              </div>
             </div>
-            <div class="quick-card-text">
+            <div class="quick-card-info">
               <strong>Todos os Comandos</strong>
               <span>Abrir drawer de pesquisa</span>
             </div>
-            <span class="quick-card-status-badge" style="background: rgba(0, 229, 255, 0.15); color: #00e5ff;">Ctrl + K</span>
-          </button>
+          </div>
         </div>
       </div>
-
-      <!-- SEÇÃO 2: CONCEITO, TECNOLOGIA & IDENTIDADE DO DOMUS -->
+<!-- SEÇÃO 2: CONCEITO, TECNOLOGIA & IDENTIDADE DO DOMUS -->
       <section class="domus-concept-section">
         <div class="concept-section-header">
           <h2><i class="fa-solid fa-brain"></i> DOMUS • Arquitetura &amp; Inteligência Residencial</h2>
@@ -2947,9 +3008,9 @@
   <!-- ==========================================================================
        DRAWER / MODAL FLUTUANTE DE PESQUISA DEDICADA DO DOMUS (ABA INTERATIVA)
        ========================================================================== -->
-  <div id="domus-search-drawer" class="search-drawer-overlay" aria-hidden="true" onclick="handleSearchOverlayClick(event)">
+    <div id="domus-search-drawer" class="search-drawer-overlay" aria-hidden="true" onclick="handleSearchOverlayClick(event)">
     <div class="search-drawer-panel" onclick="event.stopPropagation()">
-      <!-- Header do Drawer com Campo de Busca -->
+      <!-- Header do Drawer com Campo de Busca e Atalhos -->
       <div class="search-drawer-header">
         <div class="search-drawer-input-wrap">
           <i class="fa-solid fa-magnifying-glass search-drawer-icon"></i>
@@ -2957,62 +3018,66 @@
             type="text" 
             id="drawer-search-input" 
             class="drawer-search-input" 
-            placeholder="O que você deseja controlar no DOMUS? (ex: luz, ar condicionado, alarme, sala...)"
+            placeholder="Buscar comandos, cômodos, rotinas, segurança ou páginas..."
             autocomplete="off"
             spellcheck="false"
             oninput="handleDrawerSearchInput(this.value)"
+            onkeydown="handleDrawerKeyboardNav(event)"
           >
           <button type="button" class="drawer-search-clear" id="drawer-search-clear" onclick="clearDrawerSearch()" style="display: none;" title="Limpar busca">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
         <button type="button" class="drawer-close-btn" onclick="closeSearchDrawer()" title="Fechar (Esc)">
-          <i class="fa-solid fa-xmark"></i>
+          <kbd>ESC</kbd>
         </button>
       </div>
 
-      <!-- Filtros Rápidos (Categorias do Sistema) -->
+      <!-- Filtros de Categorias em Linha Única Minimalista -->
       <div class="search-filter-chips">
         <button type="button" class="search-chip active" data-filter="all" onclick="filterDrawerCategory('all', this)">
-          <i class="fa-solid fa-border-all"></i> Todas as Opções (<span id="chip-count-all">0</span>)
+          Todas as Opções (<span id="chip-count-all">0</span>)
         </button>
-        <button type="button" class="search-chip" data-filter="Dispositivo" onclick="filterDrawerCategory('Dispositivo', this)">
-          <i class="fa-solid fa-plug"></i> Dispositivos
+        <button type="button" class="search-chip" data-filter="Página" onclick="filterDrawerCategory('Página', this)">
+          Páginas
         </button>
         <button type="button" class="search-chip" data-filter="Iluminação" onclick="filterDrawerCategory('Iluminação', this)">
-          <i class="fa-solid fa-lightbulb"></i> Iluminação
+          Iluminação
         </button>
         <button type="button" class="search-chip" data-filter="Climatização" onclick="filterDrawerCategory('Climatização', this)">
-          <i class="fa-solid fa-snowflake"></i> Climatização
+          Climatização
         </button>
         <button type="button" class="search-chip" data-filter="Segurança" onclick="filterDrawerCategory('Segurança', this)">
-          <i class="fa-solid fa-shield-halved"></i> Segurança
+          Segurança
         </button>
         <button type="button" class="search-chip" data-filter="Automação" onclick="filterDrawerCategory('Automação', this)">
-          <i class="fa-solid fa-robot"></i> Automações
-        </button>
-        <button type="button" class="search-chip" data-filter="Cômodo" onclick="filterDrawerCategory('Cômodo', this)">
-          <i class="fa-solid fa-door-open"></i> Cômodos
+          Automações
         </button>
         <button type="button" class="search-chip" data-filter="Configuração" onclick="filterDrawerCategory('Configuração', this)">
-          <i class="fa-solid fa-gear"></i> Configurações &amp; Suporte
+          Configurações
         </button>
       </div>
 
-      <!-- Corpo do Drawer: Exibição Inicial de Todas as Opções Brutas e Filtros Dinâmicos -->
+      <!-- Corpo do Drawer: Lista Vertical com Agrupamentos Fluidos -->
       <div class="search-drawer-body">
-        <div class="search-drawer-results-meta" id="drawer-results-meta">
-          <span id="drawer-results-count">Exibindo todas as opções disponíveis no sistema</span>
-          <span class="drawer-results-tip"><kbd>↑</kbd> <kbd>↓</kbd> navegar • <kbd>Enter</kbd> executar • <kbd>Esc</kbd> fechar</span>
-        </div>
         <div class="search-drawer-items-list" id="drawer-items-list">
           <!-- Renderizado dinamicamente via JavaScript -->
         </div>
       </div>
+
+      <!-- Rodapé com Dicas de Atalhos e Contagem -->
+      <div class="search-drawer-footer">
+        <div class="drawer-footer-shortcuts">
+          <span><kbd>↑</kbd><kbd>↓</kbd> Navegar</span>
+          <span><kbd>↵</kbd> Executar</span>
+          <span><kbd>ESC</kbd> Fechar</span>
+        </div>
+        <span id="drawer-results-count">Carregando opções...</span>
+      </div>
     </div>
   </div>
 
-  <!-- ==========================================================================
+<!-- ==========================================================================
        MODAL DE SUPORTE & REPORTE TÉCNICO DO SISTEMA DOMUS
        ========================================================================== -->
   <div id="domus-support-modal" class="modal-overlay" style="display: none;" onclick="closeSupportModal(event)">
@@ -7205,6 +7270,14 @@
     let currentDrawerQuery = '';
     let currentDrawerItemsList = [];
 
+        // ==========================================================================
+    // DRAWER / OVERLAY DE BUSCA MINIMALISTA, FLUIDO & VELOZ (COM ATALHO CTRL+K)
+    // ==========================================================================
+    let currentDrawerCategory = 'all';
+    let currentDrawerQuery = '';
+    let currentDrawerItemsList = [];
+    let drawerActiveIndex = 0;
+
     function openSearchDrawer() {
       const drawer = document.getElementById('domus-search-drawer');
       if (!drawer) return;
@@ -7217,10 +7290,15 @@
         currentDrawerQuery = '';
         setTimeout(() => input.focus(), 80);
       }
+
+      const clearBtn = document.getElementById('drawer-search-clear');
+      if (clearBtn) clearBtn.style.display = 'none';
+
       currentDrawerCategory = 'all';
       updateChipActiveState('all');
+      drawerActiveIndex = 0;
 
-      // Exibe inicialmente TODAS as opções brutas disponíveis no sistema
+      // Exibe inicialmente todas as opções brutas organizadas
       const allItems = DomusSearchRegistry.getAllItems();
       const allCountEl = document.getElementById('chip-count-all');
       if (allCountEl) allCountEl.innerText = allItems.length;
@@ -7250,12 +7328,14 @@
       }
       if (clearBtn) clearBtn.style.display = 'none';
       currentDrawerQuery = '';
+      drawerActiveIndex = 0;
       applyDrawerFilters();
     }
 
     function filterDrawerCategory(category, chipEl) {
       currentDrawerCategory = category;
       updateChipActiveState(category);
+      drawerActiveIndex = 0;
       applyDrawerFilters();
     }
 
@@ -7269,11 +7349,53 @@
 
     function handleDrawerSearchInput(query) {
       currentDrawerQuery = query || '';
+      drawerActiveIndex = 0;
       const clearBtn = document.getElementById('drawer-search-clear');
       if (clearBtn) {
         clearBtn.style.display = currentDrawerQuery.trim() ? 'block' : 'none';
       }
       applyDrawerFilters();
+    }
+
+    function handleDrawerKeyboardNav(e) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (currentDrawerItemsList.length > 0) {
+          drawerActiveIndex = (drawerActiveIndex + 1) % currentDrawerItemsList.length;
+          updateDrawerActiveHighlight();
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (currentDrawerItemsList.length > 0) {
+          drawerActiveIndex = (drawerActiveIndex - 1 + currentDrawerItemsList.length) % currentDrawerItemsList.length;
+          updateDrawerActiveHighlight();
+        }
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (currentDrawerItemsList[drawerActiveIndex]) {
+          executeDrawerItemAction(drawerActiveIndex);
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        closeSearchDrawer();
+      }
+    }
+
+    function updateDrawerActiveHighlight() {
+      const rows = document.querySelectorAll('.drawer-result-row');
+      rows.forEach((r, idx) => {
+        const isSel = idx === drawerActiveIndex;
+        r.classList.toggle('selected', isSel);
+        if (isSel) {
+          r.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+      });
+    }
+
+    function setDrawerActiveIndex(idx) {
+      drawerActiveIndex = idx;
+      const rows = document.querySelectorAll('.drawer-result-row');
+      rows.forEach((r, i) => r.classList.toggle('selected', i === idx));
     }
 
     function applyDrawerFilters() {
@@ -7282,32 +7404,43 @@
 
       let filtered = allItems;
 
-      // Filtro por Categoria se selecionada
+      // Filtro por Categoria selecionada
       if (currentDrawerCategory !== 'all') {
         filtered = filtered.filter(item => {
-          const itemCat = item.category || '';
-          if (currentDrawerCategory === 'Configuração') {
-            return itemCat === 'Configuração' || itemCat === 'Suporte' || itemCat === 'Perfil';
+          const itemCat = (item.category || '').toLowerCase();
+          const targetCat = currentDrawerCategory.toLowerCase();
+          if (targetCat === 'automação') {
+            return itemCat.includes('automação') || itemCat.includes('cena') || itemCat.includes('rotina');
           }
-          return itemCat.toLowerCase().includes(currentDrawerCategory.toLowerCase());
+          if (targetCat === 'dispositivo') {
+            return itemCat.includes('dispositivo') || itemCat.includes('controle') || itemCat.includes('cômodo');
+          }
+          return itemCat.includes(targetCat);
         });
       }
 
-      // Filtro dinâmico por Texto Digitado
+      // Filtro por Termo digitado
       if (normQ) {
         filtered = filtered.filter(item => {
-          const titleNorm = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(item.title) : item.title.toLowerCase();
-          const subNorm = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(item.subtitle) : (item.subtitle || '').toLowerCase();
-          const catNorm = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(item.category) : (item.category || '').toLowerCase();
-          const inKeywords = Array.isArray(item.keywords) && item.keywords.some(k => {
-            const kn = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(k) : k.toLowerCase();
-            return kn.includes(normQ);
-          });
-          return titleNorm.includes(normQ) || subNorm.includes(normQ) || catNorm.includes(normQ) || inKeywords;
+          const title = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(item.title) : item.title.toLowerCase();
+          const sub = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(item.subtitle || '') : (item.subtitle || '').toLowerCase();
+          const cat = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(item.category || '') : (item.category || '').toLowerCase();
+          const kws = Array.isArray(item.keywords)
+            ? item.keywords.map(k => typeof normalizeSearchStr === 'function' ? normalizeSearchStr(k) : k.toLowerCase())
+            : [];
+
+          return title.includes(normQ) || sub.includes(normQ) || cat.includes(normQ) || kws.some(k => k.includes(normQ));
         });
       }
 
       renderDrawerItems(filtered);
+    }
+
+    function highlightSearchMatch(text, query) {
+      if (!text || !query.trim()) return escapeHtml(text || '');
+      const escapedQuery = query.trim().replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const regex = new RegExp(`(${escapedQuery})`, 'gi');
+      return escapeHtml(text).replace(regex, '<mark>$1</mark>');
     }
 
     function renderDrawerItems(items) {
@@ -7316,10 +7449,13 @@
       if (!container) return;
 
       currentDrawerItemsList = items || [];
+      if (drawerActiveIndex >= currentDrawerItemsList.length) {
+        drawerActiveIndex = 0;
+      }
 
       if (countEl) {
         if (!currentDrawerQuery.trim() && currentDrawerCategory === 'all') {
-          countEl.innerHTML = `<strong>${items.length} opções disponíveis</strong> em todo o ecossistema DOMUS`;
+          countEl.innerHTML = `<strong>${items.length} opções disponíveis</strong> no ecossistema`;
         } else {
           countEl.innerHTML = `<strong>${items.length} resultado(s)</strong> para "${escapeHtml(currentDrawerQuery || currentDrawerCategory)}"`;
         }
@@ -7330,31 +7466,58 @@
           <div class="search-drawer-empty">
             <i class="fa-solid fa-magnifying-glass"></i>
             <h4>Nenhuma opção encontrada</h4>
-            <p>Tente buscar por outro termo, como <em>luz</em>, <em>quarto</em>, <em>ar condicionado</em>, <em>alarme</em> ou <em>senha</em>.</p>
+            <p>Tente buscar por termos como <em>luz</em>, <em>sala</em>, <em>ar condicionado</em>, <em>alarme</em> ou <em>moradores</em>.</p>
           </div>
         `;
         return;
       }
 
       let html = '';
+      let lastGroup = null;
+      const isSearchMode = !!currentDrawerQuery.trim();
+
       items.forEach((item, idx) => {
-        const titleHighlight = typeof highlightSearchMatch === 'function' && currentDrawerQuery.trim()
-          ? highlightSearchMatch(item.title, currentDrawerQuery)
-          : escapeHtml(item.title);
+        // Quando visualizando todas as opções brutas, insere cabeçalhos de grupos intuitivos
+        if (!isSearchMode && currentDrawerCategory === 'all') {
+          let currentGroup = 'OUTROS COMANDOS';
+          const cat = (item.category || '').toLowerCase();
+          if (cat === 'página') currentGroup = 'PÁGINAS E NAVEGAÇÃO DO SISTEMA';
+          else if (cat.includes('ilumina') || cat.includes('clima') || cat.includes('dispositivo') || cat.includes('controle') || cat.includes('cômodo')) currentGroup = 'DISPOSITIVOS, CÔMODOS E CONTROLES';
+          else if (cat.includes('seguran') || cat.includes('alarme')) currentGroup = 'SEGURANÇA E MONITORAMENTO';
+          else if (cat.includes('cena') || cat.includes('automa') || cat.includes('rotina')) currentGroup = 'ROTINAS, CENAS E AUTOMAÇÕES';
+          else if (cat.includes('config') || cat.includes('morador') || cat.includes('casa')) currentGroup = 'CONFIGURAÇÕES E RESIDÊNCIA';
+
+          if (currentGroup !== lastGroup) {
+            html += `<div class="drawer-section-header">${currentGroup}</div>`;
+            lastGroup = currentGroup;
+          }
+        }
+
+        const isSelected = idx === drawerActiveIndex;
+        const titleHighlight = highlightSearchMatch(item.title, currentDrawerQuery);
+
+        // Cores de acento sutis por categoria
+        let itemColor = '#00e5ff';
+        let itemBg = 'rgba(0, 229, 255, 0.12)';
+        const catLower = (item.category || '').toLowerCase();
+        if (catLower.includes('ilumina')) { itemColor = '#ff7a00'; itemBg = 'rgba(255, 122, 0, 0.12)'; }
+        else if (catLower.includes('seguran')) { itemColor = '#2ecc71'; itemBg = 'rgba(46, 204, 113, 0.12)'; }
+        else if (catLower.includes('cena')) { itemColor = '#c084fc'; itemBg = 'rgba(168, 85, 247, 0.12)'; }
+        else if (catLower.includes('rotina') || catLower.includes('automa')) { itemColor = '#818cf8'; itemBg = 'rgba(99, 102, 241, 0.12)'; }
 
         html += `
-          <div class="drawer-result-card" onclick="executeDrawerItemAction(${idx})">
-            <div class="drawer-item-icon-wrap">
+          <div class="drawer-result-row ${isSelected ? 'selected' : ''}" data-idx="${idx}" onclick="executeDrawerItemAction(${idx})" onmouseenter="setDrawerActiveIndex(${idx})">
+            <div class="drawer-row-icon" style="color: ${itemColor}; background: ${itemBg};">
               <i class="${escapeHtml(item.icon || 'fa-solid fa-cube')}"></i>
             </div>
-            <div class="drawer-item-info">
-              <div class="drawer-item-header-row">
-                <span class="drawer-item-title">${titleHighlight}</span>
-                <span class="drawer-item-badge">${escapeHtml(item.category || 'Geral')}</span>
-              </div>
-              <div class="drawer-item-sub">${escapeHtml(item.subtitle || '')}</div>
+            <div class="drawer-row-content">
+              <div class="drawer-row-title">${titleHighlight}</div>
+              <div class="drawer-row-sub">${escapeHtml(item.subtitle || '')}</div>
             </div>
-            <i class="fa-solid fa-chevron-right drawer-item-arrow"></i>
+            <div class="drawer-row-meta">
+              <span class="drawer-row-tag">${escapeHtml(item.category || 'Geral')}</span>
+              <span class="drawer-row-enter-hint"><kbd>↵</kbd></span>
+            </div>
           </div>
         `;
       });
@@ -7370,8 +7533,7 @@
         item.action();
       }
     }
-
-    // ==========================================================================
+// ==========================================================================
     // MODAL DE SUPORTE & DIAGNÓSTICO DO SISTEMA
     // ==========================================================================
     function openSupportModal() {
