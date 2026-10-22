@@ -428,16 +428,16 @@
       </div>
 
       <div class="top-header-right">
-        <!-- ÍCONE DE SUPORTE INTERATIVO E DISCRETO -->
-        <button type="button" class="top-support-btn" onclick="openSupportModal()" title="Central de Suporte &amp; Reporte de Erros">
+        <!-- ÍCONE DE SUPORTE INTERATIVO (ABRE CENTRAL DE SUPORTE EM NOVA ABA) -->
+        <a href="suporte.html" target="_blank" rel="noopener noreferrer" class="top-support-btn" title="Central de Suporte &amp; Atendimento Técnico (Abre em nova aba)">
           <i class="fa-solid fa-headset"></i>
           <span class="support-status-indicator" title="Suporte Online"></span>
-        </button>
+        </a>
 
         <!-- LINHA DE IDENTIFICAÇÃO DO PERFIL DO USUÁRIO LOGADO -->
         <div class="top-profile-badge" onclick="switchTab('tab-perfil')" title="Acessar Meu Perfil">
           <div class="top-avatar-wrap">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar" id="top-profile-avatar" class="top-profile-avatar" referrerpolicy="no-referrer" onerror="handleAvatarError(this)">
+            <img src="domus-avatar.svg" alt="Avatar DOMUS" id="top-profile-avatar" class="top-profile-avatar" referrerpolicy="no-referrer" onerror="handleAvatarError(this)">
             <span class="top-avatar-status-dot"></span>
           </div>
           <div class="top-profile-info">
@@ -1686,8 +1686,12 @@
       <div class="profile-header-card">
         <div class="profile-main-info">
           <div class="profile-avatar-container">
-            <div class="icon-box active-glow profile-avatar" id="profile-avatar-icon">
-              <i class="fa-solid fa-user-astronaut fa-2x"></i>
+            <div class="profile-avatar-wrapper" onclick="openEditProfileModal()" title="Clique para alterar avatar ou foto de perfil">
+              <img src="domus-avatar.svg" alt="Avatar DOMUS" id="profile-main-avatar-img" class="profile-main-avatar-img" onerror="handleAvatarError(this)">
+              <div class="profile-avatar-overlay">
+                <i class="fa-solid fa-camera"></i>
+                <span>Foto</span>
+              </div>
             </div>
             <span class="online-indicator" title="Usuário Ativo"></span>
           </div>
@@ -1711,7 +1715,7 @@
           </div>
         </div>
         <button type="button" class="btn-ai-action btn-ai-secondary btn-edit-profile-top" onclick="openEditProfileModal()">
-          <i class="fa-solid fa-pen-to-square"></i> Editar perfil
+          <i class="fa-solid fa-pen-to-square"></i> Editar perfil &amp; Foto
         </button>
       </div>
 
@@ -3003,6 +3007,54 @@
         </div>
       </form>
     </div>
+  <!-- MODAL DE EDIÇÃO DE PERFIL E FOTO / AVATAR -->
+  <div id="modal-edit-profile" class="modal-overlay" onclick="closeEditProfileModal(event)">
+    <div class="modal-content" style="max-width: 500px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-gear" style="color: var(--blue-accent);"></i> Personalizar Perfil &amp; Avatar</h3>
+        <button type="button" class="btn-close-modal" onclick="closeEditProfileModal()">&times;</button>
+      </div>
+
+      <!-- Avatar Preview e Ações de Imagem -->
+      <div class="modal-avatar-preview-box">
+        <img src="domus-avatar.svg" alt="Preview Avatar" id="modal-avatar-preview-img" class="modal-avatar-preview-img" onerror="handleAvatarError(this)">
+        <div class="avatar-actions-row">
+          <input type="file" id="profile-photo-file-input" accept="image/jpeg,image/png,image/webp" style="display: none;" onchange="handleProfilePhotoSelected(this)">
+          <button type="button" class="btn-avatar-action btn-avatar-upload" onclick="document.getElementById('profile-photo-file-input').click()">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Carregar Foto
+          </button>
+          <button type="button" class="btn-avatar-action btn-avatar-reset" onclick="restoreDefaultAvatar()" title="Voltar ao símbolo oficial DOMUS">
+            <i class="fa-solid fa-rotate-left"></i> Usar Padrão DOMUS
+          </button>
+        </div>
+        <span style="font-size: 0.73rem; color: var(--text-muted); text-align: center;">Formatos: JPG, PNG ou WEBP • Tamanho máx: 2 MB</span>
+        <div id="avatar-upload-status" style="font-size: 0.78rem; display: none;"></div>
+      </div>
+
+      <form onsubmit="handleSaveProfileForm(event)" id="form-edit-profile">
+        <div class="form-group">
+          <label for="edit-profile-full-name"><i class="fa-solid fa-user"></i> Nome de Exibição</label>
+          <input type="text" id="edit-profile-full-name" required placeholder="Seu nome completo">
+        </div>
+
+        <div class="form-group">
+          <label for="edit-profile-email-read"><i class="fa-solid fa-envelope"></i> E-mail da Conta</label>
+          <input type="email" id="edit-profile-email-read" readonly style="opacity: 0.7; cursor: not-allowed;">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-id-card"></i> ID DOMUS de Acesso (Público)</label>
+          <input type="text" id="edit-profile-public-id-read" readonly style="opacity: 0.7; cursor: not-allowed;">
+        </div>
+
+        <div class="modal-actions" style="margin-top: 20px;">
+          <button type="button" class="btn-ai-action btn-ai-secondary" onclick="closeEditProfileModal()">Cancelar</button>
+          <button type="submit" class="btn-ai-action btn-ai-primary" id="btn-save-profile">
+            <i class="fa-solid fa-floppy-disk"></i> Salvar Perfil
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- ==========================================================================
@@ -3227,10 +3279,10 @@
     }
     window.enterDemoGuestMode = enterDemoGuestMode;
 
-        function handleAvatarError(img) {
+    function handleAvatarError(img) {
       if (!img) return;
       img.onerror = null;
-      img.src = "favicon.svg";
+      img.src = "domus-avatar.svg";
     }
     window.handleAvatarError = handleAvatarError;
 
@@ -3385,6 +3437,12 @@
         greetingEl.innerHTML = `Olá, ${escapeHtml(firstName)}!`;
       }
 
+      // Saudação no topo do Top Header
+      const topGreetingEl = document.getElementById('top-user-greeting');
+      if (topGreetingEl) {
+        topGreetingEl.innerText = `Olá, ${firstName}`;
+      }
+
       // Atualização do Cabeçalho Superior (Top Header): Nome, Cargo e Avatar
       const topNameEl = document.getElementById('top-profile-name');
       if (topNameEl) {
@@ -3394,6 +3452,21 @@
       if (topRoleEl) {
         const userRole = (currentAuthProfile && currentAuthProfile.role) || 'Administrador';
         topRoleEl.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${escapeHtml(userRole)}`;
+      }
+
+      // Sincronização do Avatar (do Supabase, localStorage ou padrão DOMUS domus-avatar.svg)
+      const currentAvatar = (currentAuthProfile && currentAuthProfile.avatar_url) || localStorage.getItem('domus_custom_avatar') || 'domus-avatar.svg';
+      const topAvatarEl = document.getElementById('top-profile-avatar');
+      if (topAvatarEl) {
+        topAvatarEl.src = currentAvatar;
+      }
+      const mainAvatarEl = document.getElementById('profile-main-avatar-img');
+      if (mainAvatarEl) {
+        mainAvatarEl.src = currentAvatar;
+      }
+      const modalAvatarPreview = document.getElementById('modal-avatar-preview-img');
+      if (modalAvatarPreview) {
+        modalAvatarPreview.src = currentAvatar;
       }
 
       // Nome e identificador na aba de Perfil
@@ -3412,11 +3485,19 @@
       if (editNameInput) {
         editNameInput.value = fullName;
       }
+      const modalFullNameInput = document.getElementById('edit-profile-full-name');
+      if (modalFullNameInput) {
+        modalFullNameInput.value = fullName;
+      }
 
-      // E-mail na aba de Perfil
+      // E-mail na aba de Perfil e nos Modais
       const profEmailEl = document.getElementById('profile-display-email');
       if (profEmailEl && email) {
         profEmailEl.innerText = email;
+      }
+      const modalEmailInput = document.getElementById('edit-profile-email-read');
+      if (modalEmailInput && email) {
+        modalEmailInput.value = email;
       }
 
       // ID DOMUS de 9 dígitos público
@@ -3432,6 +3513,11 @@
       const profIdEl = document.getElementById('profile-display-public-id');
       if (profIdEl) {
         profIdEl.innerText = publicId.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
+      }
+
+      const modalIdInput = document.getElementById('edit-profile-public-id-read');
+      if (modalIdInput) {
+        modalIdInput.value = publicId.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
       }
 
       const chatIdEl = document.getElementById('chat-my-public-id');
@@ -3469,6 +3555,226 @@
 
       applyUserDataToUI(fullName, email);
     }
+
+    // ==========================================================================
+    // GESTÃO DE PERFIL: MODAL, UPLOAD DE FOTO E AVATAR PADRÃO
+    // ==========================================================================
+    function openEditProfileModal() {
+      const modal = document.getElementById('modal-edit-profile');
+      if (!modal) return;
+      
+      const currentName = (currentAuthProfile && currentAuthProfile.full_name) || (currentAuthUser && currentAuthUser.user_metadata?.full_name) || 'Matheus D. Lucca';
+      const currentEmail = (currentAuthUser && currentAuthUser.email) || 'matheusdlucca30099@gmail.com';
+      let publicId = currentAuthProfile?.public_id || localStorage.getItem('domus_cached_public_id') || '492817293';
+
+      const nameInput = document.getElementById('edit-profile-full-name');
+      const emailInput = document.getElementById('edit-profile-email-read');
+      const idInput = document.getElementById('edit-profile-public-id-read');
+      const previewImg = document.getElementById('modal-avatar-preview-img');
+
+      if (nameInput) nameInput.value = currentName;
+      if (emailInput) emailInput.value = currentEmail;
+      if (idInput) idInput.value = publicId.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
+      
+      const currentAvatar = (currentAuthProfile && currentAuthProfile.avatar_url) || localStorage.getItem('domus_custom_avatar') || 'domus-avatar.svg';
+      if (previewImg) {
+        previewImg.src = currentAvatar;
+        previewImg.onerror = () => { previewImg.src = 'domus-avatar.svg'; };
+      }
+
+      const statusBox = document.getElementById('avatar-upload-status');
+      if (statusBox) statusBox.style.display = 'none';
+
+      modal.classList.add('active');
+    }
+    window.openEditProfileModal = openEditProfileModal;
+
+    function closeEditProfileModal(event) {
+      if (event && event.target && !event.target.classList.contains('modal-overlay') && !event.target.classList.contains('btn-close-modal')) {
+        return;
+      }
+      const modal = document.getElementById('modal-edit-profile');
+      if (modal) modal.classList.remove('active');
+    }
+    window.closeEditProfileModal = closeEditProfileModal;
+
+    function triggerProfilePhotoUpload() {
+      const fileInput = document.getElementById('profile-photo-file-input');
+      if (fileInput) fileInput.click();
+    }
+    window.triggerProfilePhotoUpload = triggerProfilePhotoUpload;
+
+    async function handleProfilePhotoSelected(fileInput) {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+
+      const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+      if (!validTypes.includes(file.type)) {
+        if (typeof showSmartToast === 'function') {
+          showSmartToast('Formato Não Suportado', 'Selecione uma imagem válida (JPG, PNG ou WEBP).', 'fa-solid fa-triangle-exclamation', 'var(--orange-bright)');
+        } else {
+          alert('Por favor, selecione uma imagem válida (JPG, PNG ou WEBP).');
+        }
+        fileInput.value = '';
+        return;
+      }
+
+      // Limite de 2 MB
+      const maxSize = 2 * 1024 * 1024;
+      if (file.size > maxSize) {
+        if (typeof showSmartToast === 'function') {
+          showSmartToast('Arquivo Muito Grande', 'O tamanho máximo permitido para o avatar é 2 MB.', 'fa-solid fa-circle-exclamation', 'var(--orange-bright)');
+        } else {
+          alert('O tamanho da foto deve ser de até 2 MB.');
+        }
+        fileInput.value = '';
+        return;
+      }
+
+      const statusBox = document.getElementById('avatar-upload-status');
+      if (statusBox) {
+        statusBox.style.display = 'block';
+        statusBox.innerHTML = '<span style="color: #00e5ff;"><i class="fa-solid fa-circle-notch fa-spin"></i> Processando imagem...</span>';
+      }
+
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const dataUrl = e.target.result;
+
+        // Atualiza elementos de imagem imediatamente
+        const topAvatarEl = document.getElementById('top-profile-avatar');
+        const mainAvatarEl = document.getElementById('profile-main-avatar-img');
+        const modalAvatarPreview = document.getElementById('modal-avatar-preview-img');
+
+        if (topAvatarEl) topAvatarEl.src = dataUrl;
+        if (mainAvatarEl) mainAvatarEl.src = dataUrl;
+        if (modalAvatarPreview) modalAvatarPreview.src = dataUrl;
+
+        // Persiste localmente para garantia de sessão
+        try {
+          localStorage.setItem('domus_custom_avatar', dataUrl);
+        } catch (storageErr) {
+          console.warn('Não foi possível salvar imagem completa no localStorage (excedeu cota):', storageErr);
+        }
+
+        // Persiste no Supabase se autenticado
+        if (supabaseClient && currentAuthUser) {
+          try {
+            await supabaseClient
+              .from('profiles')
+              .update({ avatar_url: dataUrl, updated_at: new Date().toISOString() })
+              .eq('id', currentAuthUser.id);
+            
+            if (currentAuthProfile) {
+              currentAuthProfile.avatar_url = dataUrl;
+            }
+          } catch (dbErr) {
+            console.warn('Persistência remota do avatar salvação local:', dbErr);
+          }
+        }
+
+        if (statusBox) {
+          statusBox.innerHTML = '<span style="color: #2ecc71;"><i class="fa-solid fa-circle-check"></i> Foto de perfil atualizada!</span>';
+          setTimeout(() => { statusBox.style.display = 'none'; }, 2500);
+        }
+
+        if (typeof showSmartToast === 'function') {
+          showSmartToast('Avatar Atualizado', 'Sua foto de perfil foi salva com sucesso!', 'fa-solid fa-camera', '#2ecc71');
+        }
+
+        fileInput.value = '';
+      };
+
+      reader.onerror = function() {
+        if (statusBox) {
+          statusBox.innerHTML = '<span style="color: #ef4444;"><i class="fa-solid fa-circle-xmark"></i> Falha ao ler o arquivo de imagem.</span>';
+        }
+        fileInput.value = '';
+      };
+
+      reader.readAsDataURL(file);
+    }
+    window.handleProfilePhotoSelected = handleProfilePhotoSelected;
+
+    async function restoreDefaultAvatar() {
+      // Remove foto personalizada do localStorage
+      localStorage.removeItem('domus_custom_avatar');
+
+      const defaultAvatar = 'domus-avatar.svg';
+      const topAvatarEl = document.getElementById('top-profile-avatar');
+      const mainAvatarEl = document.getElementById('profile-main-avatar-img');
+      const modalAvatarPreview = document.getElementById('modal-avatar-preview-img');
+
+      if (topAvatarEl) topAvatarEl.src = defaultAvatar;
+      if (mainAvatarEl) mainAvatarEl.src = defaultAvatar;
+      if (modalAvatarPreview) modalAvatarPreview.src = defaultAvatar;
+
+      if (currentAuthProfile) {
+        currentAuthProfile.avatar_url = null;
+      }
+
+      // Persiste no Supabase se autenticado
+      if (supabaseClient && currentAuthUser) {
+        try {
+          await supabaseClient
+            .from('profiles')
+            .update({ avatar_url: null, updated_at: new Date().toISOString() })
+            .eq('id', currentAuthUser.id);
+        } catch (dbErr) {
+          console.warn('Erro ao restaurar avatar no Supabase:', dbErr);
+        }
+      }
+
+      const statusBox = document.getElementById('avatar-upload-status');
+      if (statusBox) {
+        statusBox.style.display = 'block';
+        statusBox.innerHTML = '<span style="color: #00e5ff;"><i class="fa-solid fa-rotate-left"></i> Avatar padrão do DOMUS restaurado!</span>';
+        setTimeout(() => { statusBox.style.display = 'none'; }, 2500);
+      }
+
+      if (typeof showSmartToast === 'function') {
+        showSmartToast('Avatar Padrão', 'Avatar oficial do DOMUS restaurado com sucesso.', 'fa-solid fa-rotate-left', 'var(--blue-accent)');
+      }
+    }
+    window.restoreDefaultAvatar = restoreDefaultAvatar;
+
+    async function handleSaveProfileForm(event) {
+      event.preventDefault();
+      const nameInput = document.getElementById('edit-profile-full-name');
+      const newName = nameInput ? nameInput.value.trim() : '';
+
+      if (!newName) {
+        if (typeof showSmartToast === 'function') {
+          showSmartToast('Nome Obrigatório', 'Por favor, informe seu nome.', 'fa-solid fa-circle-exclamation', 'var(--orange-bright)');
+        }
+        return;
+      }
+
+      const email = (currentAuthUser && currentAuthUser.email) || 'email@exemplo.com';
+      applyUserDataToUI(newName, email);
+
+      if (currentAuthProfile) {
+        currentAuthProfile.full_name = newName;
+      }
+
+      if (supabaseClient && currentAuthUser) {
+        try {
+          await supabaseClient
+            .from('profiles')
+            .update({ full_name: newName, updated_at: new Date().toISOString() })
+            .eq('id', currentAuthUser.id);
+        } catch (dbErr) {
+          console.warn('Erro ao salvar nome no Supabase:', dbErr);
+        }
+      }
+
+      closeEditProfileModal();
+
+      if (typeof showSmartToast === 'function') {
+        showSmartToast('Perfil Atualizado', `Dados do perfil de ${newName} foram salvos com sucesso!`, 'fa-solid fa-circle-check', '#2ecc71');
+      }
+    }
+    window.handleSaveProfileForm = handleSaveProfileForm;
 
     
     // ==========================================================================
@@ -7720,7 +8026,6 @@
 
     checkAuthSession();
   </script>
-
 
 </body>
 </html>

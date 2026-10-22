@@ -17,6 +17,10 @@
     {
       "source": "/codigos",
       "destination": "/codigos.html"
+    },
+    {
+      "source": "/suporte",
+      "destination": "/suporte.html"
     }
   ],
   "headers": [

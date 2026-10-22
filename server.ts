@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -26,6 +27,8 @@ const allowedFiles = [
   'style.css',
   'login.html',
   'codigos.html',
+  'suporte.html',
+  'domus-avatar.svg',
   'package.json',
   'server.ts',
   'supabase-schema.sql',
@@ -70,6 +73,16 @@ app.get(['/login', '/login.html', '/auth', '/auth/login.html'], (_req, res) => {
 app.get(['/codigos', '/codigos.html'], (_req, res) => {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   return res.sendFile(path.resolve(__dirname, 'codigos.html'));
+});
+
+// SERVE CENTRAL DE SUPORTE COM UTF-8
+app.get(['/suporte', '/suporte.html'], (_req, res) => {
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  const isProduction = process.env.NODE_ENV === 'production';
+  const filePath = isProduction && fs.existsSync(path.resolve(__dirname, 'dist', 'suporte.html'))
+    ? path.resolve(__dirname, 'dist', 'suporte.html')
+    : path.resolve(__dirname, 'suporte.html');
+  return res.sendFile(filePath);
 });
 
 // INTEGRAÇÃO COM VITE EM DESENVOLVIMENTO OU ARQUIVOS ESTÁTICOS EM PRODUÇÃO

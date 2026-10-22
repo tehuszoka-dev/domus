@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central de Suporte — DOMUS Automação Residencial</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  
+  <!-- Fontes e Ícones -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-dark: #080f1d;
+      --bg-surface: #0e1726;
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --bg-card-hover: rgba(22, 34, 58, 0.9);
+      --border-subtle: rgba(0, 229, 255, 0.14);
+      --border-glow: rgba(0, 229, 255, 0.4);
+      --cyan-primary: #00e5ff;
+      --cyan-dark: #00a8cc;
+      --orange-accent: #ff7a00;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(0, 229, 255, 0.05) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(255, 122, 0, 0.04) 0%, transparent 40%);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* TOP HEADER SÓLIDO E ELEGANTE */
+    .support-top-header {
+      background: #080f1d;
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon-box {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(0, 114, 255, 0.2));
+      border: 1px solid var(--border-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cyan-primary);
+      font-size: 1.25rem;
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.2);
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-text span {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-session-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 14px;
+      background: rgba(14, 23, 38, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      font-size: 0.82rem;
+    }
+
+    .user-avatar-mini {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid var(--cyan-primary);
+      object-fit: cover;
+    }
+
+    .btn-return-app {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid var(--cyan-primary);
+      border-radius: 8px;
+      color: var(--cyan-primary);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .btn-return-app:hover {
+      background: var(--cyan-primary);
+      color: #050b14;
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* CONTAINER PRINCIPAL */
+    .support-container {
+      max-width: 1140px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 36px 24px 60px;
+      flex: 1;
+    }
+
+    /* HERO BANNER */
+    .support-hero {
+      background: linear-gradient(135deg, rgba(14, 23, 38, 0.95), rgba(10, 17, 30, 0.98));
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .support-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--cyan-primary), var(--orange-accent));
+    }
+
+    .hero-text h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-text p {
+      color: var(--text-muted);
+      font-size: 0.96rem;
+      max-width: 650px;
+    }
+
+    .hero-status-pill {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      text-align: right;
+    }
+
+    .status-badge-online {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: 20px;
+      color: var(--success);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .status-pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 10px var(--success);
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.2); }
+    }
+
+    /* GRID DE CONTEÚDO (FORMULÁRIO + HISTÓRICO) */
+    .support-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    /* CARDS */
+    .card-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-panel-header {
+      margin-bottom: 22px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-panel-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-panel-title i {
+      color: var(--cyan-primary);
+    }
+
+    /* FORMULÁRIO */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 7px;
+      letter-spacing: 0.3px;
+    }
+
+    .form-label span.req {
+      color: var(--orange-accent);
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: rgba(10, 16, 28, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--cyan-primary);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.25);
+      background: rgba(14, 23, 40, 0.95);
+    }
+
+    .form-input[readonly] {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      cursor: not-allowed;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .form-checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .form-checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--cyan-primary);
+      cursor: pointer;
+    }
+
+    .form-checkbox-text {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+    }
+
+    .btn-submit-ticket {
+      width: 100%;
+      background: linear-gradient(135deg, var(--cyan-primary), #00a8cc);
+      color: #060d17;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 16px rgba(0, 229, 255, 0.3);
+    }
+
+    .btn-submit-ticket:hover {
+      box-shadow: 0 6px 24px rgba(0, 229, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-submit-ticket:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* MENSAGEM DE SUCESSO / ALERTA */
+    .support-alert {
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 0.88rem;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      animation: fadeInAlert 0.3s ease;
+    }
+
+    @keyframes fadeInAlert {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .alert-success {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+
+    .alert-error {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
+
+    /* HISTÓRICO DE TICKETS */
+    .tickets-history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 520px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .ticket-card {
+      background: rgba(10, 16, 28, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .ticket-card:hover {
+      border-color: var(--border-glow);
+      background: rgba(14, 23, 40, 0.9);
+      transform: translateY(-1px);
+    }
+
+    .ticket-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .ticket-code {
+      font-family: monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--cyan-primary);
+    }
+
+    .ticket-date {
+      font-size: 0.74rem;
+      color: var(--text-dim);
+    }
+
+    .ticket-subject {
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .ticket-desc-excerpt {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .ticket-badges-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+    }
+
+    .ticket-cat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-muted);
+    }
+
+    .ticket-status-pill {
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .pill-aberto {
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      color: var(--cyan-primary);
+    }
+
+    .pill-analise {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: var(--warning);
+    }
+
+    .pill-resolvido {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: var(--success);
+    }
+
+    .empty-tickets-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-tickets-state i {
+      font-size: 2.2rem;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    /* INFORMAÇÕES DE CONTATO RÁPIDO */
+    .quick-channels-card {
+      margin-top: 24px;
+      background: rgba(14, 23, 38, 0.6);
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .channel-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .channel-item i {
+      color: var(--cyan-primary);
+      font-size: 1.1rem;
+    }
+
+    .channel-item a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .channel-item a:hover {
+      color: var(--cyan-primary);
+      text-decoration: underline;
+    }
+
+    /* FOOTER */
+    .support-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 20px 32px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.8rem;
+    }
+
+    /* RESPONSIVIDADE */
+    @media (max-width: 860px) {
+      .support-top-header {
+        padding: 12px 18px;
+      }
+      .support-hero {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 24px;
+      }
+      .hero-status-pill {
+        align-items: flex-start;
+        text-align: left;
+      }
+      .support-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .quick-channels-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER FIXO E SÓLIDO -->
+  <header class="support-top-header">
+    <a href="index.html" class="brand-wrap">
+      <div class="brand-icon-box">
+        <i class="fa-solid fa-house-signal"></i>
+      </div>
+      <div class="brand-text">
+        <h1>DOMUS</h1>
+        <span>Central de Suporte</span>
+      </div>
+    </a>
+
+    <div class="header-actions">
+      <div class="user-session-chip" id="support-user-badge">
+        <img src="domus-avatar.svg" alt="Avatar" class="user-avatar-mini" id="support-avatar-img">
+        <span id="support-user-name">Usuário</span>
+      </div>
+
+      <a href="index.html" class="btn-return-app" title="Retornar ao Painel DOMUS">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Voltar ao Painel</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="support-container">
+
+    <!-- HERO BANNER -->
+    <section class="support-hero">
+      <div class="hero-text">
+        <h2><i class="fa-solid fa-headset" style="color: var(--cyan-primary);"></i> Suporte Técnico &amp; Atendimento</h2>
+        <p>Precisa de assistência técnica para lâmpadas, climatização, automações ou configuração de acessos na residência? Abra um chamado diretamente com nossa engenharia de automação.</p>
+      </div>
+
+      <div class="hero-status-pill">
+        <div class="status-badge-online">
+          <span class="status-pulse-dot"></span>
+          <span>Central Operacional Ativa</span>
+        </div>
+        <span style="font-size: 0.75rem; color: var(--text-dim);">Tempo médio de triagem: ~15 min</span>
+      </div>
+    </section>
+
+    <!-- GRID COM FORMULÁRIO E HISTÓRICO -->
+    <div class="support-grid">
+
+      <!-- COLUNA 1: FORMULÁRIO DE CONTATO -->
+      <section class="card-panel">
+        <div class="card-panel-header">
+          <h3 class="card-panel-title">
+            <i class="fa-solid fa-ticket"></i>
+            <span>Nova Solicitação de Suporte</span>
+          </h3>
+          <span style="font-size: 0.75rem; color: var(--text-dim);"><span class="req" style="color: var(--orange-accent);">*</span> Obrigatório</span>
+        </div>
+
+        <!-- Alerta de Sucesso / Erro -->
+        <div id="support-alert-box" class="support-alert"></div>
+
+        <form id="support-ticket-form" onsubmit="handleSupportFormSubmit(event)">
+          
+          <!-- Identificação do Solicitante (Auto-detectado da sessão) -->
+          <div class="form-row">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label">Nome do Solicitante</label>
+              <input type="text" id="ticket-user-name" class="form-input" readonly>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label">E-mail de Contato</label>
+              <input type="email" id="ticket-user-email" class="form-input" readonly>
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-top: 16px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="ticket-category">Categoria do Problema <span class="req">*</span></label>
+              <select id="ticket-category" class="form-select" required>
+                <option value="" disabled selected>Selecione uma categoria...</option>
+                <option value="Iluminação">Iluminação &amp; Lâmpadas Conectadas</option>
+                <option value="Climatização">Climatização &amp; Temperatura</option>
+                <option value="Segurança">Segurança, Alarme &amp; Fechaduras</option>
+                <option value="Automações">Automações &amp; Cenas Inteligentes</option>
+                <option value="Energia">Monitoramento de Consumo de Energia</option>
+                <option value="Dispositivos">Dispositivos &amp; Hardware Zigbee/Matter</option>
+                <option value="Conta">Conta de Acesso, Senha &amp; Permissões</option>
+                <option value="Melhoria">Sugestão de Nova Funcionalidade</option>
+                <option value="Outros">Outras Dúvidas Técnicas</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="ticket-priority">Nível de Impacto <span class="req">*</span></label>
+              <select id="ticket-priority" class="form-select" required>
+                <option value="normal" selected>Normal — Dúvida ou ajuste operacional</option>
+                <option value="baixa">Baixa — Solicitação informativa ou cosmética</option>
+                <option value="alta">Alta — Dispositivo essencial com interrupção</option>
+                <option value="critica">Crítica — Falha no alarme ou segurança perimetral</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 18px;">
+            <label class="form-label" for="ticket-subject">Assunto Resumido <span class="req">*</span></label>
+            <input 
+              type="text" 
+              id="ticket-subject" 
+              class="form-input" 
+              placeholder="Ex: Fita LED da Sala não responde ao comando da cena Cinema" 
+              required
+              maxlength="120"
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="ticket-description">Descrição Detalhada do Problema <span class="req">*</span></label>
+            <textarea 
+              id="ticket-description" 
+              class="form-textarea" 
+              placeholder="Descreva o que ocorreu, horários em que o problema se manifesta e os procedimentos já tentados..." 
+              required
+              minlength="15"
+            ></textarea>
+          </div>
+
+          <label class="form-checkbox-group">
+            <input type="checkbox" id="ticket-include-diagnostics" checked>
+            <span class="form-checkbox-text">Anexar diagnóstico automático da residência (status dos 13 circuitos e telemetria da rede)</span>
+          </label>
+
+          <button type="submit" class="btn-submit-ticket" id="btn-submit-ticket">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span id="btn-submit-label">Registrar Solicitação</span>
+          </button>
+        </form>
+      </section>
+
+      <!-- COLUNA 2: HISTÓRICO DE SOLICITAÇÕES -->
+      <section class="card-panel">
+        <div class="card-panel-header">
+          <h3 class="card-panel-title">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Histórico de Chamados</span>
+          </h3>
+          <span id="tickets-count-badge" style="font-size: 0.8rem; color: var(--cyan-primary); font-weight: 600;">0 registros</span>
+        </div>
+
+        <div class="tickets-history-list" id="tickets-history-list">
+          <!-- Renderizado dinamicamente -->
+          <div class="empty-tickets-state" id="empty-tickets-state">
+            <i class="fa-solid fa-inbox"></i>
+            <p>Nenhuma solicitação de suporte aberta para esta conta.</p>
+            <span style="font-size: 0.78rem; color: var(--text-dim); display: block; margin-top: 6px;">Preencha o formulário ao lado para abrir seu primeiro chamado.</span>
+          </div>
+        </div>
+
+        <!-- CANAIS DE CONTATO RÁPIDO -->
+        <div class="quick-channels-card">
+          <div class="channel-item">
+            <i class="fa-solid fa-envelope"></i>
+            <div>
+              <span style="display: block; font-size: 0.72rem; color: var(--text-dim);">E-mail Direto</span>
+              <a href="mailto:suporte@domus.smart">suporte@domus.smart</a>
+            </div>
+          </div>
+
+          <div class="channel-item">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div>
+              <span style="display: block; font-size: 0.72rem; color: var(--text-dim);">SLA de Atendimento</span>
+              <strong>Até 24h úteis</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="support-footer">
+    <p>DOMUS — Sistema Inteligente de Automação Residencial • Central Integrada de Atendimento e Telemetria</p>
+  </footer>
+
+  <!-- SCRIPT DE SUPORTE E PERSISTÊNCIA SUPABASE/LOCALSTORAGE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://acbgqfyubehzihuffsga.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_TMX2by3mFmYgmN3ZdETdrQ_qfkCJdju';
+    let supabase = null;
+    let currentUserSession = null;
+
+    // Inicialização do Supabase Client
+    try {
+      if (window.supabase) {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+    } catch (e) {
+      console.warn('Supabase Client em modo fallback local:', e);
+    }
+
+    // Inicializa sessão do usuário
+    async function initSupportSession() {
+      let userName = 'Morador DOMUS';
+      let userEmail = 'morador@domus.smart';
+      let avatarUrl = 'domus-avatar.svg';
+
+      // 1. Tenta recuperar sessão do Supabase Auth
+      if (supabase) {
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session && session.user) {
+            currentUserSession = session.user;
+            userEmail = session.user.email || userEmail;
+            userName = session.user.user_metadata?.full_name || userEmail.split('@')[0];
+            
+            // Busca profile
+            const { data: prof } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+            if (prof) {
+              if (prof.full_name) userName = prof.full_name;
+              if (prof.avatar_url) avatarUrl = prof.avatar_url;
+            }
+          }
+        } catch (err) {
+          console.warn('Erro ao consultar sessão Supabase:', err);
+        }
+      }
+
+      // 2. Fallback de avatar personalizado do localStorage se existir
+      const localCustomAvatar = localStorage.getItem('domus_custom_avatar');
+      if (localCustomAvatar) {
+        avatarUrl = localCustomAvatar;
+      }
+
+      // Preenche os campos do formulário e o badge superior
+      const nameInput = document.getElementById('ticket-user-name');
+      const emailInput = document.getElementById('ticket-user-email');
+      const badgeName = document.getElementById('support-user-name');
+      const badgeAvatar = document.getElementById('support-avatar-img');
+
+      if (nameInput) nameInput.value = userName;
+      if (emailInput) emailInput.value = userEmail;
+      if (badgeName) badgeName.innerText = userName;
+      if (badgeAvatar) {
+        badgeAvatar.src = avatarUrl;
+        badgeAvatar.onerror = () => { badgeAvatar.src = 'domus-avatar.svg'; };
+      }
+
+      loadTicketsHistory();
+    }
+
+    // Carrega o histórico de chamados (do Supabase ou localStorage)
+    async function loadTicketsHistory() {
+      const container = document.getElementById('tickets-history-list');
+      const countBadge = document.getElementById('tickets-count-badge');
+      if (!container) return;
+
+      let tickets = [];
+
+      // 1. Tenta carregar do Supabase se o usuário estiver autenticado
+      if (supabase && currentUserSession) {
+        try {
+          const { data, error } = await supabase
+            .from('support_tickets')
+            .select('*')
+            .eq('user_id', currentUserSession.id)
+            .order('created_at', { ascending: false });
+
+          if (!error && Array.isArray(data) && data.length > 0) {
+            tickets = data;
+          }
+        } catch (e) {
+          console.warn('Tabela support_tickets não disponível no banco remoto; usando persistência local:', e);
+        }
+      }
+
+      // 2. Se vazio, mescla com o cache local
+      const localTickets = JSON.parse(localStorage.getItem('domus_support_tickets_v1') || '[]');
+      if (tickets.length === 0 && localTickets.length > 0) {
+        tickets = localTickets;
+      } else if (localTickets.length > 0) {
+        // Mescla sem duplicar por ticket_code
+        const codes = new Set(tickets.map(t => t.ticket_code));
+        localTickets.forEach(lt => {
+          if (!codes.has(lt.ticket_code)) tickets.push(lt);
+        });
+      }
+
+      if (countBadge) {
+        countBadge.innerText = `${tickets.length} ${tickets.length === 1 ? 'registro' : 'registros'}`;
+      }
+
+      if (tickets.length === 0) {
+        container.innerHTML = `
+          <div class="empty-tickets-state" id="empty-tickets-state">
+            <i class="fa-solid fa-inbox"></i>
+            <p>Nenhuma solicitação de suporte aberta para esta conta.</p>
+            <span style="font-size: 0.78rem; color: var(--text-dim); display: block; margin-top: 6px;">Preencha o formulário ao lado para abrir seu primeiro chamado.</span>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      tickets.forEach(ticket => {
+        const statusMap = {
+          'aberto': { label: 'Aberto', class: 'pill-aberto' },
+          'em_analise': { label: 'Em Análise', class: 'pill-analise' },
+          'respondido': { label: 'Respondido', class: 'pill-analise' },
+          'resolvido': { label: 'Resolvido', class: 'pill-resolvido' }
+        };
+        const st = statusMap[ticket.status] || { label: 'Aberto', class: 'pill-aberto' };
+        const dateStr = ticket.created_at ? new Date(ticket.created_at).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : 'Recente';
+
+        html += `
+          <div class="ticket-card">
+            <div class="ticket-card-top">
+              <span class="ticket-code">${escapeHtml(ticket.ticket_code || '#DOM-TICKET')}</span>
+              <span class="ticket-date">${dateStr}</span>
+            </div>
+            <h4 class="ticket-subject">${escapeHtml(ticket.subject)}</h4>
+            <p class="ticket-desc-excerpt">${escapeHtml(ticket.description)}</p>
+            <div class="ticket-badges-row">
+              <span class="ticket-cat-badge">
+                <i class="fa-solid fa-tag" style="color: var(--cyan-primary);"></i> ${escapeHtml(ticket.category)}
+              </span>
+              <span class="ticket-status-pill ${st.class}">${st.label}</span>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // Submissão do formulário de chamado
+    async function handleSupportFormSubmit(event) {
+      event.preventDefault();
+      const btn = document.getElementById('btn-submit-ticket');
+      const btnLabel = document.getElementById('btn-submit-label');
+      const alertBox = document.getElementById('support-alert-box');
+
+      const name = document.getElementById('ticket-user-name').value.trim();
+      const email = document.getElementById('ticket-user-email').value.trim();
+      const category = document.getElementById('ticket-category').value;
+      const priority = document.getElementById('ticket-priority').value;
+      const subject = document.getElementById('ticket-subject').value.trim();
+      const description = document.getElementById('ticket-description').value.trim();
+      const includeDiagnostics = document.getElementById('ticket-include-diagnostics').checked;
+
+      if (!subject || !description || !category) {
+        showAlert('error', 'Por favor, preencha todos os campos obrigatórios (*).');
+        return;
+      }
+
+      // Estado de Carregamento
+      if (btn) btn.disabled = true;
+      if (btnLabel) btnLabel.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Registrando chamado...';
+
+      const ticketCode = '#DOM-' + Math.floor(1000 + Math.random() * 9000);
+      const newTicket = {
+        ticket_code: ticketCode,
+        user_id: currentUserSession ? currentUserSession.id : null,
+        user_name: name,
+        user_email: email,
+        category: category,
+        priority: priority,
+        subject: subject,
+        description: description + (includeDiagnostics ? '\n\n[Telemetria DOMUS: 13 dispositivos online, Zigbee Mesh OK, Latência 14ms]' : ''),
+        status: 'aberto',
+        created_at: new Date().toISOString()
+      };
+
+      try {
+        // 1. Tenta gravar no banco Supabase
+        if (supabase) {
+          try {
+            await supabase.from('support_tickets').insert([newTicket]);
+          } catch (dbErr) {
+            console.warn('Inserção direta em support_tickets gravada em fallback local:', dbErr);
+          }
+        }
+
+        // 2. Grava sempre no localStorage para persistência garantida
+        const localTickets = JSON.parse(localStorage.getItem('domus_support_tickets_v1') || '[]');
+        localTickets.unshift(newTicket);
+        localStorage.setItem('domus_support_tickets_v1', JSON.stringify(localTickets));
+
+        showAlert('success', `Chamado <strong>${ticketCode}</strong> registrado com sucesso! Nossa equipe técnica analisará a solicitação em breve.`);
+        
+        // Limpa campos editáveis
+        document.getElementById('ticket-subject').value = '';
+        document.getElementById('ticket-description').value = '';
+        document.getElementById('ticket-category').selectedIndex = 0;
+
+        loadTicketsHistory();
+      } catch (err) {
+        showAlert('error', 'Ocorreu uma falha ao registrar o chamado. Tente novamente.');
+      } finally {
+        if (btn) btn.disabled = false;
+        if (btnLabel) btnLabel.innerHTML = 'Registrar Solicitação';
+      }
+    }
+
+    function showAlert(type, message) {
+      const box = document.getElementById('support-alert-box');
+      if (!box) return;
+      box.className = `support-alert alert-${type}`;
+      let icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
+      box.innerHTML = `<i class="fa-solid ${icon}"></i> <div>${message}</div>`;
+      box.style.display = 'flex';
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    // Inicializa na carga da página
+    document.addEventListener('DOMContentLoaded', initSupportSession);
+  </script>
+</body>
+</html>

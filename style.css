@@ -7111,3 +7111,123 @@ body.light-mode .chart-filter-btn.active {
     text-align: left;
   }
 }
+
+/* ==========================================================================
+   6. AVATAR PADRÃO DOMUS, PREVIEW E UPLOAD
+   ========================================================================== */
+.profile-avatar-wrapper {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  cursor: pointer;
+  overflow: hidden;
+  border: 2.5px solid #00e5ff;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+  transition: all 0.25s ease;
+  background: #09101d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-avatar-wrapper:hover {
+  transform: scale(1.04);
+  border-color: #00f0ff;
+  box-shadow: 0 0 26px rgba(0, 229, 255, 0.6);
+}
+
+.profile-main-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%;
+}
+
+.profile-avatar-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 8, 16, 0.78);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #00e5ff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  border-radius: 50%;
+}
+
+.profile-avatar-wrapper:hover .profile-avatar-overlay {
+  opacity: 1;
+}
+
+.modal-avatar-preview-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 18px;
+  background: rgba(8, 14, 26, 0.65);
+  border: 1px dashed rgba(0, 229, 255, 0.28);
+  border-radius: 12px;
+}
+
+.modal-avatar-preview-img {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #00e5ff;
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
+  background: #09101d;
+}
+
+.avatar-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-avatar-action {
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-avatar-upload {
+  background: rgba(0, 229, 255, 0.15);
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  color: #00e5ff;
+}
+
+.btn-avatar-upload:hover {
+  background: #00e5ff;
+  color: #050b14;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+}
+
+.btn-avatar-reset {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-muted);
+}
+
+.btn-avatar-reset:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
