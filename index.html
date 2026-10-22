@@ -19,7 +19,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- SUPABASE JS SDK V2 (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>if(!window.supabase){document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>');}</script>
+  <script>
+    if (!window.supabase) {
+      const s = document.createElement('script');
+      s.src = 'https://unpkg.com/@supabase/supabase-js@2';
+      document.head.appendChild(s);
+    }
+  </script>
   <link rel="stylesheet" href="style.css?v=2.3">
 </head>
 <body>
@@ -7570,13 +7576,6 @@
     // DISPARO DA ANIMAÇÃO DE ENTRADA DO DOMUS E VERIFICAÇÃO OBRIGATÓRIA DA SESSÃO SUPABASE AUTH
 
     // ==========================================================================
-    // NOVA ARQUITETURA: DRAWER FLUTUANTE DE BUSCA, SUPORTE & AÇÕES RÁPIDAS
-    // ==========================================================================
-    let currentDrawerCategory = 'all';
-    let currentDrawerQuery = '';
-    let currentDrawerItemsList = [];
-
-        // ==========================================================================
     // DRAWER / OVERLAY DE BUSCA MINIMALISTA, FLUIDO & VELOZ (COM ATALHO CTRL+K)
     // ==========================================================================
     let currentDrawerCategory = 'all';
