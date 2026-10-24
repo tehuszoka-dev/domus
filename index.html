@@ -25,8 +25,10 @@
       s.src = 'https://unpkg.com/@supabase/supabase-js@2';
       document.head.appendChild(s);
     }
-  </script>
-  <link rel="stylesheet" href="style.css?v=2.3">
+  <!-- CROPPER.JS PARA RECORTE E ENQUADRAMENTO CIRCULAR DE AVATAR -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+  <link rel="stylesheet" href="style.css?v=2.4">
 </head>
 <body>
 
@@ -349,6 +351,9 @@
         <i class="fa-solid fa-comments"></i> Chat
         <span class="chat-badge" id="sidebar-chat-badge" style="display: none;">0</span>
       </li>
+      <li class="nav-item" onclick="window.location.href='suporte.html'" title="Central de Suporte &amp; Atendimento Técnico DOMUS">
+        <i class="fa-solid fa-headset"></i> Suporte
+      </li>
 
       <!-- SEPARADOR -->
       <li class="nav-divider"></li>
@@ -434,8 +439,8 @@
       </div>
 
       <div class="top-header-right">
-        <!-- ÍCONE DE SUPORTE INTERATIVO (ABRE CENTRAL DE SUPORTE EM NOVA ABA) -->
-        <a href="suporte.html" target="_blank" rel="noopener noreferrer" class="top-support-btn" title="Central de Suporte &amp; Atendimento Técnico (Abre em nova aba)">
+        <!-- ÍCONE DE SUPORTE INTERATIVO (NAVEGA NA MESMA GUIA) -->
+        <a href="suporte.html" class="top-support-btn" title="Central de Suporte &amp; Atendimento Técnico">
           <i class="fa-solid fa-headset"></i>
           <span class="support-status-indicator" title="Suporte Online"></span>
         </a>
@@ -3018,7 +3023,7 @@
     </div>
   <!-- MODAL DE EDIÇÃO DE PERFIL E FOTO / AVATAR -->
   <div id="modal-edit-profile" class="modal-overlay" onclick="closeEditProfileModal(event)">
-    <div class="modal-content" style="max-width: 500px;" onclick="event.stopPropagation()">
+    <div class="modal-content" style="max-width: 520px;" onclick="event.stopPropagation()">
       <div class="modal-header">
         <h3><i class="fa-solid fa-user-gear" style="color: var(--blue-accent);"></i> Personalizar Perfil &amp; Avatar</h3>
         <button type="button" class="btn-close-modal" onclick="closeEditProfileModal()">&times;</button>
@@ -3026,22 +3031,64 @@
 
       <!-- Avatar Preview e Ações de Imagem -->
       <div class="modal-avatar-preview-box">
-        <img src="domus-avatar.svg" alt="Preview Avatar" id="modal-avatar-preview-img" class="modal-avatar-preview-img" onerror="handleAvatarError(this)">
+        <div class="modal-avatar-crop-trigger" onclick="document.getElementById('profile-photo-file-input').click()" title="Clique para enviar nova foto e enquadrar">
+          <img src="domus-avatar.svg" alt="Preview Avatar" id="modal-avatar-preview-img" class="modal-avatar-preview-img" onerror="handleAvatarError(this)">
+          <div class="modal-avatar-overlay-btn">
+            <i class="fa-solid fa-camera"></i>
+            <span>Trocar</span>
+          </div>
+        </div>
+
         <div class="avatar-actions-row">
-          <input type="file" id="profile-photo-file-input" accept="image/jpeg,image/png,image/webp" style="display: none;" onchange="handleProfilePhotoSelected(this)">
+          <input type="file" id="profile-photo-file-input" accept="image/jpeg,image/png,image/webp,image/gif" style="display: none;" onchange="handleProfilePhotoSelected(this)">
           <button type="button" class="btn-avatar-action btn-avatar-upload" onclick="document.getElementById('profile-photo-file-input').click()">
             <i class="fa-solid fa-cloud-arrow-up"></i> Carregar Foto
           </button>
           <button type="button" class="btn-avatar-action btn-avatar-reset" onclick="restoreDefaultAvatar()" title="Voltar ao símbolo oficial DOMUS">
-            <i class="fa-solid fa-rotate-left"></i> Usar Padrão DOMUS
+            <i class="fa-solid fa-rotate-left"></i> Padrão DOMUS
           </button>
         </div>
-        <span style="font-size: 0.73rem; color: var(--text-muted); text-align: center;">Formatos: JPG, PNG ou WEBP • Tamanho máx: 2 MB</span>
+        <span style="font-size: 0.73rem; color: var(--text-muted); text-align: center;">Formatos: JPG, PNG ou WEBP • Com recorte circular e zoom</span>
         <div id="avatar-upload-status" style="font-size: 0.78rem; display: none;"></div>
       </div>
 
+      <!-- Seletor Rápido de Avatares Predefinidos DOMUS -->
+      <div class="preset-avatars-section">
+        <label class="preset-avatars-label"><i class="fa-solid fa-icons"></i> Ou escolha um avatar predefinido:</label>
+        <div class="preset-avatars-grid">
+          <button type="button" class="preset-avatar-btn active" id="preset-domus-default" onclick="selectPresetAvatar('domus-avatar.svg', this)" title="Símbolo Oficial DOMUS">
+            <img src="domus-avatar.svg" alt="DOMUS">
+            <span>Oficial</span>
+          </button>
+          <button type="button" class="preset-avatar-btn" id="preset-commander" onclick="selectPresetAvatar('preset-commander', this)" title="Comandante Neon">
+            <div class="preset-avatar-circle" style="background: rgba(0, 229, 255, 0.15); border: 1.5px solid #00e5ff; color: #00e5ff;">
+              <i class="fa-solid fa-user-astronaut"></i>
+            </div>
+            <span>Comandante</span>
+          </button>
+          <button type="button" class="preset-avatar-btn" id="preset-operator" onclick="selectPresetAvatar('preset-operator', this)" title="Operador Tech">
+            <div class="preset-avatar-circle" style="background: rgba(255, 122, 0, 0.15); border: 1.5px solid #ff7a00; color: #ff7a00;">
+              <i class="fa-solid fa-user-gear"></i>
+            </div>
+            <span>Operador</span>
+          </button>
+          <button type="button" class="preset-avatar-btn" id="preset-guardian" onclick="selectPresetAvatar('preset-guardian', this)" title="Guardião de Segurança">
+            <div class="preset-avatar-circle" style="background: rgba(46, 204, 113, 0.15); border: 1.5px solid #2ecc71; color: #2ecc71;">
+              <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <span>Guardião</span>
+          </button>
+          <button type="button" class="preset-avatar-btn" id="preset-aicore" onclick="selectPresetAvatar('preset-aicore', this)" title="Núcleo de IA">
+            <div class="preset-avatar-circle" style="background: rgba(168, 85, 247, 0.15); border: 1.5px solid #c084fc; color: #c084fc;">
+              <i class="fa-solid fa-microchip"></i>
+            </div>
+            <span>IA Core</span>
+          </button>
+        </div>
+      </div>
+
       <form onsubmit="handleSaveProfileForm(event)" id="form-edit-profile">
-        <div class="form-group">
+        <div class="form-group" style="margin-top: 14px;">
           <label for="edit-profile-full-name"><i class="fa-solid fa-user"></i> Nome de Exibição</label>
           <input type="text" id="edit-profile-full-name" required placeholder="Seu nome completo">
         </div>
@@ -3063,6 +3110,71 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       SUB-MODAL DE RECORTE CIRCULAR DE AVATAR (AVATAR CROPPING COM CROPPER.JS)
+       ========================================================================== -->
+  <div id="modal-crop-avatar" class="modal-overlay modal-crop-overlay" style="display: none; z-index: 100002;" onclick="closeCropModal(event)">
+    <div class="modal-content modal-crop-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-crop-simple" style="color: #00e5ff;"></i> Ajustar Enquadramento do Avatar</h3>
+        <button type="button" class="btn-close-modal" onclick="closeCropModal()">&times;</button>
+      </div>
+
+      <div class="crop-modal-body">
+        <!-- Área de Recorte da Imagem -->
+        <div class="crop-stage-container">
+          <div class="crop-image-wrapper">
+            <img id="crop-source-image" src="" alt="Imagem para Enquadramento">
+          </div>
+          <div class="crop-help-tip">
+            <i class="fa-solid fa-arrows-up-down-left-right"></i> Arraste a imagem para reposicionar e use a roda do mouse ou o slider para dar zoom
+          </div>
+        </div>
+
+        <!-- Coluna de Prévia Circular em Tempo Real -->
+        <div class="crop-preview-column">
+          <span class="crop-preview-title">Prévia Circular</span>
+          <div class="crop-circle-frame">
+            <div id="crop-circle-preview" class="crop-circle-preview"></div>
+          </div>
+          <span class="crop-circle-specs">32px Header • 96px Perfil</span>
+        </div>
+      </div>
+
+      <!-- Barra de Controle de Zoom e Rotação -->
+      <div class="crop-controls-strip">
+        <div class="crop-zoom-box">
+          <button type="button" class="crop-tool-btn" onclick="adjustCropZoom(-0.15)" title="Diminuir Zoom">
+            <i class="fa-solid fa-magnifying-glass-minus"></i>
+          </button>
+          <input type="range" id="crop-zoom-slider" min="0.1" max="3" step="0.05" value="1" oninput="handleCropSliderChange(this.value)">
+          <button type="button" class="crop-tool-btn" onclick="adjustCropZoom(0.15)" title="Aumentar Zoom">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+          </button>
+        </div>
+
+        <div class="crop-tools-actions">
+          <button type="button" class="crop-tool-btn" onclick="rotateCropImage(-90)" title="Girar 90° para a esquerda">
+            <i class="fa-solid fa-rotate-left"></i>
+          </button>
+          <button type="button" class="crop-tool-btn" onclick="rotateCropImage(90)" title="Girar 90° para a direita">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+          <button type="button" class="crop-tool-btn" onclick="resetCropImage()" title="Restaurar Posição">
+            <i class="fa-solid fa-arrows-rotate"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top: 18px;">
+        <button type="button" class="btn-ai-action btn-ai-secondary" onclick="closeCropModal()">Cancelar</button>
+        <button type="button" class="btn-ai-action btn-ai-primary" id="btn-confirm-crop" onclick="confirmCropAvatar()">
+          <i class="fa-solid fa-check"></i> Salvar e Aplicar Avatar
+        </button>
+      </div>
     </div>
   </div>
 
@@ -3427,6 +3539,12 @@
       if (!fullName) fullName = 'Usuário';
       const firstName = fullName.trim().split(' ')[0] || fullName;
 
+      // Armazena no localStorage para preenchimento automático contínuo em suporte.html e outras telas
+      try {
+        localStorage.setItem('domus_user_name', fullName);
+        if (email) localStorage.setItem('domus_user_email', email);
+      } catch (e) {}
+
       // Saudação principal no topo do dashboard: "Olá, Matheus!" / "Olá, Arthur!"
       const greetingEl = document.getElementById('user-greeting-name');
       if (greetingEl) {
@@ -3603,6 +3721,74 @@
     }
     window.closeEditProfileModal = closeEditProfileModal;
 
+    // ==========================================================================
+    // CROPPER & AVATAR MANAGEMENT (CROPPER.JS / CIRCULAR CROP / PRESETS)
+    // ==========================================================================
+    let domusCropperInstance = null;
+
+    // PRESETS VETORIAIS DE ALTA DEFINIÇÃO PARA AVATARES DOMUS
+    const DOMUS_PRESET_AVATARS = {
+      'domus-avatar.svg': 'domus-avatar.svg',
+      'preset-commander': "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23081120'/%3E%3Ccircle cx='50' cy='50' r='48' fill='none' stroke='%2300e5ff' stroke-width='2' stroke-dasharray='6 3'/%3E%3Ccircle cx='50' cy='40' r='18' fill='%230f233f' stroke='%2300e5ff' stroke-width='2'/%3E%3Cpath d='M38 38 Q50 32 62 38 Q64 45 50 48 Q36 45 38 38' fill='%2300e5ff' opacity='0.9'/%3E%3Cpath d='M25 82 C25 66 36 60 50 60 C64 60 75 66 75 82' fill='%230f233f' stroke='%2300e5ff' stroke-width='2'/%3E%3Cpath d='M44 68 L56 68 L50 76 Z' fill='%2300e5ff'/%3E%3C/svg%3E",
+      'preset-operator': "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23190e06'/%3E%3Ccircle cx='50' cy='50' r='48' fill='none' stroke='%23ff7a00' stroke-width='2'/%3E%3Ccircle cx='50' cy='40' r='17' fill='%23331b09' stroke='%23ff7a00' stroke-width='2'/%3E%3Cpath d='M35 37 L65 37' stroke='%23ff7a00' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 82 C24 66 36 60 50 60 C64 60 76 82 76 82' fill='%23331b09' stroke='%23ff7a00' stroke-width='2'/%3E%3Ccircle cx='50' cy='72' r='4' fill='%23ff7a00'/%3E%3C/svg%3E",
+      'preset-guardian': "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%2306170d'/%3E%3Ccircle cx='50' cy='48' r='46' fill='none' stroke='%232ecc71' stroke-width='2' stroke-dasharray='4 2'/%3E%3Cpath d='M50 20 L68 28 L68 50 C68 64 50 76 50 76 C50 76 32 64 32 50 L32 28 Z' fill='%230d351d' stroke='%232ecc71' stroke-width='2.5'/%3E%3Cpath d='M43 47 L48 52 L58 40' fill='none' stroke='%232ecc71' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
+      'preset-aicore': "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23140924'/%3E%3Crect x='30' y='30' width='40' height='40' rx='10' fill='%23261245' stroke='%23c084fc' stroke-width='2.5'/%3E%3Ccircle cx='50' cy='50' r='10' fill='%23c084fc' opacity='0.85'/%3E%3Ccircle cx='50' cy='50' r='5' fill='%23ffffff'/%3E%3Cpath d='M50 18 L50 30 M50 70 L50 82 M18 50 L30 50 M70 50 L82 50' stroke='%23c084fc' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E"
+    };
+
+    function selectPresetAvatar(presetKey, btnEl) {
+      const avatarUrl = DOMUS_PRESET_AVATARS[presetKey] || presetKey;
+      
+      // Destaca botão selecionado
+      document.querySelectorAll('.preset-avatar-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      applyGlobalAvatar(avatarUrl);
+
+      if (typeof showSmartToast === 'function') {
+        showSmartToast('Avatar Atualizado', 'Avatar predefinido aplicado com sucesso!', 'fa-solid fa-icons', '#00e5ff');
+      }
+    }
+    window.selectPresetAvatar = selectPresetAvatar;
+
+    function applyGlobalAvatar(avatarUrl) {
+      // 1. Atualiza visualmente todos os elementos no DOM instantaneamente
+      const topAvatarEl = document.getElementById('top-profile-avatar');
+      const topAvatarFallback = document.getElementById('top-avatar-fallback');
+      const mainAvatarEl = document.getElementById('profile-main-avatar-img');
+      const modalAvatarPreview = document.getElementById('modal-avatar-preview-img');
+      const supportAvatar = document.getElementById('support-avatar-img');
+
+      if (topAvatarEl) {
+        topAvatarEl.style.display = 'block';
+        topAvatarEl.src = avatarUrl;
+        if (topAvatarFallback) topAvatarFallback.style.display = 'none';
+      }
+      if (mainAvatarEl) mainAvatarEl.src = avatarUrl;
+      if (modalAvatarPreview) modalAvatarPreview.src = avatarUrl;
+      if (supportAvatar) supportAvatar.src = avatarUrl;
+
+      // 2. Persiste no localStorage
+      try {
+        localStorage.setItem('domus_custom_avatar', avatarUrl);
+      } catch (err) {
+        console.warn('Erro ao salvar no localStorage:', err);
+      }
+
+      // 3. Atualiza estado em memória e Supabase se logado
+      if (currentAuthProfile) {
+        currentAuthProfile.avatar_url = avatarUrl;
+      }
+      if (supabaseClient && currentAuthUser) {
+        supabaseClient
+          .from('profiles')
+          .update({ avatar_url: avatarUrl, updated_at: new Date().toISOString() })
+          .eq('id', currentAuthUser.id)
+          .then(() => {})
+          .catch(e => console.warn('Erro ao persistir no Supabase:', e));
+      }
+    }
+    window.applyGlobalAvatar = applyGlobalAvatar;
+
     function triggerProfilePhotoUpload() {
       const fileInput = document.getElementById('profile-photo-file-input');
       if (fileInput) fileInput.click();
@@ -3613,10 +3799,10 @@
       const file = fileInput.files && fileInput.files[0];
       if (!file) return;
 
-      const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+      const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
       if (!validTypes.includes(file.type)) {
         if (typeof showSmartToast === 'function') {
-          showSmartToast('Formato Não Suportado', 'Selecione uma imagem válida (JPG, PNG ou WEBP).', 'fa-solid fa-triangle-exclamation', 'var(--orange-bright)');
+          showSmartToast('Formato Inválido', 'Selecione uma imagem JPG, PNG ou WEBP.', 'fa-solid fa-triangle-exclamation', 'var(--orange-bright)');
         } else {
           alert('Por favor, selecione uma imagem válida (JPG, PNG ou WEBP).');
         }
@@ -3624,121 +3810,164 @@
         return;
       }
 
-      // Limite de 2 MB
-      const maxSize = 2 * 1024 * 1024;
-      if (file.size > maxSize) {
+      if (file.size > 8 * 1024 * 1024) {
         if (typeof showSmartToast === 'function') {
-          showSmartToast('Arquivo Muito Grande', 'O tamanho máximo permitido para o avatar é 2 MB.', 'fa-solid fa-circle-exclamation', 'var(--orange-bright)');
+          showSmartToast('Arquivo Muito Grande', 'O tamanho máximo da imagem é de 8 MB.', 'fa-solid fa-circle-exclamation', 'var(--orange-bright)');
         } else {
-          alert('O tamanho da foto deve ser de até 2 MB.');
+          alert('O tamanho da foto deve ser de até 8 MB.');
         }
         fileInput.value = '';
         return;
       }
 
-      const statusBox = document.getElementById('avatar-upload-status');
-      if (statusBox) {
-        statusBox.style.display = 'block';
-        statusBox.innerHTML = '<span style="color: #00e5ff;"><i class="fa-solid fa-circle-notch fa-spin"></i> Processando imagem...</span>';
-      }
-
+      // Lê a imagem e abre o Sub-Modal de Recorte Circular
       const reader = new FileReader();
-      reader.onload = async function(e) {
-        const dataUrl = e.target.result;
-
-        // Atualiza elementos de imagem imediatamente
-        const topAvatarEl = document.getElementById('top-profile-avatar');
-        const mainAvatarEl = document.getElementById('profile-main-avatar-img');
-        const modalAvatarPreview = document.getElementById('modal-avatar-preview-img');
-
-        if (topAvatarEl) topAvatarEl.src = dataUrl;
-        if (mainAvatarEl) mainAvatarEl.src = dataUrl;
-        if (modalAvatarPreview) modalAvatarPreview.src = dataUrl;
-
-        // Persiste localmente para garantia de sessão
-        try {
-          localStorage.setItem('domus_custom_avatar', dataUrl);
-        } catch (storageErr) {
-          console.warn('Não foi possível salvar imagem completa no localStorage (excedeu cota):', storageErr);
-        }
-
-        // Persiste no Supabase se autenticado
-        if (supabaseClient && currentAuthUser) {
-          try {
-            await supabaseClient
-              .from('profiles')
-              .update({ avatar_url: dataUrl, updated_at: new Date().toISOString() })
-              .eq('id', currentAuthUser.id);
-            
-            if (currentAuthProfile) {
-              currentAuthProfile.avatar_url = dataUrl;
-            }
-          } catch (dbErr) {
-            console.warn('Persistência remota do avatar salvação local:', dbErr);
-          }
-        }
-
-        if (statusBox) {
-          statusBox.innerHTML = '<span style="color: #2ecc71;"><i class="fa-solid fa-circle-check"></i> Foto de perfil atualizada!</span>';
-          setTimeout(() => { statusBox.style.display = 'none'; }, 2500);
-        }
-
-        if (typeof showSmartToast === 'function') {
-          showSmartToast('Avatar Atualizado', 'Sua foto de perfil foi salva com sucesso!', 'fa-solid fa-camera', '#2ecc71');
-        }
-
-        fileInput.value = '';
+      reader.onload = function(e) {
+        openCropModal(e.target.result);
       };
-
-      reader.onerror = function() {
-        if (statusBox) {
-          statusBox.innerHTML = '<span style="color: #ef4444;"><i class="fa-solid fa-circle-xmark"></i> Falha ao ler o arquivo de imagem.</span>';
-        }
-        fileInput.value = '';
-      };
-
       reader.readAsDataURL(file);
+      fileInput.value = '';
     }
     window.handleProfilePhotoSelected = handleProfilePhotoSelected;
 
-    async function restoreDefaultAvatar() {
-      // Remove foto personalizada do localStorage
-      localStorage.removeItem('domus_custom_avatar');
+    function openCropModal(imageSrc) {
+      const cropModal = document.getElementById('modal-crop-avatar');
+      const cropImg = document.getElementById('crop-source-image');
+      if (!cropModal || !cropImg) return;
 
-      const defaultAvatar = 'domus-avatar.svg';
-      const topAvatarEl = document.getElementById('top-profile-avatar');
-      const mainAvatarEl = document.getElementById('profile-main-avatar-img');
-      const modalAvatarPreview = document.getElementById('modal-avatar-preview-img');
+      cropImg.src = imageSrc;
+      cropModal.style.display = 'flex';
 
-      if (topAvatarEl) topAvatarEl.src = defaultAvatar;
-      if (mainAvatarEl) mainAvatarEl.src = defaultAvatar;
-      if (modalAvatarPreview) modalAvatarPreview.src = defaultAvatar;
-
-      if (currentAuthProfile) {
-        currentAuthProfile.avatar_url = null;
-      }
-
-      // Persiste no Supabase se autenticado
-      if (supabaseClient && currentAuthUser) {
-        try {
-          await supabaseClient
-            .from('profiles')
-            .update({ avatar_url: null, updated_at: new Date().toISOString() })
-            .eq('id', currentAuthUser.id);
-        } catch (dbErr) {
-          console.warn('Erro ao restaurar avatar no Supabase:', dbErr);
+      // Aguarda imagem carregar no DOM para instanciar Cropper
+      cropImg.onload = function() {
+        if (domusCropperInstance) {
+          domusCropperInstance.destroy();
+          domusCropperInstance = null;
         }
+
+        if (window.Cropper) {
+          domusCropperInstance = new Cropper(cropImg, {
+            aspectRatio: 1,
+            viewMode: 1,
+            dragMode: 'move',
+            autoCropArea: 0.9,
+            restore: false,
+            guides: false,
+            center: true,
+            highlight: false,
+            cropBoxMovable: true,
+            cropBoxResizable: true,
+            toggleDragModeOnDblclick: false,
+            preview: '#crop-circle-preview',
+            ready: function() {
+              const slider = document.getElementById('crop-zoom-slider');
+              if (slider) slider.value = 1;
+            }
+          });
+        }
+      };
+    }
+    window.openCropModal = openCropModal;
+
+    function closeCropModal(event) {
+      if (event && event.target && !event.target.classList.contains('modal-overlay') && !event.target.classList.contains('btn-close-modal') && event.target.tagName !== 'BUTTON') {
+        return;
+      }
+      const cropModal = document.getElementById('modal-crop-avatar');
+      if (cropModal) cropModal.style.display = 'none';
+      if (domusCropperInstance) {
+        domusCropperInstance.destroy();
+        domusCropperInstance = null;
+      }
+    }
+    window.closeCropModal = closeCropModal;
+
+    function adjustCropZoom(delta) {
+      if (!domusCropperInstance) return;
+      domusCropperInstance.zoom(delta);
+      const slider = document.getElementById('crop-zoom-slider');
+      if (slider) {
+        let val = parseFloat(slider.value) + delta;
+        slider.value = Math.max(0.1, Math.min(3, val)).toFixed(2);
+      }
+    }
+    window.adjustCropZoom = adjustCropZoom;
+
+    function handleCropSliderChange(val) {
+      if (!domusCropperInstance) return;
+      domusCropperInstance.zoomTo(parseFloat(val));
+    }
+    window.handleCropSliderChange = handleCropSliderChange;
+
+    function rotateCropImage(degrees) {
+      if (!domusCropperInstance) return;
+      domusCropperInstance.rotate(degrees);
+    }
+    window.rotateCropImage = rotateCropImage;
+
+    function resetCropImage() {
+      if (!domusCropperInstance) return;
+      domusCropperInstance.reset();
+      const slider = document.getElementById('crop-zoom-slider');
+      if (slider) slider.value = 1;
+    }
+    window.resetCropImage = resetCropImage;
+
+    function confirmCropAvatar() {
+      if (!domusCropperInstance) {
+        closeCropModal();
+        return;
       }
 
-      const statusBox = document.getElementById('avatar-upload-status');
-      if (statusBox) {
-        statusBox.style.display = 'block';
-        statusBox.innerHTML = '<span style="color: #00e5ff;"><i class="fa-solid fa-rotate-left"></i> Avatar padrão do DOMUS restaurado!</span>';
-        setTimeout(() => { statusBox.style.display = 'none'; }, 2500);
+      // Gera canvas quadrado com suavização de alta fidelidade
+      const croppedCanvas = domusCropperInstance.getCroppedCanvas({
+        width: 320,
+        height: 320,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high'
+      });
+
+      if (!croppedCanvas) {
+        closeCropModal();
+        return;
       }
+
+      // Gera canvas circular recortado com fundo transparente para perfeita harmonia visual
+      const circleCanvas = document.createElement('canvas');
+      circleCanvas.width = 320;
+      circleCanvas.height = 320;
+      const ctx = circleCanvas.getContext('2d');
+      ctx.beginPath();
+      ctx.arc(160, 160, 160, 0, Math.PI * 2, true);
+      ctx.closePath();
+      ctx.clip();
+      ctx.drawImage(croppedCanvas, 0, 0, 320, 320);
+
+      const finalAvatarDataUrl = circleCanvas.toDataURL('image/png');
+
+      // Aplica imediatamente nos avatares e no estado global
+      applyGlobalAvatar(finalAvatarDataUrl);
+
+      // Desmarca avatares predefinidos
+      document.querySelectorAll('.preset-avatar-btn').forEach(b => b.classList.remove('active'));
+
+      closeCropModal();
 
       if (typeof showSmartToast === 'function') {
-        showSmartToast('Avatar Padrão', 'Avatar oficial do DOMUS restaurado com sucesso.', 'fa-solid fa-rotate-left', 'var(--blue-accent)');
+        showSmartToast('Foto Recortada', 'Seu avatar foi enquadrado e salvo com sucesso!', 'fa-solid fa-crop-simple', '#00e5ff');
+      }
+    }
+    window.confirmCropAvatar = confirmCropAvatar;
+
+    async function restoreDefaultAvatar() {
+      document.querySelectorAll('.preset-avatar-btn').forEach(b => b.classList.remove('active'));
+      const defBtn = document.getElementById('preset-domus-default');
+      if (defBtn) defBtn.classList.add('active');
+
+      applyGlobalAvatar('domus-avatar.svg');
+
+      if (typeof showSmartToast === 'function') {
+        showSmartToast('Avatar Padrão', 'Símbolo oficial DOMUS restaurado com sucesso.', 'fa-solid fa-rotate-left', 'var(--blue-accent)');
       }
     }
     window.restoreDefaultAvatar = restoreDefaultAvatar;
@@ -7608,6 +7837,8 @@
       drawer.classList.remove('active');
       drawer.setAttribute('aria-hidden', 'true');
     }
+    window.openSearchDrawer = openSearchDrawer;
+    window.closeSearchDrawer = closeSearchDrawer;
 
     function handleSearchOverlayClick(e) {
       if (e.target && e.target.id === 'domus-search-drawer') {
@@ -7958,10 +8189,11 @@
         return;
       }
 
-      // Tecla Escape fecha Drawer de Busca e Modal de Suporte
+      // Tecla Escape fecha Drawer de Busca, Modal de Suporte e Modal de Crop
       if (e.key === 'Escape') {
         closeSearchDrawer();
         closeSupportModal();
+        closeCropModal();
       }
     });
 

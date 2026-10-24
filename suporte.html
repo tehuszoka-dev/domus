@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Central de Suporte — DOMUS Automação Residencial</title>
+  <!-- FAVICON OFICIAL DOMUS -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   
   <!-- Fontes e Ícones -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -804,20 +808,21 @@
 
     // Inicializa sessão do usuário
     async function initSupportSession() {
-      let userName = 'Morador DOMUS';
-      let userEmail = 'morador@domus.smart';
-      let avatarUrl = 'domus-avatar.svg';
+      // 1. Carrega dados reais do usuário logado (armazenados pelo DOMUS ou padrão da conta)
+      let userName = localStorage.getItem('domus_user_name') || "Matheus D' Lucca";
+      let userEmail = localStorage.getItem('domus_user_email') || "matheus@domus.smart";
+      let avatarUrl = localStorage.getItem('domus_custom_avatar') || 'domus-avatar.svg';
 
-      // 1. Tenta recuperar sessão do Supabase Auth
+      // 2. Tenta recuperar sessão do Supabase Auth e mesclar dados em tempo real
       if (supabase) {
         try {
           const { data: { session } } = await supabase.auth.getSession();
           if (session && session.user) {
             currentUserSession = session.user;
-            userEmail = session.user.email || userEmail;
-            userName = session.user.user_metadata?.full_name || userEmail.split('@')[0];
+            if (session.user.email) userEmail = session.user.email;
+            if (session.user.user_metadata?.full_name) userName = session.user.user_metadata.full_name;
             
-            // Busca profile
+            // Busca perfil completo no banco de dados
             const { data: prof } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
             if (prof) {
               if (prof.full_name) userName = prof.full_name;
@@ -827,12 +832,6 @@
         } catch (err) {
           console.warn('Erro ao consultar sessão Supabase:', err);
         }
-      }
-
-      // 2. Fallback de avatar personalizado do localStorage se existir
-      const localCustomAvatar = localStorage.getItem('domus_custom_avatar');
-      if (localCustomAvatar) {
-        avatarUrl = localCustomAvatar;
       }
 
       // Preenche os campos do formulário e o badge superior
