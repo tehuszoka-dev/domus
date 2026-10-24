@@ -441,13 +441,16 @@
         </a>
 
         <!-- LINHA DE IDENTIFICAÇÃO DO PERFIL DO USUÁRIO LOGADO -->
-        <div class="top-profile-badge" onclick="switchTab('tab-perfil')" title="Acessar Meu Perfil">
-          <div class="top-avatar-wrap">
-            <img src="domus-avatar.svg" alt="Avatar DOMUS" id="top-profile-avatar" class="top-profile-avatar" referrerpolicy="no-referrer" onerror="handleAvatarError(this)">
-            <span class="top-avatar-status-dot"></span>
+        <div class="top-profile-badge user-profile-button" onclick="switchTab('tab-perfil')" title="Acessar Meu Perfil" role="button" tabindex="0">
+          <div class="top-avatar-wrap" id="top-avatar-wrap">
+            <img src="domus-avatar.svg" alt="Avatar" id="top-profile-avatar" class="top-profile-avatar" referrerpolicy="no-referrer" onerror="handleAvatarError(this)">
+            <div id="top-avatar-fallback" class="avatar-fallback-initials" style="display: none;">
+              <span id="top-avatar-initials">M</span>
+            </div>
+            <span class="top-avatar-status-dot" title="Usuário Ativo"></span>
           </div>
           <div class="top-profile-info">
-            <strong id="top-profile-name" class="top-profile-name">matheusdlucca</strong>
+            <strong id="top-profile-name" class="top-profile-name">Matheus</strong>
             <span id="top-profile-role" class="top-profile-role">
               <i class="fa-solid fa-shield-halved"></i> Administrador
             </span>
@@ -3064,11 +3067,11 @@
   </div>
 
   <!-- ==========================================================================
-       DRAWER / MODAL FLUTUANTE DE PESQUISA DEDICADA DO DOMUS (ABA INTERATIVA)
+       COMMAND PALETTE / SPOTLIGHT DE PESQUISA & COMANDOS DO SISTEMA DOMUS
        ========================================================================== -->
-    <div id="domus-search-drawer" class="search-drawer-overlay" aria-hidden="true" onclick="handleSearchOverlayClick(event)">
+  <div id="domus-search-drawer" class="search-drawer-overlay" aria-hidden="true" onclick="handleSearchOverlayClick(event)">
     <div class="search-drawer-panel" onclick="event.stopPropagation()">
-      <!-- Header do Drawer com Campo de Busca e Atalhos -->
+      <!-- Header do Command Palette com Busca e Atalho Esc -->
       <div class="search-drawer-header">
         <div class="search-drawer-input-wrap">
           <i class="fa-solid fa-magnifying-glass search-drawer-icon"></i>
@@ -3076,7 +3079,7 @@
             type="text" 
             id="drawer-search-input" 
             class="drawer-search-input" 
-            placeholder="Buscar comandos, cômodos, rotinas, segurança ou páginas..."
+            placeholder="Buscar comandos, cômodos, rotinas ou telas... (Ctrl + K)"
             autocomplete="off"
             spellcheck="false"
             oninput="handleDrawerSearchInput(this.value)"
@@ -3091,46 +3094,23 @@
         </button>
       </div>
 
-      <!-- Filtros de Categorias em Linha Única Minimalista -->
-      <div class="search-filter-chips">
-        <button type="button" class="search-chip active" data-filter="all" onclick="filterDrawerCategory('all', this)">
-          Todas as Opções (<span id="chip-count-all">0</span>)
-        </button>
-        <button type="button" class="search-chip" data-filter="Página" onclick="filterDrawerCategory('Página', this)">
-          Páginas
-        </button>
-        <button type="button" class="search-chip" data-filter="Iluminação" onclick="filterDrawerCategory('Iluminação', this)">
-          Iluminação
-        </button>
-        <button type="button" class="search-chip" data-filter="Climatização" onclick="filterDrawerCategory('Climatização', this)">
-          Climatização
-        </button>
-        <button type="button" class="search-chip" data-filter="Segurança" onclick="filterDrawerCategory('Segurança', this)">
-          Segurança
-        </button>
-        <button type="button" class="search-chip" data-filter="Automação" onclick="filterDrawerCategory('Automação', this)">
-          Automações
-        </button>
-        <button type="button" class="search-chip" data-filter="Configuração" onclick="filterDrawerCategory('Configuração', this)">
-          Configurações
-        </button>
-      </div>
-
-      <!-- Corpo do Drawer: Lista Vertical com Agrupamentos Fluidos -->
+      <!-- Corpo do Command Palette: Lista Vertical em Coluna Única Fluida -->
       <div class="search-drawer-body">
         <div class="search-drawer-items-list" id="drawer-items-list">
           <!-- Renderizado dinamicamente via JavaScript -->
         </div>
       </div>
 
-      <!-- Rodapé com Dicas de Atalhos e Contagem -->
+      <!-- Rodapé Minimalista: [↑↓] Navegar · [↵] Selecionar · [Esc] Fechar -->
       <div class="search-drawer-footer">
         <div class="drawer-footer-shortcuts">
           <span><kbd>↑</kbd><kbd>↓</kbd> Navegar</span>
-          <span><kbd>↵</kbd> Executar</span>
-          <span><kbd>ESC</kbd> Fechar</span>
+          <span class="footer-dot">•</span>
+          <span><kbd>↵</kbd> Selecionar</span>
+          <span class="footer-dot">•</span>
+          <span><kbd>Esc</kbd> Fechar</span>
         </div>
-        <span id="drawer-results-count">Carregando opções...</span>
+        <span id="drawer-results-count" class="drawer-footer-counter"></span>
       </div>
     </div>
   </div>
@@ -3288,7 +3268,17 @@
     function handleAvatarError(img) {
       if (!img) return;
       img.onerror = null;
-      img.src = "domus-avatar.svg";
+      img.style.display = 'none';
+      const wrap = img.closest('.top-avatar-wrap') || document.getElementById('top-avatar-wrap');
+      if (wrap) {
+        const fallback = wrap.querySelector('.avatar-fallback-initials') || document.getElementById('top-avatar-fallback');
+        if (fallback) {
+          fallback.style.display = 'flex';
+          return;
+        }
+      }
+      img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%230b1528'/%3E%3Ccircle cx='16' cy='12' r='5' fill='%2300e5ff'/%3E%3Cpath d='M7 27c0-5 4-9 9-9s9 4 9 9' fill='%2300e5ff' opacity='0.85'/%3E%3C/svg%3E";
+      img.style.display = 'block';
     }
     window.handleAvatarError = handleAvatarError;
 
@@ -3461,9 +3451,18 @@
       }
 
       // Sincronização do Avatar (do Supabase, localStorage ou padrão DOMUS domus-avatar.svg)
+      const initialLetter = (firstName || 'M').charAt(0).toUpperCase();
+      const fallbackInitialsEl = document.getElementById('top-avatar-initials');
+      if (fallbackInitialsEl) {
+        fallbackInitialsEl.innerText = initialLetter;
+      }
+
       const currentAvatar = (currentAuthProfile && currentAuthProfile.avatar_url) || localStorage.getItem('domus_custom_avatar') || 'domus-avatar.svg';
       const topAvatarEl = document.getElementById('top-profile-avatar');
+      const topAvatarFallback = document.getElementById('top-avatar-fallback');
       if (topAvatarEl) {
+        topAvatarEl.style.display = 'block';
+        if (topAvatarFallback) topAvatarFallback.style.display = 'none';
         topAvatarEl.src = currentAvatar;
       }
       const mainAvatarEl = document.getElementById('profile-main-avatar-img');
@@ -7578,7 +7577,6 @@
     // ==========================================================================
     // DRAWER / OVERLAY DE BUSCA MINIMALISTA, FLUIDO & VELOZ (COM ATALHO CTRL+K)
     // ==========================================================================
-    let currentDrawerCategory = 'all';
     let currentDrawerQuery = '';
     let currentDrawerItemsList = [];
     let drawerActiveIndex = 0;
@@ -7593,21 +7591,14 @@
       if (input) {
         input.value = '';
         currentDrawerQuery = '';
-        setTimeout(() => input.focus(), 80);
+        setTimeout(() => input.focus(), 60);
       }
 
       const clearBtn = document.getElementById('drawer-search-clear');
       if (clearBtn) clearBtn.style.display = 'none';
 
-      currentDrawerCategory = 'all';
-      updateChipActiveState('all');
       drawerActiveIndex = 0;
-
-      // Exibe inicialmente todas as opções brutas organizadas
       const allItems = DomusSearchRegistry.getAllItems();
-      const allCountEl = document.getElementById('chip-count-all');
-      if (allCountEl) allCountEl.innerText = allItems.length;
-
       renderDrawerItems(allItems);
     }
 
@@ -7635,21 +7626,6 @@
       currentDrawerQuery = '';
       drawerActiveIndex = 0;
       applyDrawerFilters();
-    }
-
-    function filterDrawerCategory(category, chipEl) {
-      currentDrawerCategory = category;
-      updateChipActiveState(category);
-      drawerActiveIndex = 0;
-      applyDrawerFilters();
-    }
-
-    function updateChipActiveState(category) {
-      const chips = document.querySelectorAll('.search-chip');
-      chips.forEach(c => {
-        const cat = c.getAttribute('data-filter');
-        c.classList.toggle('active', cat === category);
-      });
     }
 
     function handleDrawerSearchInput(query) {
@@ -7691,6 +7667,7 @@
       rows.forEach((r, idx) => {
         const isSel = idx === drawerActiveIndex;
         r.classList.toggle('selected', isSel);
+        r.classList.toggle('active', isSel);
         if (isSel) {
           r.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
         }
@@ -7700,7 +7677,11 @@
     function setDrawerActiveIndex(idx) {
       drawerActiveIndex = idx;
       const rows = document.querySelectorAll('.drawer-result-row');
-      rows.forEach((r, i) => r.classList.toggle('selected', i === idx));
+      rows.forEach((r, i) => {
+        const isSel = i === idx;
+        r.classList.toggle('selected', isSel);
+        r.classList.toggle('active', isSel);
+      });
     }
 
     function applyDrawerFilters() {
@@ -7709,35 +7690,21 @@
 
       let filtered = allItems;
 
-      // Filtro por Categoria selecionada
-      if (currentDrawerCategory !== 'all') {
-        filtered = filtered.filter(item => {
-          const itemCat = (item.category || '').toLowerCase();
-          const targetCat = currentDrawerCategory.toLowerCase();
-          if (targetCat === 'automação') {
-            return itemCat.includes('automação') || itemCat.includes('cena') || itemCat.includes('rotina');
-          }
-          if (targetCat === 'dispositivo') {
-            return itemCat.includes('dispositivo') || itemCat.includes('controle') || itemCat.includes('cômodo');
-          }
-          return itemCat.includes(targetCat);
-        });
-      }
-
-      // Filtro por Termo digitado
+      // Filtro em tempo real por termo digitado (título, categoria, palavras-chave e subtítulo de busca)
       if (normQ) {
         filtered = filtered.filter(item => {
           const title = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(item.title) : item.title.toLowerCase();
-          const sub = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(item.subtitle || '') : (item.subtitle || '').toLowerCase();
           const cat = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(item.category || '') : (item.category || '').toLowerCase();
+          const sub = typeof normalizeSearchStr === 'function' ? normalizeSearchStr(item.subtitle || '') : (item.subtitle || '').toLowerCase();
           const kws = Array.isArray(item.keywords)
             ? item.keywords.map(k => typeof normalizeSearchStr === 'function' ? normalizeSearchStr(k) : k.toLowerCase())
             : [];
 
-          return title.includes(normQ) || sub.includes(normQ) || cat.includes(normQ) || kws.some(k => k.includes(normQ));
+          return title.includes(normQ) || cat.includes(normQ) || sub.includes(normQ) || kws.some(k => k.includes(normQ));
         });
       }
 
+      drawerActiveIndex = 0;
       renderDrawerItems(filtered);
     }
 
@@ -7759,10 +7726,10 @@
       }
 
       if (countEl) {
-        if (!currentDrawerQuery.trim() && currentDrawerCategory === 'all') {
-          countEl.innerHTML = `<strong>${items.length} opções disponíveis</strong> no ecossistema`;
+        if (!currentDrawerQuery.trim()) {
+          countEl.innerHTML = `<strong>${items.length} comandos</strong> disponíveis`;
         } else {
-          countEl.innerHTML = `<strong>${items.length} resultado(s)</strong> para "${escapeHtml(currentDrawerQuery || currentDrawerCategory)}"`;
+          countEl.innerHTML = `<strong>${items.length} resultado(s)</strong> para "${escapeHtml(currentDrawerQuery)}"`;
         }
       }
 
@@ -7770,7 +7737,7 @@
         container.innerHTML = `
           <div class="search-drawer-empty">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <h4>Nenhuma opção encontrada</h4>
+            <h4>Nenhum comando encontrado</h4>
             <p>Tente buscar por termos como <em>luz</em>, <em>sala</em>, <em>ar condicionado</em>, <em>alarme</em> ou <em>moradores</em>.</p>
           </div>
         `;
@@ -7782,15 +7749,15 @@
       const isSearchMode = !!currentDrawerQuery.trim();
 
       items.forEach((item, idx) => {
-        // Quando visualizando todas as opções brutas, insere cabeçalhos de grupos intuitivos
-        if (!isSearchMode && currentDrawerCategory === 'all') {
+        // Quando visualizando o catálogo completo sem busca, exibe divisores discretos por seção
+        if (!isSearchMode) {
           let currentGroup = 'OUTROS COMANDOS';
           const cat = (item.category || '').toLowerCase();
-          if (cat === 'página') currentGroup = 'PÁGINAS E NAVEGAÇÃO DO SISTEMA';
-          else if (cat.includes('ilumina') || cat.includes('clima') || cat.includes('dispositivo') || cat.includes('controle') || cat.includes('cômodo')) currentGroup = 'DISPOSITIVOS, CÔMODOS E CONTROLES';
+          if (cat === 'página') currentGroup = 'PÁGINAS E NAVEGAÇÃO';
+          else if (cat.includes('ilumina') || cat.includes('clima') || cat.includes('dispositivo') || cat.includes('controle') || cat.includes('cômodo')) currentGroup = 'DISPOSITIVOS E AMBIENTES';
           else if (cat.includes('seguran') || cat.includes('alarme')) currentGroup = 'SEGURANÇA E MONITORAMENTO';
-          else if (cat.includes('cena') || cat.includes('automa') || cat.includes('rotina')) currentGroup = 'ROTINAS, CENAS E AUTOMAÇÕES';
-          else if (cat.includes('config') || cat.includes('morador') || cat.includes('casa')) currentGroup = 'CONFIGURAÇÕES E RESIDÊNCIA';
+          else if (cat.includes('cena') || cat.includes('automa') || cat.includes('rotina')) currentGroup = 'ROTINAS E AUTOMAÇÕES';
+          else if (cat.includes('config') || cat.includes('morador') || cat.includes('casa')) currentGroup = 'CONFIGURAÇÕES E SISTEMA';
 
           if (currentGroup !== lastGroup) {
             html += `<div class="drawer-section-header">${currentGroup}</div>`;
@@ -7801,7 +7768,7 @@
         const isSelected = idx === drawerActiveIndex;
         const titleHighlight = highlightSearchMatch(item.title, currentDrawerQuery);
 
-        // Cores de acento sutis por categoria
+        // Cores de acento sutis e tecnológicas por categoria
         let itemColor = '#00e5ff';
         let itemBg = 'rgba(0, 229, 255, 0.12)';
         const catLower = (item.category || '').toLowerCase();
@@ -7810,17 +7777,17 @@
         else if (catLower.includes('cena')) { itemColor = '#c084fc'; itemBg = 'rgba(168, 85, 247, 0.12)'; }
         else if (catLower.includes('rotina') || catLower.includes('automa')) { itemColor = '#818cf8'; itemBg = 'rgba(99, 102, 241, 0.12)'; }
 
+        // Linha minimalista: APENAS Ícone, Título com Highlight e Badge de Categoria à direita (sem subtítulo poluindo)
         html += `
-          <div class="drawer-result-row ${isSelected ? 'selected' : ''}" data-idx="${idx}" onclick="executeDrawerItemAction(${idx})" onmouseenter="setDrawerActiveIndex(${idx})">
+          <div class="drawer-result-row ${isSelected ? 'selected active' : ''}" data-idx="${idx}" onclick="executeDrawerItemAction(${idx})" onmouseenter="setDrawerActiveIndex(${idx})">
             <div class="drawer-row-icon" style="color: ${itemColor}; background: ${itemBg};">
               <i class="${escapeHtml(item.icon || 'fa-solid fa-cube')}"></i>
             </div>
             <div class="drawer-row-content">
-              <div class="drawer-row-title">${titleHighlight}</div>
-              <div class="drawer-row-sub">${escapeHtml(item.subtitle || '')}</div>
+              <span class="drawer-row-title">${titleHighlight}</span>
             </div>
             <div class="drawer-row-meta">
-              <span class="drawer-row-tag">${escapeHtml(item.category || 'Geral')}</span>
+              <span class="drawer-row-tag">${escapeHtml(item.category || 'Ação')}</span>
               <span class="drawer-row-enter-hint"><kbd>↵</kbd></span>
             </div>
           </div>
