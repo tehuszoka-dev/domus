@@ -478,6 +478,25 @@
         </div>
       </div>
 
+      <!-- BARRA DE PESQUISA PRINCIPAL DO DASHBOARD (INTEGRADA AO COMMAND PALETTE) -->
+      <div class="dashboard-search-section">
+        <div class="dashboard-search-container" onclick="openSearchDrawer()" title="Buscar no DOMUS (Atalho Ctrl + K)">
+          <i class="fa-solid fa-magnifying-glass dashboard-search-icon"></i>
+          <input 
+            type="text" 
+            id="dashboard-search-bar-input"
+            class="dashboard-search-input" 
+            placeholder="Buscar comandos, cômodos, lâmpadas, automações, moradores... (Ctrl + K)" 
+            readonly
+            onclick="openSearchDrawer()"
+            onfocus="openSearchDrawer()"
+          >
+          <div class="dashboard-search-kbd-cluster">
+            <kbd>Ctrl + K</kbd>
+          </div>
+        </div>
+      </div>
+
       <!-- SEÇÃO 1: AÇÕES RÁPIDAS ESSENCIAIS -->
       <div class="card quick-actions-card" style="margin-bottom: 28px;">
         <div class="quick-actions-bar-header">
@@ -7389,218 +7408,11 @@
       return dynamicItems;
     });
 
-    const searchInput = document.getElementById('global-search-input');
-    const searchDropdown = document.getElementById('search-results-dropdown');
-    const searchClearBtn = document.getElementById('search-clear-btn');
-    const searchContainer = document.getElementById('global-search-container');
-
-    let currentSearchResults = [];
-    let selectedSearchIndex = -1;
-
-    function renderSearchResults(query) {
-      if (!searchDropdown) return;
-
-      const normQ = normalizeSearchStr(query);
-      if (!normQ) {
-        searchDropdown.style.display = 'none';
-        searchDropdown.innerHTML = '';
-        currentSearchResults = [];
-        selectedSearchIndex = -1;
-        if (searchClearBtn) searchClearBtn.style.display = 'none';
-        return;
-      }
-
-      if (searchClearBtn) searchClearBtn.style.display = 'flex';
-
-      // Consulta todos os itens registrados e dinâmicos através do Registry
-      const allItems = DomusSearchRegistry.getAllItems();
-
-      // Filtra com busca parcial e insensibilidade a acentos
-      const matches = allItems.filter(item => {
-        const titleNorm = normalizeSearchStr(item.title);
-        const subNorm = normalizeSearchStr(item.subtitle);
-        const catNorm = normalizeSearchStr(item.category);
-        const inKeywords = Array.isArray(item.keywords) && item.keywords.some(k => normalizeSearchStr(k).includes(normQ));
-        return titleNorm.includes(normQ) || subNorm.includes(normQ) || catNorm.includes(normQ) || inKeywords;
-      });
-
-      // Ordena por relevância: quem começa com a busca primeiro
-      matches.sort((a, b) => {
-        const aTitle = normalizeSearchStr(a.title);
-        const bTitle = normalizeSearchStr(b.title);
-        const aStarts = aTitle.startsWith(normQ);
-        const bStarts = bTitle.startsWith(normQ);
-        if (aStarts && !bStarts) return -1;
-        if (!aStarts && bStarts) return 1;
-        return 0;
-      });
-
-      currentSearchResults = matches;
-      selectedSearchIndex = matches.length > 0 ? 0 : -1;
-
-      if (matches.length === 0) {
-        searchDropdown.innerHTML = `
-          <div class="search-empty-state">
-            <i class="fa-solid fa-magnifying-glass search-empty-icon"></i>
-            <div class="search-empty-title">Nenhum resultado encontrado.</div>
-            <p class="search-empty-hint">Tente pesquisar por <em>mapa da casa</em>, <em>iluminação</em>, <em>segurança</em>, <em>energia</em>, <em>senha</em>...</p>
-          </div>
-        `;
-        searchDropdown.style.display = 'block';
-        return;
-      }
-
-      // Renderiza os resultados com categoria formatada
-      let html = '<div class="search-results-list">';
-      matches.forEach((item, idx) => {
-        const isSelected = idx === 0 ? 'selected' : '';
-        const badgeCatClass = `badge-${normalizeSearchStr(item.category).replace(/[^a-z]/g, '')}`;
-        html += `
-          <div class="search-result-item ${isSelected}" data-index="${idx}" onclick="executeSearchResult(${idx})">
-            <div class="search-result-icon">
-              <i class="${item.icon}"></i>
-            </div>
-            <div class="search-result-info">
-              <div class="search-result-title">${highlightSearchMatch(item.title, query)}</div>
-              <div class="search-result-subtitle">${item.subtitle}</div>
-            </div>
-            <span class="search-result-badge ${badgeCatClass}">${item.category}</span>
-          </div>
-        `;
-      });
-      html += '</div>';
-
-      searchDropdown.innerHTML = html;
-      searchDropdown.style.display = 'block';
-    }
-
-    function highlightSearchMatch(text, query) {
-      if (!text || !query) return text || '';
-      const cleanQ = query.trim();
-      if (!cleanQ) return text;
-      try {
-        const escaped = cleanQ.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const pattern = escaped
-          .replace(/[aáàãâ\u00E4]/gi, '[aáàãâ\u00E4]')
-          .replace(/[eé\u00E8ê\u00EB]/gi, '[eé\u00E8ê\u00EB]')
-          .replace(/[ií\u00EC\u00EE\u00EF]/gi, '[ií\u00EC\u00EE\u00EF]')
-          .replace(/[oó\u00F2õô\u00F6]/gi, '[oó\u00F2õô\u00F6]')
-          .replace(/[uú\u00F9\u00FB\u00FC]/gi, '[uú\u00F9\u00FB\u00FC]')
-          .replace(/[cç]/gi, '[cç]');
-        const regex = new RegExp(`(${pattern})`, 'gi');
-        return text.replace(regex, '<mark>$1</mark>');
-      } catch (err) {
-        return text;
-      }
-    }
-
-    function executeSearchResult(index) {
-      const item = currentSearchResults[index];
-      if (item && typeof item.action === 'function') {
-        item.action();
-        closeSearchDropdown();
-        if (searchInput) searchInput.value = '';
-        if (searchClearBtn) searchClearBtn.style.display = 'none';
-      }
-    }
-
-    function closeSearchDropdown() {
-      if (searchDropdown) {
-        searchDropdown.style.display = 'none';
-        searchDropdown.innerHTML = '';
-      }
-      currentSearchResults = [];
-      selectedSearchIndex = -1;
-    }
-
-    function updateActiveSearchSelection() {
-      const items = searchDropdown.querySelectorAll('.search-result-item');
-      items.forEach((el, idx) => {
-        if (idx === selectedSearchIndex) {
-          el.classList.add('selected');
-          el.scrollIntoView({ block: 'nearest' });
-        } else {
-          el.classList.remove('selected');
-        }
-      });
-    }
-
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        renderSearchResults(e.target.value);
-      });
-
-      searchInput.addEventListener('focus', (e) => {
-        if (e.target.value.trim().length > 0) {
-          renderSearchResults(e.target.value);
-        }
-      });
-
-      searchInput.addEventListener('keydown', (e) => {
-        if (searchDropdown.style.display !== 'block' || currentSearchResults.length === 0) {
-          if (e.key === 'Escape') {
-            searchInput.blur();
-          }
-          return;
-        }
-
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          selectedSearchIndex = (selectedSearchIndex + 1) % currentSearchResults.length;
-          updateActiveSearchSelection();
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          selectedSearchIndex = (selectedSearchIndex - 1 + currentSearchResults.length) % currentSearchResults.length;
-          updateActiveSearchSelection();
-        } else if (e.key === 'Enter') {
-          e.preventDefault();
-          const targetIndex = selectedSearchIndex >= 0 ? selectedSearchIndex : 0;
-          executeSearchResult(targetIndex);
-        } else if (e.key === 'Escape') {
-          e.preventDefault();
-          closeSearchDropdown();
-          searchInput.blur();
-        }
-      });
-    }
-
-    if (searchClearBtn) {
-      searchClearBtn.addEventListener('click', () => {
-        if (searchInput) {
-          searchInput.value = '';
-          searchInput.focus();
-        }
-        closeSearchDropdown();
-        searchClearBtn.style.display = 'none';
-      });
-    }
-
-    // ATALHO GLOBAL: Ctrl + K ou Cmd + K
-    window.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
-        e.preventDefault();
-        // Garante que está na aba Início ou foca diretamente a busca
-        if (!document.getElementById('tab-inicio').classList.contains('active')) {
-          switchTab('tab-inicio');
-        }
-        setTimeout(() => {
-          if (searchInput) {
-            searchInput.focus();
-            searchInput.select();
-            if (searchInput.value.trim().length > 0) {
-              renderSearchResults(searchInput.value);
-            }
-          }
-        }, 50);
-      }
-    });
-
-    // FECHAR AO CLICAR FORA
-    document.addEventListener('click', (e) => {
-      if (searchContainer && !searchContainer.contains(e.target)) {
-        closeSearchDropdown();
-      }
-    });
+    // ==========================================================================
+    // SISTEMA DE BUSCA DOMUS (INTEGRADO AO COMMAND PALETTE / CTRL + K)
+    // ==========================================================================
+    // Toda a busca do sistema é centralizada no DomusSearchRegistry e acionada
+    // via openSearchDrawer() no Header, Sidebar, Dashboard e pelo atalho global Ctrl + K.
 
     // PERSISTÊNCIA DE ESTADO DAS LÂMPADAS
     function saveLightStatesToStorage() {
@@ -7813,6 +7625,8 @@
     function openSearchDrawer() {
       const drawer = document.getElementById('domus-search-drawer');
       if (!drawer) return;
+      drawer.style.display = 'flex';
+      void drawer.offsetWidth;
       drawer.classList.add('active');
       drawer.setAttribute('aria-hidden', 'false');
 
@@ -7820,7 +7634,10 @@
       if (input) {
         input.value = '';
         currentDrawerQuery = '';
-        setTimeout(() => input.focus(), 60);
+        setTimeout(() => {
+          input.focus();
+          input.select();
+        }, 50);
       }
 
       const clearBtn = document.getElementById('drawer-search-clear');
@@ -7836,6 +7653,11 @@
       if (!drawer) return;
       drawer.classList.remove('active');
       drawer.setAttribute('aria-hidden', 'true');
+      setTimeout(() => {
+        if (!drawer.classList.contains('active')) {
+          drawer.style.display = 'none';
+        }
+      }, 220);
     }
     window.openSearchDrawer = openSearchDrawer;
     window.closeSearchDrawer = closeSearchDrawer;

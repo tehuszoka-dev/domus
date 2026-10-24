@@ -6261,6 +6261,82 @@ body.light-mode .chart-filter-btn.active {
   color: #94a3b8;
 }
 
+/* ==========================================================================
+   BARRA DE PESQUISA PRINCIPAL DO DASHBOARD (INÍCIO)
+   ========================================================================== */
+.dashboard-search-section {
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.dashboard-search-container {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(135deg, rgba(14, 23, 42, 0.85) 0%, rgba(9, 15, 28, 0.95) 100%);
+  border: 1px solid rgba(0, 229, 255, 0.28);
+  border-radius: 12px;
+  padding: 12px 20px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), inset 0 0 16px rgba(0, 229, 255, 0.04);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dashboard-search-container:hover {
+  background: linear-gradient(135deg, rgba(18, 30, 54, 0.95) 0%, rgba(11, 20, 38, 0.98) 100%);
+  border-color: #00e5ff;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 229, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.dashboard-search-icon {
+  font-size: 1.15rem;
+  color: #00e5ff;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.dashboard-search-container:hover .dashboard-search-icon {
+  transform: scale(1.1);
+}
+
+.dashboard-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 0.96rem;
+  font-family: inherit;
+  font-weight: 400;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+}
+
+.dashboard-search-input::placeholder {
+  color: #94a3b8;
+  opacity: 0.85;
+}
+
+.dashboard-search-kbd-cluster {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.dashboard-search-kbd-cluster kbd {
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  color: #00e5ff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 4px 9px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
 .top-header-right {
   display: flex;
   align-items: center;
@@ -6461,8 +6537,9 @@ body.light-mode .chart-filter-btn.active {
 }
 
 .search-drawer-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
+  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 .search-drawer-panel {

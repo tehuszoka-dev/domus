@@ -668,15 +668,29 @@
 
         <form id="support-ticket-form" onsubmit="handleSupportFormSubmit(event)">
           
-          <!-- Identificação do Solicitante (Auto-detectado da sessão) -->
+          <!-- Identificação do Solicitante (Editável e com preenchimento inteligente) -->
           <div class="form-row">
             <div class="form-group" style="margin-bottom: 0;">
-              <label class="form-label">Nome do Solicitante</label>
-              <input type="text" id="ticket-user-name" class="form-input" readonly>
+              <label class="form-label" for="ticket-user-name">Nome do Solicitante <span class="req">*</span></label>
+              <input 
+                type="text" 
+                id="ticket-user-name" 
+                class="form-input" 
+                placeholder="Digite seu nome completo..." 
+                required
+                autocomplete="name"
+              >
             </div>
             <div class="form-group" style="margin-bottom: 0;">
-              <label class="form-label">E-mail de Contato</label>
-              <input type="email" id="ticket-user-email" class="form-input" readonly>
+              <label class="form-label" for="ticket-user-email">E-mail de Contato <span class="req">*</span></label>
+              <input 
+                type="email" 
+                id="ticket-user-email" 
+                class="form-input" 
+                placeholder="seu.email@exemplo.com" 
+                required
+                autocomplete="email"
+              >
             </div>
           </div>
 
@@ -834,14 +848,23 @@
         }
       }
 
-      // Preenche os campos do formulário e o badge superior
-      const nameInput = document.getElementById('ticket-user-name');
-      const emailInput = document.getElementById('ticket-user-email');
-      const badgeName = document.getElementById('support-user-name');
-      const badgeAvatar = document.getElementById('support-avatar-img');
+      if (nameInput) {
+        nameInput.value = userName;
+        nameInput.addEventListener('input', (e) => {
+          const val = e.target.value.trim();
+          if (badgeName) badgeName.innerText = val || 'Usuário DOMUS';
+          if (val) localStorage.setItem('domus_user_name', val);
+        });
+      }
 
-      if (nameInput) nameInput.value = userName;
-      if (emailInput) emailInput.value = userEmail;
+      if (emailInput) {
+        emailInput.value = userEmail;
+        emailInput.addEventListener('input', (e) => {
+          const val = e.target.value.trim();
+          if (val) localStorage.setItem('domus_user_email', val);
+        });
+      }
+
       if (badgeName) badgeName.innerText = userName;
       if (badgeAvatar) {
         badgeAvatar.src = avatarUrl;
