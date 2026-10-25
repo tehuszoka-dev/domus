@@ -25,6 +25,8 @@
       s.src = 'https://unpkg.com/@supabase/supabase-js@2';
       document.head.appendChild(s);
     }
+  </script>
+
   <!-- CROPPER.JS PARA RECORTE E ENQUADRAMENTO CIRCULAR DE AVATAR -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
@@ -3040,6 +3042,8 @@
         </div>
       </form>
     </div>
+  </div>
+
   <!-- MODAL DE EDIÇÃO DE PERFIL E FOTO / AVATAR -->
   <div id="modal-edit-profile" class="modal-overlay" onclick="closeEditProfileModal(event)">
     <div class="modal-content" style="max-width: 520px;" onclick="event.stopPropagation()">
@@ -6212,16 +6216,7 @@
       });
     }
 
-    // FUNÇÕES DO PERFIL E AÇÕES RÁPIDAS
-    function openEditProfileModal() {
-      const modal = document.getElementById('modal-edit-profile');
-      if (modal) modal.classList.add('active');
-    }
-
-    function closeEditProfileModal() {
-      const modal = document.getElementById('modal-edit-profile');
-      if (modal) modal.classList.remove('active');
-    }
+    // FUNÇÕES DO PERFIL E AÇÕES RÁPIDAS (openEditProfileModal e closeEditProfileModal já gerenciadas no módulo de perfil)
 
     function handleSaveProfile(event) {
       event.preventDefault();
