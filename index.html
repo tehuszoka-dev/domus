@@ -419,6 +419,11 @@
          ========================================================================== -->
     <header class="domus-top-header">
       <div class="top-header-left">
+        <!-- BOTÃO GAVETA MENU MOBILE (Aparece em telas <= 1024px) -->
+        <button type="button" class="btn-mobile-drawer-toggle" id="btn-mobile-drawer-toggle" onclick="toggleMobileDrawer()" aria-label="Abrir menu de navegação e módulos" title="Menu e todos os módulos">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
         <div class="top-greeting-box">
           <span class="top-greeting-label" id="top-user-greeting">Olá, Matheus</span>
           <div class="top-system-badge" title="Status dos barramentos e sensores da residência">
@@ -2352,6 +2357,168 @@
     </footer>
 
   </main>
+
+    <!-- ==========================================================================
+         MENU INFERIOR FIXO MOBILE (BOTTOM NAVIGATION) - 5 ACESSOS PRINCIPAIS
+         ========================================================================== -->
+    <nav class="domus-bottom-nav" id="domus-bottom-nav" aria-label="Navegação Principal Mobile">
+      <button type="button" class="bottom-nav-item active" data-tab="tab-inicio" onclick="switchTab('tab-inicio')">
+        <div class="bottom-nav-icon-wrap">
+          <i class="fa-solid fa-house"></i>
+        </div>
+        <span class="bottom-nav-label">Início</span>
+      </button>
+
+      <button type="button" class="bottom-nav-item" data-tab="tab-inteligencia" onclick="switchTab('tab-inteligencia')">
+        <div class="bottom-nav-icon-wrap">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        <span class="bottom-nav-label">Inteligência</span>
+      </button>
+
+      <button type="button" class="bottom-nav-item" data-tab="tab-seguranca" onclick="switchTab('tab-seguranca')">
+        <div class="bottom-nav-icon-wrap">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <span class="bottom-nav-label">Segurança</span>
+      </button>
+
+      <button type="button" class="bottom-nav-item" data-tab="tab-chat" id="bottom-nav-chat" onclick="switchTab('tab-chat')">
+        <div class="bottom-nav-icon-wrap">
+          <i class="fa-solid fa-comments"></i>
+          <span class="bottom-chat-dot" id="bottom-chat-badge" style="display: none;"></span>
+        </div>
+        <span class="bottom-nav-label">Chat</span>
+      </button>
+
+      <button type="button" class="bottom-nav-item" data-tab="tab-perfil" onclick="switchTab('tab-perfil')">
+        <div class="bottom-nav-icon-wrap">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <span class="bottom-nav-label">Perfil</span>
+      </button>
+    </nav>
+
+    <!-- ==========================================================================
+         DRAWER / GAVETA DESLIZANTE DE MÓDULOS SECUNDÁRIOS PARA CELULAR
+         ========================================================================== -->
+    <div id="domus-mobile-drawer" class="mobile-drawer-overlay" onclick="handleMobileDrawerOverlayClick(event)" aria-hidden="true">
+      <div class="mobile-drawer-panel" onclick="event.stopPropagation()">
+        <!-- Header do Drawer -->
+        <div class="mobile-drawer-header">
+          <div class="drawer-brand">
+            <div class="drawer-logo-icon">
+              <i class="fa-solid fa-house-signal"></i>
+            </div>
+            <div>
+              <h3>DOMUS</h3>
+              <span>Navegação &amp; Módulos</span>
+            </div>
+          </div>
+          <button type="button" class="btn-close-drawer" onclick="closeMobileDrawer()" aria-label="Fechar menu">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Conteúdo Rolável do Drawer -->
+        <div class="mobile-drawer-content">
+          <!-- Acesso Rápido à Busca e Suporte -->
+          <div class="drawer-quick-row">
+            <button type="button" class="drawer-quick-btn" onclick="closeMobileDrawer(); openSearchDrawer();">
+              <i class="fa-solid fa-magnifying-glass" style="color: var(--blue-accent);"></i>
+              <span>Buscar (Ctrl+K)</span>
+            </button>
+            <a href="suporte.html" class="drawer-quick-btn">
+              <i class="fa-solid fa-headset" style="color: #2ecc71;"></i>
+              <span>Suporte DOMUS</span>
+            </a>
+          </div>
+
+          <!-- Seção 1: Controle da Casa -->
+          <div class="drawer-section">
+            <span class="drawer-section-title"><i class="fa-solid fa-sliders"></i> Controle da Casa</span>
+            <div class="drawer-grid-links">
+              <button type="button" class="drawer-link-btn" onclick="closeMobileDrawer(); switchTab('tab-iluminacao');">
+                <i class="fa-solid fa-lightbulb" style="color: #ff7a00;"></i>
+                <span>Iluminação</span>
+              </button>
+              <button type="button" class="drawer-link-btn" onclick="closeMobileDrawer(); switchTab('tab-climatizacao');">
+                <i class="fa-solid fa-snowflake" style="color: #00e5ff;"></i>
+                <span>Climatização</span>
+              </button>
+              <button type="button" class="drawer-link-btn" onclick="closeMobileDrawer(); switchTab('tab-energia');">
+                <i class="fa-solid fa-bolt" style="color: #f59e0b;"></i>
+                <span>Consumo de Energia</span>
+              </button>
+              <button type="button" class="drawer-link-btn" onclick="closeMobileDrawer(); switchTab('tab-automacoes');">
+                <i class="fa-solid fa-robot" style="color: #818cf8;"></i>
+                <span>Automações</span>
+              </button>
+              <button type="button" class="drawer-link-btn" onclick="closeMobileDrawer(); openDevicesModal();">
+                <i class="fa-solid fa-plug" style="color: #38bdf8;"></i>
+                <span>Dispositivos</span>
+              </button>
+              <button type="button" class="drawer-link-btn" onclick="closeMobileDrawer(); openRoomsModal();">
+                <i class="fa-solid fa-door-open" style="color: #a78bfa;"></i>
+                <span>Cômodos</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Seção 2: Monitoramento & Sensores -->
+          <div class="drawer-section">
+            <span class="drawer-section-title"><i class="fa-solid fa-chart-line"></i> Monitoramento &amp; Relatórios</span>
+            <div class="drawer-grid-links">
+              <button type="button" class="drawer-link-btn" onclick="closeMobileDrawer(); openSensorsModal();">
+                <i class="fa-solid fa-gauge-high" style="color: #2ecc71;"></i>
+                <span>Análise dos Sensores</span>
+              </button>
+              <button type="button" class="drawer-link-btn" onclick="closeMobileDrawer(); openFullHistoryModal();">
+                <i class="fa-solid fa-clock-rotate-left" style="color: #94a3b8;"></i>
+                <span>Histórico Completo</span>
+              </button>
+              <button type="button" class="drawer-link-btn" onclick="closeMobileDrawer(); openNotificationsModal();">
+                <i class="fa-solid fa-bell" style="color: #f59e0b;"></i>
+                <span>Notificações</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Seção 3: Casa & Moradores -->
+          <div class="drawer-section">
+            <span class="drawer-section-title"><i class="fa-solid fa-people-roof"></i> Casa &amp; Moradores</span>
+            <div class="drawer-grid-links">
+              <button type="button" class="drawer-link-btn" onclick="closeMobileDrawer(); switchTab('tab-moradores');">
+                <i class="fa-solid fa-users" style="color: #38bdf8;"></i>
+                <span>Moradores</span>
+              </button>
+              <button type="button" class="drawer-link-btn" onclick="closeMobileDrawer(); switchTab('tab-mapa');">
+                <i class="fa-solid fa-map-location-dot" style="color: #34d399;"></i>
+                <span>Mapa da Casa</span>
+              </button>
+              <button type="button" class="drawer-link-btn" onclick="closeMobileDrawer(); openInvitationsModal();">
+                <i class="fa-solid fa-envelope-open-text" style="color: #f472b6;"></i>
+                <span>Convites</span>
+              </button>
+              <button type="button" class="drawer-link-btn" onclick="closeMobileDrawer(); openResidenceSettingsModal();">
+                <i class="fa-solid fa-gear" style="color: #94a3b8;"></i>
+                <span>Configurações</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Rodapé do Drawer -->
+          <div class="drawer-footer-actions">
+            <a href="codigos.html" class="drawer-btn-codigos">
+              <i class="fa-solid fa-code"></i> Central de Códigos (VS Code)
+            </a>
+            <button type="button" class="drawer-btn-signout" onclick="domusSignOut()">
+              <i class="fa-solid fa-right-from-bracket"></i> Encerrar Sessão
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div> <!-- FIM DO WRAPPER DO SISTEMA DOMUS PROTEGIDO POR AUTENTICAÇÃO -->
 
   <!-- MODAL DE EDITAR PERFIL -->
@@ -3321,7 +3488,7 @@
       <div class="support-channels-footer">
         <span>Canais de Atendimento Imediato:</span>
         <div class="support-channel-links">
-          <a href="mailto: matheusdluccaa30099@gmail.com" class="support-link-pill"><i class="fa-solid fa-envelope"></i> matheusdluccaa30099@gmail.com</a>
+          <a href="mailto:suporte@domus.smart" class="support-link-pill"><i class="fa-solid fa-envelope"></i> suporte@domus.smart</a>
           <a href="https://wa.me/" target="_blank" rel="noopener" class="support-link-pill"><i class="fa-brands fa-whatsapp"></i> WhatsApp Suporte</a>
         </div>
       </div>
@@ -4661,6 +4828,49 @@
       }
     }
 
+    // CONTROLE DO MENU GAVETA MOBILE (DRAWER)
+    function openMobileDrawer() {
+      const drawer = document.getElementById('domus-mobile-drawer');
+      if (!drawer) return;
+      drawer.style.display = 'flex';
+      void drawer.offsetWidth;
+      drawer.classList.add('active');
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('mobile-drawer-open');
+    }
+
+    function closeMobileDrawer() {
+      const drawer = document.getElementById('domus-mobile-drawer');
+      if (!drawer) return;
+      drawer.classList.remove('active');
+      drawer.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('mobile-drawer-open');
+      setTimeout(() => {
+        if (!drawer.classList.contains('active')) {
+          drawer.style.display = 'none';
+        }
+      }, 240);
+    }
+
+    function toggleMobileDrawer() {
+      const drawer = document.getElementById('domus-mobile-drawer');
+      if (drawer && drawer.classList.contains('active')) {
+        closeMobileDrawer();
+      } else {
+        openMobileDrawer();
+      }
+    }
+
+    function handleMobileDrawerOverlayClick(e) {
+      if (e.target && e.target.id === 'domus-mobile-drawer') {
+        closeMobileDrawer();
+      }
+    }
+    window.openMobileDrawer = openMobileDrawer;
+    window.closeMobileDrawer = closeMobileDrawer;
+    window.toggleMobileDrawer = toggleMobileDrawer;
+    window.handleMobileDrawerOverlayClick = handleMobileDrawerOverlayClick;
+
     function switchTab(tabId, targetSelector) {
       if (!isUserAuthenticated()) {
         redirectToLogin();
@@ -4670,6 +4880,15 @@
       navItems.forEach(i => i.classList.remove('active'));
       navSubItems.forEach(s => s.classList.remove('active'));
       tabContents.forEach(c => c.classList.remove('active'));
+
+      // Sincroniza Bottom Navigation Mobile
+      document.querySelectorAll('.bottom-nav-item').forEach(btn => {
+        const isTarget = btn.getAttribute('data-tab') === tabId;
+        btn.classList.toggle('active', isTarget);
+      });
+
+      // Fecha gaveta mobile automaticamente se estiver aberta
+      closeMobileDrawer();
 
       const targetNav = document.querySelector(`.nav-item[data-tab="${tabId}"]`);
       if (targetNav) targetNav.classList.add('active');

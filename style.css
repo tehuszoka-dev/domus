@@ -7663,3 +7663,798 @@ body.light-mode .chart-filter-btn.active {
 .modal-crop-card .cropper-point {
   background-color: #00e5ff !important;
 }
+
+/* ==========================================================================
+   ARQUITETURA MOBILE-FIRST E RESPONSIVIDADE COMPLETA DOMUS
+   (CELULARES, TABLETS E DISPOSITIVOS MÓVEIS DE 320PX A 1024PX+)
+   ========================================================================== */
+
+/* 1. Elementos Mobile Ocultos por Padrão no Desktop (> 1024px) */
+.btn-mobile-drawer-toggle {
+  display: none;
+}
+
+.domus-bottom-nav {
+  display: none;
+}
+
+.mobile-drawer-overlay {
+  display: none;
+}
+
+/* 2. Breakpoint Tablet e Dispositivos Móveis (<= 1024px) */
+@media (max-width: 1024px) {
+  html, body {
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  body {
+    display: block !important;
+  }
+
+  .domus-app-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    min-height: 100vh !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Substituição da Sidebar Fixa por Navegação Mobile Inteligente */
+  .sidebar {
+    display: none !important;
+  }
+
+  /* Botão de Menu Gaveta (Drawer) no Top Header */
+  .btn-mobile-drawer-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    border-radius: 10px !important;
+    background: rgba(0, 229, 255, 0.08) !important;
+    border: 1px solid rgba(0, 229, 255, 0.28) !important;
+    color: #00e5ff !important;
+    font-size: 1.15rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
+  }
+
+  .btn-mobile-drawer-toggle:hover,
+  .btn-mobile-drawer-toggle:active {
+    background: rgba(0, 229, 255, 0.2) !important;
+    border-color: #00e5ff !important;
+    box-shadow: 0 0 14px rgba(0, 229, 255, 0.35) !important;
+    transform: scale(1.04);
+  }
+
+  /* Área Principal fluida com margem inferior de segurança para o Menu Inferior */
+  .main-content {
+    width: 100% !important;
+    max-width: 100vw !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    padding: 0 20px calc(88px + env(safe-area-inset-bottom)) 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Header Superior Responsivo */
+  .domus-top-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 500 !important;
+    margin: 0 -20px 20px -20px !important;
+    padding: 12px 18px !important;
+    gap: 12px !important;
+  }
+
+  .top-header-left {
+    gap: 10px !important;
+  }
+
+  .top-breadcrumb {
+    display: none !important;
+  }
+
+  /* ==========================================================================
+     MENU INFERIOR FIXO (BOTTOM NAVIGATION) - 5 ABAS PRINCIPAIS
+     ========================================================================== */
+  .domus-bottom-nav {
+    display: flex !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 9999 !important;
+    background: rgba(7, 13, 24, 0.94) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-top: 1px solid rgba(0, 229, 255, 0.25) !important;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.75), 0 -1px 15px rgba(0, 229, 255, 0.12) !important;
+    padding: 8px 8px max(10px, env(safe-area-inset-bottom)) 8px !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    box-sizing: border-box !important;
+  }
+
+  .bottom-nav-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    background: transparent !important;
+    border: none !important;
+    color: #64748b !important;
+    font-size: 0.68rem !important;
+    font-weight: 500 !important;
+    font-family: inherit !important;
+    cursor: pointer !important;
+    flex: 1 !important;
+    padding: 5px 2px !important;
+    border-radius: 12px !important;
+    transition: all 0.2s ease !important;
+    position: relative !important;
+    min-height: 48px !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  .bottom-nav-icon-wrap {
+    width: 38px !important;
+    height: 28px !important;
+    border-radius: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.15rem !important;
+    border: 1px solid transparent !important;
+    transition: all 0.2s ease !important;
+    position: relative !important;
+  }
+
+  .bottom-nav-label {
+    letter-spacing: 0.2px !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+  }
+
+  .bottom-nav-item.active {
+    color: #00e5ff !important;
+  }
+
+  .bottom-nav-item.active .bottom-nav-icon-wrap {
+    color: #00e5ff !important;
+    background: rgba(0, 229, 255, 0.15) !important;
+    border-color: rgba(0, 229, 255, 0.4) !important;
+    box-shadow: 0 0 16px rgba(0, 229, 255, 0.35) !important;
+    transform: translateY(-2px);
+  }
+
+  .bottom-chat-dot {
+    position: absolute !important;
+    top: 2px !important;
+    right: 4px !important;
+    width: 8px !important;
+    height: 8px !important;
+    background: #ff7a00 !important;
+    border-radius: 50% !important;
+    border: 1.5px solid #070d18 !important;
+    box-shadow: 0 0 8px #ff7a00 !important;
+  }
+
+  /* ==========================================================================
+     DRAWER / GAVETA DESLIZANTE DE MÓDULOS (MOBILE BOTTOM SHEET)
+     ========================================================================== */
+  .mobile-drawer-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 10000 !important;
+    background: rgba(3, 7, 16, 0.82) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    display: none;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .mobile-drawer-overlay.active {
+    display: flex !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .mobile-drawer-panel {
+    width: 100% !important;
+    max-width: 580px !important;
+    max-height: 88vh !important;
+    background: #090e1c !important;
+    border-top: 1px solid rgba(0, 229, 255, 0.32) !important;
+    border-radius: 22px 22px 0 0 !important;
+    box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 229, 255, 0.15) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    transform: translateY(100%) !important;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    padding-bottom: max(16px, env(safe-area-inset-bottom)) !important;
+  }
+
+  .mobile-drawer-overlay.active .mobile-drawer-panel {
+    transform: translateY(0) !important;
+  }
+
+  .mobile-drawer-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 16px 20px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: #0c1322 !important;
+  }
+
+  .drawer-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  .drawer-logo-icon {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 10px !important;
+    background: rgba(0, 229, 255, 0.12) !important;
+    border: 1px solid rgba(0, 229, 255, 0.3) !important;
+    color: #00e5ff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.1rem !important;
+  }
+
+  .drawer-brand h3 {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 2px !important;
+    color: #ffffff !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+  }
+
+  .drawer-brand span {
+    font-size: 0.72rem !important;
+    color: #94a3b8 !important;
+  }
+
+  .btn-close-drawer {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #94a3b8 !important;
+    font-size: 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+  }
+
+  .btn-close-drawer:hover,
+  .btn-close-drawer:active {
+    background: rgba(239, 68, 68, 0.2) !important;
+    border-color: rgba(239, 68, 68, 0.4) !important;
+    color: #ef4444 !important;
+  }
+
+  .mobile-drawer-content {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 16px 18px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 18px !important;
+  }
+
+  .drawer-quick-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  .drawer-quick-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+    background: rgba(14, 23, 38, 0.8) !important;
+    border: 1px solid rgba(0, 229, 255, 0.2) !important;
+    border-radius: 12px !important;
+    color: #ffffff !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .drawer-quick-btn:hover,
+  .drawer-quick-btn:active {
+    background: rgba(0, 229, 255, 0.15) !important;
+    border-color: #00e5ff !important;
+  }
+
+  .drawer-section {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .drawer-section-title {
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    color: #64748b !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .drawer-grid-links {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .drawer-link-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 11px 12px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.07) !important;
+    border-radius: 10px !important;
+    color: #e2e8f0 !important;
+    font-size: 0.84rem !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    text-align: left !important;
+    transition: all 0.18s ease !important;
+  }
+
+  .drawer-link-btn i {
+    font-size: 1rem !important;
+    width: 20px !important;
+    text-align: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .drawer-link-btn:hover,
+  .drawer-link-btn:active {
+    background: rgba(0, 229, 255, 0.1) !important;
+    border-color: rgba(0, 229, 255, 0.3) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+  }
+
+  .drawer-footer-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding-top: 8px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  }
+
+  .drawer-btn-codigos {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 11px 14px !important;
+    background: rgba(0, 210, 255, 0.09) !important;
+    border: 1px solid rgba(0, 210, 255, 0.3) !important;
+    border-radius: 10px !important;
+    color: #00e5ff !important;
+    text-decoration: none !important;
+    font-size: 0.84rem !important;
+    font-weight: 600 !important;
+  }
+
+  .drawer-btn-signout {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 11px 14px !important;
+    background: rgba(239, 68, 68, 0.1) !important;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+    border-radius: 10px !important;
+    color: #f87171 !important;
+    font-size: 0.84rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+  }
+
+  /* Grids Adaptáveis para Tablets (601px a 1024px) */
+  .quick-actions-essential-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .lighting-rooms-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* 3. Breakpoint Celulares em Geral (<= 768px) */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 0 14px calc(85px + env(safe-area-inset-bottom)) 14px !important;
+  }
+
+  .domus-top-header {
+    margin: 0 -14px 16px -14px !important;
+    padding: 10px 14px !important;
+  }
+
+  .top-search-trigger-btn {
+    padding: 8px 12px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .top-search-trigger-btn kbd {
+    display: none !important;
+  }
+
+  .search-placeholder-text {
+    max-width: 140px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .top-profile-badge,
+  .user-profile-button {
+    padding: 3px !important;
+    border-radius: 50% !important;
+  }
+
+  .top-profile-info,
+  .top-profile-chevron {
+    display: none !important;
+  }
+
+  /* Dashboard Mobile: Coluna Única Elegante */
+  .dashboard-hero-minimal {
+    padding: 18px 16px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .dashboard-hero-minimal h1 {
+    font-size: 1.3rem !important;
+  }
+
+  .dashboard-live-status-pill {
+    align-self: flex-start !important;
+  }
+
+  .quick-actions-card {
+    padding: 18px 16px !important;
+  }
+
+  .quick-actions-bar-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+  }
+
+  .quick-actions-essential-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .quick-action-card {
+    padding: 14px 16px !important;
+  }
+
+  .concept-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .concept-manifesto-banner {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 18px 16px !important;
+  }
+
+  /* Iluminação Mobile */
+  .lighting-rooms-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .lighting-scenes-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .lighting-kpi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .master-card-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .lighting-master-actions {
+    width: 100% !important;
+    display: flex !important;
+  }
+
+  .lighting-master-actions button {
+    flex: 1 !important;
+  }
+
+  /* Climatização Mobile */
+  .ac-cards-grid,
+  .climate-grid-main {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Segurança Mobile */
+  .security-overview-grid,
+  .security-devices-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .security-keypad-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .keypad-btn {
+    min-height: 52px !important;
+    font-size: 1.2rem !important;
+  }
+
+  /* Energia Mobile */
+  .energy-metrics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .energy-charts-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Automações Mobile */
+  .automations-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Chat Mobile Fluido e Seguro contra Teclado */
+  .chat-layout-container {
+    height: calc(100vh - 160px) !important;
+    max-height: calc(100vh - 160px) !important;
+    position: relative !important;
+  }
+
+  .chat-sidebar-conversations {
+    width: 100% !important;
+  }
+
+  .chat-main-window {
+    display: none !important;
+  }
+
+  .chat-main-window.mobile-active {
+    display: flex !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 60 !important;
+    background: #090e1c !important;
+  }
+
+  .btn-chat-back-mobile {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #fff !important;
+    cursor: pointer !important;
+    margin-right: 6px !important;
+  }
+
+  .chat-input-row {
+    padding: 10px 12px !important;
+    gap: 8px !important;
+  }
+
+  /* Perfil Mobile */
+  .profile-header-card {
+    padding: 20px 16px !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .profile-info-center {
+    align-items: center !important;
+  }
+
+  .profile-actions-right {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .profile-quick-actions-bar {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .stats-horizontal-strip {
+    flex-direction: column !important;
+    gap: 12px !important;
+    align-items: flex-start !important;
+  }
+
+  .stat-strip-sep {
+    display: none !important;
+  }
+
+  /* Modais Adaptáveis em formato Bottom Sheet / Dialog Mobile */
+  .modal-overlay {
+    padding: 12px !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .modal-content,
+  .modal-card {
+    width: 100% !important;
+    max-width: 96vw !important;
+    max-height: 88vh !important;
+    padding: 20px 16px !important;
+    border-radius: 18px !important;
+  }
+
+  .modal-actions {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .modal-actions button {
+    flex: 1 1 120px !important;
+    min-height: 44px !important;
+    justify-content: center !important;
+  }
+
+  /* Command Palette (Busca) Mobile */
+  .search-drawer-overlay {
+    padding: 20px 12px !important;
+  }
+
+  .search-drawer-panel {
+    max-height: 85vh !important;
+    border-radius: 14px !important;
+  }
+
+  .search-drawer-header {
+    padding: 10px 14px !important;
+  }
+}
+
+/* 4. Breakpoint Celulares Padrão e Estreitos (<= 480px) */
+@media (max-width: 480px) {
+  .dashboard-search-section {
+    margin-bottom: 18px !important;
+  }
+
+  .dashboard-search-container {
+    padding: 10px 14px !important;
+    gap: 10px !important;
+  }
+
+  .dashboard-search-input {
+    font-size: 0.88rem !important;
+  }
+
+  .dashboard-search-kbd-cluster kbd {
+    display: none !important;
+  }
+
+  .search-placeholder-text {
+    display: none !important;
+  }
+
+  .top-search-trigger-btn {
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    border-radius: 10px !important;
+  }
+
+  .top-greeting-box .top-greeting-label {
+    display: none !important;
+  }
+
+  .top-system-badge {
+    padding: 3px 6px !important;
+  }
+
+  .lighting-scenes-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .lighting-kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .energy-metrics-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .profile-quick-actions-bar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .drawer-grid-links {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* 5. Breakpoint Celulares Muito Pequenos (320px a 360px - iPhone SE, Galaxy Mini) */
+@media (max-width: 360px) {
+  .main-content {
+    padding: 0 10px calc(82px + env(safe-area-inset-bottom)) 10px !important;
+  }
+
+  .domus-top-header {
+    margin: 0 -10px 14px -10px !important;
+    padding: 8px 10px !important;
+  }
+
+  .bottom-nav-item {
+    font-size: 0.62rem !important;
+  }
+
+  .bottom-nav-icon-wrap {
+    width: 32px !important;
+    height: 24px !important;
+    font-size: 1rem !important;
+  }
+
+  .quick-card-info strong {
+    font-size: 0.88rem !important;
+  }
+
+  .quick-card-info span {
+    font-size: 0.72rem !important;
+  }
+}
+
