@@ -8767,3 +8767,195 @@ body.has-physical-keyboard .btn-keyboard-shortcuts-helper {
     padding-bottom: max(12px, env(safe-area-inset-bottom)) !important;
   }
 }
+
+/* ==========================================================================
+   ÁREA INFERIOR REESTRUTURADA: SELETOR DE RESIDÊNCIA & SAIR DA CONTA
+   (DESKTOP SIDEBAR + MOBILE DRAWER)
+   ========================================================================== */
+.sidebar-bottom-controls {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+}
+
+.nav-residence-control-card {
+  position: relative;
+  width: 100%;
+}
+
+.btn-residence-switcher {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  min-height: 44px;
+  background: rgba(14, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.btn-residence-switcher:hover {
+  background: rgba(19, 32, 58, 0.85);
+  border-color: rgba(0, 229, 255, 0.4);
+  color: #fff;
+}
+
+.residence-pill-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  overflow: hidden;
+}
+
+.residence-pill-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(0, 229, 255, 0.12);
+  color: #00e5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.residence-pill-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  overflow: hidden;
+}
+
+.residence-name-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.residence-status-sub {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.residence-chevron-icon {
+  font-size: 0.72rem;
+  color: #64748b;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.residence-switcher-dropdown {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #0b1322;
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.residence-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #cbd5e1;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.18s ease;
+}
+
+.residence-option:hover {
+  background: rgba(0, 229, 255, 0.1);
+  color: #00e5ff;
+}
+
+.residence-option.active {
+  background: rgba(0, 229, 255, 0.15);
+  color: #00e5ff;
+  font-weight: 600;
+}
+
+.residence-option i {
+  font-size: 0.82rem;
+  width: 16px;
+  text-align: center;
+}
+
+/* BOTÃO DE SAÍDA DA CONTA COM IDENTIDADE VISUAL DOMUS ORANGE */
+.nav-signout-wrapper {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.btn-domus-signout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 10px 14px;
+  background: rgba(255, 122, 0, 0.08);
+  border: 1px solid rgba(255, 122, 0, 0.35);
+  border-radius: 10px;
+  color: #ff7a00;
+  font-size: 0.86rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  box-sizing: border-box;
+}
+
+.btn-domus-signout:hover {
+  background: rgba(255, 122, 0, 0.18);
+  border-color: #ff7a00;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(255, 122, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-domus-signout i {
+  font-size: 0.92rem;
+  color: inherit;
+}
+
+/* RESPONSIVIDADE DO MODAL DE SUPORTE */
+@media (max-width: 600px) {
+  .support-name-email-row {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .drawer-footer-actions {
+    padding-bottom: max(16px, env(safe-area-inset-bottom)) !important;
+  }
+}

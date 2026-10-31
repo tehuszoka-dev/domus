@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>DOMUS - Smart Home</title>
-  <meta name="description" content="Painel inteligente DOMUS com controle de iluminação, climatização, segurança e monitoramento de tempo e consumo de energia.">
-  <meta property="og:title" content="DOMUS - Smart Home">
-  <meta property="og:description" content="Painel inteligente DOMUS com controle de iluminação, climatização, segurança e monitoramento de tempo e consumo de energia.">
+  <meta name="description" content="Painel inteligente DOMUS com controle de iluminação, climatização, segurança e monitoramento de tempo e consumo de energia." />
+  <meta property="og:title" content="DOMUS - Smart Home" />
+  <meta property="og:description" content="Painel inteligente DOMUS com controle de iluminação, climatização, segurança e monitoramento de tempo e consumo de energia." />
   <!-- ÍCONES OFICIAIS DOMUS -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="alternate icon" type="image/png" href="favicon.png">
-  <link rel="shortcut icon" href="favicon.ico">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="alternate icon" type="image/png" href="favicon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <!-- SUPABASE JS SDK V2 (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -28,9 +28,9 @@
   </script>
 
   <!-- CROPPER.JS PARA RECORTE E ENQUADRAMENTO CIRCULAR DE AVATAR -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
-  <link rel="stylesheet" href="style.css?v=2.4">
+  <link rel="stylesheet" href="style.css?v=2.5" />
 </head>
 <body>
 
@@ -405,7 +405,39 @@
       </li>
     </ul>
 
-    <button type="button" class="btn-primary" style="margin-top: auto;" onclick="domusSignOut()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+    <!-- ÁREA INFERIOR REESTRUTURADA COM SELEÇÃO DE RESIDÊNCIA E SAIR DA CONTA -->
+    <div class="sidebar-bottom-controls" style="margin-top: auto;">
+      <div class="nav-residence-control-card">
+        <button type="button" class="btn-residence-switcher" onclick="toggleResidenceDropdown('sidebar-residence-dd')" title="Alternar residência ou gerenciar">
+          <div class="residence-pill-info">
+            <div class="residence-pill-icon"><i class="fa-solid fa-house-chimney"></i></div>
+            <div class="residence-pill-text">
+              <span class="residence-name-label" id="sidebar-residence-name">Casa Principal</span>
+              <span class="residence-status-sub">Ativa • 8 dispositivos</span>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-down residence-chevron-icon"></i>
+        </button>
+        <div class="residence-switcher-dropdown" id="sidebar-residence-dd" style="display: none;">
+          <button type="button" class="residence-option active" onclick="selectResidenceOption('Casa Principal', 'sidebar-residence-dd')">
+            <i class="fa-solid fa-check"></i> <span>Casa Principal (Ativa)</span>
+          </button>
+          <button type="button" class="residence-option" onclick="selectResidenceOption('Casa de Campo', 'sidebar-residence-dd')">
+            <i class="fa-solid fa-tree"></i> <span>Casa de Campo</span>
+          </button>
+          <button type="button" class="residence-option" onclick="openResidenceSettingsModal()">
+            <i class="fa-solid fa-gear"></i> <span>Gerenciar Residências...</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="nav-signout-wrapper">
+        <button type="button" class="btn-domus-signout" onclick="domusSignOut()" title="Sair da conta e encerrar sessão">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>Sair da conta</span>
+        </button>
+      </div>
+    </div>
   </aside>
 
   <!-- ÁREA PRINCIPAL DO DASHBOARD -->
@@ -447,6 +479,12 @@
 
       <div class="top-header-right">
         <!-- ÍCONE DE SUPORTE INTERATIVO (NAVEGA NA MESMA GUIA) -->
+        <!-- BOTÃO DE ATALHOS DE TECLADO (VISÍVEL APENAS EM COMPUTADORES COM TECLADO) -->
+        <button type="button" class="btn-keyboard-shortcuts-helper" onclick="openKeyboardShortcutsModal()" title="Guia de Atalhos de Teclado (Ctrl + /)" aria-label="Atalhos de teclado">
+          <i class="fa-solid fa-keyboard"></i>
+          <span class="shortcuts-helper-label">Atalhos</span>
+          <kbd>Ctrl+/</kbd>
+        </button>
         <a href="suporte.html" class="top-support-btn" title="Central de Suporte &amp; Atendimento Técnico">
           <i class="fa-solid fa-headset"></i>
           <span class="support-status-indicator" title="Suporte Online"></span>
@@ -493,10 +531,12 @@
             type="text" 
             id="dashboard-search-bar-input"
             class="dashboard-search-input" 
-            placeholder="Buscar comandos, cômodos, lâmpadas, automações, moradores... (Ctrl + K)" 
-            readonly
+            placeholder="Buscar comandos, cômodos, lâmpadas, rotinas, moradores... (Ctrl + K)" 
             onclick="openSearchDrawer()"
             onfocus="openSearchDrawer()"
+            oninput="handleDashboardSearchInput(this.value)"
+            autocomplete="off"
+            spellcheck="false"
           >
           <div class="dashboard-search-kbd-cluster">
             <kbd>Ctrl + K</kbd>
@@ -591,6 +631,11 @@
             </div>
           </div>
 
+          <button type="button" class="mobile-expand-btn" onclick="toggleMobileSection('collapse-quick-actions', this)" data-collapsed="Ver todos os comandos (8)" data-expanded="Mostrar menos comandos">
+            <span>Ver todos os comandos (8)</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="mobile-secondary-collapse is-grid-on-desktop" id="collapse-quick-actions">
           <!-- Ação 5: Cena Boa Noite -->
           <div class="quick-action-card" onclick="triggerNightScene(this)" role="button" tabindex="0" title="Clique para ativar rotina ou na seta para abrir Automações">
             <div class="quick-card-top-row">
@@ -666,9 +711,15 @@
               <span>Abrir drawer de pesquisa</span>
             </div>
           </div>
+          </div>
         </div>
       </div>
 <!-- SEÇÃO 2: CONCEITO, TECNOLOGIA & IDENTIDADE DO DOMUS -->
+      <button type="button" class="mobile-expand-btn" onclick="toggleMobileSection('collapse-concept-section', this)" data-collapsed="Sobre a Arquitetura &amp; Inteligência DOMUS" data-expanded="Recolher Arquitetura DOMUS">
+        <span><i class="fa-solid fa-brain" style="color: #00e5ff;"></i> Sobre a Arquitetura &amp; Inteligência DOMUS</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="mobile-secondary-collapse is-block-on-desktop" id="collapse-concept-section">
       <section class="domus-concept-section">
         <div class="concept-section-header">
           <h2><i class="fa-solid fa-brain"></i> DOMUS • Arquitetura &amp; Inteligência Residencial</h2>
@@ -726,6 +777,7 @@
           </div>
         </div>
       </section>
+      </div>
     </div>
 
     <!-- ABA 2: ILUMINAÇÃO -->
@@ -911,7 +963,7 @@
                 </div>
               </div>
               <label class="switch">
-                <input type="checkbox" class="light-switch" data-name="Luz da Sala" data-icon="bulb-icon-1" data-power="12" data-energy-id="energy-sala">
+                <input type="checkbox" class="light-switch" data-name="Luz da Sala" data-icon="bulb-icon-1" data-power="12" data-energy-id="switch-energy-sala">
                 <span class="slider"></span>
               </label>
             </div>
@@ -941,7 +993,7 @@
                 </div>
               </div>
               <label class="switch">
-                <input type="checkbox" class="light-switch" data-name="Luz da Cozinha" data-icon="bulb-icon-2" data-power="15" data-energy-id="energy-cozinha">
+                <input type="checkbox" class="light-switch" data-name="Luz da Cozinha" data-icon="bulb-icon-2" data-power="15" data-energy-id="switch-energy-cozinha">
                 <span class="slider"></span>
               </label>
             </div>
@@ -971,7 +1023,7 @@
                 </div>
               </div>
               <label class="switch">
-                <input type="checkbox" class="light-switch" data-name="Luz do Quarto Principal" data-icon="bulb-icon-3" data-power="9" data-energy-id="energy-quarto-p">
+                <input type="checkbox" class="light-switch" data-name="Luz do Quarto Principal" data-icon="bulb-icon-3" data-power="9" data-energy-id="switch-energy-quarto-p">
                 <span class="slider"></span>
               </label>
             </div>
@@ -1001,7 +1053,7 @@
                 </div>
               </div>
               <label class="switch">
-                <input type="checkbox" class="light-switch" data-name="Luz do Quarto 2" data-icon="bulb-icon-4" data-power="9" data-energy-id="energy-quarto-2">
+                <input type="checkbox" class="light-switch" data-name="Luz do Quarto 2" data-icon="bulb-icon-4" data-power="9" data-energy-id="switch-energy-quarto-2">
                 <span class="slider"></span>
               </label>
             </div>
@@ -1031,7 +1083,7 @@
                 </div>
               </div>
               <label class="switch">
-                <input type="checkbox" class="light-switch" data-name="Luz do Banheiro" data-icon="bulb-icon-5" data-power="10" data-energy-id="energy-banheiro">
+                <input type="checkbox" class="light-switch" data-name="Luz do Banheiro" data-icon="bulb-icon-5" data-power="10" data-energy-id="switch-energy-banheiro">
                 <span class="slider"></span>
               </label>
             </div>
@@ -1061,7 +1113,7 @@
                 </div>
               </div>
               <label class="switch">
-                <input type="checkbox" class="light-switch" data-name="Luz da Garagem" data-icon="bulb-icon-6" data-power="18" data-energy-id="energy-garagem">
+                <input type="checkbox" class="light-switch" data-name="Luz da Garagem" data-icon="bulb-icon-6" data-power="18" data-energy-id="switch-energy-garagem">
                 <span class="slider"></span>
               </label>
             </div>
@@ -1091,7 +1143,7 @@
                 </div>
               </div>
               <label class="switch">
-                <input type="checkbox" class="light-switch" data-name="Refletor do Quintal" data-icon="bulb-icon-7" data-power="50" data-energy-id="energy-quintal">
+                <input type="checkbox" class="light-switch" data-name="Refletor do Quintal" data-icon="bulb-icon-7" data-power="50" data-energy-id="switch-energy-quintal">
                 <span class="slider"></span>
               </label>
             </div>
@@ -1107,6 +1159,11 @@
       </div>
 
       <!-- SEÇÕES COMPLEMENTARES: INTELIGÊNCIA ADAPTATIVA, AUTOMAÇÕES & GRÁFICO DE CONSUMO -->
+      <button type="button" class="mobile-expand-btn" onclick="toggleMobileSection('collapse-lighting-advanced', this)" data-collapsed="Ver Análise de IA &amp; Gráficos de Iluminação" data-expanded="Recolher Análise &amp; Gráficos">
+        <span><i class="fa-solid fa-chart-pie" style="color: #00e5ff;"></i> Ver Análise de IA &amp; Gráficos de Iluminação</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="mobile-secondary-collapse is-block-on-desktop" id="collapse-lighting-advanced">
       <div class="dashboard-split-row" style="margin-top: 25px;">
         <!-- Coluna Esquerda: Inteligência Adaptativa & Automações -->
         <div class="lighting-left-col">
@@ -1275,6 +1332,7 @@
           </div>
         </div>
       </div>
+      </div>
     </div>
 
     <!-- ABA 3: CLIMATIZAÇÃO -->
@@ -1298,12 +1356,17 @@
                 <button type="button" class="btn-temp" onclick="adjustTemp('temp-sala', 1)">+</button>
               </div>
               <label class="switch">
-                <input type="checkbox" class="ac-switch" data-name="Ar-condicionado da Sala" data-icon="ac-icon-1" data-power="1080" data-energy-id="energy-ac-sala">
+                <input type="checkbox" class="ac-switch" data-name="Ar-condicionado da Sala" data-icon="ac-icon-1" data-power="1080" data-energy-id="switch-energy-ac-sala">
                 <span class="slider"></span>
               </label>
             </div>
           </div>
 
+          <button type="button" class="mobile-expand-btn" onclick="toggleMobileSection('collapse-clima-secondary', this)" data-collapsed="Ver Mais Ambientes Climatizados (2)" data-expanded="Recolher Ambientes Climatizados">
+            <span><i class="fa-solid fa-snowflake" style="color: #00e5ff;"></i> Ver Mais Ambientes Climatizados (2)</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="mobile-secondary-collapse is-block-on-desktop" id="collapse-clima-secondary">
           <div class="device-item ac-card">
             <div class="device-info">
               <div id="ac-icon-2" class="icon-box"><i class="fa-solid fa-snowflake"></i></div>
@@ -1316,7 +1379,7 @@
                 <button type="button" class="btn-temp" onclick="adjustTemp('temp-quarto', 1)">+</button>
               </div>
               <label class="switch">
-                <input type="checkbox" class="ac-switch" data-name="Ar-condicionado do Quarto" data-icon="ac-icon-2" data-power="810" data-energy-id="energy-ac-quarto">
+                <input type="checkbox" class="ac-switch" data-name="Ar-condicionado do Quarto" data-icon="ac-icon-2" data-power="810" data-energy-id="switch-energy-ac-quarto">
                 <span class="slider"></span>
               </label>
             </div>
@@ -1334,10 +1397,11 @@
                 <button type="button" class="btn-temp" onclick="adjustTemp('temp-quarto-p', 1)">+</button>
               </div>
               <label class="switch">
-                <input type="checkbox" class="ac-switch" data-name="Ar-condicionado do Quarto Principal" data-icon="ac-icon-3" data-power="1080" data-energy-id="energy-ac-quarto-p">
+                <input type="checkbox" class="ac-switch" data-name="Ar-condicionado do Quarto Principal" data-icon="ac-icon-3" data-power="1080" data-energy-id="switch-energy-ac-quarto-p">
                 <span class="slider"></span>
               </label>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -1383,6 +1447,11 @@
             </label>
           </div>
 
+          <button type="button" class="mobile-expand-btn" onclick="toggleMobileSection('collapse-security-sensors', this)" data-collapsed="Ver Sensores Perimetrais Adicionais (2)" data-expanded="Recolher Sensores Adicionais">
+            <span><i class="fa-solid fa-shield-halved" style="color: #2ecc71;"></i> Ver Sensores Perimetrais Adicionais (2)</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="mobile-secondary-collapse is-block-on-desktop" id="collapse-security-sensors">
           <div class="device-item">
             <div class="device-info">
               <div id="sensor-icon-2" class="icon-box"><i class="fa-solid fa-person-walking"></i></div>
@@ -1403,6 +1472,7 @@
               <input type="checkbox" class="sensor-switch" data-name="Janela da Sala" data-icon="sensor-icon-3" data-type="door">
               <span class="slider"></span>
             </label>
+          </div>
           </div>
         </div>
       </div>
@@ -1443,6 +1513,11 @@
           </div>
         </div>
 
+        <button type="button" class="mobile-expand-btn" onclick="toggleMobileSection('collapse-energy-devices', this)" data-collapsed="Ver Detalhamento por Aparelho (10 Dispositivos)" data-expanded="Recolher Detalhamento por Aparelho">
+          <span><i class="fa-solid fa-list-check" style="color: #f59e0b;"></i> Ver Detalhamento por Aparelho (10 Dispositivos)</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="mobile-secondary-collapse is-grid-on-desktop" id="collapse-energy-devices">
         <!-- Climatização com Contabilização de Tempo -->
         <div class="card">
           <div class="card-title">
@@ -1618,6 +1693,7 @@
             </div>
           </div>
         </div>
+        </div>
       </div>
     </div>
 
@@ -1646,6 +1722,11 @@
           </div>
         </div>
 
+        <button type="button" class="mobile-expand-btn" onclick="toggleMobileSection('collapse-ia-patterns', this)" data-collapsed="Ver Padrões &amp; Análise de Comportamento" data-expanded="Recolher Padrões">
+          <span><i class="fa-solid fa-chart-line" style="color: #00e5ff;"></i> Ver Padrões &amp; Análise de Comportamento</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="mobile-secondary-collapse is-block-on-desktop" id="collapse-ia-patterns">
         <div class="card">
           <div class="card-title">
             <span>Padrões de Comportamento</span>
@@ -1668,6 +1749,7 @@
               </div>
             </li>
           </ul>
+        </div>
         </div>
       </div>
     </div>
@@ -1694,6 +1776,11 @@
           </div>
         </div>
 
+        <button type="button" class="mobile-expand-btn" onclick="toggleMobileSection('collapse-automations-summary', this)" data-collapsed="Ver Estatísticas &amp; Resumo de Automações" data-expanded="Recolher Resumo">
+          <span><i class="fa-solid fa-sliders" style="color: #818cf8;"></i> Ver Estatísticas &amp; Resumo de Automações</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="mobile-secondary-collapse is-block-on-desktop" id="collapse-automations-summary">
         <div class="card">
           <div class="card-title">
             <span>Resumo de Automações</span>
@@ -1715,6 +1802,7 @@
             </div>
             <strong style="font-size: 1.2rem; color: var(--blue-accent);">148</strong>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -1854,6 +1942,11 @@
         </div>
       </div>
 
+      <button type="button" class="mobile-expand-btn" onclick="toggleMobileSection('collapse-profile-advanced', this)" data-collapsed="Ver Preferências, Segurança &amp; Acessibilidade" data-expanded="Recolher Configurações">
+        <span><i class="fa-solid fa-gear" style="color: #00e5ff;"></i> Ver Preferências, Segurança &amp; Acessibilidade</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="mobile-secondary-collapse is-block-on-desktop" id="collapse-profile-advanced">
       <!-- 5. PREFERÊNCIAS & 6. APARÊNCIA E ACESSIBILIDADE (LADO A LADO) -->
       <div class="profile-two-columns">
         <!-- 5. PREFERÊNCIAS DO DOMUS -->
@@ -2047,7 +2140,7 @@
           </div>
         </div>
       </details>
-
+      </div>
     </div>
 
     <!-- ABA 9: CHAT EM TEMPO REAL MULTIUSUÁRIO -->
@@ -2426,7 +2519,7 @@
           <div class="drawer-quick-row">
             <button type="button" class="drawer-quick-btn" onclick="closeMobileDrawer(); openSearchDrawer();">
               <i class="fa-solid fa-magnifying-glass" style="color: var(--blue-accent);"></i>
-              <span>Buscar (Ctrl+K)</span>
+              <span class="drawer-search-text"><span class="kbd-only-hint">Buscar (Ctrl+K)</span><span class="touch-only-hint">Buscar Comandos</span></span>
             </button>
             <a href="suporte.html" class="drawer-quick-btn">
               <i class="fa-solid fa-headset" style="color: #2ecc71;"></i>
@@ -2507,53 +2600,47 @@
             </div>
           </div>
 
-          <!-- Rodapé do Drawer -->
+          <!-- Rodapé do Drawer Reestruturado Mobile-First -->
           <div class="drawer-footer-actions">
+            <div class="nav-residence-control-card" style="margin-bottom: 10px;">
+              <button type="button" class="btn-residence-switcher" onclick="toggleResidenceDropdown('drawer-residence-dd')" title="Alternar residência ou gerenciar">
+                <div class="residence-pill-info">
+                  <div class="residence-pill-icon"><i class="fa-solid fa-house-chimney"></i></div>
+                  <div class="residence-pill-text">
+                    <span class="residence-name-label" id="drawer-residence-name">Casa Principal</span>
+                    <span class="residence-status-sub">Ativa • 8 dispositivos</span>
+                  </div>
+                </div>
+                <i class="fa-solid fa-chevron-down residence-chevron-icon"></i>
+              </button>
+              <div class="residence-switcher-dropdown" id="drawer-residence-dd" style="display: none;">
+                <button type="button" class="residence-option active" onclick="selectResidenceOption('Casa Principal', 'drawer-residence-dd')">
+                  <i class="fa-solid fa-check"></i> <span>Casa Principal (Ativa)</span>
+                </button>
+                <button type="button" class="residence-option" onclick="selectResidenceOption('Casa de Campo', 'drawer-residence-dd')">
+                  <i class="fa-solid fa-tree"></i> <span>Casa de Campo</span>
+                </button>
+                <button type="button" class="residence-option" onclick="closeMobileDrawer(); openResidenceSettingsModal()">
+                  <i class="fa-solid fa-gear"></i> <span>Gerenciar Residências...</span>
+                </button>
+              </div>
+            </div>
+
             <a href="codigos.html" class="drawer-btn-codigos">
               <i class="fa-solid fa-code"></i> Central de Códigos (VS Code)
             </a>
-            <button type="button" class="drawer-btn-signout" onclick="domusSignOut()">
-              <i class="fa-solid fa-right-from-bracket"></i> Encerrar Sessão
-            </button>
+
+            <div class="nav-signout-wrapper" style="margin-top: 10px;">
+              <button type="button" class="btn-domus-signout" onclick="domusSignOut()" title="Sair da conta e encerrar sessão">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>Sair da conta</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div> <!-- FIM DO WRAPPER DO SISTEMA DOMUS PROTEGIDO POR AUTENTICAÇÃO -->
-
-  <!-- MODAL DE EDITAR PERFIL -->
-  <div id="modal-edit-profile" class="modal-overlay">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3><i class="fa-solid fa-user-pen" style="color: var(--orange-bright);"></i> Editar Perfil do Usuário</h3>
-        <button type="button" class="btn-close-modal" onclick="closeEditProfileModal()">&times;</button>
-      </div>
-      <form id="form-edit-profile" onsubmit="handleSaveProfile(event)">
-        <div class="form-group">
-          <label>Nome Completo</label>
-          <input type="text" id="edit-profile-name" value="Matheus D. Lucca" required>
-        </div>
-        <div class="form-group">
-          <label>Identificador (@usuário)</label>
-          <input type="text" id="edit-profile-handle" value="@01_Lucca" required>
-        </div>
-        <div class="form-group">
-          <label>Ícone / Avatar</label>
-          <select id="edit-profile-avatar-select" class="custom-select">
-            <option value="fa-user-astronaut" selected>Astronauta (Atual)</option>
-            <option value="fa-user-tie">Executivo</option>
-            <option value="fa-user-gear">Engenheiro / Técnico</option>
-            <option value="fa-user-ninja">Ninja</option>
-            <option value="fa-user-graduate">Acadêmico</option>
-          </select>
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn-ai-action btn-ai-secondary" onclick="closeEditProfileModal()">Cancelar</button>
-          <button type="submit" class="btn-ai-action btn-ai-primary"><i class="fa-solid fa-check"></i> Salvar Perfil</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <!-- MODAL DE ADICIONAR MORADOR -->
   <div id="modal-add-resident" class="modal-overlay">
@@ -3211,6 +3298,50 @@
     </div>
   </div>
 
+  <!-- ==========================================================================
+       MODAL DE GUIA DE ATALHOS DE TECLADO (EXCLUSIVO PARA COMPUTADOR COM TECLADO)
+       ========================================================================== -->
+  <div id="modal-keyboard-shortcuts" class="modal-overlay" onclick="closeKeyboardShortcutsModal()" aria-hidden="true">
+    <div class="modal-content keyboard-shortcuts-modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="icon-box active-glow-blue" style="width: 38px; height: 38px;"><i class="fa-solid fa-keyboard"></i></div>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem;">Atalhos de Teclado DOMUS</h3>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">Navegação ágil e comandos rápidos no sistema</span>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" onclick="closeKeyboardShortcutsModal()" aria-label="Fechar atalhos">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 16px 20px;">
+        <div class="shortcuts-grid">
+          <div class="shortcut-group">
+            <span class="shortcut-group-title"><i class="fa-solid fa-magnifying-glass"></i> Busca e Ações Globais</span>
+            <div class="shortcut-row"><span>Busca Global (Command Palette)</span><kbd>Ctrl + K</kbd></div>
+            <div class="shortcut-row"><span>Fechar Modais e Janelas</span><kbd>Esc</kbd></div>
+            <div class="shortcut-row"><span>Navegar nos Resultados</span><div class="kbd-pair"><kbd>↑</kbd><kbd>↓</kbd></div></div>
+            <div class="shortcut-row"><span>Confirmar / Selecionar</span><kbd>↵ Enter</kbd></div>
+            <div class="shortcut-row"><span>Abrir este Guia de Atalhos</span><kbd>Ctrl + /</kbd></div>
+          </div>
+          <div class="shortcut-group">
+            <span class="shortcut-group-title"><i class="fa-solid fa-compass"></i> Navegação Direta de Abas</span>
+            <div class="shortcut-row"><span>Início</span><kbd>Alt + 1</kbd></div>
+            <div class="shortcut-row"><span>Iluminação</span><kbd>Alt + 2</kbd></div>
+            <div class="shortcut-row"><span>Climatização</span><kbd>Alt + 3</kbd></div>
+            <div class="shortcut-row"><span>Segurança</span><kbd>Alt + 4</kbd></div>
+            <div class="shortcut-row"><span>Energia</span><kbd>Alt + 5</kbd></div>
+            <div class="shortcut-row"><span>Inteligência</span><kbd>Alt + 6</kbd></div>
+            <div class="shortcut-row"><span>Perfil</span><kbd>Alt + 7</kbd></div>
+            <div class="shortcut-row"><span>Chat</span><kbd>Alt + 8</kbd></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions" style="padding: 12px 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: flex-end;">
+        <button type="button" class="btn-ai-action btn-ai-secondary" onclick="closeKeyboardShortcutsModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL DE EDIÇÃO DE PERFIL E FOTO / AVATAR -->
   <div id="modal-edit-profile" class="modal-overlay" onclick="closeEditProfileModal(event)">
     <div class="modal-content" style="max-width: 520px;" onclick="event.stopPropagation()">
@@ -3391,8 +3522,9 @@
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
-        <button type="button" class="drawer-close-btn" onclick="closeSearchDrawer()" title="Fechar (Esc)">
-          <kbd>ESC</kbd>
+        <button type="button" class="drawer-close-btn" onclick="closeSearchDrawer()" title="Fechar">
+          <kbd class="kbd-only-hint">ESC</kbd>
+          <i class="fa-solid fa-xmark touch-only-hint" style="display: none;"></i>
         </button>
       </div>
 
@@ -3462,6 +3594,21 @@
       <div class="support-form-section">
         <h4><i class="fa-solid fa-bug"></i> Reportar Inconsistência ou Solicitar Ajuste</h4>
         <form onsubmit="handleSupportSubmit(event)" id="support-ticket-form">
+          <!-- Identificação do Solicitante: Nome e E-mail Totalmente Preenchíveis -->
+          <div class="support-name-email-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="support-user-name" style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 5px;">
+                <i class="fa-solid fa-user" style="color: var(--blue-accent);"></i> Seu Nome <span style="color: #ff7a00;">*</span>
+              </label>
+              <input type="text" id="support-user-name" class="form-input" placeholder="Digite seu nome completo..." required style="width: 100%; padding: 9px 12px; background: rgba(13, 21, 37, 0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.86rem; box-sizing: border-box;">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="support-user-email" style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 5px;">
+                <i class="fa-solid fa-envelope" style="color: var(--blue-accent);"></i> Seu E-mail <span style="color: #ff7a00;">*</span>
+              </label>
+              <input type="email" id="support-user-email" class="form-input" placeholder="seu.email@exemplo.com" required style="width: 100%; padding: 9px 12px; background: rgba(13, 21, 37, 0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.86rem; box-sizing: border-box;">
+            </div>
+          </div>
           <div class="form-group" style="margin-bottom: 12px;">
             <label for="support-category" style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 5px;">Categoria</label>
             <select id="support-category" class="custom-select" required style="width: 100%; padding: 8px 12px; background: rgba(13, 21, 37, 0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff;">
@@ -3498,6 +3645,106 @@
   <!-- JAVASCRIPT INTEGRADO -->
   <script>
     function escapeHtml(str) { if (!str) return ""; const d = document.createElement("div"); d.textContent = str; return d.innerHTML; }
+
+    // ==========================================================================
+    // SISTEMA RESPONSIVO: PROGRESSIVE DISCLOSURE & CONTROLE DE TECLADO / TOUCH
+    // ==========================================================================
+    function toggleMobileSection(elementId, btnElement) {
+      const target = document.getElementById(elementId);
+      if (!target) return;
+      const isExpanded = target.classList.toggle('is-expanded');
+      
+      if (btnElement) {
+        btnElement.classList.toggle('is-active', isExpanded);
+        const textSpan = btnElement.querySelector('span');
+        const collapsedText = btnElement.getAttribute('data-collapsed');
+        const expandedText = btnElement.getAttribute('data-expanded');
+        
+        if (textSpan && collapsedText && expandedText) {
+          const icon = textSpan.querySelector('i');
+          if (icon) {
+            textSpan.innerHTML = '';
+            textSpan.appendChild(icon);
+            textSpan.append(' ' + (isExpanded ? expandedText : collapsedText));
+          } else {
+            textSpan.textContent = isExpanded ? expandedText : collapsedText;
+          }
+        }
+      }
+    }
+
+    function detectInputCapabilities() {
+      // Detecção inteligente de dispositivo com base em tela, ponteiro e toque real
+      const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+      const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      const isPhysicalKeyboard = hasFinePointer && (!isTouch || window.innerWidth > 1024);
+
+      if (isPhysicalKeyboard) {
+        document.body.classList.add('has-physical-keyboard');
+        document.body.classList.remove('is-touch-device');
+      } else {
+        document.body.classList.add('is-touch-device');
+        document.body.classList.remove('has-physical-keyboard');
+      }
+
+      // Em dispositivos sem teclado físico, limpa menções a '(Ctrl + K)' nos placeholders
+      const searchInputs = document.querySelectorAll('input[type="text"], input[type="search"]');
+      searchInputs.forEach(inp => {
+        if (!isPhysicalKeyboard && inp.placeholder && inp.placeholder.includes('(Ctrl + K)')) {
+          inp.setAttribute('data-desktop-ph', inp.placeholder);
+          inp.placeholder = inp.placeholder.replace(' (Ctrl + K)', '').replace('(Ctrl + K)', '').trim();
+        } else if (isPhysicalKeyboard && inp.hasAttribute('data-desktop-ph')) {
+          inp.placeholder = inp.getAttribute('data-desktop-ph');
+        }
+      });
+    }
+
+    window.addEventListener('resize', detectInputCapabilities);
+    window.addEventListener('DOMContentLoaded', detectInputCapabilities);
+    setTimeout(detectInputCapabilities, 50);
+
+    function openKeyboardShortcutsModal() {
+      const m = document.getElementById('modal-keyboard-shortcuts');
+      if (m) m.classList.add('active');
+    }
+
+    function closeKeyboardShortcutsModal() {
+      const m = document.getElementById('modal-keyboard-shortcuts');
+      if (m) m.classList.remove('active');
+    }
+
+    function closeMobileChatWindow() {
+      const chatContainer = document.querySelector('.chat-layout-container');
+      if (chatContainer) {
+        chatContainer.classList.remove('mobile-chat-open');
+      }
+    }
+
+    // Atalhos globais adicionais (Ctrl + / e Alt + 1..8)
+    window.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === '/' || e.key === '?')) {
+        e.preventDefault();
+        const m = document.getElementById('modal-keyboard-shortcuts');
+        if (m && m.classList.contains('active')) {
+          closeKeyboardShortcutsModal();
+        } else {
+          openKeyboardShortcutsModal();
+        }
+      }
+      if (e.altKey && !e.ctrlKey && !e.metaKey && !isNaN(e.key)) {
+        const tabs = [
+          'tab-inicio', 'tab-iluminacao', 'tab-climatizacao',
+          'tab-seguranca', 'tab-energia', 'tab-inteligencia',
+          'tab-perfil', 'tab-chat'
+        ];
+        const num = parseInt(e.key, 10);
+        if (num >= 1 && num <= tabs.length) {
+          e.preventDefault();
+          switchTab(tabs[num - 1]);
+        }
+      }
+    });
+
 
     // @ts-nocheck
 
@@ -5077,8 +5324,10 @@
       }
     }
 
-    // CICLO DE CONTABILIZAÇÃO DE TEMPO (A CADA 1 SEGUNDO)
+    // CICLO DE CONTABILIZAÇÃO DE TEMPO (A CADA 1 SEGUNDO) - OTIMIZADO COM VISIBILITY API
     setInterval(() => {
+      // Pausa ciclo quando aba/janela está em background para economizar CPU, GPU e bateria em smartphones
+      if (document.hidden) return;
       let hasRunningDevice = false;
 
       // Verifica lâmpadas ligadas
@@ -6886,6 +7135,11 @@
       activeChatContactId = id;
       renderConversationsList();
 
+      const chatContainer = document.querySelector('.chat-layout-container');
+      if (chatContainer && window.innerWidth <= 768) {
+        chatContainer.classList.add('mobile-chat-open');
+      }
+
       const conv = chatConversations[id];
       if (!conv) return;
 
@@ -8077,32 +8331,70 @@
     // ==========================================================================
     function openSupportModal() {
       const modal = document.getElementById('domus-support-modal');
-      if (modal) {
-        modal.style.display = 'flex';
+      if (!modal) return;
+      
+      const nameInput = document.getElementById('support-user-name');
+      const emailInput = document.getElementById('support-user-email');
+      
+      const defaultName = (currentAuthProfile && currentAuthProfile.full_name) || 
+                          (currentAuthUser && currentAuthUser.user_metadata?.full_name) || 
+                          localStorage.getItem('domus_cached_user_name') || 
+                          'Matheus D. Lucca';
+      const defaultEmail = (currentAuthUser && currentAuthUser.email) || 
+                           localStorage.getItem('domus_cached_user_email') || 
+                           'matheusdlucca30099@gmail.com';
+
+      if (nameInput && !nameInput.value) {
+        nameInput.value = defaultName;
       }
+      if (emailInput && !emailInput.value) {
+        emailInput.value = defaultEmail;
+      }
+
+      modal.style.display = 'flex';
+      void modal.offsetWidth;
+      modal.classList.add('active');
     }
 
     function closeSupportModal(e) {
-      if (e && e.target && e.target.id !== 'domus-support-modal' && !e.target.classList.contains('btn-close-modal') && !e.target.classList.contains('btn-outline-cancel')) {
+      if (e && e.target && e.target.id !== 'domus-support-modal' && !e.target.classList.contains('btn-close-modal') && !e.target.classList.contains('btn-outline-cancel') && !e.target.classList.contains('btn-ai-secondary')) {
         return;
       }
       const modal = document.getElementById('domus-support-modal');
       if (modal) {
-        modal.style.display = 'none';
+        modal.classList.remove('active');
+        setTimeout(() => {
+          if (!modal.classList.contains('active')) modal.style.display = 'none';
+        }, 200);
       }
     }
 
     function handleSupportSubmit(e) {
       if (e) e.preventDefault();
+      const nameInput = document.getElementById('support-user-name');
+      const emailInput = document.getElementById('support-user-email');
       const catSelect = document.getElementById('support-category');
       const msgArea = document.getElementById('support-message');
       const submitBtn = document.getElementById('btn-submit-support');
 
+      const name = nameInput ? nameInput.value.trim() : '';
+      const email = emailInput ? emailInput.value.trim() : '';
       const cat = catSelect ? catSelect.value : 'suporte';
       const msg = msgArea ? msgArea.value.trim() : '';
 
+      if (!name) {
+        alert('Por favor, digite o seu nome para o atendimento.');
+        nameInput && nameInput.focus();
+        return;
+      }
+      if (!email || !email.includes('@')) {
+        alert('Por favor, informe um e-mail válido para resposta.');
+        emailInput && emailInput.focus();
+        return;
+      }
       if (!msg) {
         alert('Por favor, informe uma descrição para o suporte.');
+        msgArea && msgArea.focus();
         return;
       }
 
@@ -8119,13 +8411,85 @@
         if (msgArea) msgArea.value = '';
         closeSupportModal();
 
-        // Alerta de sucesso na interface
-        if (typeof showSystemToast === 'function') {
-          showSystemToast('Solicitação enviada com sucesso! Protocolo #' + Math.floor(100000 + Math.random() * 900000) + ' aberto.', 'success');
+        const protocolNum = Math.floor(100000 + Math.random() * 900000);
+        if (typeof showSmartToast === 'function') {
+          showSmartToast('Chamado Registrado #' + protocolNum, 'Olá ' + name + ', sua solicitação foi encaminhada para a Engenharia DOMUS.', 'fa-solid fa-headset', '#2ecc71');
+        } else if (typeof showSystemToast === 'function') {
+          showSystemToast('Solicitação #' + protocolNum + ' enviada com sucesso! Resposta no e-mail: ' + email, 'success');
         } else {
-          alert('Sua solicitação de suporte foi enviada com sucesso ao time de engenharia do DOMUS!');
+          alert('Sua solicitação de suporte #' + protocolNum + ' foi enviada com sucesso! Enviamos a confirmação para ' + email + '.');
         }
-      }, 700);
+      }, 600);
+    }
+
+    // ==========================================================================
+    // SELETOR E GERENCIADOR DE RESIDÊNCIAS (CASA / CASA DE CAMPO)
+    // ==========================================================================
+    let currentActiveResidenceName = localStorage.getItem('domus_active_residence') || 'Casa Principal';
+
+    function toggleResidenceDropdown(dropdownId) {
+      const dd = document.getElementById(dropdownId);
+      if (!dd) return;
+      const isOpen = dd.style.display !== 'none';
+      // Fecha outros eventuais dropdowns abertos
+      document.querySelectorAll('.residence-switcher-dropdown').forEach(d => {
+        d.style.display = 'none';
+      });
+      if (!isOpen) {
+        dd.style.display = 'flex';
+      }
+    }
+
+    function selectResidenceOption(residenceName, dropdownId) {
+      currentActiveResidenceName = residenceName;
+      localStorage.setItem('domus_active_residence', residenceName);
+
+      // Atualiza os labels visuais
+      const sName = document.getElementById('sidebar-residence-name');
+      const dName = document.getElementById('drawer-residence-name');
+      if (sName) sName.textContent = residenceName;
+      if (dName) dName.textContent = residenceName;
+
+      // Atualiza botões ativos
+      document.querySelectorAll('.residence-option').forEach(opt => {
+        const span = opt.querySelector('span');
+        if (span && span.textContent.includes(residenceName)) {
+          opt.classList.add('active');
+        } else if (opt.querySelector('span') && !opt.querySelector('span').textContent.includes('Gerenciar')) {
+          opt.classList.remove('active');
+        }
+      });
+
+      // Fecha dropdowns
+      if (dropdownId) {
+        const dd = document.getElementById(dropdownId);
+        if (dd) dd.style.display = 'none';
+      }
+
+      if (typeof showSmartToast === 'function') {
+        showSmartToast('Residência Alternada', 'Ambiente alternado para ' + residenceName + '.', 'fa-solid fa-house-chimney', '#00e5ff');
+      }
+    }
+
+    // Fecha dropdown de residência ao clicar fora
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.nav-residence-control-card')) {
+        document.querySelectorAll('.residence-switcher-dropdown').forEach(d => {
+          d.style.display = 'none';
+        });
+      }
+    });
+
+    // ==========================================================================
+    // BUSCA INSTANTÂNEA DIRETA NO DASHBOARD
+    // ==========================================================================
+    function handleDashboardSearchInput(val) {
+      openSearchDrawer();
+      const drawerInp = document.getElementById('drawer-search-input');
+      if (drawerInp) {
+        drawerInp.value = val;
+        handleDrawerSearchInput(val);
+      }
     }
 
     // ==========================================================================
