@@ -8458,3 +8458,312 @@ body.light-mode .chart-filter-btn.active {
   }
 }
 
+
+
+/* ==========================================================================
+   DOMUS UNIVERSAL RESPONSIVE ARCHITECTURE & PROGRESSIVE DISCLOSURE
+   ========================================================================== */
+
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+html {
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  min-height: 100dvh;
+  overflow-x: hidden;
+  touch-action: manipulation;
+}
+
+/* Monitores Ultrawide / 4K (> 1600px e > 1920px) */
+@media (min-width: 1600px) {
+  .main-content {
+    max-width: 1680px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1920px) {
+  .main-content {
+    max-width: 1820px;
+  }
+}
+
+/* ==========================================================================
+   PROGRESSIVE DISCLOSURE & DENSIDADE DE INFORMAÇÕES ADAPTATIVA
+   ========================================================================== */
+
+.mobile-secondary-collapse {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Desktop (> 768px): sempre visível, sem ocultar nada */
+@media (min-width: 769px) {
+  .mobile-secondary-collapse {
+    display: contents !important;
+  }
+  .mobile-secondary-collapse.is-block-on-desktop {
+    display: block !important;
+  }
+  .mobile-secondary-collapse.is-grid-on-desktop {
+    display: grid !important;
+  }
+  .mobile-expand-btn {
+    display: none !important;
+  }
+  .kbd-only-hint {
+    display: inline-flex !important;
+  }
+  .touch-only-hint {
+    display: none !important;
+  }
+}
+
+/* Celular e Tablets Pequenos (<= 768px): informações secundárias recolhidas inicialmente */
+@media (max-width: 768px) {
+  .mobile-secondary-collapse {
+    display: none;
+    opacity: 0;
+  }
+  .mobile-secondary-collapse.is-expanded {
+    display: block !important;
+    opacity: 1;
+    animation: domusFadeSlideDown 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .mobile-secondary-collapse.is-grid-on-desktop.is-expanded {
+    display: grid !important;
+    opacity: 1;
+    animation: domusFadeSlideDown 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .mobile-expand-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin: 14px 0 18px 0;
+    padding: 13px 18px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(26, 38, 57, 0.75));
+    border: 1px solid rgba(0, 229, 255, 0.28);
+    border-radius: 12px;
+    color: #00e5ff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.86rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.32);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(10px);
+    -webkit-tap-highlight-color: transparent;
+    min-height: 48px;
+  }
+  .mobile-expand-btn:active {
+    transform: scale(0.98);
+    background: rgba(0, 229, 255, 0.15);
+    border-color: rgba(0, 229, 255, 0.5);
+  }
+  .mobile-expand-btn i.fa-chevron-down {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    font-size: 0.8rem;
+  }
+  .mobile-expand-btn.is-active i.fa-chevron-down {
+    transform: rotate(180deg);
+  }
+  .kbd-only-hint {
+    display: none !important;
+  }
+  .touch-only-hint {
+    display: inline-flex !important;
+  }
+}
+
+@keyframes domusFadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   ATALHOS DE TECLADO: COMPUTADOR VS CELULAR/TABLET
+   ========================================================================== */
+
+/* Botão de Atalhos no Header Desktop */
+.btn-keyboard-shortcuts-helper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(0, 229, 255, 0.22);
+  border-radius: 10px;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  margin-right: 6px;
+  white-space: nowrap;
+}
+.btn-keyboard-shortcuts-helper:hover {
+  background: rgba(0, 229, 255, 0.12);
+  border-color: rgba(0, 229, 255, 0.4);
+  color: #00e5ff;
+}
+.btn-keyboard-shortcuts-helper kbd {
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* Dispositivos Touch / Sem teclado: esconde completamente atalhos e <kbd> */
+body.is-touch-device kbd,
+body.is-touch-device .nav-kbd,
+body.is-touch-device .dashboard-search-kbd-cluster,
+body.is-touch-device .drawer-shortcuts-guide,
+body.is-touch-device .drawer-row-enter-hint,
+body.is-touch-device .btn-keyboard-shortcuts-helper,
+body.is-touch-device .kbd-badge-pill,
+body.is-touch-device .kbd-only-hint {
+  display: none !important;
+}
+
+body.has-physical-keyboard .btn-keyboard-shortcuts-helper {
+  display: inline-flex;
+}
+
+/* Modal de Atalhos de Teclado */
+.keyboard-shortcuts-modal {
+  max-width: 640px !important;
+  width: 92% !important;
+  background: #0f172a !important;
+  border: 1px solid rgba(0, 229, 255, 0.35) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 229, 255, 0.15) !important;
+  border-radius: 16px !important;
+}
+.shortcuts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+@media (max-width: 620px) {
+  .shortcuts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.shortcut-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.shortcut-group-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #00e5ff;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.shortcut-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+.shortcut-row kbd {
+  padding: 3px 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 5px;
+  font-size: 0.74rem;
+  color: #fff;
+  font-family: inherit;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+}
+.kbd-pair {
+  display: flex;
+  gap: 4px;
+}
+
+/* ==========================================================================
+   CHAT MOBILE: SLIDING VIEW & ÁREA SEGURA PARA TECLADO VIRTUAL
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .chat-layout-container {
+    height: calc(100dvh - 165px) !important;
+    max-height: calc(100dvh - 165px) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 14px;
+  }
+  .chat-sidebar-conversations {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
+  }
+  .chat-main-window {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    z-index: 10;
+    background: #0d131f !important;
+  }
+  .chat-layout-container.mobile-chat-open .chat-sidebar-conversations {
+    transform: translateX(-30%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .chat-layout-container.mobile-chat-open .chat-main-window {
+    transform: translateX(0);
+  }
+  .btn-chat-back-mobile {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    cursor: pointer;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .chat-input-footer {
+    padding-bottom: max(12px, env(safe-area-inset-bottom)) !important;
+  }
+}

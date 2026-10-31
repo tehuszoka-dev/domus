@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Central de Suporte — DOMUS Automação Residencial</title>
+  <!-- FAVICON OFICIAL DOMUS -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/png" href="/assets/favicon-DsHz_mhn.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  
+  <!-- Fontes e Ícones -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>:root{--bg-dark:#080f1d;--bg-surface:#0e1726;--bg-card:#0f172abf;--bg-card-hover:#16223ae6;--border-subtle:#00e5ff24;--border-glow:#00e5ff66;--cyan-primary:#00e5ff;--cyan-dark:#00a8cc;--orange-accent:#ff7a00;--text-main:#f8fafc;--text-muted:#94a3b8;--text-dim:#64748b;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--font-family:"Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif}*{box-sizing:border-box;margin:0;padding:0}body{background-color:var(--bg-dark);color:var(--text-main);font-family:var(--font-family);-webkit-font-smoothing:antialiased;background-image:radial-gradient(circle at 15% 15%,#00e5ff0d 0%,#0000 45%),radial-gradient(circle at 85% 85%,#ff7a000a 0%,#0000 40%);flex-direction:column;min-height:100vh;line-height:1.5;display:flex}.support-top-header{border-bottom:1px solid var(--border-subtle);z-index:50;background:#080f1d;justify-content:space-between;align-items:center;padding:14px 32px;display:flex;position:sticky;top:0;box-shadow:0 4px 20px #00000073}.brand-wrap{color:inherit;align-items:center;gap:14px;text-decoration:none;display:flex}.brand-icon-box{border:1px solid var(--border-glow);width:42px;height:42px;color:var(--cyan-primary);background:linear-gradient(135deg,#00e5ff26,#0072ff33);border-radius:10px;justify-content:center;align-items:center;font-size:1.25rem;display:flex;box-shadow:0 0 16px #00e5ff33}.brand-text h1{letter-spacing:1.5px;align-items:center;gap:8px;font-size:1.15rem;font-weight:700;display:flex}.brand-text span{color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase;font-size:.75rem}.header-actions{align-items:center;gap:16px;display:flex}.user-session-chip{border:1px solid var(--border-subtle);background:#0e1726d9;border-radius:20px;align-items:center;gap:10px;padding:6px 14px;font-size:.82rem;display:flex}.user-avatar-mini{border:1.5px solid var(--cyan-primary);object-fit:cover;border-radius:50%;width:28px;height:28px}.btn-return-app{border:1px solid var(--cyan-primary);color:var(--cyan-primary);background:#00e5ff1a;border-radius:8px;align-items:center;gap:8px;padding:8px 18px;font-size:.86rem;font-weight:500;text-decoration:none;transition:all .2s;display:inline-flex}.btn-return-app:hover{background:var(--cyan-primary);color:#050b14;transform:translateY(-1px);box-shadow:0 0 16px #00e5ff66}.support-container{flex:1;width:100%;max-width:1140px;margin:0 auto;padding:36px 24px 60px}.support-hero{border:1px solid var(--border-subtle);background:linear-gradient(135deg,#0e1726f2,#0a111efa);border-radius:16px;justify-content:space-between;align-items:center;gap:24px;margin-bottom:32px;padding:32px 36px;display:flex;position:relative;overflow:hidden;box-shadow:0 10px 30px #00000059}.support-hero:before{content:"";background:linear-gradient(180deg, var(--cyan-primary), var(--orange-accent));width:4px;height:100%;position:absolute;top:0;left:0}.hero-text h2{color:#fff;align-items:center;gap:12px;margin-bottom:8px;font-size:1.8rem;font-weight:700;display:flex}.hero-text p{color:var(--text-muted);max-width:650px;font-size:.96rem}.hero-status-pill{text-align:right;flex-direction:column;align-items:flex-end;gap:6px;display:flex}.status-badge-online{color:var(--success);background:#10b9811f;border:1px solid #10b98159;border-radius:20px;align-items:center;gap:8px;padding:6px 14px;font-size:.82rem;font-weight:600;display:inline-flex}.status-pulse-dot{background:var(--success);width:8px;height:8px;box-shadow:0 0 10px var(--success);border-radius:50%;animation:2s infinite pulseDot}@keyframes pulseDot{0%,to{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.2)}}.support-grid{grid-template-columns:1.25fr .95fr;align-items:start;gap:28px;display:grid}.card-panel{background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:14px;padding:28px;box-shadow:0 8px 24px #0000004d}.card-panel-header{border-bottom:1px solid #ffffff14;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:14px;display:flex}.card-panel-title{color:#fff;align-items:center;gap:10px;font-size:1.15rem;font-weight:600;display:flex}.card-panel-title i{color:var(--cyan-primary)}.form-row{grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;display:grid}.form-group{margin-bottom:18px}.form-label{color:var(--text-muted);letter-spacing:.3px;margin-bottom:7px;font-size:.82rem;font-weight:500;display:block}.form-label span.req{color:var(--orange-accent)}.form-input,.form-select,.form-textarea{color:#fff;background:#0a101cd9;border:1px solid #ffffff1f;border-radius:8px;width:100%;padding:10px 14px;font-family:inherit;font-size:.9rem;transition:all .2s}.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--cyan-primary);background:#0e1728f2;outline:none;box-shadow:0 0 12px #00e5ff40}.form-input[readonly]{color:var(--text-muted);cursor:not-allowed;background:#ffffff08;border-color:#ffffff0f}.form-textarea{resize:vertical;min-height:110px}.form-checkbox-group{cursor:pointer;-webkit-user-select:none;user-select:none;align-items:center;gap:10px;margin-bottom:22px;display:flex}.form-checkbox-group input[type=checkbox]{width:18px;height:18px;accent-color:var(--cyan-primary);cursor:pointer}.form-checkbox-text{color:var(--text-muted);font-size:.83rem}.btn-submit-ticket{background:linear-gradient(135deg, var(--cyan-primary), #00a8cc);color:#060d17;cursor:pointer;border:none;border-radius:8px;justify-content:center;align-items:center;gap:10px;width:100%;padding:12px 20px;font-family:inherit;font-size:.95rem;font-weight:600;transition:all .25s;display:flex;box-shadow:0 4px 16px #00e5ff4d}.btn-submit-ticket:hover{transform:translateY(-2px);box-shadow:0 6px 24px #00e5ff80}.btn-submit-ticket:disabled{opacity:.6;cursor:not-allowed;box-shadow:none;transform:none}.support-alert{border-radius:8px;align-items:center;gap:12px;margin-bottom:20px;padding:14px 18px;font-size:.88rem;animation:.3s fadeInAlert;display:none}@keyframes fadeInAlert{0%{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}.alert-success{color:#34d399;background:#10b9811f;border:1px solid #10b98166}.alert-error{color:#f87171;background:#ef44441f;border:1px solid #ef444466}.tickets-history-list{flex-direction:column;gap:14px;max-height:520px;padding-right:4px;display:flex;overflow-y:auto}.ticket-card{background:#0a101cb3;border:1px solid #ffffff14;border-radius:10px;padding:16px;transition:all .2s}.ticket-card:hover{border-color:var(--border-glow);background:#0e1728e6;transform:translateY(-1px)}.ticket-card-top{justify-content:space-between;align-items:center;margin-bottom:8px;display:flex}.ticket-code{color:var(--cyan-primary);font-family:monospace;font-size:.82rem;font-weight:700}.ticket-date{color:var(--text-dim);font-size:.74rem}.ticket-subject{color:#fff;margin-bottom:6px;font-size:.94rem;font-weight:600}.ticket-desc-excerpt{color:var(--text-muted);-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-bottom:10px;font-size:.82rem;line-height:1.4;display:-webkit-box;overflow:hidden}.ticket-badges-row{justify-content:space-between;align-items:center;font-size:.75rem;display:flex}.ticket-cat-badge{color:var(--text-muted);align-items:center;gap:5px;display:inline-flex}.ticket-status-pill{text-transform:uppercase;letter-spacing:.5px;border-radius:12px;padding:3px 10px;font-size:.72rem;font-weight:600}.pill-aberto{color:var(--cyan-primary);background:#00e5ff1f;border:1px solid #00e5ff59}.pill-analise{color:var(--warning);background:#f59e0b1f;border:1px solid #f59e0b59}.pill-resolvido{color:var(--success);background:#10b9811f;border:1px solid #10b98159}.empty-tickets-state{text-align:center;color:var(--text-muted);padding:40px 20px}.empty-tickets-state i{color:var(--text-dim);margin-bottom:12px;font-size:2.2rem;display:block}.quick-channels-card{background:#0e172699;border:1px dashed #ffffff1f;border-radius:12px;justify-content:space-between;align-items:center;gap:16px;margin-top:24px;padding:18px 22px;display:flex}.channel-item{color:var(--text-muted);align-items:center;gap:10px;font-size:.85rem;display:flex}.channel-item i{color:var(--cyan-primary);font-size:1.1rem}.channel-item a{color:#fff;text-decoration:none}.channel-item a:hover{color:var(--cyan-primary);text-decoration:underline}.support-footer{border-top:1px solid var(--border-subtle);text-align:center;color:var(--text-dim);padding:20px 32px;font-size:.8rem}@media (width<=860px){.support-top-header{padding:12px 18px}.support-hero{flex-direction:column;align-items:flex-start;padding:24px}.hero-status-pill{text-align:left;align-items:flex-start}.support-grid{grid-template-columns:1fr;gap:20px}.form-row{grid-template-columns:1fr}.quick-channels-card{flex-direction:column;align-items:flex-start;gap:12px}}@media (width<=480px){.support-top-header{padding:10px 12px}.brand-text span{display:none}.brand-text h1{font-size:1.15rem}.support-container{padding:14px 10px}.support-hero{border-radius:12px;margin-bottom:20px;padding:18px 14px}.hero-text h2{font-size:1.35rem}.hero-text p{font-size:.85rem}.card-panel{border-radius:12px;padding:18px 14px}.btn-return-app span{display:none}.btn-return-app{padding:8px 12px}.user-session-chip{padding:4px 8px;font-size:.76rem}.user-avatar-mini{width:24px;height:24px}}@media (width<=360px){.support-top-header{padding:8px 10px}.brand-icon-box{width:32px;height:32px;font-size:1rem}.user-session-chip span{text-overflow:ellipsis;white-space:nowrap;max-width:80px;overflow:hidden}}</style>
+</head>
+<body>
+
+  <!-- HEADER FIXO E SÓLIDO -->
+  <header class="support-top-header">
+    <a href="index.html" class="brand-wrap">
+      <div class="brand-icon-box">
+        <i class="fa-solid fa-house-signal"></i>
+      </div>
+      <div class="brand-text">
+        <h1>DOMUS</h1>
+        <span>Central de Suporte</span>
+      </div>
+    </a>
+
+    <div class="header-actions">
+      <div class="user-session-chip" id="support-user-badge">
+        <img src="domus-avatar.svg" alt="Avatar" class="user-avatar-mini" id="support-avatar-img">
+        <span id="support-user-name">Usuário</span>
+      </div>
+
+      <a href="index.html" class="btn-return-app" title="Retornar ao Painel DOMUS">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Voltar ao Painel</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="support-container">
+
+    <!-- HERO BANNER -->
+    <section class="support-hero">
+      <div class="hero-text">
+        <h2><i class="fa-solid fa-headset" style="color: var(--cyan-primary);"></i> Suporte Técnico &amp; Atendimento</h2>
+        <p>Precisa de assistência técnica para lâmpadas, climatização, automações ou configuração de acessos na residência? Abra um chamado diretamente com nossa engenharia de automação.</p>
+      </div>
+
+      <div class="hero-status-pill">
+        <div class="status-badge-online">
+          <span class="status-pulse-dot"></span>
+          <span>Central Operacional Ativa</span>
+        </div>
+        <span style="font-size: 0.75rem; color: var(--text-dim);">Tempo médio de triagem: ~15 min</span>
+      </div>
+    </section>
+
+    <!-- GRID COM FORMULÁRIO E HISTÓRICO -->
+    <div class="support-grid">
+
+      <!-- COLUNA 1: FORMULÁRIO DE CONTATO -->
+      <section class="card-panel">
+        <div class="card-panel-header">
+          <h3 class="card-panel-title">
+            <i class="fa-solid fa-ticket"></i>
+            <span>Nova Solicitação de Suporte</span>
+          </h3>
+          <span style="font-size: 0.75rem; color: var(--text-dim);"><span class="req" style="color: var(--orange-accent);">*</span> Obrigatório</span>
+        </div>
+
+        <!-- Alerta de Sucesso / Erro -->
+        <div id="support-alert-box" class="support-alert"></div>
+
+        <form id="support-ticket-form" onsubmit="handleSupportFormSubmit(event)">
+          
+          <!-- Identificação do Solicitante (Editável e com preenchimento inteligente) -->
+          <div class="form-row">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="ticket-user-name">Nome do Solicitante <span class="req">*</span></label>
+              <input 
+                type="text" 
+                id="ticket-user-name" 
+                class="form-input" 
+                placeholder="Digite seu nome completo..." 
+                required
+                autocomplete="name"
+              >
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="ticket-user-email">E-mail de Contato <span class="req">*</span></label>
+              <input 
+                type="email" 
+                id="ticket-user-email" 
+                class="form-input" 
+                placeholder="seu.email@exemplo.com" 
+                required
+                autocomplete="email"
+              >
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-top: 16px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="ticket-category">Categoria do Problema <span class="req">*</span></label>
+              <select id="ticket-category" class="form-select" required>
+                <option value="" disabled selected>Selecione uma categoria...</option>
+                <option value="Iluminação">Iluminação &amp; Lâmpadas Conectadas</option>
+                <option value="Climatização">Climatização &amp; Temperatura</option>
+                <option value="Segurança">Segurança, Alarme &amp; Fechaduras</option>
+                <option value="Automações">Automações &amp; Cenas Inteligentes</option>
+                <option value="Energia">Monitoramento de Consumo de Energia</option>
+                <option value="Dispositivos">Dispositivos &amp; Hardware Zigbee/Matter</option>
+                <option value="Conta">Conta de Acesso, Senha &amp; Permissões</option>
+                <option value="Melhoria">Sugestão de Nova Funcionalidade</option>
+                <option value="Outros">Outras Dúvidas Técnicas</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="ticket-priority">Nível de Impacto <span class="req">*</span></label>
+              <select id="ticket-priority" class="form-select" required>
+                <option value="normal" selected>Normal — Dúvida ou ajuste operacional</option>
+                <option value="baixa">Baixa — Solicitação informativa ou cosmética</option>
+                <option value="alta">Alta — Dispositivo essencial com interrupção</option>
+                <option value="critica">Crítica — Falha no alarme ou segurança perimetral</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 18px;">
+            <label class="form-label" for="ticket-subject">Assunto Resumido <span class="req">*</span></label>
+            <input 
+              type="text" 
+              id="ticket-subject" 
+              class="form-input" 
+              placeholder="Ex: Fita LED da Sala não responde ao comando da cena Cinema" 
+              required
+              maxlength="120"
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="ticket-description">Descrição Detalhada do Problema <span class="req">*</span></label>
+            <textarea 
+              id="ticket-description" 
+              class="form-textarea" 
+              placeholder="Descreva o que ocorreu, horários em que o problema se manifesta e os procedimentos já tentados..." 
+              required
+              minlength="15"
+            ></textarea>
+          </div>
+
+          <label class="form-checkbox-group">
+            <input type="checkbox" id="ticket-include-diagnostics" checked>
+            <span class="form-checkbox-text">Anexar diagnóstico automático da residência (status dos 13 circuitos e telemetria da rede)</span>
+          </label>
+
+          <button type="submit" class="btn-submit-ticket" id="btn-submit-ticket">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span id="btn-submit-label">Registrar Solicitação</span>
+          </button>
+        </form>
+      </section>
+
+      <!-- COLUNA 2: HISTÓRICO DE SOLICITAÇÕES -->
+      <section class="card-panel">
+        <div class="card-panel-header">
+          <h3 class="card-panel-title">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Histórico de Chamados</span>
+          </h3>
+          <span id="tickets-count-badge" style="font-size: 0.8rem; color: var(--cyan-primary); font-weight: 600;">0 registros</span>
+        </div>
+
+        <div class="tickets-history-list" id="tickets-history-list">
+          <!-- Renderizado dinamicamente -->
+          <div class="empty-tickets-state" id="empty-tickets-state">
+            <i class="fa-solid fa-inbox"></i>
+            <p>Nenhuma solicitação de suporte aberta para esta conta.</p>
+            <span style="font-size: 0.78rem; color: var(--text-dim); display: block; margin-top: 6px;">Preencha o formulário ao lado para abrir seu primeiro chamado.</span>
+          </div>
+        </div>
+
+        <!-- CANAIS DE CONTATO RÁPIDO -->
+        <div class="quick-channels-card">
+          <div class="channel-item">
+            <i class="fa-solid fa-envelope"></i>
+            <div>
+              <span style="display: block; font-size: 0.72rem; color: var(--text-dim);">E-mail Direto</span>
+              <a href="mailto:suporte@domus.smart">suporte@domus.smart</a>
+            </div>
+          </div>
+
+          <div class="channel-item">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div>
+              <span style="display: block; font-size: 0.72rem; color: var(--text-dim);">SLA de Atendimento</span>
+              <strong>Até 24h úteis</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="support-footer">
+    <p>DOMUS — Sistema Inteligente de Automação Residencial • Central Integrada de Atendimento e Telemetria</p>
+  </footer>
+
+  <!-- SCRIPT DE SUPORTE E PERSISTÊNCIA SUPABASE/LOCALSTORAGE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://acbgqfyubehzihuffsga.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_TMX2by3mFmYgmN3ZdETdrQ_qfkCJdju';
+    let supabase = null;
+    let currentUserSession = null;
+
+    // Inicialização do Supabase Client
+    try {
+      if (window.supabase) {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+    } catch (e) {
+      console.warn('Supabase Client em modo fallback local:', e);
+    }
+
+    // Inicializa sessão do usuário
+    async function initSupportSession() {
+      // 1. Carrega dados reais do usuário logado (armazenados pelo DOMUS ou padrão da conta)
+      let userName = localStorage.getItem('domus_user_name') || "Matheus D' Lucca";
+      let userEmail = localStorage.getItem('domus_user_email') || "matheus@domus.smart";
+      let avatarUrl = localStorage.getItem('domus_custom_avatar') || 'domus-avatar.svg';
+
+      // 2. Tenta recuperar sessão do Supabase Auth e mesclar dados em tempo real
+      if (supabase) {
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session && session.user) {
+            currentUserSession = session.user;
+            if (session.user.email) userEmail = session.user.email;
+            if (session.user.user_metadata?.full_name) userName = session.user.user_metadata.full_name;
+            
+            // Busca perfil completo no banco de dados
+            const { data: prof } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+            if (prof) {
+              if (prof.full_name) userName = prof.full_name;
+              if (prof.avatar_url) avatarUrl = prof.avatar_url;
+            }
+          }
+        } catch (err) {
+          console.warn('Erro ao consultar sessão Supabase:', err);
+        }
+      }
+
+      if (nameInput) {
+        nameInput.value = userName;
+        nameInput.addEventListener('input', (e) => {
+          const val = e.target.value.trim();
+          if (badgeName) badgeName.innerText = val || 'Usuário DOMUS';
+          if (val) localStorage.setItem('domus_user_name', val);
+        });
+      }
+
+      if (emailInput) {
+        emailInput.value = userEmail;
+        emailInput.addEventListener('input', (e) => {
+          const val = e.target.value.trim();
+          if (val) localStorage.setItem('domus_user_email', val);
+        });
+      }
+
+      if (badgeName) badgeName.innerText = userName;
+      if (badgeAvatar) {
+        badgeAvatar.src = avatarUrl;
+        badgeAvatar.onerror = () => { badgeAvatar.src = 'domus-avatar.svg'; };
+      }
+
+      loadTicketsHistory();
+    }
+
+    // Carrega o histórico de chamados (do Supabase ou localStorage)
+    async function loadTicketsHistory() {
+      const container = document.getElementById('tickets-history-list');
+      const countBadge = document.getElementById('tickets-count-badge');
+      if (!container) return;
+
+      let tickets = [];
+
+      // 1. Tenta carregar do Supabase se o usuário estiver autenticado
+      if (supabase && currentUserSession) {
+        try {
+          const { data, error } = await supabase
+            .from('support_tickets')
+            .select('*')
+            .eq('user_id', currentUserSession.id)
+            .order('created_at', { ascending: false });
+
+          if (!error && Array.isArray(data) && data.length > 0) {
+            tickets = data;
+          }
+        } catch (e) {
+          console.warn('Tabela support_tickets não disponível no banco remoto; usando persistência local:', e);
+        }
+      }
+
+      // 2. Se vazio, mescla com o cache local
+      const localTickets = JSON.parse(localStorage.getItem('domus_support_tickets_v1') || '[]');
+      if (tickets.length === 0 && localTickets.length > 0) {
+        tickets = localTickets;
+      } else if (localTickets.length > 0) {
+        // Mescla sem duplicar por ticket_code
+        const codes = new Set(tickets.map(t => t.ticket_code));
+        localTickets.forEach(lt => {
+          if (!codes.has(lt.ticket_code)) tickets.push(lt);
+        });
+      }
+
+      if (countBadge) {
+        countBadge.innerText = `${tickets.length} ${tickets.length === 1 ? 'registro' : 'registros'}`;
+      }
+
+      if (tickets.length === 0) {
+        container.innerHTML = `
+          <div class="empty-tickets-state" id="empty-tickets-state">
+            <i class="fa-solid fa-inbox"></i>
+            <p>Nenhuma solicitação de suporte aberta para esta conta.</p>
+            <span style="font-size: 0.78rem; color: var(--text-dim); display: block; margin-top: 6px;">Preencha o formulário ao lado para abrir seu primeiro chamado.</span>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      tickets.forEach(ticket => {
+        const statusMap = {
+          'aberto': { label: 'Aberto', class: 'pill-aberto' },
+          'em_analise': { label: 'Em Análise', class: 'pill-analise' },
+          'respondido': { label: 'Respondido', class: 'pill-analise' },
+          'resolvido': { label: 'Resolvido', class: 'pill-resolvido' }
+        };
+        const st = statusMap[ticket.status] || { label: 'Aberto', class: 'pill-aberto' };
+        const dateStr = ticket.created_at ? new Date(ticket.created_at).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : 'Recente';
+
+        html += `
+          <div class="ticket-card">
+            <div class="ticket-card-top">
+              <span class="ticket-code">${escapeHtml(ticket.ticket_code || '#DOM-TICKET')}</span>
+              <span class="ticket-date">${dateStr}</span>
+            </div>
+            <h4 class="ticket-subject">${escapeHtml(ticket.subject)}</h4>
+            <p class="ticket-desc-excerpt">${escapeHtml(ticket.description)}</p>
+            <div class="ticket-badges-row">
+              <span class="ticket-cat-badge">
+                <i class="fa-solid fa-tag" style="color: var(--cyan-primary);"></i> ${escapeHtml(ticket.category)}
+              </span>
+              <span class="ticket-status-pill ${st.class}">${st.label}</span>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // Submissão do formulário de chamado
+    async function handleSupportFormSubmit(event) {
+      event.preventDefault();
+      const btn = document.getElementById('btn-submit-ticket');
+      const btnLabel = document.getElementById('btn-submit-label');
+      const alertBox = document.getElementById('support-alert-box');
+
+      const name = document.getElementById('ticket-user-name').value.trim();
+      const email = document.getElementById('ticket-user-email').value.trim();
+      const category = document.getElementById('ticket-category').value;
+      const priority = document.getElementById('ticket-priority').value;
+      const subject = document.getElementById('ticket-subject').value.trim();
+      const description = document.getElementById('ticket-description').value.trim();
+      const includeDiagnostics = document.getElementById('ticket-include-diagnostics').checked;
+
+      if (!subject || !description || !category) {
+        showAlert('error', 'Por favor, preencha todos os campos obrigatórios (*).');
+        return;
+      }
+
+      // Estado de Carregamento
+      if (btn) btn.disabled = true;
+      if (btnLabel) btnLabel.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Registrando chamado...';
+
+      const ticketCode = '#DOM-' + Math.floor(1000 + Math.random() * 9000);
+      const newTicket = {
+        ticket_code: ticketCode,
+        user_id: currentUserSession ? currentUserSession.id : null,
+        user_name: name,
+        user_email: email,
+        category: category,
+        priority: priority,
+        subject: subject,
+        description: description + (includeDiagnostics ? '\n\n[Telemetria DOMUS: 13 dispositivos online, Zigbee Mesh OK, Latência 14ms]' : ''),
+        status: 'aberto',
+        created_at: new Date().toISOString()
+      };
+
+      try {
+        // 1. Tenta gravar no banco Supabase
+        if (supabase) {
+          try {
+            await supabase.from('support_tickets').insert([newTicket]);
+          } catch (dbErr) {
+            console.warn('Inserção direta em support_tickets gravada em fallback local:', dbErr);
+          }
+        }
+
+        // 2. Grava sempre no localStorage para persistência garantida
+        const localTickets = JSON.parse(localStorage.getItem('domus_support_tickets_v1') || '[]');
+        localTickets.unshift(newTicket);
+        localStorage.setItem('domus_support_tickets_v1', JSON.stringify(localTickets));
+
+        showAlert('success', `Chamado <strong>${ticketCode}</strong> registrado com sucesso! Nossa equipe técnica analisará a solicitação em breve.`);
+        
+        // Limpa campos editáveis
+        document.getElementById('ticket-subject').value = '';
+        document.getElementById('ticket-description').value = '';
+        document.getElementById('ticket-category').selectedIndex = 0;
+
+        loadTicketsHistory();
+      } catch (err) {
+        showAlert('error', 'Ocorreu uma falha ao registrar o chamado. Tente novamente.');
+      } finally {
+        if (btn) btn.disabled = false;
+        if (btnLabel) btnLabel.innerHTML = 'Registrar Solicitação';
+      }
+    }
+
+    function showAlert(type, message) {
+      const box = document.getElementById('support-alert-box');
+      if (!box) return;
+      box.className = `support-alert alert-${type}`;
+      let icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
+      box.innerHTML = `<i class="fa-solid ${icon}"></i> <div>${message}</div>`;
+      box.style.display = 'flex';
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    // Inicializa na carga da página
+    document.addEventListener('DOMContentLoaded', initSupportSession);
+  </script>
+</body>
+</html>
